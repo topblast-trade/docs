@@ -48,15 +48,20 @@ to this project with:
 
 ```bash
 python3 scripts/generate_broker_openapi.py
-mint openapi-check openapi/b/openapi.json
+cd ../../zpm_docs
+mint validate
 ```
+
+The generator expects this repository at `~/code/srv/zpm_docs` when `go-uc`
+is located at `~/code/srv/zpm/go-uc`. For another layout, pass the destination
+explicitly with `--docs-project /path/to/docs`.
 
 The root `openapi.json` is temporarily the source for User APIs. Regenerate the
 User API specification after updating it:
 
 ```bash
 python3 scripts/split_openapi.py
-mint openapi-check openapi/c/openapi.json
+mint validate
 ```
 
 - `openapi/b/openapi.json` contains the Broker APIs published from `go-uc`.

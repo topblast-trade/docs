@@ -32,7 +32,8 @@
                   "api-reference/broker/user/login",
                   "api-reference/broker/user/logout",
                   "api-reference/broker/user/update",
-                  "api-reference/broker/user/create-special"
+                  "api-reference/broker/user/create-special",
+                  "api-reference/broker/user/users"
                 ]
               },
               {
@@ -44,19 +45,33 @@
                 ]
               },
               {
-                "group": "后管",
+                "group": "概览",
                 "pages": [
-                  "api-reference/broker/admin/users",
-                  "api-reference/broker/admin/dashboard",
-                  "api-reference/broker/admin/reports-summary",
-                  "api-reference/broker/admin/reports-trend",
-                  "api-reference/broker/admin/trades",
-                  "api-reference/broker/admin/positions",
-                  "api-reference/broker/admin/open-orders",
-                  "api-reference/broker/admin/assets",
-                  "api-reference/broker/admin/daily-summaries",
-                  "api-reference/broker/admin/cancel-orders",
-                  "api-reference/broker/admin/close-position"
+                  "api-reference/broker/overview/dashboard"
+                ]
+              },
+              {
+                "group": "交易",
+                "pages": [
+                  "api-reference/broker/trade/trades",
+                  "api-reference/broker/trade/positions",
+                  "api-reference/broker/trade/open-orders",
+                  "api-reference/broker/trade/cancel-orders",
+                  "api-reference/broker/trade/close-position"
+                ]
+              },
+              {
+                "group": "资产",
+                "pages": [
+                  "api-reference/broker/assets/list"
+                ]
+              },
+              {
+                "group": "报表",
+                "pages": [
+                  "api-reference/broker/reports/summary",
+                  "api-reference/broker/reports/trend",
+                  "api-reference/broker/reports/daily-summaries"
                 ]
               },
               {
@@ -133,7 +148,8 @@
                   "en/api-reference/broker/user/login",
                   "en/api-reference/broker/user/logout",
                   "en/api-reference/broker/user/update",
-                  "en/api-reference/broker/user/create-special"
+                  "en/api-reference/broker/user/create-special",
+                  "en/api-reference/broker/user/users"
                 ]
               },
               {
@@ -145,19 +161,33 @@
                 ]
               },
               {
-                "group": "Administration",
+                "group": "Overview",
                 "pages": [
-                  "en/api-reference/broker/admin/users",
-                  "en/api-reference/broker/admin/dashboard",
-                  "en/api-reference/broker/admin/reports-summary",
-                  "en/api-reference/broker/admin/reports-trend",
-                  "en/api-reference/broker/admin/trades",
-                  "en/api-reference/broker/admin/positions",
-                  "en/api-reference/broker/admin/open-orders",
-                  "en/api-reference/broker/admin/assets",
-                  "en/api-reference/broker/admin/daily-summaries",
-                  "en/api-reference/broker/admin/cancel-orders",
-                  "en/api-reference/broker/admin/close-position"
+                  "en/api-reference/broker/overview/dashboard"
+                ]
+              },
+              {
+                "group": "Trading",
+                "pages": [
+                  "en/api-reference/broker/trade/trades",
+                  "en/api-reference/broker/trade/positions",
+                  "en/api-reference/broker/trade/open-orders",
+                  "en/api-reference/broker/trade/cancel-orders",
+                  "en/api-reference/broker/trade/close-position"
+                ]
+              },
+              {
+                "group": "Assets",
+                "pages": [
+                  "en/api-reference/broker/assets/list"
+                ]
+              },
+              {
+                "group": "Reports",
+                "pages": [
+                  "en/api-reference/broker/reports/summary",
+                  "en/api-reference/broker/reports/trend",
+                  "en/api-reference/broker/reports/daily-summaries"
                 ]
               },
               {
