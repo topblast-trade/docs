@@ -1,0 +1,45 @@
+---
+title: "接入指南"
+---
+
+欢迎使用 Dcore 接口文档。本文档专门为券商（Broker）提供与 Dcore 交易系统对接的完整技术支持。
+
+通过本文档，您可以实现：
+1. **用户同步**: 将您的用户系统映射到 Dcore 核心交易。
+2. **资产划转**: 实现券商账户与交易平台之间的实时资金划拨。
+3. **API Key**: 为您的终端用户生成和管理交易所需的访问密钥。
+
+
+## 用户接入流程
+
+以下是用户通过券商接入 Dcore 核心交易的流程图：
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as 用户
+    participant Broker as Broker券商
+    participant Dcore as Dcore核心交易
+
+    User->>Broker: 用户登录Broker
+    Note over Broker, Dcore: 调用登录接口
+    Broker->>Dcore: 用户登录 (/api/v1/user/login)
+    Dcore-->>Broker: 返回跳转URL
+    Broker-->>User: 登录成功
+    User->>Dcore: 通过跳转URL直连Dcore核心交易
+```
+
+## API 网关地址
+
+根据您的对接阶段，请选择对应的网关地址进行调用。
+
+| 环境 | 网关地址 |
+| :--- | :--- |
+| **测试环境** | `http://10.10.1.10:38008` |
+
+## 快速导航
+
+- <Icon icon="rocket" color="#FF5722" /> [接入指南](/guide/introduction) - 了解如何开始对接
+- <Icon icon="repeat" color="#FF5722" /> [交易页开启划转](/guide/trading-transfer-enable) - 查看开启步骤与接口标准
+- <Icon icon="key" color="#FF5722" /> [鉴权说明](/guide/authentication) - 掌握 HMAC 签名计算规则
+- <Icon icon="box" color="#FF5722" /> [API Reference](/api-reference/user/register) - 查看完整的 OpenAPI 接口定义
