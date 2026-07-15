@@ -1,0 +1,15 @@
+---
+title: "User API authentication"
+---
+
+User APIs identify authenticated users with an access token. Send the token through standard Bearer Authentication:
+
+```http
+Authorization: Bearer <access_token>
+```
+
+The user login flow issues the token. Clients must not send it in a query parameter or request body.
+
+<Note>
+This initial architecture marks the bearer token format as JWT. Document token issuance, refresh, expiration, and revocation after the authentication service contract is finalized.
+</Note>

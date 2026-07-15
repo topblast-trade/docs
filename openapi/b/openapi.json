@@ -1,0 +1,1579 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "zpm Broker API",
+    "contact": {},
+    "version": "v1.0.0",
+    "description": "Broker integration APIs authenticated with an API key, timestamp, and HMAC-SHA256 signature."
+  },
+  "paths": {
+    "/broker/v2/admin/assets": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询券商资产",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "next",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prev",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/daily-summaries": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询券商每日汇总",
+        "parameters": [
+          {
+            "name": "end_time",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/dashboard": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询券商仪表盘",
+        "parameters": [
+          {
+            "description": "统计周期",
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d"
+              ],
+              "default": "1d"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/events": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-事件"
+        ],
+        "summary": "查询券商事件",
+        "parameters": [
+          {
+            "name": "enabled",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event_slug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/events/{event_slug}/disable": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-事件"
+        ],
+        "summary": "停用券商事件",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "event_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/req.BrokerEventSwitchRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/events/{event_slug}/enable": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-事件"
+        ],
+        "summary": "启用券商事件",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "event_slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/req.BrokerEventSwitchRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/open-orders": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询券商当前委托",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event_slug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "market_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "next",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prev",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/orders/cancel": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "取消券商用户委托",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerAdminCancelOrdersRequest"
+              }
+            }
+          },
+          "description": "撤单信息",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/positions": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询券商仓位",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event_slug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "market_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "next",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prev",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/positions/close": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "平仓券商用户仓位",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerAdminClosePositionRequest"
+              }
+            }
+          },
+          "description": "平仓信息",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/reports/summary": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询券商汇总报表",
+        "parameters": [
+          {
+            "description": "统计周期",
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d"
+              ],
+              "default": "1d"
+            }
+          },
+          {
+            "description": "结束时间",
+            "name": "end_time",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/reports/trend": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询券商趋势报表",
+        "parameters": [
+          {
+            "description": "统计周期",
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d"
+              ],
+              "default": "1d"
+            }
+          },
+          {
+            "description": "结束时间（Unix 秒）",
+            "name": "end_time",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/risk/config": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-风控"
+        ],
+        "summary": "查询券商风控配置",
+        "parameters": [
+          {
+            "name": "event_slug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-风控"
+        ],
+        "summary": "保存券商风控配置",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerRiskConfigUpsertRequest"
+              }
+            }
+          },
+          "description": "风控配置",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/risk/exposures": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-风控"
+        ],
+        "summary": "查询券商风险敞口",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/risk/policies": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-风控"
+        ],
+        "summary": "查询券商风控策略",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "rule_scope",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/trades": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询券商成交记录",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event_slug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "next",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "prev",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/admin/users": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询券商用户列表",
+        "parameters": [
+          {
+            "name": "broker_uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/transfer": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-划转"
+        ],
+        "summary": "创建券商用户划转",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v2.BrokerTransferReq"
+              }
+            }
+          },
+          "description": "划转信息",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/transfer/detail": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-划转"
+        ],
+        "summary": "查询券商用户划转详情",
+        "parameters": [
+          {
+            "description": "券商侧用户 ID",
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "划转订单 ID",
+            "name": "order_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/transfer/list": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-划转"
+        ],
+        "summary": "查询券商用户划转列表",
+        "parameters": [
+          {
+            "description": "券商侧用户 ID",
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "币种",
+            "name": "currency",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "划转方向：1 入金，2 出金",
+            "name": "direction",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "划转状态",
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "页码",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "description": "每页数量",
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/user/create-special": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "创建特殊账户",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.CreateSpecialUserRequest"
+              }
+            }
+          },
+          "description": "特殊账户信息",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/user/login": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "券商用户登录",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.LoginUserRequest"
+              }
+            }
+          },
+          "description": "登录信息",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/user/logout": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "券商用户登出",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.LogoutUserRequest"
+              }
+            }
+          },
+          "description": "登出信息",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/user/update": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "更新券商用户",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.UpdateUserRequest"
+              }
+            }
+          },
+          "description": "用户信息",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "req.BrokerEventSwitchRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/req.BrokerEventSwitchRequest"
+            }
+          }
+        },
+        "description": "事件配置",
+        "required": true
+      }
+    },
+    "securitySchemes": {
+      "BrokerApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "Broker API key."
+      },
+      "BrokerTimestamp": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-timestamp",
+        "description": "Request timestamp in seconds or milliseconds."
+      },
+      "BrokerSignature": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-signature",
+        "description": "Base64-encoded HMAC-SHA256 request signature."
+      }
+    },
+    "schemas": {
+      "req.BrokerAdminCancelOrdersRequest": {
+        "type": "object",
+        "required": [
+          "order_id",
+          "uid"
+        ],
+        "properties": {
+          "order_id": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        }
+      },
+      "req.BrokerAdminClosePositionRequest": {
+        "type": "object",
+        "required": [
+          "quantity",
+          "token_id",
+          "uid"
+        ],
+        "properties": {
+          "quantity": {
+            "type": "string"
+          },
+          "token_id": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        }
+      },
+      "req.BrokerEventSwitchRequest": {
+        "type": "object",
+        "properties": {
+          "event_slug": {
+            "type": "string"
+          }
+        }
+      },
+      "req.BrokerRiskConfigUpsertRequest": {
+        "type": "object",
+        "properties": {
+          "event_enabled": {
+            "type": "boolean"
+          },
+          "event_slug": {
+            "type": "string"
+          },
+          "global_enabled": {
+            "type": "boolean"
+          },
+          "max_event_worst_case_payout": {
+            "type": "number"
+          },
+          "max_global_worst_case_payout": {
+            "type": "number"
+          }
+        }
+      },
+      "req.CreateSpecialUserRequest": {
+        "type": "object",
+        "required": [
+          "broker_id",
+          "type"
+        ],
+        "properties": {
+          "broker_id": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "sys",
+              "mm"
+            ]
+          }
+        }
+      },
+      "req.LoginUserRequest": {
+        "type": "object",
+        "required": [
+          "token",
+          "user_id"
+        ],
+        "properties": {
+          "desc": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "user_name": {
+            "type": "string"
+          }
+        }
+      },
+      "req.LogoutUserRequest": {
+        "type": "object",
+        "required": [
+          "user_id"
+        ],
+        "properties": {
+          "user_id": {
+            "type": "string"
+          }
+        }
+      },
+      "req.UpdateUserRequest": {
+        "type": "object",
+        "required": [
+          "user_id"
+        ],
+        "properties": {
+          "desc": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "user_name": {
+            "type": "string"
+          }
+        }
+      },
+      "v2.BrokerAPIResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {},
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        }
+      },
+      "v2.BrokerTransferReq": {
+        "type": "object",
+        "required": [
+          "amount",
+          "currency",
+          "direction",
+          "txn_id",
+          "user_id"
+        ],
+        "properties": {
+          "amount": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "direction": {
+            "description": "1-deposit, 2-withdraw",
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "remark": {
+            "type": "string"
+          },
+          "txn_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BrokerApiKey": [],
+      "BrokerTimestamp": [],
+      "BrokerSignature": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "券商接口-后管"
+    },
+    {
+      "name": "券商接口-事件"
+    },
+    {
+      "name": "券商接口-风控"
+    },
+    {
+      "name": "券商接口-划转"
+    },
+    {
+      "name": "券商接口-用户"
+    }
+  ],
+  "x-api-side": "BROKER"
+}

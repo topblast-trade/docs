@@ -40,6 +40,28 @@ mint dev
 
 View your local preview at `http://localhost:3000`.
 
+## OpenAPI architecture
+
+Broker APIs are generated from Swaggo annotations in `go-uc`. From the
+`go-uc` repository, generate Swagger 2, convert it to OpenAPI 3, and publish it
+to this project with:
+
+```bash
+python3 scripts/generate_broker_openapi.py
+mint openapi-check openapi/b/openapi.json
+```
+
+The root `openapi.json` is temporarily the source for User APIs. Regenerate the
+User API specification after updating it:
+
+```bash
+python3 scripts/split_openapi.py
+mint openapi-check openapi/c/openapi.json
+```
+
+- `openapi/b/openapi.json` contains the Broker APIs published from `go-uc`.
+- `openapi/c/openapi.json` contains the User APIs under `/api/v1/trade/`.
+
 ## Publishing changes
 
 Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.

@@ -1,0 +1,39 @@
+---
+title: "Broker API authentication"
+---
+
+Broker APIs use an API key and an HMAC-SHA256 request signature. Every request must include these headers:
+
+| Header | Description | Example |
+| :--- | :--- | :--- |
+| `x-api-key` | Broker or partner API key | `7007b96cf748fdd0` |
+| `x-timestamp` | Request timestamp in seconds or milliseconds | `1689584042` |
+| `x-signature` | Base64-encoded HMAC-SHA256 signature | `2a8b...` |
+
+## Build the signature payload
+
+Concatenate these fields in order:
+
+`Timestamp + Method + Path + [?Query] + Body`
+
+- **Timestamp**: Must exactly match `x-timestamp`.
+- **Method**: Uppercase HTTP method, such as `GET` or `POST`.
+- **Path**: Request path without the domain.
+- **Query**: Include the leading `?` when present; otherwise use an empty string.
+- **Body**: Raw JSON request body, or an empty string when there is no body.
+
+Calculate an HMAC-SHA256 digest with the API secret and encode the result with Base64.
+
+```go
+func CalculateSignature(secret, timestamp, method, path, query, body string) string {
+    payload := timestamp + method + path
+    if query != "" {
+        payload += "?" + query
+    }
+    payload += body
+
+    h := hmac.New(sha256.New, []byte(secret))
+    h.Write([]byte(payload))
+    return base64.StdEncoding.EncodeToString(h.Sum(nil))
+}
+```

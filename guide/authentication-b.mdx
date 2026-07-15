@@ -1,0 +1,39 @@
+---
+title: "券商接口鉴权"
+---
+
+券商接口使用 API Key 和 HMAC-SHA256 请求签名。每个请求必须包含以下 Header：
+
+| Header | 说明 | 示例 |
+| :--- | :--- | :--- |
+| `x-api-key` | 券商或合作方的 API Key | `7007b96cf748fdd0` |
+| `x-timestamp` | 请求时间戳，单位为秒或毫秒 | `1689584042` |
+| `x-signature` | Base64 编码的 HMAC-SHA256 签名 | `2a8b...` |
+
+## 构建签名字符串
+
+按顺序直接拼接以下字段：
+
+`Timestamp + Method + Path + [?Query] + Body`
+
+- **Timestamp**：必须与 `x-timestamp` 完全一致。
+- **Method**：大写 HTTP 方法，例如 `GET` 或 `POST`。
+- **Path**：不包含域名的请求路径。
+- **Query**：存在查询参数时包含开头的 `?`，否则为空字符串。
+- **Body**：原始 JSON 请求体；无请求体时为空字符串。
+
+使用 API Secret 对签名字符串计算 HMAC-SHA256，并将结果进行 Base64 编码。
+
+```go
+func CalculateSignature(secret, timestamp, method, path, query, body string) string {
+    payload := timestamp + method + path
+    if query != "" {
+        payload += "?" + query
+    }
+    payload += body
+
+    h := hmac.New(sha256.New, []byte(secret))
+    h.Write([]byte(payload))
+    return base64.StdEncoding.EncodeToString(h.Sum(nil))
+}
+```

@@ -1,54 +1,229 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "zpm",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#FF5722",
+    "light": "#FFAB91",
+    "dark": "#D84315"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/logo/favicon.svg",
   "navigation": {
-    "pages": [
+    "languages": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
+        "language": "zh-Hans",
+        "default": true,
+        "tabs": [
+          {
+            "tab": "券商接口",
+            "groups": [
+              {
+                "group": "接入指南",
+                "pages": [
+                  "guide/introduction",
+                  "guide/authentication",
+                  "guide/authentication-b",
+                  "guide/response"
+                ]
+              },
+              {
+                "group": "用户",
+                "pages": [
+                  "api-reference/broker/user/login",
+                  "api-reference/broker/user/logout",
+                  "api-reference/broker/user/update",
+                  "api-reference/broker/user/create-special"
+                ]
+              },
+              {
+                "group": "划转",
+                "pages": [
+                  "api-reference/broker/transfer/create",
+                  "api-reference/broker/transfer/list",
+                  "api-reference/broker/transfer/detail"
+                ]
+              },
+              {
+                "group": "后管",
+                "pages": [
+                  "api-reference/broker/admin/users",
+                  "api-reference/broker/admin/dashboard",
+                  "api-reference/broker/admin/reports-summary",
+                  "api-reference/broker/admin/reports-trend",
+                  "api-reference/broker/admin/trades",
+                  "api-reference/broker/admin/positions",
+                  "api-reference/broker/admin/open-orders",
+                  "api-reference/broker/admin/assets",
+                  "api-reference/broker/admin/daily-summaries",
+                  "api-reference/broker/admin/cancel-orders",
+                  "api-reference/broker/admin/close-position"
+                ]
+              },
+              {
+                "group": "事件",
+                "pages": [
+                  "api-reference/broker/events/list",
+                  "api-reference/broker/events/enable",
+                  "api-reference/broker/events/disable"
+                ]
+              },
+              {
+                "group": "风控",
+                "pages": [
+                  "api-reference/broker/risk/policies",
+                  "api-reference/broker/risk/exposures",
+                  "api-reference/broker/risk/get-config",
+                  "api-reference/broker/risk/save-config"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "用户接口",
+            "openapi": "openapi/c/openapi.json",
+            "groups": [
+              {
+                "group": "接入指南",
+                "pages": [
+                  "guide/authentication-c"
+                ]
+              },
+              {
+                "group": "现货",
+                "pages": [
+                  "api-reference/trade/spot/orders-pending",
+                  "api-reference/trade/spot/orders-history",
+                  "api-reference/trade/spot/fills"
+                ]
+              },
+              {
+                "group": "合约",
+                "pages": [
+                  "api-reference/trade/futures/positions",
+                  "api-reference/trade/futures/orders-pending",
+                  "api-reference/trade/futures/algo-orders-pending",
+                  "api-reference/trade/futures/positions-history",
+                  "api-reference/trade/futures/orders-history",
+                  "api-reference/trade/futures/fills",
+                  "api-reference/trade/futures/bills"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "language": "en",
+        "tabs": [
+          {
+            "tab": "Broker APIs",
+            "groups": [
+              {
+                "group": "Guides",
+                "pages": [
+                  "en/guide/introduction",
+                  "en/guide/authentication",
+                  "en/guide/authentication-b",
+                  "en/guide/response"
+                ]
+              },
+              {
+                "group": "Users",
+                "pages": [
+                  "en/api-reference/broker/user/login",
+                  "en/api-reference/broker/user/logout",
+                  "en/api-reference/broker/user/update",
+                  "en/api-reference/broker/user/create-special"
+                ]
+              },
+              {
+                "group": "Transfers",
+                "pages": [
+                  "en/api-reference/broker/transfer/create",
+                  "en/api-reference/broker/transfer/list",
+                  "en/api-reference/broker/transfer/detail"
+                ]
+              },
+              {
+                "group": "Administration",
+                "pages": [
+                  "en/api-reference/broker/admin/users",
+                  "en/api-reference/broker/admin/dashboard",
+                  "en/api-reference/broker/admin/reports-summary",
+                  "en/api-reference/broker/admin/reports-trend",
+                  "en/api-reference/broker/admin/trades",
+                  "en/api-reference/broker/admin/positions",
+                  "en/api-reference/broker/admin/open-orders",
+                  "en/api-reference/broker/admin/assets",
+                  "en/api-reference/broker/admin/daily-summaries",
+                  "en/api-reference/broker/admin/cancel-orders",
+                  "en/api-reference/broker/admin/close-position"
+                ]
+              },
+              {
+                "group": "Events",
+                "pages": [
+                  "en/api-reference/broker/events/list",
+                  "en/api-reference/broker/events/enable",
+                  "en/api-reference/broker/events/disable"
+                ]
+              },
+              {
+                "group": "Risk",
+                "pages": [
+                  "en/api-reference/broker/risk/policies",
+                  "en/api-reference/broker/risk/exposures",
+                  "en/api-reference/broker/risk/get-config",
+                  "en/api-reference/broker/risk/save-config"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "User APIs",
+            "openapi": "openapi/c/openapi.json",
+            "groups": [
+              {
+                "group": "Guides",
+                "pages": [
+                  "en/guide/authentication-c"
+                ]
+              },
+              {
+                "group": "Spot",
+                "pages": [
+                  "en/api-reference/trade/spot/orders-pending",
+                  "en/api-reference/trade/spot/orders-history",
+                  "en/api-reference/trade/spot/fills"
+                ]
+              },
+              {
+                "group": "Futures",
+                "pages": [
+                  "en/api-reference/trade/futures/positions",
+                  "en/api-reference/trade/futures/orders-pending",
+                  "en/api-reference/trade/futures/algo-orders-pending",
+                  "en/api-reference/trade/futures/positions-history",
+                  "en/api-reference/trade/futures/orders-history",
+                  "en/api-reference/trade/futures/fills",
+                  "en/api-reference/trade/futures/bills"
+                ]
+              }
+            ]
+          }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
-    }
+  "api": {
+    "openapi": [
+      "openapi/b/openapi.json",
+      "openapi/c/openapi.json"
+    ]
   },
   "contextual": {
     "options": [
@@ -64,9 +239,7 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/phx-de"
     }
   }
 }
