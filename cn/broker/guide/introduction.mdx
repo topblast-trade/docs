@@ -1,24 +1,15 @@
 ---
 title: "接入指南"
-description: "了解券商接入 ZPM 的完整流程，包括鉴权、用户同步、资产划转和交易接口调用。"
+description: ""
 ---
 
-欢迎使用 ZPM OpenAPI。本文档面向接入 ZPM 交易平台的券商（Broker）及合作方。
+欢迎使用 ZPM OpenAPI，本文档面向通过服务端接入 ZPM 交易平台的券商及合作方。了解 ZPM OpenAPI 的接入流程，包括签名鉴权、用户同步、资产划转和交易管理等等。
 
 完成接入后，您可以：
 
-1. **同步用户**：将券商用户映射到 ZPM，并同步用户访问 Token。
-2. **划转资产**：为券商用户发起充值或提现，并查询划转记录。
-3. **查询与管理交易**：查询用户的成交、持仓和委托，并执行撤单、平仓等操作。
-
-## 接口类型
-
-ZPM OpenAPI 分为两类接口。请根据调用方选择正确的鉴权方式。
-
-| 接口类型 | 路径范围 | 调用方 | 鉴权方式 |
-| :--- | :--- | :--- | :--- |
-| 券商接口 | `/broker/v2/*` | 券商服务端 | API Key、时间戳和 HMAC-SHA256 签名 |
-| 用户接口 | `/api/v1/trade/*` | 已登录的终端用户 | Bearer Token |
+1. **用户管理**：将券商用户映射到 ZPM，并同步用户访问 Token。
+2. **资产管理**：为券商用户发起充值或提现，并查询划转记录。
+3. **交易管理**：查询券商用户的成交、仓位和委托，并执行撤单、平仓等操作。
 
 <Warning>
 请仅在券商服务端保存 API Secret。不要将 API Secret 暴露给浏览器、移动客户端或终端用户。
@@ -38,23 +29,19 @@ ZPM OpenAPI 分为两类接口。请根据调用方选择正确的鉴权方式�
 
 ## 标准接入流程
 
-用户在券商侧登录成功后，券商服务端调用 `POST /broker/v2/user/login`，将券商侧用户 ID 和用户 Token 同步到 ZPM。如果用户映射不存在，ZPM 会在登录过程中自动创建。
+券商用户登录成功后，券商服务端调用 `POST /broker/v2/user/login`，将券商侧用户 ID 和 Token 同步到 ZPM。如果用户映射不存在，ZPM 会在登录过程中自动创建。
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as 用户
-    participant Client as 券商客户端
     participant Broker as 券商服务端
     participant ZPM as ZPM交易平台
 
-    User->>Client: 登录券商
-    Client->>Broker: 提交登录请求
-    Broker-->>Client: 登录成功并签发用户Token
+    Broker->>Broker: 用户登录成功并签发Token
     Broker->>ZPM: POST /broker/v2/user/login<br/>签名请求并同步userId与token
-    ZPM-->>Broker: 返回用户映射结果
-    Client->>ZPM: 调用用户接口<br/>Authorization: Bearer token
-    ZPM-->>Client: 返回交易数据
+    ZPM-->>Broker: 返回平台用户UID
+    Broker->>ZPM: 调用其他 /broker/v2/* 接口<br/>携带签名请求头
+    ZPM-->>Broker: 返回业务结果
 ```
 
 ### 1. 同步用户和 Token
@@ -88,19 +75,21 @@ x-signature: <signature>
 
 - `direction: 1` 表示充值
 - `direction: 2` 表示提现
-- 当前支持的币种以[创建券商用户划转](/cn/broker/api-reference/transfer/create)中的接口定义为准
+- 当前支持的币种以[创建划转](/cn/broker/api-reference/transfer/create)中的接口定义为准
 
 您可以通过[划转列表](/cn/broker/api-reference/transfer/list)和[划转详情](/cn/broker/api-reference/transfer/detail)查询处理结果。
 
-### 3. 调用交易接口
+### 3. 管理交易
 
-用户使用登录流程中同步的 Token 调用用户接口：
+券商服务端继续使用相同的签名鉴权方式调用交易管理接口。您可以查询券商用户的成交记录、仓位和当前委托，也可以执行撤单和平仓。
 
-```http
-Authorization: Bearer <user_access_token>
-```
+- [查询成交记录](/cn/broker/api-reference/trade/trades)
+- [查询仓位](/cn/broker/api-reference/trade/positions)
+- [查询当前委托](/cn/broker/api-reference/trade/open-orders)
+- [取消委托](/cn/broker/api-reference/trade/cancel-orders)
+- [平仓](/cn/broker/api-reference/trade/close-position)
 
-用户接口可用于查询现货和合约的委托、成交、持仓及账单。完整规则请参阅[用户接口鉴权](/cn/client/guide/authentication)。券商服务端也可以通过[券商交易接口](/cn/broker/api-reference/trade/trades)查询和管理其用户的交易数据。
+所有操作都必须使用当前券商的 API Key 签名，并且只能访问归属于当前券商的用户数据。
 
 ## API 网关地址
 
@@ -117,13 +106,13 @@ http://10.10.1.10:38008/broker/v2/user/login
 ## 下一步
 
 <CardGroup cols={3}>
-  <Card title="配置鉴权" icon="key" href="/guide/authentication-b">
+  <Card title="配置鉴权" icon="key" href="/cn/broker/guide/authentication">
     生成券商接口签名并验证请求。
   </Card>
-  <Card title="同步用户" icon="user" href="/api-reference/broker/user/login">
+  <Card title="同步用户" icon="user" href="/cn/broker/api-reference/user/login">
     查看登录接口的完整请求定义。
   </Card>
-  <Card title="发起划转" icon="arrow-right-arrow-left" href="/api-reference/broker/transfer/create">
+  <Card title="发起划转" icon="arrow-right-arrow-left" href="/cn/broker/api-reference/transfer/create">
     为券商用户充值或提现。
   </Card>
 </CardGroup>
