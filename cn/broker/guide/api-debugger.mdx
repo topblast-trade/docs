@@ -1,0 +1,18 @@
+---
+title: "API 调试器"
+description: "填写 AK、SK 和请求参数，自动签名并发送 Broker API 请求。"
+---
+
+import { BrokerApiDebugger } from "/snippets/broker-api-debugger.jsx";
+
+调试器包含当前 25 个 Broker API。选择接口并填写最终 Path、Query 和 Body 后，点击 **Send**，浏览器会实时生成时间戳和 HMAC-SHA256 签名，自动追加鉴权请求头，然后发送请求。
+
+<Warning>
+AK 和 SK 仅保存在当前页面的内存中，不会写入本地存储。请勿在公共设备上填写生产环境凭证。
+</Warning>
+
+<BrokerApiDebugger />
+
+<Note>
+请求通过 Mintlify 同源代理发送，浏览器不会直接访问 API 网关，因此不依赖网关的 CORS 配置。SK 仅用于浏览器本地计算签名，不会发送给 Mintlify 或 API 网关。
+</Note>
