@@ -1,15 +1,22 @@
 ---
 title: "接入指南"
-description: ""
+description: "了解 ZPM Broker API 的接入方式，以及用户、资产、交易、报表、事件和风控管理能力。"
 ---
 
-欢迎使用 ZPM OpenAPI，本文档面向通过服务端接入 ZPM 交易平台的券商及合作方。了解 ZPM OpenAPI 的接入流程，包括签名鉴权、用户同步、资产划转和交易管理等等。
+欢迎使用 ZPM OpenAPI。本文档面向通过服务端接入 ZPM 交易平台的券商及合作方，介绍 Broker API 的签名鉴权、业务接入流程和接口能力。
 
-完成接入后，您可以：
+## 接口能力
 
-1. **用户管理**：将券商用户映射到 ZPM，并同步用户访问 Token。
-2. **资产管理**：为券商用户发起充值或提现，并查询划转记录。
-3. **交易管理**：查询券商用户的成交、仓位和委托，并执行撤单、平仓等操作。
+完成接入后，券商服务端可以使用 Broker API 管理以下业务：
+
+1. **用户管理**：建立券商用户与 ZPM 用户的映射，同步登录 Token 和登出状态，更新用户信息，创建特殊账户，并查询券商名下的用户列表。
+2. **资产管理**：为券商用户发起充值或提现，查询划转列表和划转详情，并查看用户资产及余额信息。
+3. **交易管理**：查询券商用户的成交记录、仓位和当前委托，并执行撤单、平仓等交易操作。
+4. **报表分析**：查询汇总报表、趋势报表、每日业务汇总和仪表盘数据，了解用户增长、活跃情况、资金流动及成交规模。
+5. **事件管理**：查询平台事件及其市场信息，按券商业务需要启用或停用事件，控制可运营的事件范围。
+6. **风控管理**：查询风控策略和风险敞口，读取或保存全局及事件级风控配置，控制最大最坏情况赔付额等风险指标。
+
+所有接口均位于 `/broker/v2/*` 路径下，只能由券商服务端调用。请求通过 API Key、时间戳和 HMAC-SHA256 签名完成身份验证，并且只能访问当前券商权限范围内的数据。
 
 <Warning>
 请仅在券商服务端保存 API Secret。不要将 API Secret 暴露给浏览器、移动客户端或终端用户。
@@ -44,64 +51,12 @@ sequenceDiagram
     ZPM-->>Broker: 返回业务结果
 ```
 
-### 1. 同步用户和 Token
-
-券商服务端在用户登录后调用：
-
-```http
-POST /broker/v2/user/login HTTP/1.1
-Content-Type: application/json
-x-api-key: <broker_api_key>
-x-timestamp: <timestamp>
-x-signature: <signature>
-
-{
-  "userId": "broker-user-10001",
-  "userName": "alice",
-  "email": "alice@example.com",
-  "token": "<user_access_token>"
-}
-```
-
-其中 `userId` 和 `token` 为必填字段。`userId` 是用户在券商系统中的唯一标识；后续券商接口继续使用该标识定位用户。
-
-<Note>
-再次调用登录接口会同步最新的用户信息和 Token。用户退出券商后，请调用 `POST /broker/v2/user/logout` 同步登出状态。
-</Note>
-
-### 2. 划转资产
-
-使用 `POST /broker/v2/transfer` 发起充值或提现。请求中的 `txnId` 必须唯一，以便查询和追踪划转记录。
-
-- `direction: 1` 表示充值
-- `direction: 2` 表示提现
-- 当前支持的币种以[创建划转](/cn/broker/api-reference/transfer/create)中的接口定义为准
-
-您可以通过[划转列表](/cn/broker/api-reference/transfer/list)和[划转详情](/cn/broker/api-reference/transfer/detail)查询处理结果。
-
-### 3. 管理交易
-
-券商服务端继续使用相同的签名鉴权方式调用交易管理接口。您可以查询券商用户的成交记录、仓位和当前委托，也可以执行撤单和平仓。
-
-- [查询成交记录](/cn/broker/api-reference/trade/trades)
-- [查询仓位](/cn/broker/api-reference/trade/positions)
-- [查询当前委托](/cn/broker/api-reference/trade/open-orders)
-- [取消委托](/cn/broker/api-reference/trade/cancel-orders)
-- [平仓](/cn/broker/api-reference/trade/close-position)
-
-所有操作都必须使用当前券商的 API Key 签名，并且只能访问归属于当前券商的用户数据。
-
 ## API 网关地址
 
 | 环境 | 网关地址 |
 | :--- | :--- |
-| 测试环境 | `http://10.10.1.10:38008` |
-
-将网关地址与接口路径拼接即可得到完整请求地址。例如：
-
-```text
-http://10.10.1.10:38008/broker/v2/user/login
-```
+| 测试环境 | `https://apitest-predict.xbit.trade` |
+| 生产环境 | `暂不提供` |
 
 ## 下一步
 
