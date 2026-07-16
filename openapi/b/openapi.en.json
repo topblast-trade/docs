@@ -3212,6 +3212,16 @@
       }
     }
   },
+  "servers": [
+    {
+      "url": "https://predict.xbit.trade",
+      "description": "Development environment"
+    },
+    {
+      "url": "https://apitest-predict.xbit.trade",
+      "description": "Test environment"
+    }
+  ],
   "security": [
     {
       "BrokerApiKey": [],

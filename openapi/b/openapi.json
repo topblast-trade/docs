@@ -1705,19 +1705,19 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "Broker API key."
+        "description": "券商 API Key，用于标识调用方身份。"
       },
       "BrokerTimestamp": {
         "type": "apiKey",
         "in": "header",
         "name": "x-timestamp",
-        "description": "Request timestamp in seconds or milliseconds."
+        "description": "请求时间戳，支持秒或毫秒。"
       },
       "BrokerSignature": {
         "type": "apiKey",
         "in": "header",
         "name": "x-signature",
-        "description": "Base64-encoded HMAC-SHA256 request signature."
+        "description": "使用 HMAC-SHA256 生成并经过 Base64 编码的请求签名。"
       }
     },
     "schemas": {
@@ -3212,6 +3212,16 @@
       }
     }
   },
+  "servers": [
+    {
+      "url": "https://predict.xbit.trade",
+      "description": "开发环境"
+    },
+    {
+      "url": "https://apitest-predict.xbit.trade",
+      "description": "测试环境"
+    }
+  ],
   "security": [
     {
       "BrokerApiKey": [],
