@@ -22,6 +22,7 @@
                 "pages": [
                   "cn/broker/guide/introduction",
                   "cn/broker/guide/authentication",
+                  "cn/broker/guide/signature-calculator",
                   "cn/broker/guide/response"
                 ]
               },

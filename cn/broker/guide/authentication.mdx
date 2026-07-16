@@ -24,6 +24,10 @@ title: "券商接口鉴权"
 
 使用 API Secret 对签名字符串计算 HMAC-SHA256，并将结果进行 Base64 编码。
 
+<Tip>
+您也可以使用[签名计算器](/cn/broker/guide/signature-calculator)填写 AK、SK 和请求参数，在浏览器本地生成签名。
+</Tip>
+
 ```go
 func CalculateSignature(secret, timestamp, method, path, query, body string) string {
     payload := timestamp + method + path

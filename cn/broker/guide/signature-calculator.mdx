@@ -1,0 +1,26 @@
+---
+title: "签名计算器"
+description: "在浏览器本地计算 Broker API 请求签名。"
+---
+
+import { SignatureCalculator } from "/snippets/signature-calculator.jsx";
+
+填写 AK、SK 和请求参数，计算请求所需的 `x-signature`。计算过程仅在当前浏览器中完成，输入内容不会发送到服务器或写入本地存储。
+
+<Warning>
+请勿在公共设备上使用生产环境 SK。计算完成后关闭页面，避免敏感信息被他人看到。
+</Warning>
+
+<SignatureCalculator />
+
+## 计算规则
+
+计算器按照以下顺序拼接待签名字符串：
+
+```text
+Timestamp + Method + Path + [?Query] + Body
+```
+
+- Query 必须与最终请求中的参数顺序和编码完全一致。
+- Body 必须与最终发送的原始 JSON 字符串完全一致，包括空格和换行。
+- 修改任意请求参数后，都需要刷新时间戳并重新计算签名。
