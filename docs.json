@@ -20,75 +20,64 @@
               {
                 "group": "接入指南",
                 "pages": [
-                  "guide/introduction",
-                  "guide/authentication",
-                  "guide/authentication-b",
-                  "guide/response"
+                  "cn/broker/guide/introduction",
+                  "cn/broker/guide/authentication",
+                  "cn/broker/guide/response"
                 ]
               },
               {
-                "group": "用户",
+                "group": "用户管理",
                 "pages": [
-                  "api-reference/broker/user/login",
-                  "api-reference/broker/user/logout",
-                  "api-reference/broker/user/update",
-                  "api-reference/broker/user/create-special",
-                  "api-reference/broker/user/users"
+                  "cn/broker/api-reference/user/login",
+                  "cn/broker/api-reference/user/logout",
+                  "cn/broker/api-reference/user/update",
+                  "cn/broker/api-reference/user/create-special",
+                  "cn/broker/api-reference/user/users"
                 ]
               },
               {
-                "group": "划转",
+                "group": "资产管理",
                 "pages": [
-                  "api-reference/broker/transfer/create",
-                  "api-reference/broker/transfer/list",
-                  "api-reference/broker/transfer/detail"
+                  "cn/broker/api-reference/transfer/create",
+                  "cn/broker/api-reference/transfer/list",
+                  "cn/broker/api-reference/transfer/detail",
+                  "cn/broker/api-reference/assets/list"
                 ]
               },
               {
-                "group": "概览",
+                "group": "交易管理",
                 "pages": [
-                  "api-reference/broker/overview/dashboard"
+                  "cn/broker/api-reference/trade/trades",
+                  "cn/broker/api-reference/trade/positions",
+                  "cn/broker/api-reference/trade/open-orders",
+                  "cn/broker/api-reference/trade/cancel-orders",
+                  "cn/broker/api-reference/trade/close-position"
                 ]
               },
               {
-                "group": "交易",
+                "group": "报表分析",
                 "pages": [
-                  "api-reference/broker/trade/trades",
-                  "api-reference/broker/trade/positions",
-                  "api-reference/broker/trade/open-orders",
-                  "api-reference/broker/trade/cancel-orders",
-                  "api-reference/broker/trade/close-position"
+                  "cn/broker/api-reference/reports/summary",
+                  "cn/broker/api-reference/reports/trend",
+                  "cn/broker/api-reference/reports/daily-summaries",
+                  "cn/broker/api-reference/overview/dashboard"
                 ]
               },
               {
-                "group": "资产",
+                "group": "事件管理",
                 "pages": [
-                  "api-reference/broker/assets/list"
+                  "cn/broker/api-reference/events/list",
+                  "cn/broker/api-reference/events/enable",
+                  "cn/broker/api-reference/events/disable"
                 ]
               },
               {
-                "group": "报表",
+                "group": "风控管理",
                 "pages": [
-                  "api-reference/broker/reports/summary",
-                  "api-reference/broker/reports/trend",
-                  "api-reference/broker/reports/daily-summaries"
-                ]
-              },
-              {
-                "group": "事件",
-                "pages": [
-                  "api-reference/broker/events/list",
-                  "api-reference/broker/events/enable",
-                  "api-reference/broker/events/disable"
-                ]
-              },
-              {
-                "group": "风控",
-                "pages": [
-                  "api-reference/broker/risk/policies",
-                  "api-reference/broker/risk/exposures",
-                  "api-reference/broker/risk/get-config",
-                  "api-reference/broker/risk/save-config"
+                  "cn/broker/api-reference/risk/policies",
+                  "cn/broker/api-reference/risk/exposures",
+                  "cn/broker/api-reference/risk/get-config",
+                  "cn/broker/api-reference/risk/save-config"
                 ]
               }
             ]
@@ -100,27 +89,27 @@
               {
                 "group": "接入指南",
                 "pages": [
-                  "guide/authentication-c"
+                  "cn/user/guide/authentication"
                 ]
               },
               {
                 "group": "现货",
                 "pages": [
-                  "api-reference/trade/spot/orders-pending",
-                  "api-reference/trade/spot/orders-history",
-                  "api-reference/trade/spot/fills"
+                  "cn/user/api-reference/trade/spot/orders-pending",
+                  "cn/user/api-reference/trade/spot/orders-history",
+                  "cn/user/api-reference/trade/spot/fills"
                 ]
               },
               {
                 "group": "合约",
                 "pages": [
-                  "api-reference/trade/futures/positions",
-                  "api-reference/trade/futures/orders-pending",
-                  "api-reference/trade/futures/algo-orders-pending",
-                  "api-reference/trade/futures/positions-history",
-                  "api-reference/trade/futures/orders-history",
-                  "api-reference/trade/futures/fills",
-                  "api-reference/trade/futures/bills"
+                  "cn/user/api-reference/trade/futures/positions",
+                  "cn/user/api-reference/trade/futures/orders-pending",
+                  "cn/user/api-reference/trade/futures/algo-orders-pending",
+                  "cn/user/api-reference/trade/futures/positions-history",
+                  "cn/user/api-reference/trade/futures/orders-history",
+                  "cn/user/api-reference/trade/futures/fills",
+                  "cn/user/api-reference/trade/futures/bills"
                 ]
               }
             ]
@@ -137,7 +126,6 @@
                 "group": "Guides",
                 "pages": [
                   "en/guide/introduction",
-                  "en/guide/authentication",
                   "en/guide/authentication-b",
                   "en/guide/response"
                 ]

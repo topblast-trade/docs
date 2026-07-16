@@ -19,9 +19,10 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "查询券商资产",
+        "summary": "查询资产",
         "parameters": [
           {
+            "description": "每页数量",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -29,6 +30,7 @@
             }
           },
           {
+            "description": "下一页游标",
             "name": "next",
             "in": "query",
             "schema": {
@@ -36,6 +38,7 @@
             }
           },
           {
+            "description": "上一页游标",
             "name": "prev",
             "in": "query",
             "schema": {
@@ -43,6 +46,7 @@
             }
           },
           {
+            "description": "平台用户 UID",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -56,7 +60,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerAssetListData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -76,9 +92,10 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "查询券商每日汇总",
+        "summary": "查询每日汇总",
         "parameters": [
           {
+            "description": "汇总日期范围终点",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -86,6 +103,7 @@
             }
           },
           {
+            "description": "每页数量",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -93,6 +111,7 @@
             }
           },
           {
+            "description": "页码",
             "name": "page",
             "in": "query",
             "schema": {
@@ -100,6 +119,7 @@
             }
           },
           {
+            "description": "汇总日期范围起点",
             "name": "startTime",
             "in": "query",
             "schema": {
@@ -113,7 +133,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerDailySummaryListData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -133,7 +165,7 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "查询券商仪表盘",
+        "summary": "查询仪表盘",
         "parameters": [
           {
             "description": "统计周期",
@@ -156,7 +188,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerDashboardData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -176,9 +220,10 @@
         "tags": [
           "券商接口-事件"
         ],
-        "summary": "查询券商事件",
+        "summary": "查询事件",
         "parameters": [
           {
+            "description": "是否已为券商启用",
             "name": "enabled",
             "in": "query",
             "schema": {
@@ -186,6 +231,7 @@
             }
           },
           {
+            "description": "结束时间",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -193,6 +239,7 @@
             }
           },
           {
+            "description": "事件标识",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -200,6 +247,7 @@
             }
           },
           {
+            "description": "每页数量",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -207,6 +255,7 @@
             }
           },
           {
+            "description": "页码",
             "name": "page",
             "in": "query",
             "schema": {
@@ -214,6 +263,7 @@
             }
           },
           {
+            "description": "模糊搜索关键词",
             "name": "q",
             "in": "query",
             "schema": {
@@ -221,6 +271,7 @@
             }
           },
           {
+            "description": "开始时间",
             "name": "startTime",
             "in": "query",
             "schema": {
@@ -228,6 +279,7 @@
             }
           },
           {
+            "description": "事件状态",
             "name": "status",
             "in": "query",
             "schema": {
@@ -241,7 +293,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerEventListResult"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -261,7 +325,7 @@
         "tags": [
           "券商接口-事件"
         ],
-        "summary": "停用券商事件",
+        "summary": "停用事件",
         "parameters": [
           {
             "description": "事件标识",
@@ -282,7 +346,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerEventView"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -302,7 +378,7 @@
         "tags": [
           "券商接口-事件"
         ],
-        "summary": "启用券商事件",
+        "summary": "启用事件",
         "parameters": [
           {
             "description": "事件标识",
@@ -323,7 +399,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerEventView"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -343,7 +431,7 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "查询券商汇总报表",
+        "summary": "查询汇总报表",
         "parameters": [
           {
             "description": "统计周期",
@@ -374,7 +462,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerReportSummaryData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -394,7 +494,7 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "查询券商趋势报表",
+        "summary": "查询趋势报表",
         "parameters": [
           {
             "description": "统计周期",
@@ -425,7 +525,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerDailySummaryListData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -445,9 +557,10 @@
         "tags": [
           "券商接口-风控"
         ],
-        "summary": "查询券商风控配置",
+        "summary": "查询风控配置",
         "parameters": [
           {
+            "description": "事件标识；为空时仅查询券商全局配置",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -461,7 +574,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerRiskConfigView"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -479,7 +604,7 @@
         "tags": [
           "券商接口-风控"
         ],
-        "summary": "保存券商风控配置",
+        "summary": "保存风控配置",
         "requestBody": {
           "content": {
             "application/json": {
@@ -497,7 +622,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerRiskConfigView"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -517,9 +654,10 @@
         "tags": [
           "券商接口-风控"
         ],
-        "summary": "查询券商风险敞口",
+        "summary": "查询风险敞口",
         "parameters": [
           {
+            "description": "每页数量",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -527,6 +665,7 @@
             }
           },
           {
+            "description": "页码",
             "name": "page",
             "in": "query",
             "schema": {
@@ -534,6 +673,7 @@
             }
           },
           {
+            "description": "模糊搜索关键词",
             "name": "q",
             "in": "query",
             "schema": {
@@ -541,6 +681,7 @@
             }
           },
           {
+            "description": "风险敞口状态",
             "name": "status",
             "in": "query",
             "schema": {
@@ -554,7 +695,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerRiskExposureData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -574,9 +727,10 @@
         "tags": [
           "券商接口-风控"
         ],
-        "summary": "查询券商风控策略",
+        "summary": "查询风控策略",
         "parameters": [
           {
+            "description": "每页数量",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -584,6 +738,7 @@
             }
           },
           {
+            "description": "页码",
             "name": "page",
             "in": "query",
             "schema": {
@@ -591,6 +746,7 @@
             }
           },
           {
+            "description": "规则作用域",
             "name": "ruleScope",
             "in": "query",
             "schema": {
@@ -604,7 +760,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerRiskPolicyListResult"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -624,9 +792,10 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "查询券商当前委托",
+        "summary": "查询当前委托",
         "parameters": [
           {
+            "description": "用户邮箱",
             "name": "email",
             "in": "query",
             "schema": {
@@ -634,6 +803,7 @@
             }
           },
           {
+            "description": "事件标识",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -641,6 +811,7 @@
             }
           },
           {
+            "description": "每页数量",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -648,6 +819,7 @@
             }
           },
           {
+            "description": "市场 ID",
             "name": "marketId",
             "in": "query",
             "schema": {
@@ -655,6 +827,7 @@
             }
           },
           {
+            "description": "下一页游标",
             "name": "next",
             "in": "query",
             "schema": {
@@ -662,6 +835,7 @@
             }
           },
           {
+            "description": "上一页游标",
             "name": "prev",
             "in": "query",
             "schema": {
@@ -669,6 +843,7 @@
             }
           },
           {
+            "description": "结果 Token ID",
             "name": "tokenId",
             "in": "query",
             "schema": {
@@ -676,6 +851,7 @@
             }
           },
           {
+            "description": "平台用户 UID",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -689,7 +865,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerOpenOrderListData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -709,7 +897,7 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "取消券商用户委托",
+        "summary": "取消委托",
         "requestBody": {
           "content": {
             "application/json": {
@@ -727,7 +915,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerCancelOrdersData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -747,9 +947,10 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "查询券商仓位",
+        "summary": "查询仓位",
         "parameters": [
           {
+            "description": "用户邮箱",
             "name": "email",
             "in": "query",
             "schema": {
@@ -757,6 +958,7 @@
             }
           },
           {
+            "description": "事件标识",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -764,6 +966,7 @@
             }
           },
           {
+            "description": "每页数量",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -771,6 +974,7 @@
             }
           },
           {
+            "description": "市场 ID",
             "name": "marketId",
             "in": "query",
             "schema": {
@@ -778,6 +982,7 @@
             }
           },
           {
+            "description": "下一页游标",
             "name": "next",
             "in": "query",
             "schema": {
@@ -785,6 +990,7 @@
             }
           },
           {
+            "description": "上一页游标",
             "name": "prev",
             "in": "query",
             "schema": {
@@ -792,6 +998,7 @@
             }
           },
           {
+            "description": "平台用户 UID",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -805,7 +1012,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerPositionListData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -825,7 +1044,7 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "平仓券商用户仓位",
+        "summary": "平仓",
         "requestBody": {
           "content": {
             "application/json": {
@@ -843,7 +1062,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerClosePositionData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -863,9 +1094,10 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "查询券商成交记录",
+        "summary": "查询成交记录",
         "parameters": [
           {
+            "description": "用户邮箱",
             "name": "email",
             "in": "query",
             "schema": {
@@ -873,6 +1105,7 @@
             }
           },
           {
+            "description": "成交时间范围终点",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -880,6 +1113,7 @@
             }
           },
           {
+            "description": "事件标识",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -887,6 +1121,7 @@
             }
           },
           {
+            "description": "每页数量",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -894,6 +1129,7 @@
             }
           },
           {
+            "description": "下一页游标",
             "name": "next",
             "in": "query",
             "schema": {
@@ -901,6 +1137,7 @@
             }
           },
           {
+            "description": "上一页游标",
             "name": "prev",
             "in": "query",
             "schema": {
@@ -908,6 +1145,7 @@
             }
           },
           {
+            "description": "成交时间范围起点",
             "name": "startTime",
             "in": "query",
             "schema": {
@@ -915,6 +1153,7 @@
             }
           },
           {
+            "description": "平台用户 UID",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -928,7 +1167,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerTradeListData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -948,7 +1199,7 @@
         "tags": [
           "券商接口-划转"
         ],
-        "summary": "创建券商用户划转",
+        "summary": "创建划转",
         "requestBody": {
           "content": {
             "application/json": {
@@ -966,7 +1217,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerTransferAcceptedData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -986,7 +1249,7 @@
         "tags": [
           "券商接口-划转"
         ],
-        "summary": "查询券商用户划转详情",
+        "summary": "查询划转详情",
         "parameters": [
           {
             "description": "券商侧用户 ID",
@@ -1013,7 +1276,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.TransferRecord"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -1033,7 +1308,7 @@
         "tags": [
           "券商接口-划转"
         ],
-        "summary": "查询券商用户划转列表",
+        "summary": "查询划转列表",
         "parameters": [
           {
             "description": "券商侧用户 ID",
@@ -1093,7 +1368,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.transferListData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -1131,7 +1418,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerUIDData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -1151,7 +1450,7 @@
         "tags": [
           "券商接口-用户"
         ],
-        "summary": "券商用户登录",
+        "summary": "用户登录",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1169,7 +1468,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerUIDData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -1189,7 +1500,7 @@
         "tags": [
           "券商接口-用户"
         ],
-        "summary": "券商用户登出",
+        "summary": "用户登出",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1207,7 +1518,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerOperationData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -1227,7 +1550,7 @@
         "tags": [
           "券商接口-用户"
         ],
-        "summary": "更新券商用户",
+        "summary": "更新用户",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1245,7 +1568,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerOperationData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -1265,9 +1600,10 @@
         "tags": [
           "券商接口-用户"
         ],
-        "summary": "查询券商用户列表",
+        "summary": "查询用户列表",
         "parameters": [
           {
+            "description": "券商侧用户 ID",
             "name": "brokerUid",
             "in": "query",
             "schema": {
@@ -1275,6 +1611,7 @@
             }
           },
           {
+            "description": "用户邮箱",
             "name": "email",
             "in": "query",
             "schema": {
@@ -1282,6 +1619,7 @@
             }
           },
           {
+            "description": "创建时间范围终点",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -1289,6 +1627,7 @@
             }
           },
           {
+            "description": "每页数量，最大 200",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -1296,6 +1635,7 @@
             }
           },
           {
+            "description": "页码，从 1 开始",
             "name": "page",
             "in": "query",
             "schema": {
@@ -1303,6 +1643,7 @@
             }
           },
           {
+            "description": "创建时间范围起点",
             "name": "startTime",
             "in": "query",
             "schema": {
@@ -1310,6 +1651,7 @@
             }
           },
           {
+            "description": "平台用户 UID",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -1323,7 +1665,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.BrokerAPIResponse"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/v2.brokerUserListData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -1367,6 +1721,31 @@
       }
     },
     "schemas": {
+      "http.PagePagination": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "当前页记录数",
+            "type": "integer"
+          },
+          "mode": {
+            "description": "分页模式",
+            "type": "string"
+          },
+          "page": {
+            "description": "当前页码",
+            "type": "integer"
+          },
+          "total": {
+            "description": "记录总数",
+            "type": "integer"
+          },
+          "totalPages": {
+            "description": "总页数",
+            "type": "integer"
+          }
+        }
+      },
       "req.BrokerCancelOrdersRequest": {
         "type": "object",
         "required": [
@@ -1375,9 +1754,11 @@
         ],
         "properties": {
           "orderId": {
+            "description": "待取消的订单 ID",
             "type": "string"
           },
           "uid": {
+            "description": "平台用户 UID",
             "type": "string"
           }
         }
@@ -1391,12 +1772,15 @@
         ],
         "properties": {
           "quantity": {
+            "description": "平仓数量",
             "type": "string"
           },
           "tokenId": {
+            "description": "待平仓的结果 Token ID",
             "type": "string"
           },
           "uid": {
+            "description": "平台用户 UID",
             "type": "string"
           }
         }
@@ -1409,9 +1793,11 @@
         ],
         "properties": {
           "brokerId": {
+            "description": "券商 ID，必须与当前鉴权券商一致",
             "type": "integer"
           },
           "type": {
+            "description": "特殊账户类型：sys 系统账户，mm 做市账户",
             "type": "string",
             "enum": [
               "sys",
@@ -1424,6 +1810,7 @@
         "type": "object",
         "properties": {
           "eventSlug": {
+            "description": "请求体中的事件标识；通常以路径参数为准",
             "type": "string"
           }
         }
@@ -1432,18 +1819,23 @@
         "type": "object",
         "properties": {
           "eventEnabled": {
+            "description": "是否启用事件级风控",
             "type": "boolean"
           },
           "eventSlug": {
+            "description": "事件标识；设置事件级配置时必填",
             "type": "string"
           },
           "globalEnabled": {
+            "description": "是否启用券商全局风控",
             "type": "boolean"
           },
           "maxEventWorstCasePayout": {
+            "description": "单个事件最大最坏情况赔付额",
             "type": "number"
           },
           "maxGlobalWorstCasePayout": {
+            "description": "券商全局最大最坏情况赔付额",
             "type": "number"
           }
         }
@@ -1456,18 +1848,23 @@
         ],
         "properties": {
           "desc": {
+            "description": "用户备注",
             "type": "string"
           },
           "email": {
+            "description": "用户邮箱",
             "type": "string"
           },
           "token": {
+            "description": "券商用户登录令牌",
             "type": "string"
           },
           "userId": {
+            "description": "券商侧用户 ID",
             "type": "string"
           },
           "userName": {
+            "description": "用户名称",
             "type": "string"
           }
         }
@@ -1479,6 +1876,7 @@
         ],
         "properties": {
           "userId": {
+            "description": "券商侧用户 ID",
             "type": "string"
           }
         }
@@ -1490,27 +1888,307 @@
         ],
         "properties": {
           "desc": {
+            "description": "新的用户备注",
             "type": "string"
           },
           "userId": {
+            "description": "券商侧用户 ID",
             "type": "string"
           },
           "userName": {
+            "description": "新的用户名称",
             "type": "string"
           }
         }
       },
-      "v2.BrokerAPIResponse": {
+      "resp.BrokerResponse": {
         "type": "object",
         "properties": {
           "code": {
+            "description": "业务状态码，200 表示成功",
             "type": "integer",
             "example": 200
           },
-          "data": {},
+          "data": {
+            "description": "成功时返回的业务数据，失败时可省略"
+          },
           "message": {
+            "description": "业务处理结果说明",
             "type": "string",
             "example": "success"
+          }
+        }
+      },
+      "service.BrokerEventListItem": {
+        "type": "object",
+        "properties": {
+          "brokerId": {
+            "description": "券商 ID",
+            "type": "integer"
+          },
+          "category": {
+            "description": "事件分类",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "是否已为券商启用",
+            "type": "boolean"
+          },
+          "endAt": {
+            "description": "事件结束时间",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "eventSlug": {
+            "description": "事件标识",
+            "type": "string"
+          },
+          "eventStatus": {
+            "description": "事件状态",
+            "type": "string"
+          },
+          "eventTitle": {
+            "description": "事件标题",
+            "type": "string"
+          },
+          "marketCount": {
+            "description": "市场数量",
+            "type": "integer"
+          },
+          "startAt": {
+            "description": "事件开始时间",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "最近更新时间",
+            "type": "string"
+          }
+        }
+      },
+      "service.BrokerEventListResult": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "事件列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/service.BrokerEventListItem"
+            }
+          },
+          "pagination": {
+            "description": "分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/http.PagePagination"
+              }
+            ]
+          }
+        }
+      },
+      "service.BrokerEventView": {
+        "type": "object",
+        "properties": {
+          "brokerId": {
+            "description": "券商 ID",
+            "type": "integer"
+          },
+          "category": {
+            "description": "事件分类",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "是否已为券商启用",
+            "type": "boolean"
+          },
+          "endAt": {
+            "description": "事件结束时间",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "eventSlug": {
+            "description": "事件标识",
+            "type": "string"
+          },
+          "eventStatus": {
+            "description": "事件状态",
+            "type": "string"
+          },
+          "eventTitle": {
+            "description": "事件标题",
+            "type": "string"
+          },
+          "marketCount": {
+            "description": "市场数量",
+            "type": "integer"
+          },
+          "source": {
+            "description": "事件数据来源",
+            "type": "string"
+          },
+          "sourceUpdatedAt": {
+            "description": "来源数据更新时间",
+            "type": "string"
+          },
+          "startAt": {
+            "description": "事件开始时间",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "券商配置更新时间",
+            "type": "string"
+          }
+        }
+      },
+      "service.BrokerRiskConfigView": {
+        "type": "object",
+        "properties": {
+          "brokerId": {
+            "description": "券商 ID",
+            "type": "integer"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "eventPolicy": {
+            "description": "事件级风控策略",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/service.BrokerRiskPolicyView"
+              }
+            ]
+          },
+          "eventSlug": {
+            "description": "事件标识",
+            "type": "string"
+          },
+          "globalPolicy": {
+            "description": "券商全局风控策略",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/service.BrokerRiskPolicyView"
+              }
+            ]
+          }
+        }
+      },
+      "service.BrokerRiskPolicyListResult": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "风控策略列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/service.BrokerRiskPolicyView"
+            }
+          },
+          "pagination": {
+            "description": "分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/http.PagePagination"
+              }
+            ]
+          }
+        }
+      },
+      "service.BrokerRiskPolicyView": {
+        "type": "object",
+        "properties": {
+          "brokerId": {
+            "description": "券商 ID",
+            "type": "integer"
+          },
+          "enabled": {
+            "description": "是否启用策略",
+            "type": "boolean"
+          },
+          "eventSlug": {
+            "description": "事件标识",
+            "type": "string"
+          },
+          "maxEventWorstCasePayout": {
+            "description": "单个事件最大最坏情况赔付额",
+            "type": "number"
+          },
+          "maxGlobalWorstCasePayout": {
+            "description": "券商全局最大最坏情况赔付额",
+            "type": "number"
+          },
+          "policyId": {
+            "description": "风控策略 ID",
+            "type": "string"
+          },
+          "ruleScope": {
+            "description": "规则作用域",
+            "type": "string"
+          },
+          "ruleType": {
+            "description": "规则类型",
+            "type": "string"
+          },
+          "targetId": {
+            "description": "规则目标 ID",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "最近更新时间",
+            "type": "string"
+          },
+          "version": {
+            "description": "策略版本",
+            "type": "integer"
+          }
+        }
+      },
+      "service.TransferRecord": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "description": "划转金额",
+            "type": "number"
+          },
+          "created_at": {
+            "description": "创建时间",
+            "type": "string"
+          },
+          "currency": {
+            "description": "币种",
+            "type": "string"
+          },
+          "direction": {
+            "description": "划转方向：1 入金，2 出金",
+            "type": "integer"
+          },
+          "order_id": {
+            "description": "平台划转订单 ID",
+            "type": "string"
+          },
+          "remark": {
+            "description": "备注",
+            "type": "string"
+          },
+          "state": {
+            "description": "划转状态",
+            "type": "string"
+          },
+          "txn_id": {
+            "description": "券商侧唯一交易流水号",
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "更新时间",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "平台用户 UID",
+            "type": "integer"
           }
         }
       },
@@ -1525,13 +2203,15 @@
         ],
         "properties": {
           "amount": {
+            "description": "划转金额，必须大于 0",
             "type": "string"
           },
           "currency": {
+            "description": "币种",
             "type": "string"
           },
           "direction": {
-            "description": "1-deposit, 2-withdraw",
+            "description": "划转方向：1 入金，2 出金",
             "type": "integer",
             "enum": [
               1,
@@ -1539,13 +2219,994 @@
             ]
           },
           "remark": {
+            "description": "备注",
             "type": "string"
           },
           "txnId": {
+            "description": "券商侧唯一交易流水号",
             "type": "string"
           },
           "userId": {
+            "description": "券商侧用户 ID",
             "type": "string"
+          }
+        }
+      },
+      "v2.brokerAssetItem": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "description": "用户账户 ID",
+            "type": "string"
+          },
+          "tokens": {
+            "description": "结果 Token 余额列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerTokenBalance"
+            }
+          },
+          "usdc": {
+            "description": "USDC 余额",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerUSDCBalance"
+              }
+            ]
+          }
+        }
+      },
+      "v2.brokerAssetListData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "资产列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerAssetItem"
+            }
+          },
+          "pagination": {
+            "description": "游标分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerCursorPagination"
+              }
+            ]
+          }
+        }
+      },
+      "v2.brokerCancelFailure": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "description": "取消失败的订单 ID",
+            "type": "string"
+          },
+          "reason": {
+            "description": "失败原因",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerCancelOrdersData": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "description": "请求取消的订单 ID",
+            "type": "string"
+          },
+          "result": {
+            "description": "撤单执行结果",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerCancelResult"
+              }
+            ]
+          },
+          "uid": {
+            "description": "平台用户 UID",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerCancelResult": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "description": "用户账户 ID",
+            "type": "string"
+          },
+          "canceled": {
+            "description": "已取消的订单 ID 列表",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "count": {
+            "description": "已处理订单数量",
+            "type": "integer"
+          },
+          "failed": {
+            "description": "取消失败的订单列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerCancelFailure"
+            }
+          },
+          "status": {
+            "description": "撤单状态",
+            "type": "string"
+          },
+          "success": {
+            "description": "撤单是否成功",
+            "type": "boolean"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerClosePositionData": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "description": "平仓委托价格",
+            "type": "string"
+          },
+          "quantity": {
+            "description": "平仓数量",
+            "type": "string"
+          },
+          "result": {
+            "description": "平仓委托结果",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerOrderResult"
+              }
+            ]
+          },
+          "side": {
+            "description": "委托方向",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "uid": {
+            "description": "平台用户 UID",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerCursorPagination": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "当前页记录数",
+            "type": "integer"
+          },
+          "mode": {
+            "description": "分页模式",
+            "type": "string"
+          },
+          "next": {
+            "description": "下一页游标",
+            "type": "string"
+          },
+          "prev": {
+            "description": "上一页游标",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerDailySummaryItem": {
+        "type": "object",
+        "properties": {
+          "activeUsers": {
+            "description": "当日活跃用户数",
+            "type": "integer"
+          },
+          "brokerId": {
+            "description": "券商 ID",
+            "type": "integer"
+          },
+          "day": {
+            "description": "汇总日期",
+            "type": "string"
+          },
+          "dayStartTime": {
+            "description": "日期开始时间",
+            "type": "integer"
+          },
+          "newUsers": {
+            "description": "当日新增用户数",
+            "type": "integer"
+          },
+          "totalDeposit": {
+            "description": "当日入金总额",
+            "type": "string"
+          },
+          "totalTradeVolume": {
+            "description": "当日成交总额",
+            "type": "integer"
+          },
+          "totalWithdraw": {
+            "description": "当日出金总额",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerDailySummaryListData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "每日汇总列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerDailySummaryItem"
+            }
+          },
+          "pagination": {
+            "description": "页码分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPagePagination"
+              }
+            ]
+          }
+        }
+      },
+      "v2.brokerDashboardData": {
+        "type": "object",
+        "properties": {
+          "activeEvents": {
+            "description": "活跃事件数",
+            "type": "integer"
+          },
+          "activeMarkets": {
+            "description": "活跃市场数",
+            "type": "integer"
+          },
+          "changePercent": {
+            "description": "当前周期相对上一周期的变化百分比",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerMetricChanges"
+              }
+            ]
+          },
+          "current": {
+            "description": "当前周期汇总指标",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPeriodMetrics"
+              }
+            ]
+          },
+          "endTime": {
+            "description": "当前统计周期结束时间（Unix 秒）",
+            "type": "integer"
+          },
+          "period": {
+            "description": "统计周期",
+            "type": "string"
+          },
+          "previousPeriod": {
+            "description": "上一周期汇总指标",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPeriodMetrics"
+              }
+            ]
+          },
+          "startTime": {
+            "description": "当前统计周期开始时间（Unix 秒）",
+            "type": "integer"
+          },
+          "totalUsers": {
+            "description": "券商用户总数",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerEventExposureItem": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "剩余可用额度",
+            "type": "number"
+          },
+          "currentExposure": {
+            "description": "当前风险敞口",
+            "type": "number"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "eventSlug": {
+            "description": "事件标识",
+            "type": "string"
+          },
+          "eventTitle": {
+            "description": "事件标题",
+            "type": "string"
+          },
+          "lastUpdated": {
+            "description": "最近更新时间",
+            "type": "string"
+          },
+          "limit": {
+            "description": "风险敞口上限",
+            "type": "number"
+          },
+          "status": {
+            "description": "风险状态",
+            "type": "string"
+          },
+          "utilizationPercent": {
+            "description": "上限使用率",
+            "type": "number"
+          }
+        }
+      },
+      "v2.brokerEventExposureSummary": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "剩余可用额度",
+            "type": "number"
+          },
+          "eventsBreached": {
+            "description": "已超限事件数",
+            "type": "integer"
+          },
+          "eventsTotal": {
+            "description": "事件总数",
+            "type": "integer"
+          },
+          "eventsUnderLimit": {
+            "description": "未超限事件数",
+            "type": "integer"
+          },
+          "status": {
+            "description": "总体风险状态",
+            "type": "string"
+          },
+          "totalCurrentExposure": {
+            "description": "所有事件当前风险敞口",
+            "type": "number"
+          },
+          "totalLimit": {
+            "description": "所有事件风险上限合计",
+            "type": "number"
+          },
+          "utilizationPercent": {
+            "description": "总体上限使用率",
+            "type": "number"
+          }
+        }
+      },
+      "v2.brokerExposureSummary": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "剩余可用额度",
+            "type": "number"
+          },
+          "currentExposure": {
+            "description": "当前风险敞口",
+            "type": "number"
+          },
+          "limit": {
+            "description": "风险敞口上限",
+            "type": "number"
+          },
+          "status": {
+            "description": "风险状态",
+            "type": "string"
+          },
+          "utilizationPercent": {
+            "description": "上限使用率",
+            "type": "number"
+          }
+        }
+      },
+      "v2.brokerMetricChanges": {
+        "type": "object",
+        "properties": {
+          "activeUsers": {
+            "description": "活跃用户数环比变化百分比；无上期数据时为空",
+            "type": "number"
+          },
+          "newUsers": {
+            "description": "新增用户数环比变化百分比；无上期数据时为空",
+            "type": "number"
+          },
+          "totalDeposit": {
+            "description": "入金总额环比变化百分比；无上期数据时为空",
+            "type": "number"
+          },
+          "totalTradeVolume": {
+            "description": "成交总额环比变化百分比；无上期数据时为空",
+            "type": "number"
+          },
+          "totalWithdraw": {
+            "description": "出金总额环比变化百分比；无上期数据时为空",
+            "type": "number"
+          }
+        }
+      },
+      "v2.brokerOpenOrderItem": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "description": "用户账户 ID",
+            "type": "string"
+          },
+          "commitPos": {
+            "description": "提交位置",
+            "type": "string"
+          },
+          "conditionId": {
+            "description": "条件 ID",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "创建时间",
+            "type": "integer"
+          },
+          "filledQty": {
+            "description": "已成交数量",
+            "type": "integer"
+          },
+          "marketId": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "订单 ID",
+            "type": "string"
+          },
+          "outcome": {
+            "description": "结果名称",
+            "type": "string"
+          },
+          "price": {
+            "description": "委托价格",
+            "type": "string"
+          },
+          "quantity": {
+            "description": "委托数量",
+            "type": "integer"
+          },
+          "reasonCode": {
+            "description": "状态原因码",
+            "type": "integer"
+          },
+          "remainingQty": {
+            "description": "剩余数量",
+            "type": "integer"
+          },
+          "side": {
+            "description": "买卖方向",
+            "type": "string"
+          },
+          "status": {
+            "description": "订单状态",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "更新时间",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerOpenOrderListData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "当前委托列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
+            }
+          },
+          "pagination": {
+            "description": "游标分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerCursorPagination"
+              }
+            ]
+          }
+        }
+      },
+      "v2.brokerOperationData": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "description": "操作是否成功",
+            "type": "boolean"
+          }
+        }
+      },
+      "v2.brokerOrderResult": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "description": "执行结果说明",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "新订单 ID",
+            "type": "string"
+          },
+          "reason": {
+            "description": "原因说明",
+            "type": "string"
+          },
+          "reasonCode": {
+            "description": "原因码",
+            "type": "integer"
+          },
+          "status": {
+            "description": "订单状态",
+            "type": "string"
+          },
+          "success": {
+            "description": "下单是否成功",
+            "type": "boolean"
+          }
+        }
+      },
+      "v2.brokerPagePagination": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "当前页记录数",
+            "type": "integer"
+          },
+          "mode": {
+            "description": "分页模式",
+            "type": "string"
+          },
+          "page": {
+            "description": "当前页码",
+            "type": "integer"
+          },
+          "total": {
+            "description": "记录总数",
+            "type": "integer"
+          },
+          "totalPages": {
+            "description": "总页数",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerPeriodMetrics": {
+        "type": "object",
+        "properties": {
+          "activeUsers": {
+            "description": "活跃用户数",
+            "type": "integer"
+          },
+          "newUsers": {
+            "description": "新增用户数",
+            "type": "integer"
+          },
+          "totalDeposit": {
+            "description": "入金总额",
+            "type": "integer"
+          },
+          "totalTradeVolume": {
+            "description": "成交总额",
+            "type": "integer"
+          },
+          "totalWithdraw": {
+            "description": "出金总额",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerPositionItem": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "description": "用户账户 ID",
+            "type": "string"
+          },
+          "availableQty": {
+            "description": "可用仓位数量",
+            "type": "integer"
+          },
+          "averagePrice": {
+            "description": "平均持仓价格",
+            "type": "string"
+          },
+          "commitPos": {
+            "description": "提交位置",
+            "type": "string"
+          },
+          "conditionId": {
+            "description": "条件 ID",
+            "type": "string"
+          },
+          "lockedQty": {
+            "description": "锁定仓位数量",
+            "type": "integer"
+          },
+          "marketId": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "unrealizedPnL": {
+            "description": "未实现盈亏",
+            "type": "string"
+          },
+          "unrealizedPnLPercent": {
+            "description": "未实现盈亏比例",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerPositionListData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "仓位列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerPositionItem"
+            }
+          },
+          "pagination": {
+            "description": "游标分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerCursorPagination"
+              }
+            ]
+          }
+        }
+      },
+      "v2.brokerReportSummaryData": {
+        "type": "object",
+        "properties": {
+          "changePercent": {
+            "description": "当前周期相对上一周期的变化百分比",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerMetricChanges"
+              }
+            ]
+          },
+          "current": {
+            "description": "当前周期汇总指标",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPeriodMetrics"
+              }
+            ]
+          },
+          "endTime": {
+            "description": "当前统计周期结束时间（Unix 秒）",
+            "type": "integer"
+          },
+          "period": {
+            "description": "统计周期",
+            "type": "string"
+          },
+          "previousPeriod": {
+            "description": "上一周期汇总指标",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPeriodMetrics"
+              }
+            ]
+          },
+          "startTime": {
+            "description": "当前统计周期开始时间（Unix 秒）",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerRiskExposureData": {
+        "type": "object",
+        "properties": {
+          "eventBasedExposure": {
+            "description": "事件级风险敞口汇总",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerEventExposureSummary"
+              }
+            ]
+          },
+          "items": {
+            "description": "事件风险敞口列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerEventExposureItem"
+            }
+          },
+          "lastUpdated": {
+            "description": "风险数据最近更新时间",
+            "type": "string"
+          },
+          "pagination": {
+            "description": "页码分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPagePagination"
+              }
+            ]
+          },
+          "platformExposure": {
+            "description": "券商全局风险敞口汇总",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerExposureSummary"
+              }
+            ]
+          }
+        }
+      },
+      "v2.brokerTokenBalance": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "可用余额",
+            "type": "string"
+          },
+          "locked": {
+            "description": "锁定余额",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerTradeItem": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "description": "用户账户 ID",
+            "type": "string"
+          },
+          "avgCostPrice": {
+            "description": "平均成本价",
+            "type": "string"
+          },
+          "commitPos": {
+            "description": "提交位置",
+            "type": "string"
+          },
+          "conditionId": {
+            "description": "条件 ID",
+            "type": "string"
+          },
+          "eventTime": {
+            "description": "成交时间",
+            "type": "integer"
+          },
+          "isImplied": {
+            "description": "是否为隐含成交",
+            "type": "boolean"
+          },
+          "makerAccountId": {
+            "description": "Maker 账户 ID",
+            "type": "string"
+          },
+          "makerOrderId": {
+            "description": "Maker 订单 ID",
+            "type": "string"
+          },
+          "makerPrice": {
+            "description": "Maker 价格",
+            "type": "string"
+          },
+          "makerSide": {
+            "description": "Maker 买卖方向",
+            "type": "string"
+          },
+          "makerTokenId": {
+            "description": "Maker Token ID",
+            "type": "string"
+          },
+          "marketId": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "订单 ID",
+            "type": "string"
+          },
+          "price": {
+            "description": "成交价格",
+            "type": "string"
+          },
+          "quantity": {
+            "description": "成交数量",
+            "type": "integer"
+          },
+          "realizedPnL": {
+            "description": "已实现盈亏",
+            "type": "string"
+          },
+          "role": {
+            "description": "成交角色",
+            "type": "string"
+          },
+          "side": {
+            "description": "买卖方向",
+            "type": "string"
+          },
+          "takerAccountId": {
+            "description": "Taker 账户 ID",
+            "type": "string"
+          },
+          "takerOrderId": {
+            "description": "Taker 订单 ID",
+            "type": "string"
+          },
+          "takerPrice": {
+            "description": "Taker 价格",
+            "type": "string"
+          },
+          "takerSide": {
+            "description": "Taker 买卖方向",
+            "type": "string"
+          },
+          "takerTokenId": {
+            "description": "Taker Token ID",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "tradeId": {
+            "description": "成交 ID",
+            "type": "string"
+          },
+          "tradeKind": {
+            "description": "成交类型",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerTradeListData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "成交记录列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerTradeItem"
+            }
+          },
+          "pagination": {
+            "description": "游标分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerCursorPagination"
+              }
+            ]
+          }
+        }
+      },
+      "v2.brokerTransferAcceptedData": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "description": "平台划转订单 ID",
+            "type": "string"
+          },
+          "status": {
+            "description": "受理状态",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerUIDData": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "description": "平台用户 UID",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerUSDCBalance": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "可用 USDC 余额",
+            "type": "string"
+          },
+          "locked": {
+            "description": "锁定 USDC 余额",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerUserItem": {
+        "type": "object",
+        "properties": {
+          "brokerUid": {
+            "description": "券商侧用户 ID",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "用户创建时间",
+            "type": "string"
+          },
+          "email": {
+            "description": "用户邮箱",
+            "type": "string"
+          },
+          "lastLoginAt": {
+            "description": "最近登录时间，未登录时为空",
+            "type": "string"
+          },
+          "uid": {
+            "description": "平台用户 UID",
+            "type": "integer"
+          },
+          "username": {
+            "description": "用户名称",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerUserListData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "当前页用户列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerUserItem"
+            }
+          },
+          "pagination": {
+            "description": "分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/http.PagePagination"
+              }
+            ]
+          }
+        }
+      },
+      "v2.transferListData": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "description": "划转记录列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/service.TransferRecord"
+            }
+          },
+          "total": {
+            "description": "符合条件的记录总数",
+            "type": "integer"
           }
         }
       }
