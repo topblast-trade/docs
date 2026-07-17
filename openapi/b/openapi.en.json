@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "zpm Broker API",
+    "title": "ZPM Broker Management API",
     "contact": {},
     "version": "v1.0.0",
     "description": "Broker integration APIs authenticated with an API key, timestamp, and HMAC-SHA256 signature."
@@ -17,7 +17,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "查询资产",
         "parameters": [
@@ -90,7 +90,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "查询每日汇总",
         "parameters": [
@@ -163,7 +163,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "查询仪表盘",
         "parameters": [
@@ -218,7 +218,7 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "Event management"
         ],
         "summary": "查询事件",
         "parameters": [
@@ -323,7 +323,7 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "Event management"
         ],
         "summary": "停用事件",
         "parameters": [
@@ -376,7 +376,7 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "Event management"
         ],
         "summary": "启用事件",
         "parameters": [
@@ -429,7 +429,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "查询汇总报表",
         "parameters": [
@@ -492,7 +492,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "查询趋势报表",
         "parameters": [
@@ -555,7 +555,7 @@
           }
         ],
         "tags": [
-          "券商接口-风控"
+          "Risk management"
         ],
         "summary": "查询风控配置",
         "parameters": [
@@ -602,7 +602,7 @@
           }
         ],
         "tags": [
-          "券商接口-风控"
+          "Risk management"
         ],
         "summary": "保存风控配置",
         "requestBody": {
@@ -652,7 +652,7 @@
           }
         ],
         "tags": [
-          "券商接口-风控"
+          "Risk management"
         ],
         "summary": "查询风险敞口",
         "parameters": [
@@ -725,7 +725,7 @@
           }
         ],
         "tags": [
-          "券商接口-风控"
+          "Risk management"
         ],
         "summary": "查询风控策略",
         "parameters": [
@@ -790,7 +790,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "查询当前委托",
         "parameters": [
@@ -895,7 +895,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "取消委托",
         "requestBody": {
@@ -945,7 +945,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "查询仓位",
         "parameters": [
@@ -1042,7 +1042,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "平仓",
         "requestBody": {
@@ -1092,7 +1092,7 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Management and reports"
         ],
         "summary": "查询成交记录",
         "parameters": [
@@ -1197,7 +1197,7 @@
           }
         ],
         "tags": [
-          "券商接口-划转"
+          "Asset transfers"
         ],
         "summary": "创建划转",
         "requestBody": {
@@ -1247,7 +1247,7 @@
           }
         ],
         "tags": [
-          "券商接口-划转"
+          "Asset transfers"
         ],
         "summary": "查询划转详情",
         "parameters": [
@@ -1306,7 +1306,7 @@
           }
         ],
         "tags": [
-          "券商接口-划转"
+          "Asset transfers"
         ],
         "summary": "查询划转列表",
         "parameters": [
@@ -1398,7 +1398,7 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "User management"
         ],
         "summary": "创建特殊账户",
         "requestBody": {
@@ -1448,7 +1448,7 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "User management"
         ],
         "summary": "用户登录",
         "requestBody": {
@@ -1498,7 +1498,7 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "User management"
         ],
         "summary": "用户登出",
         "requestBody": {
@@ -1548,7 +1548,7 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "User management"
         ],
         "summary": "更新用户",
         "requestBody": {
@@ -1598,7 +1598,7 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "User management"
         ],
         "summary": "查询用户列表",
         "parameters": [
@@ -1705,7 +1705,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "Broker API key."
+        "description": "Broker Management API key."
       },
       "BrokerTimestamp": {
         "type": "apiKey",
@@ -3227,19 +3227,19 @@
   ],
   "tags": [
     {
-      "name": "券商接口-后管"
+      "name": "Management and reports"
     },
     {
-      "name": "券商接口-事件"
+      "name": "Event management"
     },
     {
-      "name": "券商接口-风控"
+      "name": "Risk management"
     },
     {
-      "name": "券商接口-划转"
+      "name": "Asset transfers"
     },
     {
-      "name": "券商接口-用户"
+      "name": "User management"
     }
   ],
   "x-api-side": "BROKER"

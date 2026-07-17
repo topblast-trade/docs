@@ -15,7 +15,7 @@
         "default": true,
         "tabs": [
           {
-            "tab": "券商接口",
+            "tab": "券商管理 API",
             "groups": [
               {
                 "group": "接入指南",
@@ -90,7 +90,7 @@
             ]
           },
           {
-            "tab": "用户接口",
+            "tab": "用户交易 API",
             "openapi": "openapi/c/openapi.json",
             "groups": [
               {
@@ -127,7 +127,7 @@
         "language": "en",
         "tabs": [
           {
-            "tab": "Broker APIs",
+            "tab": "Broker Management API",
             "groups": [
               {
                 "group": "Integration guides",
@@ -202,7 +202,7 @@
             ]
           },
           {
-            "tab": "User APIs",
+            "tab": "User Trading API",
             "openapi": "openapi/c/openapi.json",
             "groups": [
               {
