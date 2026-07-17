@@ -34,21 +34,48 @@ description: "了解 ZPM 券商管理 API 的接入方式，以及用户、资�
 
 签名规则和代码示例请参阅[券商管理 API 鉴权](/cn/broker/guide/authentication)。
 
-## 标准接入流程
+## 用户接入流程
 
 券商用户登录成功后，券商服务端调用 `POST /broker/v2/user/login`，将券商侧用户 ID 和 Token 同步到 ZPM。如果用户映射不存在，ZPM 会在登录过程中自动创建。
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Broker as 券商服务端
-    participant ZPM as ZPM交易平台
 
-    Broker->>Broker: 用户登录成功并签发Token
-    Broker->>ZPM: POST /broker/v2/user/login<br/>签名请求并同步userId与token
-    ZPM-->>Broker: 返回平台用户UID
-    Broker->>ZPM: 调用其他 /broker/v2/* 接口<br/>携带签名请求头
-    ZPM-->>Broker: 返回业务结果
+    participant BrokerClient as 券商客户端
+    participant BrokerServer as 券商服务端
+    participant Gateway as ZPM 网关
+    participant Core as ZPM 核心交易
+
+    rect rgb(239, 246, 255)
+        Note over BrokerClient,Core: 阶段一：登录与用户映射
+
+        BrokerClient->>BrokerServer: 用户登录
+        BrokerServer->>Gateway: 同步用户信息和 Token
+        activate Gateway
+        Gateway->>Gateway: AK/SK 鉴权
+        Gateway->>Core: 建立用户映射关系
+        activate Core
+        Core-->>Gateway: 返回 ZPM 交易平台用户信息
+        deactivate Core
+        Gateway-->>BrokerServer: 返回 ZPM 交易平台用户信息
+        deactivate Gateway
+        BrokerServer-->>BrokerClient: 返回登录结果
+    end
+
+    rect rgb(240, 253, 244)
+        Note over BrokerClient,Core: 阶段二：后续业务请求
+
+        BrokerClient->>Gateway: 携带 Token 发起业务请求
+        activate Gateway
+        Gateway->>Gateway: Token 鉴权
+        Gateway->>Core: 转发业务请求
+        activate Core
+        Core-->>Gateway: 返回业务结果
+        deactivate Core
+        Gateway-->>BrokerClient: 返回业务结果
+        deactivate Gateway
+    end
 ```
 
 ## API 网关地址
