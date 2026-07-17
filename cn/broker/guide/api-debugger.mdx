@@ -8,7 +8,7 @@ import { BrokerApiDebugger } from "/snippets/broker-api-debugger.jsx";
 调试器包含当前 25 个 Broker API。选择接口并填写最终 Path、Query 和 Body 后，点击 **Send**，浏览器会实时生成时间戳和 HMAC-SHA256 签名，自动追加鉴权请求头，然后发送请求。
 
 <Warning>
-AK 和 SK 仅保存在当前页面的内存中，不会写入本地存储。请勿在公共设备上填写生产环境凭证。
+调试器提供默认测试 AK 和 SK。点击 **保存 AK / SK** 后，当前凭证会写入浏览器本地存储。请勿在公共设备上保存生产环境凭证。
 </Warning>
 
 <BrokerApiDebugger />

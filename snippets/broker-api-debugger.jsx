@@ -5,6 +5,10 @@ export const BrokerApiDebugger = () => {
     "mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200";
   const panelClassName =
     "rounded-xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-800 dark:bg-gray-950";
+  const defaultApiKey = "ba11_90ea03143437e68fc1c2eb6b";
+  const defaultApiSecret =
+    "bs11_f154c04553ddd705662184d3728bfb398aa78182d014e8b09a7c2ee7e9c28b57";
+  const credentialStorageKey = "zpm-broker-api-debugger-credentials";
   const endpoints = [
     ["POST", "/broker/v2/user/login", "用户登录"],
     ["POST", "/broker/v2/user/logout", "用户登出"],
@@ -40,8 +44,9 @@ export const BrokerApiDebugger = () => {
 
   const [selectedID, setSelectedID] = useState(endpoints[0].id);
   const [environment, setEnvironment] = useState("https://apitest-predict.xbit.trade");
-  const [apiKey, setApiKey] = useState("");
-  const [apiSecret, setApiSecret] = useState("");
+  const [apiKey, setApiKey] = useState(defaultApiKey);
+  const [apiSecret, setApiSecret] = useState(defaultApiSecret);
+  const [credentialStatus, setCredentialStatus] = useState("");
   const [requestPath, setRequestPath] = useState(endpoints[0].path);
   const [rawQuery, setRawQuery] = useState("");
   const [requestBody, setRequestBody] = useState("{}");
@@ -50,6 +55,21 @@ export const BrokerApiDebugger = () => {
   const [result, setResult] = useState(null);
 
   const selectedEndpoint = endpoints.find((endpoint) => endpoint.id === selectedID);
+
+  useEffect(() => {
+    try {
+      const savedCredentials = JSON.parse(
+        localStorage.getItem(credentialStorageKey) || "null",
+      );
+      if (savedCredentials?.apiKey && savedCredentials?.apiSecret) {
+        setApiKey(savedCredentials.apiKey);
+        setApiSecret(savedCredentials.apiSecret);
+        setCredentialStatus("已从本地恢复 AK / SK");
+      }
+    } catch (_) {
+      localStorage.removeItem(credentialStorageKey);
+    }
+  }, []);
 
   const toBase64 = (buffer) => {
     const bytes = new Uint8Array(buffer);
@@ -193,9 +213,24 @@ export const BrokerApiDebugger = () => {
     }
   };
 
+  const saveCredentials = () => {
+    if (!apiKey.trim() || !apiSecret) {
+      setCredentialStatus("请先填写 AK 和 SK");
+      return;
+    }
+    localStorage.setItem(
+      credentialStorageKey,
+      JSON.stringify({ apiKey: apiKey.trim(), apiSecret }),
+    );
+    setApiKey(apiKey.trim());
+    setCredentialStatus("AK / SK 已保存到当前浏览器");
+  };
+
   const clearCredentials = () => {
-    setApiKey("");
-    setApiSecret("");
+    localStorage.removeItem(credentialStorageKey);
+    setApiKey(defaultApiKey);
+    setApiSecret(defaultApiSecret);
+    setCredentialStatus("已清除本地保存值并恢复默认 AK / SK");
     setResult(null);
   };
 
@@ -233,7 +268,10 @@ export const BrokerApiDebugger = () => {
             <input
               className={inputClassName}
               value={apiKey}
-              onChange={(event) => setApiKey(event.target.value)}
+              onChange={(event) => {
+                setApiKey(event.target.value);
+                setCredentialStatus("");
+              }}
               placeholder="输入 x-api-key"
               autoComplete="off"
             />
@@ -244,19 +282,36 @@ export const BrokerApiDebugger = () => {
               className={inputClassName}
               type="password"
               value={apiSecret}
-              onChange={(event) => setApiSecret(event.target.value)}
-              placeholder="仅在当前浏览器内存中使用"
+              onChange={(event) => {
+                setApiSecret(event.target.value);
+                setCredentialStatus("");
+              }}
+              placeholder="输入 x-api-secret"
               autoComplete="new-password"
             />
           </div>
         </div>
-        <button
-          type="button"
-          onClick={clearCredentials}
-          className="mt-3 text-sm text-gray-500 underline dark:text-gray-400"
-        >
-          清除 AK / SK
-        </button>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={saveCredentials}
+            className="rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-700"
+          >
+            保存 AK / SK
+          </button>
+          <button
+            type="button"
+            onClick={clearCredentials}
+            className="text-sm text-gray-500 underline dark:text-gray-400"
+          >
+            清除 AK / SK
+          </button>
+          {credentialStatus && (
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {credentialStatus}
+            </span>
+          )}
+        </div>
       </div>
 
       <div className={panelClassName}>
