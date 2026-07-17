@@ -1,0 +1,90 @@
+---
+title: "Setup"
+description: "Configure environments, authentication, and credentials for direct topblast REST API requests."
+---
+
+## Prerequisites
+
+Choose the caller type and obtain the corresponding credentials:
+
+- **Broker server**: Request a broker-level `API Key` and `API Secret` from topblast.
+- **Web or mobile client**: Obtain an access token through the user login flow.
+
+<Warning>
+Store the API Secret on the broker server only. Never embed it in a Web, mobile, or other end-user client.
+</Warning>
+
+## Base URL
+
+Use the test environment for integration testing by default:
+
+```text
+https://apitest-predict.xbit.trade
+```
+
+| Environment | Base URL | Status |
+| :--- | :--- | :--- |
+| Test | `https://apitest-predict.xbit.trade` | Recommended for integration testing |
+| Development | `https://predict.xbit.trade` | Use when required |
+| Production | Not available yet | — |
+
+All requests must use HTTPS. Append an operation path from API Reference to the Base URL to form the complete request URL.
+
+## Authentication
+
+<Tabs>
+  <Tab title="Broker Management API">
+    Broker Management API requests use an API key and an HMAC-SHA256 signature. Include these headers with every request:
+
+    <ParamField header="x-api-key" type="string" example="ba11_xxxxxxxxxxxxxxxxxxxxxxxx" required>
+      API key assigned to the broker or partner by topblast.
+    </ParamField>
+
+    <ParamField header="x-timestamp" type="string" example="1752710400000" required>
+      Unix request timestamp in seconds or milliseconds.
+    </ParamField>
+
+    <ParamField header="x-signature" type="string" example="Base64EncodedHmacSha256Signature" required>
+      Base64-encoded HMAC-SHA256 request signature calculated with the API Secret.
+    </ParamField>
+
+    The signature payload is `Timestamp + Method + Path + [?Query] + Body`. See [Broker Management API authentication](/en/guide/authentication-b) for details.
+  </Tab>
+
+  <Tab title="User Trading API">
+    User Trading API requests identify the signed-in user with a bearer token.
+
+    <ParamField header="Authorization" type="string" example="Bearer &lt;access_token&gt;" required>
+      Bearer token issued by the user login flow.
+    </ParamField>
+
+    Never send the token in a query parameter or request body. See [User Trading API authentication](/en/guide/authentication-c) for details.
+  </Tab>
+</Tabs>
+
+## Examples
+
+<Tabs>
+  <Tab title="Broker Management API">
+    ```bash
+    curl --request GET \
+      --url "https://apitest-predict.xbit.trade/broker/v2/user/users?page=1&pageSize=20" \
+      --header "x-api-key: <broker_api_key>" \
+      --header "x-timestamp: <timestamp>" \
+      --header "x-signature: <signature>"
+    ```
+
+    <Info>
+      Use the [signature calculator](/en/guide/signature-calculator) to generate a signature, or send a test request with the [API debugger](/en/guide/api-debugger).
+    </Info>
+  </Tab>
+
+  <Tab title="User Trading API">
+    ```bash
+    curl --request GET \
+      --url "https://apitest-predict.xbit.trade/api/v1/trade/spot/orders-pending" \
+      --header "Authorization: Bearer <access_token>" \
+      --header "Content-Type: application/json"
+    ```
+  </Tab>
+</Tabs>

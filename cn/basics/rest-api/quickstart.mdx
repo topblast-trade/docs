@@ -1,0 +1,101 @@
+---
+title: "快速开始"
+description: "不使用 SDK，通过 topblast REST API 同步用户并发起首次查询。"
+---
+
+## 0. 前置条件
+
+本指南需要 API 凭证。如果尚未准备环境和凭证，请先完成 [REST API 配置](/cn/basics/rest-api/setup)。
+
+你需要准备：
+
+- 券商管理 API 的 `API Key` 和 `API Secret`
+- 券商系统中的用户 ID 和该用户的访问 Token
+
+<Note>
+下方券商管理 API 示例中的时间戳和签名必须针对每个请求实时生成。签名原文必须与最终发送的 Method、Path、Query 和 Body 完全一致。
+</Note>
+
+## 1. 同步用户
+
+用户在券商系统登录成功后，从券商服务端调用登录接口，将用户 ID 和 Token 同步到 topblast：
+
+<CodeGroup>
+  ```bash cURL
+  curl --request POST \
+    --url https://apitest-predict.xbit.trade/broker/v2/user/login \
+    --header 'Content-Type: application/json' \
+    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-timestamp: <timestamp>' \
+    --header 'x-signature: <signature>' \
+    --data '{"userId":"broker-user-10001","userName":"alice","email":"alice@example.com","token":"<user_access_token>"}'
+  ```
+</CodeGroup>
+
+如果用户映射不存在，topblast 会自动创建并返回平台用户 UID：
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "uid": 1000000000001
+  }
+}
+```
+
+<Info>
+你可以使用 [API 调试器](/cn/broker/guide/api-debugger)自动生成签名并发送该请求。
+</Info>
+
+## 2. 查询用户
+
+使用返回的 `uid` 或券商侧 `brokerUid` 查询用户，确认映射已经生效：
+
+<CodeGroup>
+  ```bash cURL
+  curl --request GET \
+    --url 'https://apitest-predict.xbit.trade/broker/v2/user/users?uid=1000000000001&page=1&limit=20' \
+    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-timestamp: <timestamp>' \
+    --header 'x-signature: <signature>'
+  ```
+</CodeGroup>
+
+<Note>
+Query 参数的顺序和编码是签名的一部分，必须与请求 URL 完全一致。
+</Note>
+
+## 3. 查询用户资产
+
+使用平台用户 UID 查询资产和余额：
+
+<CodeGroup>
+  ```bash cURL
+  curl --request GET \
+    --url 'https://apitest-predict.xbit.trade/broker/v2/assets?uid=1000000000001&limit=20' \
+    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-timestamp: <timestamp>' \
+    --header 'x-signature: <signature>'
+  ```
+</CodeGroup>
+
+## 4. 调用用户交易 API
+
+Web、App 等用户客户端使用 Bearer Token 查询当前现货委托：
+
+<CodeGroup>
+  ```bash cURL
+  curl --request GET \
+    --url 'https://apitest-predict.xbit.trade/api/v1/trade/spot/orders-pending?user_id=broker-user-10001' \
+    --header 'Authorization: Bearer <user_access_token>' \
+    --header 'Content-Type: application/json'
+  ```
+</CodeGroup>
+
+## 下一步
+
+1. 查看[券商管理 API 鉴权](/cn/broker/guide/authentication)，在服务端实现签名。
+2. 使用[创建划转](/cn/broker/api-reference/transfer/create)完成充值或提现。
+3. 查看[现货当前委托](/cn/user/api-reference/trade/spot/orders-pending)及其他用户交易接口。
+4. 了解[通用响应结构](/cn/broker/guide/response)并统一处理错误。

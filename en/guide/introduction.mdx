@@ -1,15 +1,15 @@
 ---
 title: "Integration guide"
-description: "Learn how to integrate with the ZPM Broker Management API and manage users, assets, trading, reports, events, and risk."
+description: "Learn how to integrate with the topblast Broker Management API and manage users, assets, trading, reports, events, and risk."
 ---
 
-Welcome to ZPM OpenAPI. This documentation is for brokers and partners integrating with the ZPM trading platform from their servers. It explains Broker Management API authentication, the integration flow, and available capabilities.
+Welcome to topblast OpenAPI. This documentation is for brokers and partners integrating with the topblast trading platform from their servers. It explains Broker Management API authentication, the integration flow, and available capabilities.
 
 ## Capabilities
 
 After integration, your broker server can use the Broker Management API to manage:
 
-1. **Users**: Map broker users to ZPM users, synchronize login tokens and logout state, update user details, create special accounts, and list users under the broker.
+1. **Users**: Map broker users to topblast users, synchronize login tokens and logout state, update user details, create special accounts, and list users under the broker.
 2. **Assets**: Create deposits or withdrawals, query transfer records and details, and retrieve user assets and balances.
 3. **Trading**: Query trades, positions, and open orders, and perform actions such as canceling orders and closing positions.
 4. **Reports**: Retrieve summary, trend, daily summary, and dashboard data for user growth, activity, fund flows, and trading volume.
@@ -24,11 +24,11 @@ Store the API Secret on the broker server only. Never expose it to browsers, mob
 
 ## Prerequisites
 
-Obtain a broker-level `API Key` and `API Secret` from ZPM and confirm access to the test environment. Every request must include `x-api-key`, `x-timestamp`, and `x-signature`. See [Broker Management API authentication](/en/guide/authentication-b).
+Obtain a broker-level `API Key` and `API Secret` from topblast and confirm access to the test environment. Every request must include `x-api-key`, `x-timestamp`, and `x-signature`. See [Broker Management API authentication](/en/guide/authentication-b).
 
 ## User integration flow
 
-After a broker user signs in, call `POST /broker/v2/user/login` from the broker server to synchronize the broker user ID and token with ZPM. ZPM automatically creates the mapping if it does not exist.
+After a broker user signs in, call `POST /broker/v2/user/login` from the broker server to synchronize the broker user ID and token with topblast. topblast automatically creates the mapping if it does not exist.
 
 ```mermaid
 sequenceDiagram
@@ -36,8 +36,8 @@ sequenceDiagram
 
     participant BrokerClient as Broker client
     participant BrokerServer as Broker server
-    participant Gateway as ZPM gateway
-    participant Core as ZPM core trading
+    participant Gateway as topblast gateway
+    participant Core as topblast core trading
 
     rect rgb(239, 246, 255)
         Note over BrokerClient,Core: Phase 1: Sign-in and user mapping
@@ -48,9 +48,9 @@ sequenceDiagram
         Gateway->>Gateway: Authenticate with API key and secret
         Gateway->>Core: Establish the user mapping
         activate Core
-        Core-->>Gateway: Return ZPM trading platform user information
+        Core-->>Gateway: Return topblast trading platform user information
         deactivate Core
-        Gateway-->>BrokerServer: Return ZPM trading platform user information
+        Gateway-->>BrokerServer: Return topblast trading platform user information
         deactivate Gateway
         BrokerServer-->>BrokerClient: Return the sign-in result
     end

@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "zpm",
+  "name": "topblast",
   "colors": {
     "primary": "#FF5722",
     "light": "#FFAB91",
@@ -15,111 +15,141 @@
         "default": true,
         "tabs": [
           {
-            "tab": "券商管理 API",
+            "tab": "基础知识",
             "groups": [
               {
-                "group": "接入指南",
+                "group": "开始使用",
                 "pages": [
-                  "cn/broker/guide/introduction",
-                  "cn/broker/guide/authentication",
-                  "cn/broker/guide/response"
+                  "cn/basics/about"
                 ]
               },
               {
-                "group": "开发工具",
+                "group": "REST API",
                 "pages": [
-                  "cn/broker/guide/signature-calculator",
-                  "cn/broker/guide/api-debugger"
+                  "cn/basics/rest-api/setup",
+                  "cn/basics/rest-api/quickstart"
                 ]
               },
               {
-                "group": "用户管理",
+                "group": "SDKs",
                 "pages": [
-                  "cn/broker/api-reference/user/login",
-                  "cn/broker/api-reference/user/logout",
-                  "cn/broker/api-reference/user/update",
-                  "cn/broker/api-reference/user/create-special",
-                  "cn/broker/api-reference/user/users"
-                ]
-              },
-              {
-                "group": "资产管理",
-                "pages": [
-                  "cn/broker/api-reference/transfer/create",
-                  "cn/broker/api-reference/transfer/list",
-                  "cn/broker/api-reference/transfer/detail",
-                  "cn/broker/api-reference/assets/list"
-                ]
-              },
-              {
-                "group": "交易管理",
-                "pages": [
-                  "cn/broker/api-reference/trade/trades",
-                  "cn/broker/api-reference/trade/positions",
-                  "cn/broker/api-reference/trade/open-orders",
-                  "cn/broker/api-reference/trade/cancel-orders",
-                  "cn/broker/api-reference/trade/close-position"
-                ]
-              },
-              {
-                "group": "报表分析",
-                "pages": [
-                  "cn/broker/api-reference/reports/summary",
-                  "cn/broker/api-reference/reports/trend",
-                  "cn/broker/api-reference/reports/daily-summaries",
-                  "cn/broker/api-reference/overview/dashboard"
-                ]
-              },
-              {
-                "group": "事件管理",
-                "pages": [
-                  "cn/broker/api-reference/events/list",
-                  "cn/broker/api-reference/events/enable",
-                  "cn/broker/api-reference/events/disable",
-                  "cn/broker/api-reference/events/markets",
-                  "cn/broker/api-reference/events/market-enable",
-                  "cn/broker/api-reference/events/market-disable"
-                ]
-              },
-              {
-                "group": "风控管理",
-                "pages": [
-                  "cn/broker/api-reference/risk/policies",
-                  "cn/broker/api-reference/risk/exposures",
-                  "cn/broker/api-reference/risk/get-config",
-                  "cn/broker/api-reference/risk/save-config"
+                  "cn/basics/sdks/flutter",
+                  "cn/basics/sdks/android",
+                  "cn/basics/sdks/swift"
                 ]
               }
             ]
           },
           {
-            "tab": "用户交易 API",
-            "openapi": "openapi/c/openapi.json",
-            "groups": [
+            "tab": "API Reference",
+            "menu": [
               {
-                "group": "接入指南",
-                "pages": [
-                  "cn/user/guide/authentication"
+                "item": "券商管理 API",
+                "groups": [
+                  {
+                    "group": "接入指南",
+                    "pages": [
+                      "cn/broker/guide/introduction",
+                      "cn/broker/guide/authentication",
+                      "cn/broker/guide/response"
+                    ]
+                  },
+                  {
+                    "group": "开发工具",
+                    "pages": [
+                      "cn/broker/guide/signature-calculator",
+                      "cn/broker/guide/api-debugger"
+                    ]
+                  },
+                  {
+                    "group": "用户管理",
+                    "pages": [
+                      "cn/broker/api-reference/user/login",
+                      "cn/broker/api-reference/user/logout",
+                      "cn/broker/api-reference/user/update",
+                      "cn/broker/api-reference/user/create-special",
+                      "cn/broker/api-reference/user/users"
+                    ]
+                  },
+                  {
+                    "group": "资产管理",
+                    "pages": [
+                      "cn/broker/api-reference/transfer/create",
+                      "cn/broker/api-reference/transfer/list",
+                      "cn/broker/api-reference/transfer/detail",
+                      "cn/broker/api-reference/assets/list"
+                    ]
+                  },
+                  {
+                    "group": "交易管理",
+                    "pages": [
+                      "cn/broker/api-reference/trade/trades",
+                      "cn/broker/api-reference/trade/positions",
+                      "cn/broker/api-reference/trade/open-orders",
+                      "cn/broker/api-reference/trade/cancel-orders",
+                      "cn/broker/api-reference/trade/close-position"
+                    ]
+                  },
+                  {
+                    "group": "报表分析",
+                    "pages": [
+                      "cn/broker/api-reference/reports/summary",
+                      "cn/broker/api-reference/reports/trend",
+                      "cn/broker/api-reference/reports/daily-summaries",
+                      "cn/broker/api-reference/overview/dashboard"
+                    ]
+                  },
+                  {
+                    "group": "事件管理",
+                    "pages": [
+                      "cn/broker/api-reference/events/list",
+                      "cn/broker/api-reference/events/enable",
+                      "cn/broker/api-reference/events/disable",
+                      "cn/broker/api-reference/events/markets",
+                      "cn/broker/api-reference/events/market-enable",
+                      "cn/broker/api-reference/events/market-disable"
+                    ]
+                  },
+                  {
+                    "group": "风控管理",
+                    "pages": [
+                      "cn/broker/api-reference/risk/policies",
+                      "cn/broker/api-reference/risk/exposures",
+                      "cn/broker/api-reference/risk/get-config",
+                      "cn/broker/api-reference/risk/save-config"
+                    ]
+                  }
                 ]
               },
               {
-                "group": "现货",
-                "pages": [
-                  "cn/user/api-reference/trade/spot/orders-pending",
-                  "cn/user/api-reference/trade/spot/orders-history",
-                  "cn/user/api-reference/trade/spot/fills"
-                ]
-              },
-              {
-                "group": "合约",
-                "pages": [
-                  "cn/user/api-reference/trade/futures/positions",
-                  "cn/user/api-reference/trade/futures/orders-pending",
-                  "cn/user/api-reference/trade/futures/algo-orders-pending",
-                  "cn/user/api-reference/trade/futures/positions-history",
-                  "cn/user/api-reference/trade/futures/orders-history",
-                  "cn/user/api-reference/trade/futures/fills",
-                  "cn/user/api-reference/trade/futures/bills"
+                "item": "用户交易 API",
+                "groups": [
+                  {
+                    "group": "接入指南",
+                    "pages": [
+                      "cn/user/guide/authentication"
+                    ]
+                  },
+                  {
+                    "group": "现货",
+                    "pages": [
+                      "cn/user/api-reference/trade/spot/orders-pending",
+                      "cn/user/api-reference/trade/spot/orders-history",
+                      "cn/user/api-reference/trade/spot/fills"
+                    ]
+                  },
+                  {
+                    "group": "合约",
+                    "pages": [
+                      "cn/user/api-reference/trade/futures/positions",
+                      "cn/user/api-reference/trade/futures/orders-pending",
+                      "cn/user/api-reference/trade/futures/algo-orders-pending",
+                      "cn/user/api-reference/trade/futures/positions-history",
+                      "cn/user/api-reference/trade/futures/orders-history",
+                      "cn/user/api-reference/trade/futures/fills",
+                      "cn/user/api-reference/trade/futures/bills"
+                    ]
+                  }
                 ]
               }
             ]
@@ -130,111 +160,141 @@
         "language": "en",
         "tabs": [
           {
-            "tab": "Broker Management API",
+            "tab": "Basics",
             "groups": [
               {
-                "group": "Integration guides",
+                "group": "Get started",
                 "pages": [
-                  "en/guide/introduction",
-                  "en/guide/authentication-b",
-                  "en/guide/response"
+                  "en/basics/about"
                 ]
               },
               {
-                "group": "Developer tools",
+                "group": "REST API",
                 "pages": [
-                  "en/guide/signature-calculator",
-                  "en/guide/api-debugger"
+                  "en/basics/rest-api/setup",
+                  "en/basics/rest-api/quickstart"
                 ]
               },
               {
-                "group": "User management",
+                "group": "SDKs",
                 "pages": [
-                  "en/api-reference/broker/user/login",
-                  "en/api-reference/broker/user/logout",
-                  "en/api-reference/broker/user/update",
-                  "en/api-reference/broker/user/create-special",
-                  "en/api-reference/broker/user/users"
-                ]
-              },
-              {
-                "group": "Asset management",
-                "pages": [
-                  "en/api-reference/broker/transfer/create",
-                  "en/api-reference/broker/transfer/list",
-                  "en/api-reference/broker/transfer/detail",
-                  "en/api-reference/broker/assets/list"
-                ]
-              },
-              {
-                "group": "Trading management",
-                "pages": [
-                  "en/api-reference/broker/trade/trades",
-                  "en/api-reference/broker/trade/positions",
-                  "en/api-reference/broker/trade/open-orders",
-                  "en/api-reference/broker/trade/cancel-orders",
-                  "en/api-reference/broker/trade/close-position"
-                ]
-              },
-              {
-                "group": "Reports and analytics",
-                "pages": [
-                  "en/api-reference/broker/reports/summary",
-                  "en/api-reference/broker/reports/trend",
-                  "en/api-reference/broker/reports/daily-summaries",
-                  "en/api-reference/broker/overview/dashboard"
-                ]
-              },
-              {
-                "group": "Event management",
-                "pages": [
-                  "en/api-reference/broker/events/list",
-                  "en/api-reference/broker/events/enable",
-                  "en/api-reference/broker/events/disable",
-                  "en/api-reference/broker/events/markets",
-                  "en/api-reference/broker/events/market-enable",
-                  "en/api-reference/broker/events/market-disable"
-                ]
-              },
-              {
-                "group": "Risk management",
-                "pages": [
-                  "en/api-reference/broker/risk/policies",
-                  "en/api-reference/broker/risk/exposures",
-                  "en/api-reference/broker/risk/get-config",
-                  "en/api-reference/broker/risk/save-config"
+                  "en/basics/sdks/flutter",
+                  "en/basics/sdks/android",
+                  "en/basics/sdks/swift"
                 ]
               }
             ]
           },
           {
-            "tab": "User Trading API",
-            "openapi": "openapi/c/openapi.json",
-            "groups": [
+            "tab": "API Reference",
+            "menu": [
               {
-                "group": "Guides",
-                "pages": [
-                  "en/guide/authentication-c"
+                "item": "Broker Management API",
+                "groups": [
+                  {
+                    "group": "Integration guides",
+                    "pages": [
+                      "en/guide/introduction",
+                      "en/guide/authentication-b",
+                      "en/guide/response"
+                    ]
+                  },
+                  {
+                    "group": "Developer tools",
+                    "pages": [
+                      "en/guide/signature-calculator",
+                      "en/guide/api-debugger"
+                    ]
+                  },
+                  {
+                    "group": "User management",
+                    "pages": [
+                      "en/api-reference/broker/user/login",
+                      "en/api-reference/broker/user/logout",
+                      "en/api-reference/broker/user/update",
+                      "en/api-reference/broker/user/create-special",
+                      "en/api-reference/broker/user/users"
+                    ]
+                  },
+                  {
+                    "group": "Asset management",
+                    "pages": [
+                      "en/api-reference/broker/transfer/create",
+                      "en/api-reference/broker/transfer/list",
+                      "en/api-reference/broker/transfer/detail",
+                      "en/api-reference/broker/assets/list"
+                    ]
+                  },
+                  {
+                    "group": "Trading management",
+                    "pages": [
+                      "en/api-reference/broker/trade/trades",
+                      "en/api-reference/broker/trade/positions",
+                      "en/api-reference/broker/trade/open-orders",
+                      "en/api-reference/broker/trade/cancel-orders",
+                      "en/api-reference/broker/trade/close-position"
+                    ]
+                  },
+                  {
+                    "group": "Reports and analytics",
+                    "pages": [
+                      "en/api-reference/broker/reports/summary",
+                      "en/api-reference/broker/reports/trend",
+                      "en/api-reference/broker/reports/daily-summaries",
+                      "en/api-reference/broker/overview/dashboard"
+                    ]
+                  },
+                  {
+                    "group": "Event management",
+                    "pages": [
+                      "en/api-reference/broker/events/list",
+                      "en/api-reference/broker/events/enable",
+                      "en/api-reference/broker/events/disable",
+                      "en/api-reference/broker/events/markets",
+                      "en/api-reference/broker/events/market-enable",
+                      "en/api-reference/broker/events/market-disable"
+                    ]
+                  },
+                  {
+                    "group": "Risk management",
+                    "pages": [
+                      "en/api-reference/broker/risk/policies",
+                      "en/api-reference/broker/risk/exposures",
+                      "en/api-reference/broker/risk/get-config",
+                      "en/api-reference/broker/risk/save-config"
+                    ]
+                  }
                 ]
               },
               {
-                "group": "Spot",
-                "pages": [
-                  "en/api-reference/trade/spot/orders-pending",
-                  "en/api-reference/trade/spot/orders-history",
-                  "en/api-reference/trade/spot/fills"
-                ]
-              },
-              {
-                "group": "Futures",
-                "pages": [
-                  "en/api-reference/trade/futures/positions",
-                  "en/api-reference/trade/futures/orders-pending",
-                  "en/api-reference/trade/futures/algo-orders-pending",
-                  "en/api-reference/trade/futures/positions-history",
-                  "en/api-reference/trade/futures/orders-history",
-                  "en/api-reference/trade/futures/fills",
-                  "en/api-reference/trade/futures/bills"
+                "item": "User Trading API",
+                "groups": [
+                  {
+                    "group": "Guides",
+                    "pages": [
+                      "en/guide/authentication-c"
+                    ]
+                  },
+                  {
+                    "group": "Spot",
+                    "pages": [
+                      "en/api-reference/trade/spot/orders-pending",
+                      "en/api-reference/trade/spot/orders-history",
+                      "en/api-reference/trade/spot/fills"
+                    ]
+                  },
+                  {
+                    "group": "Futures",
+                    "pages": [
+                      "en/api-reference/trade/futures/positions",
+                      "en/api-reference/trade/futures/orders-pending",
+                      "en/api-reference/trade/futures/algo-orders-pending",
+                      "en/api-reference/trade/futures/positions-history",
+                      "en/api-reference/trade/futures/orders-history",
+                      "en/api-reference/trade/futures/fills",
+                      "en/api-reference/trade/futures/bills"
+                    ]
+                  }
                 ]
               }
             ]

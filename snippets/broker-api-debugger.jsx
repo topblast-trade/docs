@@ -8,7 +8,7 @@ export const BrokerApiDebugger = () => {
   const defaultApiKey = "ba11_90ea03143437e68fc1c2eb6b";
   const defaultApiSecret =
     "bs11_f154c04553ddd705662184d3728bfb398aa78182d014e8b09a7c2ee7e9c28b57";
-  const credentialStorageKey = "zpm-broker-api-debugger-credentials";
+  const credentialStorageKey = "topblast-broker-api-debugger-credentials";
   const endpoints = [
     ["POST", "/broker/v2/user/login", "用户登录"],
     ["POST", "/broker/v2/user/logout", "用户登出"],

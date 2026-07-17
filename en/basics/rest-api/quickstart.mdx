@@ -1,0 +1,101 @@
+---
+title: "Quickstart"
+description: "Synchronize a user and send your first topblast REST API queries without an SDK."
+---
+
+## 0. Prerequisites
+
+This guide requires API credentials. Complete the [REST API setup](/en/basics/rest-api/setup) first if you have not prepared your environment and credentials.
+
+You need:
+
+- An `API Key` and `API Secret` for the Broker Management API
+- A user ID and access token from your broker system
+
+<Note>
+Generate a new timestamp and signature for every Broker Management API request below. The signed Method, Path, Query, and Body must exactly match the final request.
+</Note>
+
+## 1. Synchronize a user
+
+After the user signs in to the broker, call the login endpoint from the broker server to synchronize the user ID and token with topblast:
+
+<CodeGroup>
+  ```bash cURL
+  curl --request POST \
+    --url https://apitest-predict.xbit.trade/broker/v2/user/login \
+    --header 'Content-Type: application/json' \
+    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-timestamp: <timestamp>' \
+    --header 'x-signature: <signature>' \
+    --data '{"userId":"broker-user-10001","userName":"alice","email":"alice@example.com","token":"<user_access_token>"}'
+  ```
+</CodeGroup>
+
+topblast creates the mapping when necessary and returns the platform user UID:
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "uid": 1000000000001
+  }
+}
+```
+
+<Info>
+Use the [API debugger](/en/guide/api-debugger) to generate the signature and send this request.
+</Info>
+
+## 2. Query the user
+
+Use the returned `uid` or broker-side `brokerUid` to verify the mapping:
+
+<CodeGroup>
+  ```bash cURL
+  curl --request GET \
+    --url 'https://apitest-predict.xbit.trade/broker/v2/user/users?uid=1000000000001&page=1&limit=20' \
+    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-timestamp: <timestamp>' \
+    --header 'x-signature: <signature>'
+  ```
+</CodeGroup>
+
+<Note>
+Query parameter order and encoding are part of the signature and must exactly match the request URL.
+</Note>
+
+## 3. Query user assets
+
+Retrieve assets and balances with the platform user UID:
+
+<CodeGroup>
+  ```bash cURL
+  curl --request GET \
+    --url 'https://apitest-predict.xbit.trade/broker/v2/assets?uid=1000000000001&limit=20' \
+    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-timestamp: <timestamp>' \
+    --header 'x-signature: <signature>'
+  ```
+</CodeGroup>
+
+## 4. Call the User Trading API
+
+Web and mobile clients use a bearer token to query current spot orders:
+
+<CodeGroup>
+  ```bash cURL
+  curl --request GET \
+    --url 'https://apitest-predict.xbit.trade/api/v1/trade/spot/orders-pending?user_id=broker-user-10001' \
+    --header 'Authorization: Bearer <user_access_token>' \
+    --header 'Content-Type: application/json'
+  ```
+</CodeGroup>
+
+## Next steps
+
+1. Implement server-side signing with [Broker Management API authentication](/en/guide/authentication-b).
+2. Use [Create transfer](/en/api-reference/broker/transfer/create) to deposit or withdraw assets.
+3. Explore [Open spot orders](/en/api-reference/trade/spot/orders-pending) and other User Trading API operations.
+4. Handle errors consistently with the [common response format](/en/guide/response).
