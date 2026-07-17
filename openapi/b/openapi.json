@@ -3214,10 +3214,6 @@
   },
   "servers": [
     {
-      "url": "https://predict.xbit.trade",
-      "description": "开发环境"
-    },
-    {
       "url": "https://apitest-predict.xbit.trade",
       "description": "测试环境"
     }

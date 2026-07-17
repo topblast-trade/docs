@@ -245,8 +245,8 @@ export const BrokerApiDebugger = () => {
               value={environment}
               onChange={(event) => setEnvironment(event.target.value)}
             >
-              <option value="https://predict.xbit.trade">开发环境</option>
               <option value="https://apitest-predict.xbit.trade">测试环境</option>
+              <option value="https://predict.xbit.trade">开发环境</option>
             </select>
           </div>
           <div>
@@ -295,7 +295,7 @@ export const BrokerApiDebugger = () => {
           <button
             type="button"
             onClick={saveCredentials}
-            className="rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-700"
+            className="rounded-md bg-orange-600 px-2 py-1 text-xs font-medium text-white hover:bg-orange-700"
           >
             保存 AK / SK
           </button>
