@@ -1,0 +1,22 @@
+---
+title: "Signature calculator"
+description: "Calculate a Broker API request signature locally in your browser."
+---
+
+import { SignatureCalculator } from "/snippets/signature-calculator.jsx";
+
+Enter the AK, SK, and request parameters to calculate `x-signature`. The calculation runs only in your browser; inputs are not sent to a server or saved locally.
+
+<Warning>Do not use a production SK on a shared device.</Warning>
+
+<SignatureCalculator />
+
+## Calculation rules
+
+```text
+Timestamp + Method + Path + [?Query] + Body
+```
+
+- Query order and encoding must exactly match the final request.
+- Body must exactly match the raw JSON string sent, including whitespace and line breaks.
+- Refresh the timestamp and recalculate after changing any request parameter.

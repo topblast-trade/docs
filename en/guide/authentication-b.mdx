@@ -24,6 +24,10 @@ Concatenate these fields in order:
 
 Calculate an HMAC-SHA256 digest with the API secret and encode the result with Base64.
 
+<Tip>
+You can also use the [signature calculator](/en/guide/signature-calculator) to generate a signature locally in your browser.
+</Tip>
+
 ```go
 func CalculateSignature(secret, timestamp, method, path, query, body string) string {
     payload := timestamp + method + path

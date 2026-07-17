@@ -130,7 +130,7 @@
             "tab": "Broker APIs",
             "groups": [
               {
-                "group": "Guides",
+                "group": "Integration guides",
                 "pages": [
                   "en/guide/introduction",
                   "en/guide/authentication-b",
@@ -138,7 +138,14 @@
                 ]
               },
               {
-                "group": "Users",
+                "group": "Developer tools",
+                "pages": [
+                  "en/guide/signature-calculator",
+                  "en/guide/api-debugger"
+                ]
+              },
+              {
+                "group": "User management",
                 "pages": [
                   "en/api-reference/broker/user/login",
                   "en/api-reference/broker/user/logout",
@@ -148,21 +155,16 @@
                 ]
               },
               {
-                "group": "Transfers",
+                "group": "Asset management",
                 "pages": [
                   "en/api-reference/broker/transfer/create",
                   "en/api-reference/broker/transfer/list",
-                  "en/api-reference/broker/transfer/detail"
+                  "en/api-reference/broker/transfer/detail",
+                  "en/api-reference/broker/assets/list"
                 ]
               },
               {
-                "group": "Overview",
-                "pages": [
-                  "en/api-reference/broker/overview/dashboard"
-                ]
-              },
-              {
-                "group": "Trading",
+                "group": "Trading management",
                 "pages": [
                   "en/api-reference/broker/trade/trades",
                   "en/api-reference/broker/trade/positions",
@@ -172,21 +174,16 @@
                 ]
               },
               {
-                "group": "Assets",
-                "pages": [
-                  "en/api-reference/broker/assets/list"
-                ]
-              },
-              {
-                "group": "Reports",
+                "group": "Reports and analytics",
                 "pages": [
                   "en/api-reference/broker/reports/summary",
                   "en/api-reference/broker/reports/trend",
-                  "en/api-reference/broker/reports/daily-summaries"
+                  "en/api-reference/broker/reports/daily-summaries",
+                  "en/api-reference/broker/overview/dashboard"
                 ]
               },
               {
-                "group": "Events",
+                "group": "Event management",
                 "pages": [
                   "en/api-reference/broker/events/list",
                   "en/api-reference/broker/events/enable",
@@ -194,7 +191,7 @@
                 ]
               },
               {
-                "group": "Risk",
+                "group": "Risk management",
                 "pages": [
                   "en/api-reference/broker/risk/policies",
                   "en/api-reference/broker/risk/exposures",
