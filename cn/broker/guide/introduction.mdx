@@ -13,7 +13,7 @@ description: "了解 ZPM 券商管理 API 的接入方式，以及用户、资�
 2. **资产管理**：为券商用户发起充值或提现，查询划转列表和划转详情，并查看用户资产及余额信息。
 3. **交易管理**：查询券商用户的成交记录、仓位和当前委托，并执行撤单、平仓等交易操作。
 4. **报表分析**：查询汇总报表、趋势报表、每日业务汇总和仪表盘数据，了解用户增长、活跃情况、资金流动及成交规模。
-5. **事件管理**：查询平台事件及其市场信息，按券商业务需要启用或停用事件，控制可运营的事件范围。
+5. **事件管理**：查询平台事件及其市场信息，按券商业务需要启用或停用事件和单个市场，控制可运营范围。
 6. **风控管理**：查询风控策略和风险敞口，读取或保存全局及事件级风控配置，控制最大最坏情况赔付额等风险指标。
 
 所有接口均位于 `/broker/v2/*` 路径下，只能由券商服务端调用。请求通过 API Key、时间戳和 HMAC-SHA256 签名完成身份验证，并且只能访问当前券商权限范围内的数据。
@@ -51,14 +51,15 @@ sequenceDiagram
         Note over BrokerClient,Core: 阶段一：登录与用户映射
 
         BrokerClient->>BrokerServer: 用户登录
+        BrokerServer->>BrokerServer: 分配Token
         BrokerServer->>Gateway: 同步用户信息和 Token
         activate Gateway
         Gateway->>Gateway: AK/SK 鉴权
         Gateway->>Core: 建立用户映射关系
         activate Core
-        Core-->>Gateway: 返回 ZPM 交易平台用户信息
+        Core-->>Gateway: 返回用户信息
         deactivate Core
-        Gateway-->>BrokerServer: 返回 ZPM 交易平台用户信息
+        Gateway-->>BrokerServer: 返回同步结果
         deactivate Gateway
         BrokerServer-->>BrokerClient: 返回登录结果
     end
@@ -66,7 +67,7 @@ sequenceDiagram
     rect rgb(240, 253, 244)
         Note over BrokerClient,Core: 阶段二：后续业务请求
 
-        BrokerClient->>Gateway: 携带 Token 发起业务请求
+        BrokerClient->>Gateway: 携带 APIKey 和 Token 发起业务请求
         activate Gateway
         Gateway->>Gateway: Token 鉴权
         Gateway->>Core: 转发业务请求

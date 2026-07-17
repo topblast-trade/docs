@@ -75,7 +75,10 @@
                 "pages": [
                   "cn/broker/api-reference/events/list",
                   "cn/broker/api-reference/events/enable",
-                  "cn/broker/api-reference/events/disable"
+                  "cn/broker/api-reference/events/disable",
+                  "cn/broker/api-reference/events/markets",
+                  "cn/broker/api-reference/events/market-enable",
+                  "cn/broker/api-reference/events/market-disable"
                 ]
               },
               {
@@ -187,7 +190,10 @@
                 "pages": [
                   "en/api-reference/broker/events/list",
                   "en/api-reference/broker/events/enable",
-                  "en/api-reference/broker/events/disable"
+                  "en/api-reference/broker/events/disable",
+                  "en/api-reference/broker/events/markets",
+                  "en/api-reference/broker/events/market-enable",
+                  "en/api-reference/broker/events/market-disable"
                 ]
               },
               {

@@ -13,7 +13,7 @@ After integration, your broker server can use the Broker Management API to manag
 2. **Assets**: Create deposits or withdrawals, query transfer records and details, and retrieve user assets and balances.
 3. **Trading**: Query trades, positions, and open orders, and perform actions such as canceling orders and closing positions.
 4. **Reports**: Retrieve summary, trend, daily summary, and dashboard data for user growth, activity, fund flows, and trading volume.
-5. **Events**: Query platform events and markets, and enable or disable events for the broker.
+5. **Events**: Query platform events and markets, and enable or disable events or individual markets for the broker.
 6. **Risk management**: Query policies and exposures, and read or save global and event-level risk settings.
 
 All endpoints use the `/broker/v2/*` prefix and must be called from the broker server. Requests are authenticated with an API key, timestamp, and HMAC-SHA256 signature and can access only data within the current broker's scope.

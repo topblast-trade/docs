@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "ZPM Broker Management API",
+    "title": "zpm Broker API",
     "contact": {},
     "version": "v1.0.0",
     "description": "Broker integration APIs authenticated with an API key, timestamp, and HMAC-SHA256 signature."
@@ -17,7 +17,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "查询资产",
         "parameters": [
@@ -90,7 +90,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "查询每日汇总",
         "parameters": [
@@ -163,7 +163,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "查询仪表盘",
         "parameters": [
@@ -218,7 +218,7 @@
           }
         ],
         "tags": [
-          "事件管理"
+          "券商接口-事件"
         ],
         "summary": "查询事件",
         "parameters": [
@@ -323,7 +323,7 @@
           }
         ],
         "tags": [
-          "事件管理"
+          "券商接口-事件"
         ],
         "summary": "停用事件",
         "parameters": [
@@ -376,7 +376,7 @@
           }
         ],
         "tags": [
-          "事件管理"
+          "券商接口-事件"
         ],
         "summary": "启用事件",
         "parameters": [
@@ -419,6 +419,180 @@
         }
       }
     },
+    "/broker/v2/events/{eventSlug}/markets": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-事件"
+        ],
+        "summary": "查询事件下的市场",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerMarketListResult"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/events/{eventSlug}/markets/{marketId}/disable": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-事件"
+        ],
+        "summary": "停用市场",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "市场 ID",
+            "name": "marketId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/req.BrokerMarketSwitchRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerMarketView"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/broker/v2/events/{eventSlug}/markets/{marketId}/enable": {
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-事件"
+        ],
+        "summary": "启用市场",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "市场 ID",
+            "name": "marketId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/req.BrokerMarketSwitchRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerMarketView"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/broker/v2/reports/summary": {
       "get": {
         "security": [
@@ -429,7 +603,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "查询汇总报表",
         "parameters": [
@@ -492,7 +666,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "查询趋势报表",
         "parameters": [
@@ -555,7 +729,7 @@
           }
         ],
         "tags": [
-          "风控管理"
+          "券商接口-风控"
         ],
         "summary": "查询风控配置",
         "parameters": [
@@ -602,7 +776,7 @@
           }
         ],
         "tags": [
-          "风控管理"
+          "券商接口-风控"
         ],
         "summary": "保存风控配置",
         "requestBody": {
@@ -652,7 +826,7 @@
           }
         ],
         "tags": [
-          "风控管理"
+          "券商接口-风控"
         ],
         "summary": "查询风险敞口",
         "parameters": [
@@ -725,7 +899,7 @@
           }
         ],
         "tags": [
-          "风控管理"
+          "券商接口-风控"
         ],
         "summary": "查询风控策略",
         "parameters": [
@@ -790,7 +964,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "查询当前委托",
         "parameters": [
@@ -895,7 +1069,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "取消委托",
         "requestBody": {
@@ -945,7 +1119,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "查询仓位",
         "parameters": [
@@ -1042,7 +1216,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "平仓",
         "requestBody": {
@@ -1092,7 +1266,7 @@
           }
         ],
         "tags": [
-          "管理与报表"
+          "券商接口-后管"
         ],
         "summary": "查询成交记录",
         "parameters": [
@@ -1197,7 +1371,7 @@
           }
         ],
         "tags": [
-          "资产划转"
+          "券商接口-划转"
         ],
         "summary": "创建划转",
         "requestBody": {
@@ -1247,7 +1421,7 @@
           }
         ],
         "tags": [
-          "资产划转"
+          "券商接口-划转"
         ],
         "summary": "查询划转详情",
         "parameters": [
@@ -1306,7 +1480,7 @@
           }
         ],
         "tags": [
-          "资产划转"
+          "券商接口-划转"
         ],
         "summary": "查询划转列表",
         "parameters": [
@@ -1398,7 +1572,7 @@
           }
         ],
         "tags": [
-          "用户管理"
+          "券商接口-用户"
         ],
         "summary": "创建特殊账户",
         "requestBody": {
@@ -1448,7 +1622,7 @@
           }
         ],
         "tags": [
-          "用户管理"
+          "券商接口-用户"
         ],
         "summary": "用户登录",
         "requestBody": {
@@ -1498,7 +1672,7 @@
           }
         ],
         "tags": [
-          "用户管理"
+          "券商接口-用户"
         ],
         "summary": "用户登出",
         "requestBody": {
@@ -1548,7 +1722,7 @@
           }
         ],
         "tags": [
-          "用户管理"
+          "券商接口-用户"
         ],
         "summary": "更新用户",
         "requestBody": {
@@ -1598,7 +1772,7 @@
           }
         ],
         "tags": [
-          "用户管理"
+          "券商接口-用户"
         ],
         "summary": "查询用户列表",
         "parameters": [
@@ -1688,6 +1862,17 @@
   },
   "components": {
     "requestBodies": {
+      "req.BrokerMarketSwitchRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/req.BrokerMarketSwitchRequest"
+            }
+          }
+        },
+        "description": "市场配置",
+        "required": true
+      },
       "req.BrokerEventSwitchRequest": {
         "content": {
           "application/json": {
@@ -1811,6 +1996,19 @@
         "properties": {
           "eventSlug": {
             "description": "请求体中的事件标识；通常以路径参数为准",
+            "type": "string"
+          }
+        }
+      },
+      "req.BrokerMarketSwitchRequest": {
+        "type": "object",
+        "properties": {
+          "cancelOpenOrders": {
+            "description": "预留；当前版本不自动撤单",
+            "type": "boolean"
+          },
+          "reason": {
+            "description": "操作原因",
             "type": "string"
           }
         }
@@ -2041,6 +2239,61 @@
           },
           "updatedAt": {
             "description": "券商配置更新时间",
+            "type": "string"
+          }
+        }
+      },
+      "service.BrokerMarketListResult": {
+        "type": "object",
+        "properties": {
+          "eventEnabled": {
+            "type": "boolean"
+          },
+          "eventId": {
+            "type": "string"
+          },
+          "eventSlug": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/service.BrokerMarketView"
+            }
+          }
+        }
+      },
+      "service.BrokerMarketView": {
+        "type": "object",
+        "properties": {
+          "brokerId": {
+            "type": "integer"
+          },
+          "effectiveEnabled": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "eventId": {
+            "type": "string"
+          },
+          "eventSlug": {
+            "type": "string"
+          },
+          "marketId": {
+            "type": "string"
+          },
+          "marketStatus": {
+            "type": "string"
+          },
+          "marketTitle": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "updatedAt": {
             "type": "string"
           }
         }
@@ -3227,19 +3480,19 @@
   ],
   "tags": [
     {
-      "name": "管理与报表"
+      "name": "券商接口-后管"
     },
     {
-      "name": "事件管理"
+      "name": "券商接口-事件"
     },
     {
-      "name": "风控管理"
+      "name": "券商接口-风控"
     },
     {
-      "name": "资产划转"
+      "name": "券商接口-划转"
     },
     {
-      "name": "用户管理"
+      "name": "券商接口-用户"
     }
   ],
   "x-api-side": "BROKER"
