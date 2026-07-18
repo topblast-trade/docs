@@ -1045,7 +1045,7 @@
     },
     "/api/v2/public/carousel": {
       "get": {
-        "description": "按可选标签查询轮播事件；成功响应缓存 60 秒。",
+        "description": "按可选标签查询轮播事件。",
         "tags": [
           "用户接口-事件"
         ],
@@ -1663,7 +1663,7 @@
     },
     "/api/v2/public/tags": {
       "get": {
-        "description": "分页查询活动标签；成功响应缓存 60 秒。",
+        "description": "分页查询活动标签。",
         "tags": [
           "用户接口-事件"
         ],
@@ -1761,7 +1761,7 @@
     },
     "/api/v2/public/tags/filtered": {
       "get": {
-        "description": "按父标签和事件状态查询筛选标签；可选择返回事件数量和子标签，成功响应缓存 60 秒。",
+        "description": "按父标签和事件状态查询筛选标签；可选择返回事件数量和子标签。",
         "tags": [
           "用户接口-事件"
         ],
@@ -1917,20 +1917,19 @@
     },
     "/api/v2/public/tags/{id}": {
       "get": {
-        "description": "返回指定数字 ID 的标签。",
+        "description": "返回指定字符串 ID 的标签。",
         "tags": [
           "用户接口-事件"
         ],
         "summary": "按 ID 查询标签",
         "parameters": [
           {
-            "description": "标签 ID，必须大于 0",
+            "description": "标签 ID",
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "minimum": 1
+              "type": "string"
             }
           }
         ],
@@ -2795,7 +2794,7 @@
         "properties": {
           "id": {
             "description": "标签 ID",
-            "type": "integer"
+            "type": "string"
           },
           "label": {
             "description": "标签显示名称",
