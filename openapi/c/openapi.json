@@ -2669,6 +2669,10 @@
           "updatedAt": {
             "description": "更新时间",
             "type": "string"
+          },
+          "volume": {
+            "description": "事件下所有市场的累计成交量之和",
+            "type": "string"
           }
         }
       },
@@ -2753,7 +2757,7 @@
           },
           "volume": {
             "description": "累计成交量",
-            "type": "number"
+            "type": "string"
           }
         }
       },
