@@ -2872,10 +2872,6 @@
               "$ref": "#/components/schemas/http_market.AckOrderbookLevel"
             }
           },
-          "hash": {
-            "description": "快照内容哈希",
-            "type": "string"
-          },
           "marketId": {
             "description": "市场 ID",
             "type": "string"
@@ -2883,10 +2879,6 @@
           "timestamp": {
             "description": "快照时间戳（Unix 毫秒）",
             "type": "integer"
-          },
-          "timestampSource": {
-            "description": "时间戳来源",
-            "type": "string"
           },
           "tokenId": {
             "description": "结果 Token ID",
