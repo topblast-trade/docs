@@ -1,0 +1,140 @@
+---
+title: "通用响应结构"
+description: "了解用户交易 API 的成功响应、统一错误响应、常用 HTTP 状态码和业务错误码。"
+---
+
+topblast 用户交易 API 使用 HTTP 状态码表示请求处理结果。成功响应直接返回各接口定义的业务数据；失败响应采用统一的 JSON 结构，便于客户端集中处理错误。
+
+## 响应规范 (JSON)
+
+### 成功响应
+
+成功请求返回 `2xx` HTTP 状态码。响应体结构由具体接口定义，不额外包裹 `code`、`message` 或 `data` 通用外层。
+
+例如，查询当前委托成功时返回：
+
+```json
+{
+  "data": [
+    {
+      "id": "8001",
+      "status": "OPEN",
+      "market": "7001",
+      "assetId": "101",
+      "side": "BUY",
+      "originalSize": "10",
+      "sizeMatched": "0",
+      "price": "0.41",
+      "outcome": "YES",
+      "orderType": "GTC",
+      "expiration": "0",
+      "createdAt": 1710000000000,
+      "reasonCode": 0
+    }
+  ],
+  "count": 1
+}
+```
+
+<Note>
+请以每个接口页面中的响应 Schema 为准。批量异步下单受理成功时返回 HTTP `202`，其他成功请求通常返回 HTTP `200`。
+</Note>
+
+### 失败响应
+
+失败请求统一返回包含 `code` 和 `error` 字段的 JSON 对象。
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `code` | `int` | 稳定的业务错误码。客户端可以使用该字段进行分支处理。 |
+| `error` | `string` | 可读错误信息，通常包含稳定错误标识和具体失败原因。 |
+
+例如，私有接口缺少有效 Token 时返回：
+
+```json
+{
+  "code": 1103,
+  "error": "REJECT_ANONYMOUS"
+}
+```
+
+<Warning>
+请同时检查 HTTP 状态码和响应体中的 `code`。不要依赖 `error` 文本进行稳定的业务判断，因为错误详情可能随服务端版本调整。
+</Warning>
+
+## 常用 HTTP 状态码
+
+| HTTP 状态码 | 含义 | 建议处理方式 |
+| :--- | :--- | :--- |
+| `200 OK` | 请求处理成功 | 按当前接口的响应 Schema 解析业务数据。 |
+| `202 Accepted` | 异步请求已受理 | 保存返回的委托信息，并通过查询接口或 WebSocket 跟踪最终状态。 |
+| `400 Bad Request` | 请求参数、游标、订单或批量数据无效 | 修正请求参数后再提交，不要直接重试相同请求。 |
+| `401 Unauthorized` | Token 缺失、无效或对应用户身份不可用 | 重新登录或刷新 Token 后重试。 |
+| `403 Forbidden` | 当前券商无权访问指定事件或市场 | 停止重试，并检查券商事件或市场权限。 |
+| `404 Not Found` | 路由、委托、事件、标签、行情或账户不存在 | 检查资源 ID；资源可能已删除或不属于当前登录账户。 |
+| `405 Method Not Allowed` | 请求方法与接口定义不符 | 按接口文档改用正确的 HTTP Method。 |
+| `409 Conflict` | 市场不可交易、风控拒绝或当前状态不允许操作 | 根据业务错误码和市场状态决定是否稍后重试。 |
+| `410 Gone` | 接口已废弃 | 按 `error` 中的提示迁移到替代接口。 |
+| `500 Internal Server Error` | 服务内部错误 | 记录请求上下文，采用退避策略重试并联系技术支持。 |
+| `503 Service Unavailable` | 交易集群不可用、背压或请求队列已满 | 使用指数退避重试，避免立即高频重放。 |
+| `504 Gateway Timeout` | 交易指令等待响应超时 | 先查询委托状态，确认是否已受理后再决定是否重试。 |
+
+## 常用业务错误码
+
+### 通用与鉴权
+
+| `code` | 错误类型 | 说明 |
+| :--- | :--- | :--- |
+| `1001` | `INTERNAL_ERROR` | 服务内部错误。 |
+| `1002` | `INVALID_PAYLOAD` | 请求参数或请求体格式无效。 |
+| `1103` | `REJECT_ANONYMOUS` | Token 缺失、无效或无法解析用户身份。 |
+| `1104` | `BROKER_DOMAIN_NOT_FOUND` | 无法识别当前券商域名。 |
+| `1105` | `BROKER_EVENT_NOT_ALLOWED` | 当前券商无权访问指定事件。 |
+| `1106` | `ROUTE_NOT_FOUND` | 请求路径不存在。 |
+| `1107` | `METHOD_NOT_ALLOWED` | 当前路径不支持该 HTTP Method。 |
+| `1108` | `BROKER_MARKET_NOT_ALLOWED` | 当前券商无权访问指定市场。 |
+
+### 交易集群
+
+| `code` | 错误类型 | 说明 |
+| :--- | :--- | :--- |
+| `1201` | `CLUSTER_UNAVAILABLE` | 交易集群不可用。 |
+| `1202` | `CLUSTER_BACKPRESSURED` | 交易集群处于背压状态。 |
+| `1203` | `INGRESS_TIMEOUT` | 等待交易指令响应超时。 |
+| `1204` | `INGRESS_QUEUE_FULL` | 交易指令队列已满。 |
+| `1205` | `INGRESS_OFFER_FAILED` | 交易指令提交失败。 |
+
+### 委托与风控
+
+| `code` | 错误类型 | 说明 |
+| :--- | :--- | :--- |
+| `2001` | `INVALID_ORDER_ID` | 委托 ID 无效。 |
+| `2002` | `INVALID_ORDER_PAYLOAD` | 委托参数无效。 |
+| `2003` | `ORDER_NOT_FOUND` | 委托不存在或不属于当前登录账户。 |
+| `2004` | `MARKET_NOT_TRADABLE` | 市场当前不允许下单或撤单。 |
+| `2005` | `RISK_REJECTED` | 请求被风控拒绝。 |
+| `2006` | `INVALID_CANCEL` | 撤单请求无效。 |
+| `2007` | `INVALID_BATCH` | 批量请求参数无效。 |
+| `2008` | `BATCH_EMPTY` | 批量请求列表为空。 |
+| `2009` | `BATCH_SIZE_EXCEEDED` | 批量请求数量超过接口上限。 |
+| `2010` | `ORDER_RESPONSE_TIMEOUT` | 等待委托处理结果超时。 |
+
+### 行情、事件与账户
+
+| `code` | 错误类型 | 说明 |
+| :--- | :--- | :--- |
+| `3001` | `INVALID_TOKEN_ID` | Token ID 无效。 |
+| `3002` | `INVALID_TOKEN_IDS` | Token ID 列表为空或无效。 |
+| `3003` | `INVALID_MARKET_ID` | 市场 ID 无效。 |
+| `3004` | `INVALID_INTERVAL` | K 线或价格历史周期无效。 |
+| `3005` | `INVALID_KLINE_TIME` | K 线时间范围无效。 |
+| `4001` | `EVENT_NOT_FOUND` | 事件不存在。 |
+| `4010` | `TAG_NOT_FOUND` | 标签不存在。 |
+| `4014` | `INVALID_CURSOR` | 分页游标无效或已过期。 |
+| `5001` | `TRADES_NOT_FOUND` | 公共成交记录不存在或查询失败。 |
+| `5002` | `ACCOUNT_TRADES_NOT_FOUND` | 当前账户成交记录查询失败。 |
+| `6001` | `ACCOUNT_NOT_FOUND` | 当前登录账户不存在。 |
+
+<Note>
+以上错误类型用于帮助理解错误码类别，客户端应以 `code` 作为稳定判断依据。具体接口可能只返回其中一部分，请同时参考该接口页面声明的 HTTP 响应。
+</Note>

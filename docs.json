@@ -127,7 +127,8 @@
                   {
                     "group": "接入指南",
                     "pages": [
-                      "cn/user/guide/authentication"
+                      "cn/user/guide/authentication",
+                      "cn/user/guide/response"
                     ]
                   },
                   {
