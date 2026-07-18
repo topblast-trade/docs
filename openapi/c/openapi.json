@@ -14,16 +14,6 @@
           "用户接口-账户"
         ],
         "summary": "查询账户汇总",
-        "parameters": [
-          {
-            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
-            "name": "accountId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "账户资产汇总",
@@ -71,14 +61,6 @@
         ],
         "summary": "查询账户成交",
         "parameters": [
-          {
-            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
-            "name": "accountId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "description": "返回数量，默认 20，最大 100",
             "name": "limit",
@@ -239,14 +221,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
-            "name": "accountId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -320,14 +294,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
-            "name": "accountId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -381,20 +347,12 @@
     },
     "/api/v2/private/orders": {
       "get": {
-        "description": "查询当前登录账户的未完成委托。启用鉴权时 accountId 被忽略并以 Token 对应账户为准。",
+        "description": "查询当前登录账户的未完成委托。",
         "tags": [
           "用户接口-委托"
         ],
         "summary": "查询当前委托",
         "parameters": [
-          {
-            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
-            "name": "accountId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "description": "每页数量，默认 20，最大 100",
             "name": "limit",
@@ -471,14 +429,6 @@
         "summary": "批量创建委托",
         "parameters": [
           {
-            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
-            "name": "accountId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "是否异步提交；支持 true、1、yes，默认 false",
             "name": "async",
             "in": "query",
@@ -553,16 +503,6 @@
           "用户接口-委托"
         ],
         "summary": "批量取消委托",
-        "parameters": [
-          {
-            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
-            "name": "accountId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -631,14 +571,6 @@
         ],
         "summary": "查询历史委托",
         "parameters": [
-          {
-            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
-            "name": "accountId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "description": "每页数量，默认 20，最大 100",
             "name": "limit",
@@ -712,14 +644,6 @@
         ],
         "summary": "查询持仓",
         "parameters": [
-          {
-            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
-            "name": "accountId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "description": "事件 ID",
             "name": "eventId",
@@ -3288,10 +3212,6 @@
           "tokenId"
         ],
         "properties": {
-          "accountId": {
-            "description": "账户 ID；启用鉴权时以 Token 对应账户为准",
-            "type": "string"
-          },
           "expiration": {
             "description": "GTD 到期时间，Unix 秒或毫秒；其他类型可为 0",
             "type": "integer"
