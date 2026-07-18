@@ -48,11 +48,11 @@ to this project with:
 
 ```bash
 python3 scripts/generate_broker_openapi.py
-cd ../../zpm_docs
+cd ../../zpm-docs
 mint validate
 ```
 
-The generator expects this repository at `~/code/srv/zpm_docs` when `go-uc`
+The generator expects this repository at `~/code/srv/zpm-docs` when `go-uc`
 is located at `~/code/srv/zpm/go-uc`. For another layout, pass the destination
 explicitly with `--docs-project /path/to/docs`.
 
