@@ -131,23 +131,65 @@
                     ]
                   },
                   {
-                    "group": "现货",
+                    "group": "事件数据",
                     "pages": [
-                      "cn/user/api-reference/trade/spot/orders-pending",
-                      "cn/user/api-reference/trade/spot/orders-history",
-                      "cn/user/api-reference/trade/spot/fills"
+                      "cn/user/api-reference/events/search",
+                      "cn/user/api-reference/events/list",
+                      "cn/user/api-reference/events/list-deprecated",
+                      "cn/user/api-reference/events/detail",
+                      "cn/user/api-reference/events/carousel",
+                      "cn/user/api-reference/events/tags",
+                      "cn/user/api-reference/events/filtered-tags",
+                      "cn/user/api-reference/events/tag-detail",
+                      "cn/user/api-reference/events/tag-detail-by-slug"
                     ]
                   },
                   {
-                    "group": "合约",
+                    "group": "市场行情",
                     "pages": [
-                      "cn/user/api-reference/trade/futures/positions",
-                      "cn/user/api-reference/trade/futures/orders-pending",
-                      "cn/user/api-reference/trade/futures/algo-orders-pending",
-                      "cn/user/api-reference/trade/futures/positions-history",
-                      "cn/user/api-reference/trade/futures/orders-history",
-                      "cn/user/api-reference/trade/futures/fills",
-                      "cn/user/api-reference/trade/futures/bills"
+                      "cn/user/api-reference/market/markets",
+                      "cn/user/api-reference/market/orderbook",
+                      "cn/user/api-reference/market/ticker",
+                      "cn/user/api-reference/market/midpoint",
+                      "cn/user/api-reference/market/spread",
+                      "cn/user/api-reference/market/prices",
+                      "cn/user/api-reference/market/price-history",
+                      "cn/user/api-reference/market/kline"
+                    ]
+                  },
+                  {
+                    "group": "成交记录",
+                    "pages": [
+                      "cn/user/api-reference/trades/public",
+                      "cn/user/api-reference/trades/account"
+                    ]
+                  },
+                  {
+                    "group": "委托管理",
+                    "pages": [
+                      "cn/user/api-reference/orders/create",
+                      "cn/user/api-reference/orders/detail",
+                      "cn/user/api-reference/orders/cancel",
+                      "cn/user/api-reference/orders/open",
+                      "cn/user/api-reference/orders/history",
+                      "cn/user/api-reference/orders/batch-create",
+                      "cn/user/api-reference/orders/batch-cancel"
+                    ]
+                  },
+                  {
+                    "group": "账户与持仓",
+                    "pages": [
+                      "cn/user/api-reference/account/summary",
+                      "cn/user/api-reference/account/positions",
+                      "cn/user/api-reference/account/profile"
+                    ]
+                  },
+                  {
+                    "group": "资产管理",
+                    "pages": [
+                      "cn/user/api-reference/assets/deposit",
+                      "cn/user/api-reference/assets/withdraw",
+                      "cn/user/api-reference/assets/transfer"
                     ]
                   }
                 ]

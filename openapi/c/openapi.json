@@ -1,32 +1,23 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "券商管理与用户映射服务接口文档",
-    "title": "topblast User Trading API",
+    "description": "`/api/v2/public` 提供公开事件与行情数据；`/api/v2/private` 提供需要用户 Token 的交易、账户和资产接口。",
+    "title": "zpm 预测市场用户 API v2",
     "contact": {},
-    "version": "1.0"
+    "version": "v2"
   },
   "paths": {
-    "/api/v1/trade/asset/balance": {
+    "/api/v2/private/account/summary": {
       "get": {
-        "description": "查询交易账户余额。",
+        "description": "返回当前登录账户的 USDC 可用/锁定余额及各结果 Token 余额。",
         "tags": [
-          "交易查询"
+          "用户接口-账户"
         ],
-        "summary": "外部查询交易账户余额",
+        "summary": "查询账户汇总",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "币种",
-            "name": "ccy",
+            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
+            "name": "accountId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -35,182 +26,638 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "账户资产汇总",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradeAssetBalanceResponse"
+                  "$ref": "#/components/schemas/http_position.AckAccountSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "账户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/trade/futures/algo-orders-pending": {
+    "/api/v2/private/account/trades": {
       "get": {
-        "description": "查询合约当前止盈止损委托。",
+        "description": "查询当前登录账户的成交记录。eventId/event 为同义参数，优先使用 eventId。",
         "tags": [
-          "交易查询"
+          "用户接口-成交"
         ],
-        "summary": "合约止盈止损委托",
+        "summary": "查询账户成交",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品类型，默认 SWAP",
-            "name": "instType",
+            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
+            "name": "accountId",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "产品 ID",
-            "name": "instId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "策略单类型",
-            "name": "ordType",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "买卖方向",
-            "name": "side",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "持仓方向",
-            "name": "posSide",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "开始时间戳(ms)",
-            "name": "begin",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结束时间戳(ms)",
-            "name": "end",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "条数限制",
+            "description": "返回数量，默认 20，最大 100",
             "name": "limit",
             "in": "query",
             "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "description": "事件 ID",
+            "name": "eventId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件 ID 的兼容参数；eventId 为空时生效",
+            "name": "event",
+            "in": "query",
+            "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "账户成交列表",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradeAlgoOrdersPendingResponse"
+                  "$ref": "#/components/schemas/http_account.AckAccountTrades"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "成交记录查询失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/trade/futures/bills": {
-      "get": {
-        "description": "查询合约资金流水。",
+    "/api/v2/private/asset/deposit": {
+      "post": {
+        "description": "为当前登录账户创建 USDC 虚拟入金单。amount 最多保留 4 位小数，服务端按 10^-4 精度四舍五入。",
         "tags": [
-          "交易查询"
+          "用户接口-资产"
         ],
-        "summary": "合约资金流水",
+        "summary": "账户入金",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/http_asset.ReqDepositWithdraw"
+              }
+            }
+          },
+          "description": "入金参数；address 对入金不生效",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "入金单受理结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_asset.AckDeposit"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "账户或金额无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "资产服务处理失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "资产服务未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v2/private/asset/transfer": {
+      "post": {
+        "description": "创建 USDC 账户间划转。clientTransferId 是调用方幂等标识，应在一次业务划转的重试生命周期内保持不变，不同业务划转必须使用不同值；为空时由服务端生成，调用方将无法主动幂等重试。",
+        "tags": [
+          "用户接口-资产"
+        ],
+        "summary": "账户划转",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/http_asset.ReqAccountTransfer"
+              }
+            }
+          },
+          "description": "划转参数",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "划转单受理结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_asset.AckTransfer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "账户、账户类型或金额无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "资产服务处理失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "资产服务未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v2/private/asset/withdraw": {
+      "post": {
+        "description": "为当前登录账户创建 USDC 虚拟出金单。amount 最多保留 4 位小数，服务端按 10^-4 精度四舍五入；address 为空时使用测试默认地址。",
+        "tags": [
+          "用户接口-资产"
+        ],
+        "summary": "账户出金",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/http_asset.ReqDepositWithdraw"
+              }
+            }
+          },
+          "description": "出金参数",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "出金单受理结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_asset.AckWithdraw"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "账户或金额无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "资产服务处理失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "资产服务未配置",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v2/private/order": {
+      "post": {
+        "description": "为当前登录账户创建委托。timestamp 使用 Unix 毫秒且每次请求都应取当前时间；GTD 的 expiration 必填，支持 Unix 秒或毫秒，服务端会将秒转换为毫秒。非 MARKET 委托的 price 必须在 0 到 1 之间并符合市场最小价格步长。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "创建委托",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/http_order.ReqOrder"
+              }
+            }
+          },
+          "description": "委托参数",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "委托受理结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "委托参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "市场不可交易或风控拒绝",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "交易集群不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v2/private/order/{orderID}": {
+      "get": {
+        "description": "查询当前登录账户下的指定委托。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "查询委托详情",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
-            "in": "query",
+            "description": "订单 ID，十进制正整数",
+            "name": "orderID",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "开始时间戳(ms)",
-            "name": "begin",
+            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
+            "name": "accountId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "委托详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckOrderDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "订单 ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "委托不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "description": "取消当前登录账户下的指定委托。tokenId 可省略，服务端会先从订单详情解析。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "取消委托",
+        "parameters": [
+          {
+            "description": "订单 ID，十进制正整数",
+            "name": "orderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "结果 Token ID；已知时传入可减少一次订单查询",
+            "name": "tokenId",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "结束时间戳(ms)",
-            "name": "end",
+            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
+            "name": "accountId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "撤单结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckCancelOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "订单 ID 或请求参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "市场当前不允许撤单",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v2/private/orders": {
+      "get": {
+        "description": "查询当前登录账户的未完成委托。启用鉴权时 accountId 被忽略并以 Token 对应账户为准。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "查询当前委托",
+        "parameters": [
+          {
+            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
+            "name": "accountId",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "游标 after",
-            "name": "after",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 before",
-            "name": "before",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "条数限制",
+            "description": "每页数量，默认 20，最大 100",
             "name": "limit",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "流水类型",
-            "name": "incomeType",
+            "description": "偏移量，默认 0",
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "description": "事件 ID",
+            "name": "eventId",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "币种",
-            "name": "ccy",
+            "description": "事件 ID 的兼容参数；eventId 为空时生效",
+            "name": "event",
             "in": "query",
             "schema": {
               "type": "string"
@@ -219,251 +666,441 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "当前委托列表",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradeBillsResponse"
+                  "$ref": "#/components/schemas/http_order.AckOpenOrders"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/trade/futures/fills": {
-      "get": {
-        "description": "查询合约成交明细。",
+    "/api/v2/private/orders/batch": {
+      "post": {
+        "description": "一次创建 1 至 50 笔委托。每项 timestamp 使用 Unix 毫秒且每次请求都应取当前时间；expiration 支持 Unix 秒或毫秒，传秒时服务端自动转换。async=true 时仅表示异步提交，不代表委托已成交。",
         "tags": [
-          "交易查询"
+          "用户接口-委托"
         ],
-        "summary": "合约成交明细",
+        "summary": "批量创建委托",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品类型，默认 SWAP",
-            "name": "instType",
+            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
+            "name": "accountId",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "产品 ID",
-            "name": "instId",
+            "description": "是否异步提交；支持 true、1、yes，默认 false",
+            "name": "async",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/http_order.ReqBatchPlace"
+              }
+            }
+          },
+          "description": "批量委托参数",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "批量委托受理结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckBatchPlace"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "列表为空、超过 50 条或委托参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "市场不可交易或风控拒绝",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "description": "同步取消 1 至 100 笔委托。每项 tokenId 可省略，但建议传入以完成事件权限和市场生命周期校验。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "批量取消委托",
+        "parameters": [
+          {
+            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
+            "name": "accountId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/http_order.ReqBatchCancel"
+              }
+            }
+          },
+          "description": "待取消的订单列表",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "批量撤单结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckBatchCancel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "列表为空、超过 100 条或订单参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "市场当前不允许撤单",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v2/private/orders/history": {
+      "get": {
+        "description": "查询当前登录账户的历史委托。afterCursor 是上一页最后一条订单的 ID，仅用于继续向后翻页。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "查询历史委托",
+        "parameters": [
+          {
+            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
+            "name": "accountId",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "订单 ID",
-            "name": "ordId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "买卖方向",
-            "name": "side",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "持仓方向",
-            "name": "posSide",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "交易模式",
-            "name": "tdMode",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "开始时间戳(ms)",
-            "name": "begin",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结束时间戳(ms)",
-            "name": "end",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 after",
-            "name": "after",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 before",
-            "name": "before",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "条数限制",
+            "description": "每页数量，默认 20，最大 100",
             "name": "limit",
             "in": "query",
             "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "description": "上一页末尾订单 ID；首次请求不传",
+            "name": "afterCursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件 ID",
+            "name": "eventId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件 ID 的兼容参数；eventId 为空时生效",
+            "name": "event",
+            "in": "query",
+            "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "历史委托列表",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradeFillsResponse"
+                  "$ref": "#/components/schemas/http_order.AckOrderHistory"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/trade/futures/orders-history": {
+    "/api/v2/private/position": {
       "get": {
-        "description": "查询合约历史委托列表。",
+        "description": "查询当前登录账户的持仓，并计算当前价值和未实现盈亏。eventId/event 为同义参数，优先使用 eventId。",
         "tags": [
-          "交易查询"
+          "用户接口-账户"
         ],
-        "summary": "合约历史委托",
+        "summary": "查询持仓",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品类型，默认 SWAP",
-            "name": "instType",
+            "description": "账户 ID；仅关闭鉴权的测试环境需要传",
+            "name": "accountId",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "产品 ID",
-            "name": "instId",
+            "description": "事件 ID",
+            "name": "eventId",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "订单类型",
-            "name": "ordType",
+            "description": "事件 ID 的兼容参数；eventId 为空时生效",
+            "name": "event",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "持仓列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_position.AckPositions"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v2/private/profile": {
+      "get": {
+        "description": "返回 Token 对应当前账户的基础统计资料；当前版本的盈亏、成交量、市场数和创建时间为预留统计字段。",
+        "tags": [
+          "用户接口-账户"
+        ],
+        "summary": "查询账户资料",
+        "responses": {
+          "200": {
+            "description": "账户资料",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_position.AckProfile"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "账户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v2/public/carousel": {
+      "get": {
+        "description": "按可选标签查询轮播事件；成功响应缓存 60 秒。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "查询轮播事件",
+        "parameters": [
+          {
+            "description": "标签 slug；为空时查询全部轮播事件",
+            "name": "tagSlug",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "订单状态",
-            "name": "state",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "买卖方向",
-            "name": "side",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "持仓方向",
-            "name": "posSide",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "开始时间戳(ms)",
-            "name": "begin",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结束时间戳(ms)",
-            "name": "end",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 after",
-            "name": "after",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 before",
-            "name": "before",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "条数限制",
+            "description": "返回数量，默认 10，最大 50",
             "name": "limit",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "轮播事件列表",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradeOrdersHistoryResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/http_event.Event"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "轮播事件查询失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -471,87 +1108,124 @@
         }
       }
     },
-    "/api/v1/trade/futures/orders-pending": {
+    "/api/v2/public/events": {
       "get": {
-        "description": "查询合约当前限价单委托。",
+        "description": "该偏移量分页接口已废弃并固定返回 HTTP 410；请改用 GET /api/v2/public/events/keyset。若仍传 slug，请改用 GET /api/v2/public/events/slug/{slug}。",
         "tags": [
-          "交易查询"
+          "用户接口-事件"
         ],
-        "summary": "合约当前委托",
+        "summary": "查询事件列表（已废弃）",
+        "deprecated": true,
+        "responses": {
+          "410": {
+            "description": "接口已废弃",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/events/keyset": {
+      "get": {
+        "description": "返回事件列表和下一页游标。afterCursor 只能原样用于相同筛选与排序条件的下一页请求，不应解析、修改或跨查询复用。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "游标分页查询事件",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品类型，默认 SWAP",
-            "name": "instType",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品 ID",
-            "name": "instId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "买卖方向",
-            "name": "side",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "持仓方向",
-            "name": "posSide",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "开始时间戳(ms)",
-            "name": "begin",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结束时间戳(ms)",
-            "name": "end",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "条数限制",
+            "description": "每页数量，默认 20，最大 100",
             "name": "limit",
             "in": "query",
             "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "description": "标签 slug；为空时不按标签筛选",
+            "name": "tagSlug",
+            "in": "query",
+            "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "排序字段，默认 volume",
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "volume",
+                "createdAt",
+                "startDate",
+                "endDate",
+                "title"
+              ],
+              "default": "volume"
+            }
+          },
+          {
+            "description": "是否升序，默认 false",
+            "name": "ascending",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "description": "上一页返回的 nextCursor；仅在获取下一页时传入",
+            "name": "afterCursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "是否查询已关闭事件；不传表示不按关闭状态筛选",
+            "name": "closed",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "事件列表和下一页游标",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradeOrdersPendingResponse"
+                  "$ref": "#/components/schemas/http_event.AckEventsKeyset"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "游标或请求参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "事件查询失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -559,51 +1233,19 @@
         }
       }
     },
-    "/api/v1/trade/futures/positions": {
+    "/api/v2/public/events/slug/{slug}": {
       "get": {
-        "description": "查询合约当前仓位。",
+        "description": "返回指定 slug 的事件及其市场信息。",
         "tags": [
-          "交易查询"
+          "用户接口-事件"
         ],
-        "summary": "合约当前仓位",
+        "summary": "按标识查询事件",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
-            "in": "query",
+            "description": "事件 slug，例如 world-cup-2026",
+            "name": "slug",
+            "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品类型，默认 SWAP",
-            "name": "instType",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品 ID",
-            "name": "instId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "仓位 ID",
-            "name": "posId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "交易模式",
-            "name": "tdMode",
-            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -611,11 +1253,31 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "事件详情",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradePositionsResponse"
+                  "$ref": "#/components/schemas/http_event.Event"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "事件 slug 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "事件不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -623,17 +1285,18 @@
         }
       }
     },
-    "/api/v1/trade/futures/positions-history": {
+    "/api/v2/public/kline": {
       "get": {
-        "description": "查询合约历史仓位。",
+        "description": "查询指定结果 Token 的 OHLCV K 线。该接口保留兼容用途，新接入请优先使用 GET /api/v2/public/price-history。startTs/endTs 使用 Unix 毫秒，传 0 或不传表示不限制对应边界。",
         "tags": [
-          "交易查询"
+          "用户接口-市场"
         ],
-        "summary": "合约历史仓位",
+        "summary": "查询 K 线（兼容接口）",
+        "deprecated": true,
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
+            "description": "结果 Token ID，十进制正整数",
+            "name": "tokenId",
             "in": "query",
             "required": true,
             "schema": {
@@ -641,77 +1304,80 @@
             }
           },
           {
-            "description": "产品类型，默认 SWAP",
-            "name": "instType",
+            "description": "K 线周期，默认 1m",
+            "name": "interval",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "1m",
+                "5m",
+                "30m",
+                "1h",
+                "4h",
+                "6h",
+                "1d"
+              ],
+              "default": "1m"
             }
           },
           {
-            "description": "产品 ID",
-            "name": "instId",
+            "description": "开始时间（Unix 毫秒）；0 或不传表示不限开始时间",
+            "name": "startTs",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 0
             }
           },
           {
-            "description": "标的",
-            "name": "uly",
+            "description": "结束时间（Unix 毫秒）；0 或不传表示不限结束时间",
+            "name": "endTs",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 0
             }
           },
           {
-            "description": "开始时间戳(ms)",
-            "name": "begin",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结束时间戳(ms)",
-            "name": "end",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 after",
-            "name": "after",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 before",
-            "name": "before",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "条数限制",
+            "description": "返回最近记录数，默认 100，最大 500",
             "name": "limit",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 100
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "K 线数据",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradePositionsHistoryResponse"
+                  "$ref": "#/components/schemas/http_market.AckKlines"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token、周期或时间范围无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "K 线不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -719,106 +1385,51 @@
         }
       }
     },
-    "/api/v1/trade/spot/fills": {
+    "/api/v2/public/markets": {
       "get": {
-        "description": "查询现货成交明细。",
+        "description": "从可访问事件中汇总市场，并按事件、状态和数字游标分页。",
         "tags": [
-          "交易查询"
+          "用户接口-市场"
         ],
-        "summary": "现货成交明细",
+        "summary": "查询市场列表",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品类型，默认 SPOT",
-            "name": "instType",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品 ID",
-            "name": "instId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "订单 ID",
-            "name": "ordId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "买卖方向",
-            "name": "side",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "持仓方向",
-            "name": "posSide",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "交易模式",
-            "name": "tdMode",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "开始时间戳(ms)",
-            "name": "begin",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结束时间戳(ms)",
-            "name": "end",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 after",
-            "name": "after",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 before",
-            "name": "before",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "条数限制",
+            "description": "每页数量，默认 20，最大 100",
             "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "description": "结果偏移游标，首次请求不传，后续原样传入上一页 nextCursor",
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "description": "市场状态；为空时不筛选",
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "CLOSED",
+                "RESOLVED"
+              ]
+            }
+          },
+          {
+            "description": "事件 slug；为空时查询全部事件下的市场",
+            "name": "eventSlug",
             "in": "query",
             "schema": {
               "type": "string"
@@ -827,11 +1438,21 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "市场列表",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradeFillsResponse"
+                  "$ref": "#/components/schemas/http_market.AckMarkets"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -839,107 +1460,19 @@
         }
       }
     },
-    "/api/v1/trade/spot/orders-history": {
+    "/api/v2/public/orderbook": {
       "get": {
-        "description": "查询现货历史委托列表。",
+        "description": "返回指定结果 Token 的买卖盘快照；缓存尚未建立时返回结构完整的空订单簿。",
         "tags": [
-          "交易查询"
+          "用户接口-市场"
         ],
-        "summary": "现货历史委托",
+        "summary": "查询订单簿",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
+            "description": "结果 Token ID，十进制正整数",
+            "name": "tokenId",
             "in": "query",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品类型，默认 SPOT",
-            "name": "instType",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "产品 ID",
-            "name": "instId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "订单类型",
-            "name": "ordType",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "订单状态",
-            "name": "state",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "买卖方向",
-            "name": "side",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "持仓方向",
-            "name": "posSide",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "开始时间戳(ms)",
-            "name": "begin",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结束时间戳(ms)",
-            "name": "end",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 after",
-            "name": "after",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "游标 before",
-            "name": "before",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "条数限制",
-            "name": "limit",
-            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -947,11 +1480,21 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "订单簿快照",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradeOrdersHistoryResponse"
+                  "$ref": "#/components/schemas/http_market.AckOrderbook"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -959,17 +1502,17 @@
         }
       }
     },
-    "/api/v1/trade/spot/orders-pending": {
+    "/api/v2/public/price-history": {
       "get": {
-        "description": "查询现货当前委托列表。",
+        "description": "按固定时间窗口查询指定结果 Token 的价格点。时间戳为 Unix 毫秒。",
         "tags": [
-          "交易查询"
+          "用户接口-市场"
         ],
-        "summary": "现货当前委托",
+        "summary": "查询价格历史",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "user_id",
+            "description": "结果 Token ID，十进制正整数",
+            "name": "tokenId",
             "in": "query",
             "required": true,
             "schema": {
@@ -977,56 +1520,75 @@
             }
           },
           {
-            "description": "产品类型，默认 SPOT",
-            "name": "instType",
+            "description": "历史窗口，默认 1h",
+            "name": "interval",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1h",
+                "12h",
+                "1d",
+                "1w",
+                "1mo"
+              ],
+              "default": "1h"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "价格历史",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_market.AckPriceHistory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token 或时间窗口无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "价格历史不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/prices": {
+      "get": {
+        "description": "tokenIds 与 ids 为同义参数，优先使用 tokenIds；值为逗号分隔的结果 Token ID。无效或无行情的 ID 不会出现在结果中。",
+        "tags": [
+          "用户接口-市场"
+        ],
+        "summary": "批量查询价格",
+        "parameters": [
+          {
+            "description": "逗号分隔的结果 Token ID，例如 101,102；与 ids 至少传一个",
+            "name": "tokenIds",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "description": "产品 ID",
-            "name": "instId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "买卖方向",
-            "name": "side",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "持仓方向",
-            "name": "posSide",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "开始时间戳(ms)",
-            "name": "begin",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结束时间戳(ms)",
-            "name": "end",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "条数限制",
-            "name": "limit",
+            "description": "tokenIds 的兼容参数；tokenIds 为空时生效",
+            "name": "ids",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1035,11 +1597,612 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Token ID 到最新价的映射",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/model.TradeOrdersPendingResponse"
+                  "$ref": "#/components/schemas/http_market.AckPrices"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ID 列表为空",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/search": {
+      "get": {
+        "description": "按事件标题、描述、标识或代码进行不区分大小写的模糊搜索。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "搜索事件",
+        "parameters": [
+          {
+            "description": "搜索关键词；去除首尾空格后不能为空",
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "搜索结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_event.AckSearch"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/tags": {
+      "get": {
+        "description": "分页查询活动标签；成功响应缓存 60 秒。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "查询标签列表",
+        "parameters": [
+          {
+            "description": "每页数量，默认 20，最大 100",
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "description": "偏移量，默认 0",
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "description": "排序字段；为空时使用服务默认顺序",
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "是否升序，默认 false",
+            "name": "ascending",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "description": "是否包含模板标签，默认 false",
+            "name": "includeTemplate",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "description": "是否仅返回轮播标签；不传表示不按该字段筛选",
+            "name": "isCarousel",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "标签列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_event.AckTags"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "标签查询失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/tags/filtered": {
+      "get": {
+        "description": "按父标签和事件状态查询筛选标签；可选择返回事件数量和子标签，成功响应缓存 60 秒。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "查询筛选标签",
+        "parameters": [
+          {
+            "description": "父标签 ID 或 slug",
+            "name": "tag",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件状态；为空时不限制状态",
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "CLOSED",
+                "RESOLVED"
+              ]
+            }
+          },
+          {
+            "description": "语言代码；当前版本仅用于兼容，服务端不参与查询",
+            "name": "locale",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "是否返回 activeEventsCount，默认 false",
+            "name": "includeEventCount",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "description": "是否返回 children，默认 false",
+            "name": "includeChildren",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "筛选标签列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/http_event.FilteredTag"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "标签参数或语言代码无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "父标签不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "筛选标签查询失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/tags/slug/{slug}": {
+      "get": {
+        "description": "返回指定 slug 的标签。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "按标识查询标签",
+        "parameters": [
+          {
+            "description": "标签 slug，例如 sports",
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "标签详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_event.Tag"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "标签 slug 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "标签不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/tags/{id}": {
+      "get": {
+        "description": "返回指定数字 ID 的标签。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "按 ID 查询标签",
+        "parameters": [
+          {
+            "description": "标签 ID，必须大于 0",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "标签详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_event.Tag"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "标签 ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "标签不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/ticker": {
+      "get": {
+        "description": "返回市场级行情和各结果 Token 的最优买卖价、最新价及更新时间。",
+        "tags": [
+          "用户接口-市场"
+        ],
+        "summary": "查询市场行情",
+        "parameters": [
+          {
+            "description": "市场 ID，十进制正整数",
+            "name": "marketId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "市场行情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_market.AckTicker"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "市场 ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "市场行情不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/ticker/midpoint": {
+      "get": {
+        "description": "返回指定结果 Token 的最优买价与最优卖价中间值。",
+        "tags": [
+          "用户接口-市场"
+        ],
+        "summary": "查询中间价",
+        "parameters": [
+          {
+            "description": "结果 Token ID，十进制正整数",
+            "name": "tokenId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "中间价",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_market.AckMidpoint"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "中间价不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/ticker/spread": {
+      "get": {
+        "description": "返回指定结果 Token 的最优买价、最优卖价和二者价差。",
+        "tags": [
+          "用户接口-市场"
+        ],
+        "summary": "查询买卖价差",
+        "parameters": [
+          {
+            "description": "结果 Token ID，十进制正整数",
+            "name": "tokenId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "买卖价差",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_market.AckSpread"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "价差数据不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/public/trade": {
+      "get": {
+        "description": "按事件或市场筛选最近成交；eventId/event 与 marketId/market 分别是同义参数，优先使用 *Id 形式。",
+        "tags": [
+          "用户接口-成交"
+        ],
+        "summary": "查询公开成交",
+        "parameters": [
+          {
+            "description": "返回数量，默认 20，最大 100",
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "description": "事件 ID",
+            "name": "eventId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件 ID 的兼容参数；eventId 为空时生效",
+            "name": "event",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "市场 ID",
+            "name": "marketId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "市场 ID 的兼容参数；marketId 为空时生效",
+            "name": "market",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "公开成交列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_market.AckTrades"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "成交记录不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1050,2076 +2213,1737 @@
   },
   "servers": [
     {
-      "url": "http://10.10.1.10:38008",
+      "url": "https://predict.xbit.trade",
+      "description": "开发环境"
+    },
+    {
+      "url": "https://apitest-predict.xbit.trade",
       "description": "测试环境"
     }
   ],
   "components": {
     "schemas": {
-      "api.CreateApiKeyRequest": {
-        "type": "object",
-        "required": [
-          "user_id"
-        ],
-        "properties": {
-          "authorities": {
-            "description": "权限列表 ([READ, TRADE])",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "[\"READ\"]"
-            ]
-          },
-          "ip_list": {
-            "description": "IP 白名单 (逗号分隔)",
-            "type": "string",
-            "example": "127.0.0.1"
-          },
-          "remark": {
-            "description": "备注信息",
-            "type": "string",
-            "example": "我的密钥"
-          },
-          "user_id": {
-            "description": "券商侧用户 ID",
-            "type": "string",
-            "example": "user_01"
-          }
-        }
-      },
-      "api.CreateSpecialUserRequest": {
-        "type": "object",
-        "required": [
-          "broker_id",
-          "type"
-        ],
-        "properties": {
-          "broker_id": {
-            "description": "券商 ID",
-            "type": "integer",
-            "example": 1001
-          },
-          "type": {
-            "description": "账户类型: sys, mm",
-            "type": "string",
-            "enum": [
-              "sys",
-              "mm"
-            ],
-            "example": "sys"
-          }
-        }
-      },
-      "api.DeleteApiKeyRequest": {
-        "type": "object",
-        "required": [
-          "api_key"
-        ],
-        "properties": {
-          "api_key": {
-            "description": "待删除的 API Key",
-            "type": "string",
-            "example": "ak_123"
-          }
-        }
-      },
-      "api.InnerBrokerTransferRequest": {
-        "type": "object",
-        "required": [
-          "amount",
-          "broker_id",
-          "currency",
-          "fromBiz",
-          "toBiz",
-          "uid"
-        ],
-        "properties": {
-          "amount": {
-            "description": "划转金额",
-            "type": "string",
-            "example": "1"
-          },
-          "broker_id": {
-            "description": "券商ID",
-            "type": "integer",
-            "example": 1001
-          },
-          "currency": {
-            "description": "币种",
-            "type": "string",
-            "example": "BTC"
-          },
-          "fromBiz": {
-            "description": "来源账户",
-            "type": "string",
-            "example": "exchange"
-          },
-          "toBiz": {
-            "description": "目标账户",
-            "type": "string",
-            "example": "asset"
-          },
-          "uid": {
-            "description": "用户UID",
-            "type": "string",
-            "example": "1001636910453"
-          }
-        }
-      },
-      "api.LoginUserRequest": {
-        "type": "object",
-        "required": [
-          "token",
-          "user_id"
-        ],
-        "properties": {
-          "token": {
-            "description": "登录 Token",
-            "type": "string",
-            "example": "token_123"
-          },
-          "user_id": {
-            "description": "券商侧用户 ID",
-            "type": "string",
-            "example": "user_01"
-          }
-        }
-      },
-      "api.LogoutUserRequest": {
-        "type": "object",
-        "required": [
-          "user_id"
-        ],
-        "properties": {
-          "user_id": {
-            "description": "券商侧用户 ID",
-            "type": "string",
-            "example": "user_01"
-          }
-        }
-      },
-      "api.RegisterUserRequest": {
-        "type": "object",
-        "required": [
-          "user_id"
-        ],
-        "properties": {
-          "desc": {
-            "description": "用户描述",
-            "type": "string",
-            "example": "测试用户"
-          },
-          "user_id": {
-            "description": "券商侧用户唯一 ID",
-            "type": "string",
-            "example": "user_01"
-          },
-          "user_name": {
-            "description": "用户昵称",
-            "type": "string",
-            "example": "张三"
-          }
-        }
-      },
-      "api.TransferRequest": {
-        "type": "object",
-        "required": [
-          "amount",
-          "currency",
-          "direction",
-          "txn_id",
-          "user_id"
-        ],
-        "properties": {
-          "amount": {
-            "description": "划转金额",
-            "type": "string",
-            "example": "100.00"
-          },
-          "currency": {
-            "description": "币种",
-            "type": "string",
-            "example": "USDT"
-          },
-          "direction": {
-            "description": "划转方向: 1-入, 2-出",
-            "type": "integer",
-            "enum": [
-              1,
-              2
-            ],
-            "example": 1
-          },
-          "remark": {
-            "description": "备注",
-            "type": "string",
-            "example": "充值"
-          },
-          "txn_id": {
-            "description": "券商侧唯一交易流水号",
-            "type": "string",
-            "example": "txn_123456"
-          },
-          "user_id": {
-            "description": "券商侧用户 ID",
-            "type": "string",
-            "example": "user_01"
-          }
-        }
-      },
-      "api.UpdateApiKeyRequest": {
-        "type": "object",
-        "required": [
-          "api_key"
-        ],
-        "properties": {
-          "api_key": {
-            "description": "待更新的 API Key",
-            "type": "string",
-            "example": "ak_123"
-          },
-          "authorities": {
-            "description": "权限列表",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "[\"READ\"]"
-            ]
-          },
-          "ip_list": {
-            "description": "IP 白名单",
-            "type": "string",
-            "example": "127.0.0.1"
-          },
-          "remark": {
-            "description": "备注",
-            "type": "string",
-            "example": "更新后的备注"
-          },
-          "status": {
-            "description": "状态: 1-正常, 2-禁用",
-            "type": "integer",
-            "example": 1
-          }
-        }
-      },
-      "api.UpdateUserRequest": {
-        "type": "object",
-        "required": [
-          "user_id"
-        ],
-        "properties": {
-          "desc": {
-            "description": "新描述",
-            "type": "string",
-            "example": "新描述"
-          },
-          "user_id": {
-            "description": "券商侧用户 ID",
-            "type": "string",
-            "example": "user_01"
-          },
-          "user_name": {
-            "description": "新昵称",
-            "type": "string",
-            "example": "新昵称"
-          }
-        }
-      },
-      "model.ApiKeyCreateResponse": {
+      "http_account.AccountTrade": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.ApiKeyCreateResponseData"
-          },
-          "message": {
-            "type": "string",
-            "example": "成功"
-          }
-        }
-      },
-      "model.ApiKeyCreateResponseData": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "description": "API Key 详细信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/model.BrokerUserApiKey"
-              }
-            ]
-          },
-          "sk": {
-            "description": "原始 API Secret (仅创建时返回一次)",
-            "type": "string",
-            "example": "abc123456789"
-          }
-        }
-      },
-      "model.ApiKeyListResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.BrokerUserApiKey"
-            }
-          },
-          "message": {
-            "type": "string",
-            "example": "成功"
-          }
-        }
-      },
-      "model.AssetBalanceRes": {
-        "type": "object",
-        "properties": {
-          "available": {
+          "assetId": {
+            "description": "结果 Token ID",
             "type": "string"
           },
-          "balance": {
+          "avgCostPrice": {
+            "description": "成交后的平均成本价；无数据时为空",
             "type": "string"
           },
-          "currency": {
-            "type": "string"
-          },
-          "equity": {
-            "type": "string"
-          },
-          "frozen": {
-            "type": "string"
-          }
-        }
-      },
-      "model.AssetCurrenciesResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.AssetCurrencyInfo"
-            }
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.AssetCurrencyInfo": {
-        "type": "object",
-        "properties": {
-          "currency": {
-            "description": "币种简称",
-            "type": "string"
-          },
-          "currencyFullName": {
-            "description": "币种全称",
-            "type": "string"
-          },
-          "currencyId": {
-            "description": "币种 ID",
-            "type": "integer"
-          },
-          "logo": {
-            "description": "币种图标地址",
-            "type": "string"
-          },
-          "type": {
-            "description": "币种类型（如 crypto）",
-            "type": "string"
-          },
-          "viewPrecision": {
-            "description": "展示精度",
-            "type": "integer"
-          }
-        }
-      },
-      "model.AssetTransferData": {
-        "type": "object",
-        "properties": {
-          "order_id": {
-            "description": "订单ID",
-            "type": "string",
-            "example": "202604120001"
-          }
-        }
-      },
-      "model.AssetTransferResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.AssetTransferData"
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.BrokerAllResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": true
-            }
-          },
-          "message": {
-            "type": "string",
-            "example": "成功"
-          }
-        }
-      },
-      "model.BrokerInfo": {
-        "type": "object",
-        "properties": {
-          "api_key": {
-            "description": "签名用的 API Key",
-            "type": "string",
-            "example": "test_ak"
-          },
-          "broker_id": {
-            "description": "券商业务 ID",
-            "type": "integer",
-            "example": 1001
-          },
-          "config": {
-            "description": "额外配置 (JSON 字符串)",
-            "type": "string",
-            "example": "{}"
-          },
-          "created_at": {
-            "description": "创建时间",
-            "type": "string"
-          },
-          "domain": {
-            "description": "券商网站域名",
-            "type": "string",
-            "example": "broker.com"
-          },
-          "enable_transfer": {
-            "description": "是否开启划转功能",
-            "type": "boolean",
-            "example": true
-          },
-          "logo": {
-            "description": "券商 Logo 地址",
-            "type": "string",
-            "example": "https://logo.com/a.png"
-          },
-          "name": {
-            "description": "券商名称",
-            "type": "string",
-            "example": "DemoBroker"
-          },
-          "query_webhook_url": {
-            "description": "查询 webhook 地址",
-            "type": "string"
-          },
-          "status": {
-            "description": "状态 (1:启用, 0:禁用)",
-            "type": "integer",
-            "example": 1
-          },
-          "transfer_webhook_url": {
-            "description": "划转 webhook 地址",
-            "type": "string"
-          },
-          "updated_at": {
-            "description": "更新时间",
-            "type": "string"
-          }
-        }
-      },
-      "model.BrokerInfoResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.BrokerInfo"
-          },
-          "message": {
-            "type": "string",
-            "example": "成功"
-          }
-        }
-      },
-      "model.BrokerListResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.BrokerListResponseData"
-          },
-          "message": {
-            "type": "string",
-            "example": "成功"
-          }
-        }
-      },
-      "model.BrokerListResponseData": {
-        "type": "object",
-        "properties": {
-          "list": {
-            "description": "券商信息列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.BrokerInfo"
-            }
-          },
-          "total": {
-            "description": "总记录数",
-            "type": "integer",
-            "example": 10
-          }
-        }
-      },
-      "model.BrokerUser": {
-        "type": "object",
-        "properties": {
-          "broker_id": {
-            "type": "integer"
-          },
-          "broker_uid": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "extra": {
-            "type": "string"
-          },
-          "uid": {
-            "type": "integer"
-          },
-          "updated_at": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          }
-        }
-      },
-      "model.BrokerUserApiKey": {
-        "type": "object",
-        "properties": {
-          "api_key": {
-            "description": "访问密钥 (Access Key)",
-            "type": "string",
-            "example": "ak_123"
-          },
-          "authorities": {
-            "description": "权限列表 (JSON 格式)",
-            "type": "string",
-            "example": "[\"READ\"]"
-          },
-          "broker_id": {
-            "description": "所属券商 ID",
-            "type": "integer",
-            "example": 1001
-          },
-          "created_at": {
-            "description": "创建时间",
-            "type": "string"
-          },
-          "expired_at": {
-            "description": "过期时间戳 (0 表示永不过期)",
-            "type": "integer",
-            "example": 0
-          },
-          "id": {
-            "description": "内部主键 ID",
-            "type": "integer",
-            "example": 1
-          },
-          "ip_white_list": {
-            "description": "IP 白名单",
-            "type": "string",
-            "example": "127.0.0.1"
-          },
-          "passphrase": {
-            "description": "API 口令 (可选)",
-            "type": "string",
-            "example": "pass123"
-          },
-          "remark": {
-            "description": "备注信息",
-            "type": "string",
-            "example": "我的密钥"
-          },
-          "status": {
-            "description": "状态: 1-正常, 2-禁用",
-            "type": "integer",
-            "example": 1
-          },
-          "updated_at": {
-            "description": "更新时间",
-            "type": "string"
-          },
-          "user_id": {
-            "description": "券商侧用户唯一 ID",
-            "type": "string",
-            "example": "user_01"
-          }
-        }
-      },
-      "model.CreateApiKeyRequest": {
-        "type": "object",
-        "required": [
-          "uid"
-        ],
-        "properties": {
-          "authorities": {
-            "description": "e.g. \"[\\\"READ\\\",\\\"TRADE\\\"]\"",
-            "type": "string"
-          },
-          "brokerId": {
-            "description": "optional, default 0 or inferred",
-            "type": "integer"
-          },
-          "remark": {
-            "type": "string"
-          },
-          "uid": {
-            "type": "integer"
-          }
-        }
-      },
-      "model.CreateApiKeyResponse": {
-        "type": "object",
-        "properties": {
-          "apiKey": {
-            "type": "string"
-          },
-          "apiSecret": {
-            "type": "string"
-          }
-        }
-      },
-      "model.HedgeConfigCreateReq": {
-        "type": "object",
-        "required": [
-          "broker_id",
-          "uid"
-        ],
-        "properties": {
-          "broker_id": {
-            "type": "integer"
-          },
-          "hedge_ratio": {
-            "type": "number"
-          },
-          "remark": {
-            "type": "string"
-          },
-          "uid": {
-            "type": "integer"
-          }
-        }
-      },
-      "model.HedgeConfigUpdateReq": {
-        "type": "object",
-        "required": [
-          "uid"
-        ],
-        "properties": {
-          "hedge_ratio": {
-            "type": "number"
-          },
-          "remark": {
-            "type": "string"
-          },
-          "uid": {
-            "type": "integer"
-          }
-        }
-      },
-      "model.Response": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "description": "状态码 (200:成功, 400:参数错误, 500:系统错误)",
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "description": "响应数据"
-          },
-          "message": {
-            "description": "提示信息",
-            "type": "string",
-            "example": "成功"
-          }
-        }
-      },
-      "model.SimpleUserDTO": {
-        "type": "object",
-        "properties": {
-          "broker_uid": {
-            "description": "券商侧用户 ID",
-            "type": "string",
-            "example": "U10001"
-          },
-          "id": {
-            "description": "平台用户 ID",
-            "type": "integer",
-            "example": 1000885589780
-          },
-          "uid": {
-            "description": "混淆后的全局 UID",
-            "type": "integer",
-            "example": 1000885589780
-          },
-          "username": {
-            "description": "用户名",
-            "type": "string",
-            "example": "Tester"
-          }
-        }
-      },
-      "model.TradeAlgoOrderItem": {
-        "type": "object",
-        "properties": {
-          "algoClOrderId": {
-            "description": "策略单自定义 ID",
-            "type": "string"
-          },
-          "algoOrdSide": {
-            "description": "策略单方向",
-            "type": "string"
-          },
-          "algoOrdType": {
-            "description": "策略单类型",
-            "type": "string"
-          },
-          "algoOrderId": {
-            "description": "策略单 ID",
-            "type": "string"
-          },
-          "cTime": {
-            "description": "创建时间",
-            "type": "integer"
-          },
-          "instId": {
-            "description": "产品 ID",
-            "type": "string"
-          },
-          "instType": {
-            "description": "产品类型",
-            "type": "string"
-          },
-          "lever": {
-            "description": "杠杆",
-            "type": "string"
-          },
-          "marginType": {
-            "description": "保证金模式",
-            "type": "string"
-          },
-          "ordPx": {
-            "description": "委托价",
-            "type": "string"
-          },
-          "ordSz": {
-            "description": "委托数量",
-            "type": "string"
-          },
-          "orderIds": {
-            "description": "触发后订单 ID 列表",
-            "type": "string"
-          },
-          "posSide": {
-            "description": "持仓方向",
-            "type": "string"
-          },
-          "postOnly": {
-            "description": "只做 maker",
-            "type": "boolean"
-          },
-          "reduceOnly": {
-            "description": "只减仓",
-            "type": "boolean"
-          },
-          "side": {
-            "description": "买卖方向",
-            "type": "string"
-          },
-          "state": {
-            "description": "订单状态",
-            "type": "string"
-          },
-          "timeInForce": {
-            "description": "有效方式",
-            "type": "string"
-          },
-          "triggerPx": {
-            "description": "触发价格",
-            "type": "string"
-          },
-          "triggerPxType": {
-            "description": "触发价格类型",
-            "type": "string"
-          },
-          "triggerTime": {
-            "description": "触发时间",
-            "type": "integer"
-          },
-          "uTime": {
-            "description": "更新时间",
-            "type": "integer"
-          }
-        }
-      },
-      "model.TradeAlgoOrdersPendingResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.TradeAlgoOrderItem"
-            }
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.TradeAssetBalanceData": {
-        "type": "object",
-        "properties": {
-          "details": {
-            "description": "币种资产明细",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.TradeAssetBalanceDetail"
-            }
-          },
-          "isoPositions": {
-            "description": "逐仓仓位明细",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.TradeIsolatePositionDetail"
-            }
-          }
-        }
-      },
-      "model.TradeAssetBalanceDetail": {
-        "type": "object",
-        "properties": {
-          "availBal": {
-            "description": "可用余额",
-            "type": "string"
-          },
-          "availWithdrawBal": {
-            "description": "最大可转出余额",
-            "type": "string"
-          },
-          "bal": {
-            "description": "账户余额",
-            "type": "string"
-          },
-          "ccy": {
-            "description": "币种",
-            "type": "string"
-          },
-          "crossOrdFrozen": {
-            "description": "全仓挂单冻结",
-            "type": "string"
-          },
-          "eq": {
-            "description": "币种总权益",
-            "type": "string"
-          },
-          "isoOrdFrozen": {
-            "description": "逐仓挂单冻结",
-            "type": "string"
-          },
-          "marginRate": {
-            "description": "币种全仓保证金率",
-            "type": "string"
-          },
-          "mmr": {
-            "description": "全仓维持保证金",
-            "type": "string"
-          },
-          "pnl": {
-            "description": "累计盈亏",
-            "type": "string"
-          },
-          "spotOrdFrozen": {
-            "description": "现货挂单冻结",
-            "type": "string"
-          },
-          "transferFrozen": {
-            "description": "划转冻结",
-            "type": "string"
-          },
-          "upl": {
-            "description": "未实现盈亏",
-            "type": "string"
-          }
-        }
-      },
-      "model.TradeAssetBalanceResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.TradeAssetBalanceData"
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.TradeBillItem": {
-        "type": "object",
-        "properties": {
-          "bal": {
-            "description": "余额",
-            "type": "string"
-          },
-          "balChg": {
-            "description": "余额变动",
-            "type": "string"
-          },
-          "billId": {
-            "description": "流水 ID",
-            "type": "string"
-          },
-          "cTime": {
-            "description": "创建时间",
-            "type": "string"
-          },
-          "ccy": {
-            "description": "币种",
-            "type": "string"
-          },
-          "from": {
-            "description": "来源",
+          "feeRateBps": {
+            "description": "费率（基点）",
             "type": "string"
           },
           "id": {
-            "description": "记录 ID",
-            "type": "integer"
-          },
-          "instId": {
-            "description": "产品 ID",
-            "type": "string"
-          },
-          "instType": {
-            "description": "产品类型",
-            "type": "string"
-          },
-          "notes": {
-            "description": "备注",
-            "type": "string"
-          },
-          "subType": {
-            "description": "子类型",
-            "type": "string"
-          },
-          "to": {
-            "description": "去向",
-            "type": "string"
-          },
-          "type": {
-            "description": "流水类型",
-            "type": "string"
-          }
-        }
-      },
-      "model.TradeBillsPageData": {
-        "type": "object",
-        "properties": {
-          "list": {
-            "description": "数据列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.TradeBillItem"
-            }
-          },
-          "pageNum": {
-            "description": "页码",
-            "type": "integer"
-          },
-          "pageSize": {
-            "description": "每页条数",
-            "type": "integer"
-          },
-          "totalPage": {
-            "description": "总页数",
-            "type": "integer"
-          },
-          "totalSize": {
-            "description": "总条数",
-            "type": "integer"
-          }
-        }
-      },
-      "model.TradeBillsResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.TradeBillsPageData"
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.TradeFillsItem": {
-        "type": "object",
-        "properties": {
-          "baseCcy": {
-            "description": "基础币",
-            "type": "string"
-          },
-          "billId": {
-            "description": "账单 ID",
-            "type": "string"
-          },
-          "cTime": {
-            "description": "创建时间",
-            "type": "string"
-          },
-          "clOrdId": {
-            "description": "客户端订单 ID",
-            "type": "string"
-          },
-          "execType": {
-            "description": "执行类型",
-            "type": "string"
-          },
-          "fee": {
-            "description": "手续费",
-            "type": "string"
-          },
-          "feeCcy": {
-            "description": "手续费币种",
-            "type": "string"
-          },
-          "fillPnl": {
-            "description": "成交盈亏",
-            "type": "string"
-          },
-          "fillPx": {
-            "description": "成交价",
-            "type": "string"
-          },
-          "fillSz": {
-            "description": "成交量",
-            "type": "string"
-          },
-          "fillTime": {
-            "description": "成交时间",
-            "type": "string"
-          },
-          "id": {
-            "description": "记录 ID",
-            "type": "string"
-          },
-          "instId": {
-            "description": "产品 ID",
-            "type": "string"
-          },
-          "instType": {
-            "description": "产品类型",
-            "type": "string"
-          },
-          "liqRole": {
-            "description": "流动性角色",
-            "type": "string"
-          },
-          "ordId": {
-            "description": "订单 ID",
-            "type": "string"
-          },
-          "posSide": {
-            "description": "持仓方向",
-            "type": "string"
-          },
-          "quoteCcy": {
-            "description": "计价币",
-            "type": "string"
-          },
-          "side": {
-            "description": "买卖方向",
-            "type": "string"
-          },
-          "tag": {
-            "description": "标签",
-            "type": "string"
-          },
-          "tradeId": {
             "description": "成交 ID",
             "type": "string"
-          }
-        }
-      },
-      "model.TradeFillsPageData": {
-        "type": "object",
-        "properties": {
-          "list": {
-            "description": "数据列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.TradeFillsItem"
-            }
           },
-          "pageNum": {
-            "description": "页码",
-            "type": "integer"
+          "isImplied": {
+            "description": "是否为组合/隐含成交",
+            "type": "boolean"
           },
-          "pageSize": {
-            "description": "每页条数",
-            "type": "integer"
-          },
-          "totalPage": {
-            "description": "总页数",
-            "type": "integer"
-          },
-          "totalSize": {
-            "description": "总条数",
-            "type": "integer"
-          }
-        }
-      },
-      "model.TradeFillsResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.TradeFillsPageData"
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.TradeIsolatePositionDetail": {
-        "type": "object",
-        "properties": {
-          "eq": {
-            "description": "仓位权益",
-            "type": "string"
-          },
-          "instId": {
-            "description": "产品 ID",
-            "type": "string"
-          },
-          "lever": {
-            "description": "杠杆",
-            "type": "string"
-          },
-          "marginRate": {
-            "description": "保证金率",
-            "type": "string"
-          },
-          "mmrRate": {
-            "description": "维持保证金率",
-            "type": "string"
-          },
-          "posSide": {
-            "description": "持仓方向",
-            "type": "string"
-          }
-        }
-      },
-      "model.TradeOrderHistoryPageData": {
-        "type": "object",
-        "properties": {
-          "list": {
-            "description": "数据列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.TradeOrderQueryItem"
-            }
-          },
-          "pageNum": {
-            "description": "页码",
-            "type": "integer"
-          },
-          "pageSize": {
-            "description": "每页条数",
-            "type": "integer"
-          },
-          "totalPage": {
-            "description": "总页数",
-            "type": "integer"
-          },
-          "totalSize": {
-            "description": "总条数",
-            "type": "integer"
-          }
-        }
-      },
-      "model.TradeOrderQueryItem": {
-        "type": "object",
-        "properties": {
-          "accFillSz": {
-            "description": "累计成交量",
-            "type": "string"
-          },
-          "algoClOrdId": {
-            "description": "策略单客户端 ID",
-            "type": "string"
-          },
-          "algoId": {
-            "description": "策略单 ID",
-            "type": "string"
-          },
-          "avgPx": {
-            "description": "平均成交价",
-            "type": "string"
-          },
-          "baseCcy": {
-            "description": "基础币",
-            "type": "string"
-          },
-          "cTime": {
-            "description": "创建时间",
-            "type": "string"
-          },
-          "cancelSource": {
-            "description": "撤单来源",
-            "type": "string"
-          },
-          "cancelSourceReason": {
-            "description": "撤单原因",
-            "type": "string"
-          },
-          "ccy": {
-            "description": "保证金币种",
-            "type": "string"
-          },
-          "clOrdId": {
-            "description": "客户端订单 ID",
-            "type": "string"
-          },
-          "fee": {
-            "description": "手续费",
-            "type": "string"
-          },
-          "feeCcy": {
-            "description": "手续费币种",
-            "type": "string"
-          },
-          "fillNotional": {
-            "description": "成交名义价值",
-            "type": "string"
-          },
-          "fillPx": {
-            "description": "最新成交价",
-            "type": "string"
-          },
-          "fillSz": {
-            "description": "最新成交量",
-            "type": "string"
-          },
-          "fillTime": {
-            "description": "最新成交时间",
-            "type": "string"
-          },
-          "id": {
-            "description": "记录 ID",
-            "type": "string"
-          },
-          "instId": {
-            "description": "产品 ID",
-            "type": "string"
-          },
-          "instType": {
-            "description": "产品类型",
-            "type": "string"
-          },
-          "lever": {
-            "description": "杠杆",
-            "type": "string"
-          },
-          "markPx": {
-            "description": "标记价格",
-            "type": "string"
-          },
-          "notional": {
-            "description": "订单名义价值",
-            "type": "string"
-          },
-          "ordId": {
-            "description": "订单 ID",
-            "type": "string"
-          },
-          "ordPx": {
-            "description": "策略单委托价",
-            "type": "string"
-          },
-          "ordType": {
-            "description": "订单类型",
+          "market": {
+            "description": "市场 ID",
             "type": "string"
           },
           "orderId": {
-            "description": "订单 ID（兼容字段）",
+            "description": "关联订单 ID",
             "type": "string"
           },
-          "orderSource": {
-            "description": "订单来源",
-            "type": "integer"
-          },
-          "pnl": {
-            "description": "盈亏",
+          "price": {
+            "description": "成交价，十进制字符串",
             "type": "string"
           },
-          "pnlRatio": {
-            "description": "盈亏率",
+          "realizedPnl": {
+            "description": "本次成交实现盈亏，十进制字符串",
             "type": "string"
           },
-          "posId": {
-            "description": "持仓 ID",
+          "role": {
+            "description": "撮合角色：MAKER 或 TAKER",
             "type": "string"
-          },
-          "posSide": {
-            "description": "持仓方向",
-            "type": "string"
-          },
-          "px": {
-            "description": "委托价格",
-            "type": "string"
-          },
-          "quoteCcy": {
-            "description": "计价币",
-            "type": "string"
-          },
-          "reduceOnly": {
-            "description": "是否只减仓",
-            "type": "boolean"
           },
           "side": {
-            "description": "买卖方向",
+            "description": "方向：BUY 或 SELL",
             "type": "string"
           },
-          "slOrdPx": {
-            "description": "止损委托价",
+          "size": {
+            "description": "成交数量，十进制字符串",
             "type": "string"
           },
-          "slTriggerPx": {
-            "description": "止损触发价",
-            "type": "string"
+          "timestamp": {
+            "description": "成交时间戳（Unix 毫秒）",
+            "type": "integer"
           },
-          "slTriggerPxType": {
-            "description": "止损触发类型",
+          "tradeKind": {
+            "description": "成交类型；默认 MATCH",
+            "type": "string"
+          }
+        }
+      },
+      "http_account.AckAccountTrades": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "本次返回数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "成交记录",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_account.AccountTrade"
+            }
+          }
+        }
+      },
+      "http_asset.AckDeposit": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "description": "资产服务入金单 ID",
             "type": "string"
           },
           "state": {
-            "description": "订单状态",
+            "description": "入金单当前状态",
             "type": "string"
           },
-          "sz": {
-            "description": "委托数量",
+          "success": {
+            "description": "是否受理成功",
+            "type": "boolean"
+          }
+        }
+      },
+      "http_asset.AckTransfer": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "description": "资产服务划转单 ID",
             "type": "string"
           },
-          "tdMode": {
-            "description": "交易模式",
+          "state": {
+            "description": "划转单当前状态",
             "type": "string"
           },
-          "tgtCcy": {
-            "description": "目标计价币",
+          "success": {
+            "description": "是否受理成功",
+            "type": "boolean"
+          }
+        }
+      },
+      "http_asset.AckWithdraw": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "description": "资产服务出金单 ID",
             "type": "string"
           },
-          "timeInForce": {
-            "description": "有效方式",
+          "state": {
+            "description": "出金单当前状态",
             "type": "string"
           },
-          "tpOrdPx": {
-            "description": "止盈委托价",
+          "success": {
+            "description": "是否受理成功",
+            "type": "boolean"
+          }
+        }
+      },
+      "http_asset.ReqAccountTransfer": {
+        "type": "object",
+        "required": [
+          "amount",
+          "fromAccountType",
+          "toAccountType"
+        ],
+        "properties": {
+          "accountId": {
+            "description": "当前账户 ID；启用鉴权时以 Token 对应账户为准",
             "type": "string"
           },
-          "tpTriggerPx": {
-            "description": "止盈触发价",
+          "amount": {
+            "description": "USDC 数量，必须大于 0，按 10^-4 精度处理",
             "type": "string"
           },
-          "tpTriggerPxType": {
-            "description": "止盈触发类型",
+          "clientTransferId": {
+            "description": "调用方幂等标识；同一业务重试期间保持不变",
             "type": "string"
           },
-          "triggerPrice": {
-            "description": "触发价格",
+          "fromAccountId": {
+            "description": "转出账户 ID；启用鉴权时强制使用当前账户",
             "type": "string"
           },
-          "triggerType": {
-            "description": "触发类型",
+          "fromAccountType": {
+            "description": "转出账户类型，不能为空",
             "type": "string"
           },
-          "uTime": {
+          "toAccountId": {
+            "description": "转入账户 ID；为空时默认当前账户",
+            "type": "string"
+          },
+          "toAccountType": {
+            "description": "转入账户类型，不能为空",
+            "type": "string"
+          }
+        }
+      },
+      "http_asset.ReqDepositWithdraw": {
+        "type": "object",
+        "required": [
+          "amount"
+        ],
+        "properties": {
+          "accountId": {
+            "description": "账户 ID；启用鉴权时以 Token 对应账户为准",
+            "type": "string"
+          },
+          "address": {
+            "description": "出金目标地址；入金时忽略，出金为空时使用测试默认地址",
+            "type": "string"
+          },
+          "amount": {
+            "description": "USDC 数量，必须大于 0，按 10^-4 精度处理",
+            "type": "string"
+          }
+        }
+      },
+      "http_common.AckError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "稳定业务错误码",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/http_common.EnumErrorCode"
+              }
+            ]
+          },
+          "error": {
+            "description": "可读错误信息，通常包含稳定错误标识",
+            "type": "string"
+          }
+        }
+      },
+      "http_common.EnumErrorCode": {
+        "type": "integer",
+        "enum": [
+          1001,
+          1002,
+          1003,
+          1004,
+          1005,
+          1006,
+          1101,
+          1102,
+          1103,
+          1104,
+          1105,
+          1106,
+          1107,
+          1108,
+          1201,
+          1202,
+          1203,
+          1204,
+          1205,
+          2001,
+          2002,
+          2003,
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          3001,
+          3002,
+          3003,
+          3004,
+          3005,
+          3006,
+          3007,
+          3008,
+          3009,
+          3010,
+          4001,
+          4002,
+          4003,
+          4004,
+          4005,
+          4006,
+          4007,
+          4008,
+          4009,
+          4010,
+          4011,
+          4012,
+          4013,
+          4014,
+          5001,
+          5002,
+          6001,
+          7001,
+          7002,
+          7003,
+          7004,
+          7005,
+          7006
+        ],
+        "x-enum-varnames": [
+          "ErrorCodeInternalError",
+          "ErrorCodeInvalidPayload",
+          "ErrorCodeInvalidAccountID",
+          "ErrorCodeAccountResolutionFailed",
+          "ErrorCodeSourceAccountResolutionFailed",
+          "ErrorCodeTargetAccountResolutionFailed",
+          "ErrorCodeOpenAPIMissingHeader",
+          "ErrorCodeOpenAPIAuthFailed",
+          "ErrorCodeRejectAnonymous",
+          "ErrorCodeBrokerDomainNotFound",
+          "ErrorCodeBrokerEventNotAllowed",
+          "ErrorCodeRouteNotFound",
+          "ErrorCodeMethodNotAllowed",
+          "ErrorCodeBrokerMarketNotAllowed",
+          "ErrorCodeClusterUnavailable",
+          "ErrorCodeClusterBackpressured",
+          "ErrorCodeIngressTimeout",
+          "ErrorCodeIngressQueueFull",
+          "ErrorCodeIngressOfferFailed",
+          "ErrorCodeInvalidOrderID",
+          "ErrorCodeInvalidOrderPayload",
+          "ErrorCodeOrderNotFound",
+          "ErrorCodeMarketNotTradable",
+          "ErrorCodeRiskRejected",
+          "ErrorCodeInvalidCancel",
+          "ErrorCodeInvalidBatch",
+          "ErrorCodeBatchEmpty",
+          "ErrorCodeBatchSizeExceeded",
+          "ErrorCodeOrderResponseTimeout",
+          "ErrorCodeInvalidTokenID",
+          "ErrorCodeInvalidTokenIDs",
+          "ErrorCodeInvalidMarketID",
+          "ErrorCodeInvalidInterval",
+          "ErrorCodeInvalidKlineTime",
+          "ErrorCodeKlinesNotFound",
+          "ErrorCodePriceHistoryNotFound",
+          "ErrorCodeMidpointNotFound",
+          "ErrorCodeMarketTickerNotFound",
+          "ErrorCodeSpreadNotFound",
+          "ErrorCodeEventNotFound",
+          "ErrorCodeEventsNotFound",
+          "ErrorCodeTagsQueryFailed",
+          "ErrorCodeInvalidTagParameter",
+          "ErrorCodeFilteredTagsQueryFailed",
+          "ErrorCodeCarouselEventsQueryFailed",
+          "ErrorCodeEventsKeysetQueryFailed",
+          "ErrorCodeInvalidTagID",
+          "ErrorCodeInvalidTagSlug",
+          "ErrorCodeTagNotFound",
+          "ErrorCodeUnsupportedLocale",
+          "ErrorCodeEventSlugQueryGone",
+          "ErrorCodeEventsOffsetQueryGone",
+          "ErrorCodeInvalidCursor",
+          "ErrorCodeTradesNotFound",
+          "ErrorCodeAccountTradesNotFound",
+          "ErrorCodeAccountNotFound",
+          "ErrorCodeInvalidAmount",
+          "ErrorCodeInvalidAccountType",
+          "ErrorCodeAssetDepositFailed",
+          "ErrorCodeAssetWithdrawFailed",
+          "ErrorCodeAssetTransferFailed",
+          "ErrorCodeAssetServiceNotConfigured"
+        ]
+      },
+      "http_event.AckEventsKeyset": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "description": "当前页事件",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_event.Event"
+            }
+          },
+          "nextCursor": {
+            "description": "下一页不透明游标；为空表示没有下一页",
+            "type": "string"
+          }
+        }
+      },
+      "http_event.AckSearch": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "匹配数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "匹配事件",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_event.Event"
+            }
+          }
+        }
+      },
+      "http_event.AckTags": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "本次返回数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "标签列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_event.Tag"
+            }
+          }
+        }
+      },
+      "http_event.Event": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "description": "实时数据频道",
+            "type": "string"
+          },
+          "closed": {
+            "description": "是否已关闭",
+            "type": "boolean"
+          },
+          "createdAt": {
+            "description": "创建时间",
+            "type": "string"
+          },
+          "description": {
+            "description": "事件描述",
+            "type": "string"
+          },
+          "endDate": {
+            "description": "结束时间",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "iconUrl": {
+            "description": "图标 URL",
+            "type": "string"
+          },
+          "imageUrl": {
+            "description": "图片 URL",
+            "type": "string"
+          },
+          "markets": {
+            "description": "事件下的市场",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_event.EventMarket"
+            }
+          },
+          "resolutionSource": {
+            "description": "结算来源",
+            "type": "string"
+          },
+          "slug": {
+            "description": "事件 slug",
+            "type": "string"
+          },
+          "startDate": {
+            "description": "开始时间",
+            "type": "string"
+          },
+          "status": {
+            "description": "事件状态",
+            "type": "string"
+          },
+          "title": {
+            "description": "事件标题",
+            "type": "string"
+          },
+          "updatedAt": {
             "description": "更新时间",
             "type": "string"
           }
         }
       },
-      "model.TradeOrdersHistoryResponse": {
+      "http_event.EventMarket": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.TradeOrderHistoryPageData"
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.TradeOrdersPendingResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.TradeOrderQueryItem"
-            }
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.TradePositionHistoryItem": {
-        "type": "object",
-        "properties": {
-          "avgEntryPrice": {
-            "description": "开仓均价",
+          "bestAsk": {
+            "description": "最优卖价",
             "type": "string"
           },
-          "avgExitPrice": {
-            "description": "平仓均价",
+          "bestBid": {
+            "description": "最优买价",
             "type": "string"
           },
-          "baseCcy": {
-            "description": "基础币",
+          "conditionId": {
+            "description": "条件 ID",
             "type": "string"
           },
-          "closeTime": {
-            "description": "平仓时间",
-            "type": "integer"
+          "disputeFlag": {
+            "description": "是否处于争议状态",
+            "type": "boolean"
           },
-          "commission": {
-            "description": "手续费",
+          "endDate": {
+            "description": "结束时间",
             "type": "string"
           },
-          "fundingFee": {
-            "description": "资金费",
+          "groupItemTitle": {
+            "description": "分组展示标题",
             "type": "string"
           },
-          "id": {
-            "description": "记录 ID",
-            "type": "integer"
-          },
-          "instId": {
-            "description": "产品 ID",
-            "type": "string"
-          },
-          "leverage": {
-            "description": "杠杆",
-            "type": "string"
-          },
-          "liquidateAmt": {
-            "description": "强平数量",
-            "type": "string"
-          },
-          "liquidateMarkPrice": {
-            "description": "强平标记价",
-            "type": "string"
-          },
-          "liquidatePrice": {
-            "description": "强平成交价",
-            "type": "string"
-          },
-          "liquidateTime": {
-            "description": "强平时间",
-            "type": "integer"
-          },
-          "liquidationFee": {
-            "description": "强平手续费",
-            "type": "string"
-          },
-          "openTime": {
-            "description": "开仓时间",
-            "type": "integer"
-          },
-          "penaltyFee": {
-            "description": "罚金",
-            "type": "string"
-          },
-          "posSide": {
-            "description": "持仓方向",
-            "type": "string"
-          },
-          "positionAmt": {
-            "description": "持仓金额",
-            "type": "string"
-          },
-          "positionId": {
-            "description": "仓位 ID",
-            "type": "string"
-          },
-          "positionQty": {
-            "description": "持仓数量",
-            "type": "string"
-          },
-          "positionStatus": {
-            "description": "仓位状态",
-            "type": "integer"
-          },
-          "quoteCcy": {
-            "description": "计价币",
-            "type": "string"
-          },
-          "realProfit": {
-            "description": "已实现盈亏",
-            "type": "string"
-          },
-          "side": {
-            "description": "开平方向",
-            "type": "string"
-          },
-          "tdMode": {
-            "description": "保证金模式",
-            "type": "string"
-          },
-          "tradeFee": {
-            "description": "交易费",
-            "type": "string"
-          }
-        }
-      },
-      "model.TradePositionHistoryPageData": {
-        "type": "object",
-        "properties": {
-          "list": {
-            "description": "数据列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.TradePositionHistoryItem"
-            }
-          },
-          "pageNum": {
-            "description": "页码",
-            "type": "integer"
-          },
-          "pageSize": {
-            "description": "每页条数",
-            "type": "integer"
-          },
-          "totalPage": {
-            "description": "总页数",
-            "type": "integer"
-          },
-          "totalSize": {
-            "description": "总条数",
-            "type": "integer"
-          }
-        }
-      },
-      "model.TradePositionItem": {
-        "type": "object",
-        "properties": {
-          "adlLevel": {
-            "description": "自动减仓等级",
-            "type": "integer"
-          },
-          "availPos": {
-            "description": "可平仓数量",
-            "type": "string"
-          },
-          "avgPx": {
-            "description": "开仓平均价",
-            "type": "string"
-          },
-          "cTime": {
-            "description": "持仓创建时间",
-            "type": "integer"
-          },
-          "idxPx": {
-            "description": "指数价格",
-            "type": "string"
-          },
-          "instId": {
-            "description": "产品 ID",
-            "type": "string"
-          },
-          "instType": {
-            "description": "产品类型",
-            "type": "string"
-          },
-          "lastPx": {
+          "lastPrice": {
             "description": "最新成交价",
             "type": "string"
           },
-          "lever": {
-            "description": "杠杆",
+          "marketId": {
+            "description": "市场 ID",
             "type": "string"
           },
-          "liqPx": {
-            "description": "预估强平价",
+          "marketQuestion": {
+            "description": "市场问题",
             "type": "string"
           },
-          "maintainMargin": {
-            "description": "维持保证金",
+          "marketSlug": {
+            "description": "市场 slug",
             "type": "string"
           },
-          "maintainMarginRate": {
-            "description": "维持保证金率",
-            "type": "string"
-          },
-          "margin": {
-            "description": "保证金余额",
-            "type": "string"
-          },
-          "marginRate": {
-            "description": "保证金率",
-            "type": "string"
-          },
-          "marginType": {
-            "description": "保证金模式",
-            "type": "string"
-          },
-          "markPx": {
-            "description": "标记价格",
-            "type": "string"
-          },
-          "pnl": {
-            "description": "累计收益额",
-            "type": "string"
-          },
-          "pos": {
-            "description": "持仓量",
-            "type": "string"
-          },
-          "posId": {
-            "description": "持仓 ID",
-            "type": "string"
-          },
-          "posMargin": {
-            "description": "仓位占用保证金",
-            "type": "string"
-          },
-          "posSide": {
-            "description": "持仓方向",
-            "type": "string"
-          },
-          "riskLevel": {
-            "description": "风险等级",
+          "orderMinSize": {
+            "description": "最小委托数量",
             "type": "integer"
           },
-          "slTriggerPx": {
-            "description": "止损触发价",
-            "type": "string"
-          },
-          "slTriggerPxType": {
-            "description": "止损触发价类型",
-            "type": "string"
-          },
-          "state": {
-            "description": "仓位状态",
-            "type": "string"
-          },
-          "tpTriggerPx": {
-            "description": "止盈触发价",
-            "type": "string"
-          },
-          "tpTriggerPxType": {
-            "description": "止盈触发价类型",
-            "type": "string"
-          },
-          "uTime": {
-            "description": "最近更新时间",
-            "type": "integer"
-          },
-          "upl": {
-            "description": "未实现收益",
-            "type": "string"
-          },
-          "uplRate": {
-            "description": "未实现收益率",
-            "type": "string"
-          }
-        }
-      },
-      "model.TradePositionsHistoryResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.TradePositionHistoryPageData"
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.TradePositionsResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.TradePositionItem"
-            }
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          }
-        }
-      },
-      "model.UserHedgeConfig": {
-        "type": "object",
-        "properties": {
-          "broker_id": {
-            "type": "integer"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "hedge_ratio": {
+          "orderMinTickSize": {
+            "description": "最小价格步长；创建委托时价格必须是其整数倍",
             "type": "number"
           },
-          "hedge_tag": {
+          "pricePrecision": {
+            "description": "价格精度类型",
             "type": "string"
           },
-          "is_manual_modified": {
-            "type": "integer"
-          },
-          "modify_expire_time": {
+          "startDate": {
+            "description": "开始时间",
             "type": "string"
           },
-          "uid": {
-            "type": "integer"
-          },
-          "updated_at": {
+          "status": {
+            "description": "市场状态",
             "type": "string"
+          },
+          "tokenIdNo": {
+            "description": "NO 结果 Token ID",
+            "type": "string"
+          },
+          "tokenIdYes": {
+            "description": "YES 结果 Token ID",
+            "type": "string"
+          },
+          "tokenNameNo": {
+            "description": "NO 结果展示名",
+            "type": "string"
+          },
+          "tokenNameYes": {
+            "description": "YES 结果展示名",
+            "type": "string"
+          },
+          "volume": {
+            "description": "累计成交量",
+            "type": "number"
           }
         }
       },
-      "model.UserListRes": {
+      "http_event.FilteredTag": {
         "type": "object",
         "properties": {
-          "list": {
+          "activeEventsCount": {
+            "description": "活动事件数量；仅请求时启用才返回",
+            "type": "integer"
+          },
+          "children": {
+            "description": "子标签；仅请求时启用才返回",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/model.BrokerUser"
+              "$ref": "#/components/schemas/http_event.FilteredTag"
             }
           },
+          "id": {
+            "description": "标签 ID",
+            "type": "string"
+          },
+          "label": {
+            "description": "标签显示名称",
+            "type": "string"
+          },
+          "parentId": {
+            "description": "父标签 ID",
+            "type": "string"
+          },
+          "slug": {
+            "description": "标签 slug",
+            "type": "string"
+          }
+        }
+      },
+      "http_event.Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "标签 ID",
+            "type": "integer"
+          },
+          "label": {
+            "description": "标签显示名称",
+            "type": "string"
+          },
+          "slug": {
+            "description": "标签 slug",
+            "type": "string"
+          }
+        }
+      },
+      "http_market.AckKlines": {
+        "type": "object",
+        "properties": {
+          "history": {
+            "description": "K 线记录",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_market.Kline"
+            }
+          }
+        }
+      },
+      "http_market.AckMarkets": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "本次返回数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "市场列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_market.Market"
+            }
+          },
+          "nextCursor": {
+            "description": "下一页数字游标；为空表示没有下一页",
+            "type": "string"
+          },
           "total": {
+            "description": "当前筛选条件下的总数",
             "type": "integer"
           }
         }
       },
-      "model.UserRegisterResponse": {
+      "http_market.AckMidpoint": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
+          "midpoint": {
+            "description": "最优买卖价中间值",
+            "type": "string"
           },
-          "data": {
-            "$ref": "#/components/schemas/model.UserRegisterResponseData"
-          },
-          "message": {
-            "type": "string",
-            "example": "成功"
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
           }
         }
       },
-      "model.UserRegisterResponseData": {
+      "http_market.AckOrderbook": {
         "type": "object",
         "properties": {
-          "uid": {
-            "description": "平台生成的唯一用户ID",
-            "type": "integer",
-            "example": 1000885589780
-          }
-        }
-      },
-      "model.VerifyBrokerSignatureRequest": {
-        "type": "object",
-        "required": [
-          "apiKey",
-          "method",
-          "path",
-          "signature",
-          "timestamp"
-        ],
-        "properties": {
-          "apiKey": {
-            "type": "string",
-            "example": "test_ak"
+          "asks": {
+            "description": "卖盘，按价格排序",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_market.AckOrderbookLevel"
+            }
           },
-          "body": {
-            "type": "string",
-            "example": "{}"
+          "bids": {
+            "description": "买盘，按价格排序",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_market.AckOrderbookLevel"
+            }
           },
-          "method": {
-            "type": "string",
-            "example": "POST"
+          "hash": {
+            "description": "快照内容哈希",
+            "type": "string"
           },
-          "path": {
-            "type": "string",
-            "example": "/api/v1/user/register"
-          },
-          "query": {
-            "type": "string",
-            "example": ""
-          },
-          "signature": {
-            "type": "string",
-            "example": "xxx"
+          "marketId": {
+            "description": "市场 ID",
+            "type": "string"
           },
           "timestamp": {
-            "type": "string",
-            "example": "1710000000000"
+            "description": "快照时间戳（Unix 毫秒）",
+            "type": "integer"
+          },
+          "timestampSource": {
+            "description": "时间戳来源",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
           }
         }
       },
-      "model.VerifyBrokerSignatureResponse": {
+      "http_market.AckOrderbookLevel": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
+          "price": {
+            "description": "价格",
+            "type": "string"
           },
-          "data": {
-            "$ref": "#/components/schemas/model.VerifyBrokerSignatureResponseData"
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
+          "size": {
+            "description": "挂单数量",
+            "type": "string"
           }
         }
       },
-      "model.VerifyBrokerSignatureResponseData": {
+      "http_market.AckPriceHistory": {
         "type": "object",
         "properties": {
-          "brokerId": {
-            "type": "integer",
-            "example": 1001
+          "history": {
+            "description": "价格点",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_market.PriceHistoryPoint"
+            }
           },
-          "name": {
-            "type": "string",
-            "example": "DemoBroker"
+          "interval": {
+            "description": "实际使用的历史窗口",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "integer"
           }
         }
       },
-      "model.VerifySignatureRequest": {
+      "http_market.AckPrices": {
         "type": "object",
-        "required": [
-          "apiKey",
-          "method",
-          "path",
-          "signature",
-          "timestamp"
-        ],
         "properties": {
-          "apiKey": {
-            "description": "访问密钥",
-            "type": "string",
-            "example": "7007b96cf748fdd0"
+          "prices": {
+            "description": "Token ID 到最新价的映射",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "http_market.AckSpread": {
+        "type": "object",
+        "properties": {
+          "bestAsk": {
+            "description": "最优卖价",
+            "type": "string"
           },
-          "body": {
-            "description": "请求体 (可选)",
-            "type": "string",
-            "example": "{\"user_id\":\"123\"}"
+          "bestBid": {
+            "description": "最优买价",
+            "type": "string"
           },
-          "method": {
-            "description": "HTTP 方法",
-            "type": "string",
-            "example": "POST"
+          "spread": {
+            "description": "卖一价减买一价",
+            "type": "string"
           },
-          "path": {
-            "description": "请求路径",
-            "type": "string",
-            "example": "/api/v1/user/login"
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          }
+        }
+      },
+      "http_market.AckTicker": {
+        "type": "object",
+        "properties": {
+          "conditionId": {
+            "description": "条件 ID",
+            "type": "string"
           },
-          "query": {
-            "description": "请求参数 (可选)",
-            "type": "string",
-            "example": "user_id=123"
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
           },
-          "signature": {
-            "description": "签名结果",
-            "type": "string",
-            "example": "base64_str"
+          "marketId": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "points": {
+            "description": "各结果 Token 行情",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_market.AckTickerPoint"
+            }
           },
           "timestamp": {
-            "description": "时间戳 (秒或毫秒)",
-            "type": "string",
-            "example": "1689584042"
+            "description": "市场行情时间戳（Unix 毫秒）",
+            "type": "integer"
+          },
+          "volume": {
+            "description": "市场累计成交量",
+            "type": "string"
           }
         }
       },
-      "model.VerifySignatureResponse": {
+      "http_market.AckTickerPoint": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
+          "bestAsk": {
+            "description": "最优卖价",
+            "type": "string"
+          },
+          "bestBid": {
+            "description": "最优买价",
+            "type": "string"
+          },
+          "lastPrice": {
+            "description": "最新成交价",
+            "type": "string"
+          },
+          "timestamp": {
+            "description": "行情时间戳（Unix 毫秒）",
+            "type": "integer"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          }
+        }
+      },
+      "http_market.AckTrades": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "本次返回数量",
+            "type": "integer"
           },
           "data": {
-            "$ref": "#/components/schemas/model.VerifySignatureResponseData"
-          },
-          "message": {
-            "type": "string",
-            "example": "成功"
+            "description": "公开成交",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_market.Trade"
+            }
           }
         }
       },
-      "model.VerifySignatureResponseData": {
+      "http_market.Kline": {
         "type": "object",
         "properties": {
-          "authorities": {
-            "description": "API Key 权限列表",
+          "c": {
+            "description": "收盘价",
+            "type": "string"
+          },
+          "h": {
+            "description": "最高价",
+            "type": "string"
+          },
+          "l": {
+            "description": "最低价",
+            "type": "string"
+          },
+          "o": {
+            "description": "开盘价",
+            "type": "string"
+          },
+          "t": {
+            "description": "K 线起始时间（Unix 秒）",
+            "type": "integer"
+          },
+          "v": {
+            "description": "成交量",
+            "type": "string"
+          }
+        }
+      },
+      "http_market.Market": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "description": "是否活跃",
+            "type": "boolean"
+          },
+          "approved": {
+            "description": "是否已审核",
+            "type": "boolean"
+          },
+          "bestAsk": {
+            "description": "最优卖价",
+            "type": "number"
+          },
+          "bestBid": {
+            "description": "最优买价",
+            "type": "number"
+          },
+          "closed": {
+            "description": "是否已关闭",
+            "type": "boolean"
+          },
+          "conditionId": {
+            "description": "条件 ID",
+            "type": "string"
+          },
+          "description": {
+            "description": "市场描述",
+            "type": "string"
+          },
+          "devNegRisk": {
+            "description": "开发环境负风险标记",
+            "type": "boolean"
+          },
+          "devVolume1mo": {
+            "description": "1 月成交量",
+            "type": "number"
+          },
+          "devVolume1wk": {
+            "description": "1 周成交量",
+            "type": "number"
+          },
+          "devVolume1yr": {
+            "description": "1 年成交量",
+            "type": "number"
+          },
+          "devVolume24hr": {
+            "description": "24 小时成交量",
+            "type": "number"
+          },
+          "enableOrderBook": {
+            "description": "是否启用订单簿",
+            "type": "boolean"
+          },
+          "endDate": {
+            "description": "结束时间",
+            "type": "string"
+          },
+          "funded": {
+            "description": "是否已注资",
+            "type": "boolean"
+          },
+          "icon": {
+            "description": "图标 URL",
+            "type": "string"
+          },
+          "id": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "image": {
+            "description": "图片 URL",
+            "type": "string"
+          },
+          "lastPrice": {
+            "description": "最新成交价",
+            "type": "number"
+          },
+          "liquidity": {
+            "description": "流动性",
+            "type": "number"
+          },
+          "liquidityClob": {
+            "description": "订单簿流动性",
+            "type": "number"
+          },
+          "negRisk": {
+            "description": "是否为负风险市场",
+            "type": "boolean"
+          },
+          "negRiskMarketId": {
+            "description": "负风险市场 ID",
+            "type": "string"
+          },
+          "orderMinSize": {
+            "description": "最小委托数量",
+            "type": "integer"
+          },
+          "orderPriceMinTickSize": {
+            "description": "最小价格步长",
+            "type": "number"
+          },
+          "outcomePrices": {
+            "description": "结果价格的 JSON 字符串",
+            "type": "string"
+          },
+          "outcomes": {
+            "description": "结果名称的 JSON 字符串",
+            "type": "string"
+          },
+          "question": {
+            "description": "市场问题",
+            "type": "string"
+          },
+          "ready": {
+            "description": "是否已准备交易",
+            "type": "boolean"
+          },
+          "resolutionSource": {
+            "description": "结算来源",
+            "type": "string"
+          },
+          "slug": {
+            "description": "市场 slug",
+            "type": "string"
+          },
+          "spread": {
+            "description": "买卖价差",
+            "type": "number"
+          },
+          "startDate": {
+            "description": "开始时间",
+            "type": "string"
+          },
+          "tokens": {
+            "description": "结果 Token",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_market.Token"
+            }
+          },
+          "volume": {
+            "description": "累计成交量",
+            "type": "number"
+          },
+          "volumeClob": {
+            "description": "订单簿累计成交量",
+            "type": "number"
+          }
+        }
+      },
+      "http_market.PriceHistoryPoint": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "description": "价格",
+            "type": "number"
+          },
+          "timestamp": {
+            "description": "时间戳（Unix 毫秒）",
+            "type": "integer"
+          }
+        }
+      },
+      "http_market.Token": {
+        "type": "object",
+        "properties": {
+          "lastPrice": {
+            "description": "最新成交价",
+            "type": "string"
+          },
+          "outcome": {
+            "description": "结果名称",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          }
+        }
+      },
+      "http_market.Trade": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "conditionId": {
+            "description": "条件 ID",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "id": {
+            "description": "成交 ID",
+            "type": "string"
+          },
+          "market": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "price": {
+            "description": "成交价",
+            "type": "string"
+          },
+          "side": {
+            "description": "方向：BUY 或 SELL",
+            "type": "string"
+          },
+          "size": {
+            "description": "成交数量",
+            "type": "string"
+          },
+          "timestamp": {
+            "description": "成交时间戳（Unix 毫秒）",
+            "type": "integer"
+          }
+        }
+      },
+      "http_order.AckBatchCancel": {
+        "type": "object",
+        "properties": {
+          "async": {
+            "description": "是否异步处理；批量撤单固定为 false",
+            "type": "boolean"
+          },
+          "count": {
+            "description": "结果数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "各订单处理结果",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_order.AckBatchResultItem"
+            }
+          },
+          "success": {
+            "description": "批次是否成功提交",
+            "type": "boolean"
+          }
+        }
+      },
+      "http_order.AckBatchPlace": {
+        "type": "object",
+        "properties": {
+          "async": {
+            "description": "是否采用异步提交",
+            "type": "boolean"
+          },
+          "count": {
+            "description": "结果数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "各订单处理结果",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_order.AckBatchResultItem"
+            }
+          },
+          "success": {
+            "description": "批次是否成功提交",
+            "type": "boolean"
+          }
+        }
+      },
+      "http_order.AckBatchResultItem": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "description": "订单 ID",
+            "type": "string"
+          },
+          "reason": {
+            "description": "拒绝或失败原因",
+            "type": "string"
+          },
+          "reasonCode": {
+            "description": "拒绝原因码；成功时通常为 0",
+            "type": "integer"
+          },
+          "status": {
+            "description": "处理状态",
+            "type": "string"
+          }
+        }
+      },
+      "http_order.AckCancelOrder": {
+        "type": "object",
+        "properties": {
+          "canceled": {
+            "description": "已取消订单 ID",
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "example": [
-              "[\"READ\"]"
-            ]
-          },
-          "userId": {
-            "description": "平台侧全局 UID",
-            "type": "string",
-            "example": "1000175565425"
-          }
-        }
-      },
-      "model.VerifyTokenRequest": {
-        "type": "object",
-        "required": [
-          "token"
-        ],
-        "properties": {
-          "token": {
-            "description": "登录 Token",
-            "type": "string",
-            "example": "demo_token_153924"
-          }
-        }
-      },
-      "model.VerifyTokenResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "$ref": "#/components/schemas/model.VerifyTokenResponseData"
+            }
           },
           "message": {
-            "type": "string",
-            "example": "成功"
+            "description": "补充说明",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "请求取消的订单 ID",
+            "type": "string"
+          },
+          "reason": {
+            "description": "失败原因",
+            "type": "string"
+          },
+          "reasonCode": {
+            "description": "失败原因码",
+            "type": "integer"
+          },
+          "status": {
+            "description": "撤单处理状态",
+            "type": "string"
+          },
+          "success": {
+            "description": "是否撤单成功",
+            "type": "boolean"
           }
         }
       },
-      "model.VerifyTokenResponseData": {
+      "http_order.AckOpenOrders": {
         "type": "object",
         "properties": {
-          "user": {
-            "description": "用户基本信息",
+          "count": {
+            "description": "本次返回数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "当前委托",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_order.Order"
+            }
+          }
+        }
+      },
+      "http_order.AckOrder": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "description": "创建时间（Unix 毫秒）",
+            "type": "integer"
+          },
+          "message": {
+            "description": "补充说明",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "订单 ID",
+            "type": "string"
+          },
+          "reason": {
+            "description": "拒绝或失败原因",
+            "type": "string"
+          },
+          "reasonCode": {
+            "description": "拒绝原因码；成功时通常为 0",
+            "type": "integer"
+          },
+          "status": {
+            "description": "订单受理状态",
+            "type": "string"
+          },
+          "success": {
+            "description": "是否受理成功",
+            "type": "boolean"
+          }
+        }
+      },
+      "http_order.AckOrderDetail": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "创建时间（Unix 毫秒）",
+            "type": "integer"
+          },
+          "expiration": {
+            "description": "到期时间（Unix 毫秒字符串）；0 表示无指定到期",
+            "type": "string"
+          },
+          "id": {
+            "description": "订单 ID",
+            "type": "string"
+          },
+          "market": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "orderType": {
+            "description": "委托类型",
+            "type": "string"
+          },
+          "originalSize": {
+            "description": "原始委托数量",
+            "type": "string"
+          },
+          "outcome": {
+            "description": "结果名称",
+            "type": "string"
+          },
+          "price": {
+            "description": "委托价",
+            "type": "string"
+          },
+          "reasonCode": {
+            "description": "拒绝或失败原因码",
+            "type": "integer"
+          },
+          "side": {
+            "description": "委托方向：BUY 或 SELL",
+            "type": "string"
+          },
+          "sizeMatched": {
+            "description": "已成交数量",
+            "type": "string"
+          },
+          "status": {
+            "description": "订单状态",
+            "type": "string"
+          }
+        }
+      },
+      "http_order.AckOrderHistory": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "本次返回数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "历史委托",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_order.Order"
+            }
+          }
+        }
+      },
+      "http_order.BatchCancelItem": {
+        "type": "object",
+        "required": [
+          "orderId"
+        ],
+        "properties": {
+          "orderId": {
+            "description": "订单 ID，十进制正整数",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID；可省略，但建议传入",
+            "type": "string"
+          }
+        }
+      },
+      "http_order.BatchOrderItem": {
+        "type": "object",
+        "required": [
+          "side",
+          "size",
+          "timestamp",
+          "tokenId"
+        ],
+        "properties": {
+          "expiration": {
+            "description": "到期时间，Unix 秒或毫秒；传 0 表示未指定",
+            "type": "integer"
+          },
+          "orderType": {
+            "description": "委托类型：GTC、FOK、GTD、FAK、MARKET；默认 GTC",
+            "type": "string",
+            "enum": [
+              "GTC",
+              "FOK",
+              "GTD",
+              "FAK",
+              "MARKET"
+            ]
+          },
+          "price": {
+            "description": "委托价；MARKET 可为空，其他类型取值 (0,1)",
+            "type": "string"
+          },
+          "side": {
+            "description": "委托方向：BUY 或 SELL",
+            "type": "string",
+            "enum": [
+              "BUY",
+              "SELL"
+            ]
+          },
+          "size": {
+            "description": "委托数量，十进制正整数字符串",
+            "type": "string"
+          },
+          "timestamp": {
+            "description": "请求时间（Unix 毫秒）；每次提交取当前时间",
+            "type": "integer"
+          },
+          "tokenId": {
+            "description": "结果 Token ID，十进制正整数",
+            "type": "string"
+          }
+        }
+      },
+      "http_order.Order": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "创建时间（Unix 毫秒）",
+            "type": "integer"
+          },
+          "expiration": {
+            "description": "到期时间（Unix 毫秒字符串）；0 表示无指定到期",
+            "type": "string"
+          },
+          "id": {
+            "description": "订单 ID",
+            "type": "string"
+          },
+          "market": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "orderType": {
+            "description": "委托类型",
+            "type": "string"
+          },
+          "originalSize": {
+            "description": "原始委托数量",
+            "type": "string"
+          },
+          "outcome": {
+            "description": "结果名称",
+            "type": "string"
+          },
+          "price": {
+            "description": "委托价",
+            "type": "string"
+          },
+          "reasonCode": {
+            "description": "拒绝或失败原因码",
+            "type": "integer"
+          },
+          "side": {
+            "description": "委托方向：BUY 或 SELL",
+            "type": "string"
+          },
+          "sizeMatched": {
+            "description": "已成交数量",
+            "type": "string"
+          },
+          "status": {
+            "description": "订单状态",
+            "type": "string"
+          }
+        }
+      },
+      "http_order.ReqBatchCancel": {
+        "type": "object",
+        "required": [
+          "orderIds"
+        ],
+        "properties": {
+          "orderIds": {
+            "description": "待取消订单，1 至 100 项",
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/http_order.BatchCancelItem"
+            }
+          }
+        }
+      },
+      "http_order.ReqBatchPlace": {
+        "type": "object",
+        "required": [
+          "orders"
+        ],
+        "properties": {
+          "orders": {
+            "description": "待创建委托，1 至 50 项",
+            "type": "array",
+            "maxItems": 50,
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/http_order.BatchOrderItem"
+            }
+          }
+        }
+      },
+      "http_order.ReqOrder": {
+        "type": "object",
+        "required": [
+          "side",
+          "size",
+          "timestamp",
+          "tokenId"
+        ],
+        "properties": {
+          "accountId": {
+            "description": "账户 ID；启用鉴权时以 Token 对应账户为准",
+            "type": "string"
+          },
+          "expiration": {
+            "description": "GTD 到期时间，Unix 秒或毫秒；其他类型可为 0",
+            "type": "integer"
+          },
+          "orderType": {
+            "description": "委托类型：GTC、FOK、GTD、FAK、MARKET；默认 GTC",
+            "type": "string",
+            "enum": [
+              "GTC",
+              "FOK",
+              "GTD",
+              "FAK",
+              "MARKET"
+            ]
+          },
+          "price": {
+            "description": "委托价；MARKET 可为空，其他类型取值 (0,1) 且须符合价格步长",
+            "type": "string"
+          },
+          "side": {
+            "description": "委托方向：BUY 或 SELL",
+            "type": "string",
+            "enum": [
+              "BUY",
+              "SELL"
+            ]
+          },
+          "size": {
+            "description": "委托数量，十进制正整数字符串",
+            "type": "string"
+          },
+          "timestamp": {
+            "description": "请求时间（Unix 毫秒）；每次提交取当前时间",
+            "type": "integer"
+          },
+          "tokenId": {
+            "description": "结果 Token ID，十进制正整数",
+            "type": "string"
+          }
+        }
+      },
+      "http_position.AckAccountSummary": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "description": "账户 ID",
+            "type": "string"
+          },
+          "tokens": {
+            "description": "各结果 Token 余额",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_position.AckTokenBalance"
+            }
+          },
+          "usdc": {
+            "description": "USDC 余额",
             "allOf": [
               {
-                "$ref": "#/components/schemas/model.SimpleUserDTO"
+                "$ref": "#/components/schemas/http_position.AckBalance"
               }
             ]
+          }
+        }
+      },
+      "http_position.AckBalance": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "可用余额",
+            "type": "string"
+          },
+          "locked": {
+            "description": "锁定余额",
+            "type": "string"
+          }
+        }
+      },
+      "http_position.AckPositions": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "本次返回数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "持仓记录",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_position.Position"
+            }
+          }
+        }
+      },
+      "http_position.AckProfile": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "description": "账户 ID",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "创建时间（Unix 毫秒）；当前版本为预留字段",
+            "type": "integer"
+          },
+          "marketCount": {
+            "description": "参与市场数；当前版本为预留字段",
+            "type": "integer"
+          },
+          "profitLoss": {
+            "description": "累计盈亏；当前版本为预留字段",
+            "type": "string"
+          },
+          "volume": {
+            "description": "累计成交量；当前版本为预留字段",
+            "type": "string"
+          }
+        }
+      },
+      "http_position.AckTokenBalance": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "可用数量",
+            "type": "string"
+          },
+          "locked": {
+            "description": "锁定数量",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          }
+        }
+      },
+      "http_position.Position": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "description": "账户 ID",
+            "type": "string"
+          },
+          "assetId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "available": {
+            "description": "可用数量",
+            "type": "string"
+          },
+          "averagePrice": {
+            "description": "平均成本价",
+            "type": "string"
+          },
+          "conditionId": {
+            "description": "市场条件 ID",
+            "type": "string"
+          },
+          "currentPrice": {
+            "description": "当前价格",
+            "type": "string"
+          },
+          "currentValue": {
+            "description": "当前估值",
+            "type": "string"
+          },
+          "endDate": {
+            "description": "事件结束时间",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "eventSlug": {
+            "description": "事件 slug",
+            "type": "string"
+          },
+          "icon": {
+            "description": "市场或事件图标 URL",
+            "type": "string"
+          },
+          "image": {
+            "description": "市场或事件图片 URL",
+            "type": "string"
+          },
+          "locked": {
+            "description": "委托锁定数量",
+            "type": "string"
+          },
+          "marketQuestion": {
+            "description": "市场问题",
+            "type": "string"
+          },
+          "marketSlug": {
+            "description": "市场 slug",
+            "type": "string"
+          },
+          "outcome": {
+            "description": "持有的结果名称",
+            "type": "string"
+          },
+          "size": {
+            "description": "总持仓数量",
+            "type": "string"
+          },
+          "slug": {
+            "description": "展示 slug",
+            "type": "string"
+          },
+          "title": {
+            "description": "展示标题",
+            "type": "string"
+          },
+          "toWin": {
+            "description": "结果成立时可兑付金额",
+            "type": "string"
+          },
+          "tradedValue": {
+            "description": "初始成交价值",
+            "type": "string"
+          },
+          "unrealizedPnl": {
+            "description": "未实现盈亏",
+            "type": "string"
+          },
+          "unrealizedPnlPercent": {
+            "description": "未实现盈亏百分比",
+            "type": "string"
           }
         }
       }
     },
     "securitySchemes": {
-      "BearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "User access token returned by the login flow."
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-token",
+        "description": "用户登录后获得的访问 Token。仅 `/api/v2/private` 接口需要传入。"
       }
     }
   },
-  "security": [
-    {
-      "BearerAuth": []
-    }
-  ],
   "tags": [
     {
-      "name": "交易查询",
-      "description": "Query end-user spot and futures trading data."
+      "name": "用户接口-账户"
+    },
+    {
+      "name": "用户接口-成交"
+    },
+    {
+      "name": "用户接口-资产"
+    },
+    {
+      "name": "用户接口-委托"
+    },
+    {
+      "name": "用户接口-事件"
+    },
+    {
+      "name": "用户接口-市场"
     }
   ],
   "x-api-side": "C"
