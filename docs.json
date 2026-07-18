@@ -180,8 +180,7 @@
                     "group": "账户与持仓",
                     "pages": [
                       "cn/user/api-reference/account/summary",
-                      "cn/user/api-reference/account/positions",
-                      "cn/user/api-reference/account/profile"
+                      "cn/user/api-reference/account/positions"
                     ]
                   }
                 ]

@@ -766,52 +766,6 @@
         ]
       }
     },
-    "/api/v2/private/profile": {
-      "get": {
-        "description": "返回 Token 对应当前账户的基础统计资料；当前版本的盈亏、成交量、市场数和创建时间为预留统计字段。",
-        "tags": [
-          "用户接口-账户"
-        ],
-        "summary": "查询账户资料",
-        "responses": {
-          "200": {
-            "description": "账户资料",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_position.AckProfile"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "账户不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ]
-      }
-    },
     "/api/v2/public/carousel": {
       "get": {
         "description": "按可选标签查询轮播事件。",
@@ -3429,31 +3383,6 @@
             "items": {
               "$ref": "#/components/schemas/http_position.Position"
             }
-          }
-        }
-      },
-      "http_position.AckProfile": {
-        "type": "object",
-        "properties": {
-          "accountId": {
-            "description": "账户 ID",
-            "type": "string"
-          },
-          "createdAt": {
-            "description": "创建时间（Unix 毫秒）；当前版本为预留字段",
-            "type": "integer"
-          },
-          "marketCount": {
-            "description": "参与市场数；当前版本为预留字段",
-            "type": "integer"
-          },
-          "profitLoss": {
-            "description": "累计盈亏；当前版本为预留字段",
-            "type": "string"
-          },
-          "volume": {
-            "description": "累计成交量；当前版本为预留字段",
-            "type": "string"
           }
         }
       },
