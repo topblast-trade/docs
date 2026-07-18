@@ -183,14 +183,6 @@
                       "cn/user/api-reference/account/positions",
                       "cn/user/api-reference/account/profile"
                     ]
-                  },
-                  {
-                    "group": "资产管理",
-                    "pages": [
-                      "cn/user/api-reference/assets/deposit",
-                      "cn/user/api-reference/assets/withdraw",
-                      "cn/user/api-reference/assets/transfer"
-                    ]
                   }
                 ]
               }
