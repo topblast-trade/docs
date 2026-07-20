@@ -51,7 +51,8 @@
                     "pages": [
                       "cn/broker/guide/introduction",
                       "cn/broker/guide/authentication",
-                      "cn/broker/guide/response"
+                      "cn/broker/guide/response",
+                      "cn/broker/guide/webhooks"
                     ]
                   },
                   {
@@ -117,6 +118,12 @@
                       "cn/broker/api-reference/risk/exposures",
                       "cn/broker/api-reference/risk/get-config",
                       "cn/broker/api-reference/risk/save-config"
+                    ]
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "cn/broker/api-reference/webhooks/broker-transferred"
                     ]
                   }
                 ]
@@ -230,7 +237,8 @@
                     "pages": [
                       "en/guide/introduction",
                       "en/guide/authentication-b",
-                      "en/guide/response"
+                      "en/guide/response",
+                      "en/guide/webhooks"
                     ]
                   },
                   {
@@ -257,6 +265,12 @@
                       "en/api-reference/broker/transfer/list",
                       "en/api-reference/broker/transfer/detail",
                       "en/api-reference/broker/assets/list"
+                    ]
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "en/api-reference/broker/webhooks/broker-transferred"
                     ]
                   },
                   {

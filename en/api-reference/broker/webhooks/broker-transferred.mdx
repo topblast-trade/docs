@@ -1,0 +1,13 @@
+---
+title: "Broker transferred"
+description: "Emitted when a broker user transfer reaches a terminal state."
+openapi: "/openapi/b/webhooks.en.json webhook broker.transferred"
+---
+
+The platform sends `broker.transferred` to the unified `webhookUrl` when a transfer reaches a terminal state. Inspect `data.state` for `SUCCESS` or `FAILED`.
+
+<Note>
+Delivery is at least once. Use `eventId` for idempotency and return `2xx` after persisting the event.
+</Note>
+
+See [Webhooks](/en/guide/webhooks) for signature verification, retries, and integration steps.

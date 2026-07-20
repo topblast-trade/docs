@@ -1,0 +1,82 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "XBIT Broker Webhooks",
+    "version": "1.0.0",
+    "description": "Webhook events sent by XBIT to broker systems."
+  },
+  "webhooks": {
+    "broker.transferred": {
+      "post": {
+        "operationId": "brokerTransferredWebhook",
+        "summary": "Broker transferred",
+        "description": "Sent to the broker's unified webhookUrl when an asynchronous broker transfer reaches SUCCESS or FAILED. Inspect data.state for the outcome.",
+        "parameters": [
+          { "name": "x-webhook-id", "in": "header", "required": true, "description": "Unique event ID and the consumer idempotency key.", "schema": { "type": "string", "example": "evt_20357690001" } },
+          { "name": "x-webhook-timestamp", "in": "header", "required": true, "description": "Delivery time as a Unix millisecond timestamp.", "schema": { "type": "string", "example": "1784454000123" } },
+          { "name": "x-webhook-signature", "in": "header", "required": true, "description": "Base64-encoded HMAC-SHA256 signature calculated with the broker API Secret.", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TransferWebhookEvent" },
+              "example": {
+                "eventId": "evt_20357690001",
+                "eventType": "broker.transferred",
+                "eventVersion": "1.0",
+                "occurredAt": 1784454000123,
+                "data": {
+                  "txnId": "broker-txn-1001",
+                  "orderId": "2035768923456789",
+                  "userId": "broker-user-001",
+                  "amount": "100.25",
+                  "currency": "USDC",
+                  "direction": 1,
+                  "state": "SUCCESS",
+                  "completedAt": 1784454000000
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Event accepted and persisted. Any 2xx response is considered successful delivery." },
+          "400": { "description": "Invalid request or signature. Delivery is retried a limited number of times." },
+          "500": { "description": "Broker processing failed. Delivery is retried later." }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TransferWebhookEvent": {
+        "type": "object",
+        "required": ["eventId", "eventType", "eventVersion", "occurredAt", "data"],
+        "properties": {
+          "eventId": { "type": "string", "description": "Unique event ID." },
+          "eventType": { "type": "string", "const": "broker.transferred" },
+          "eventVersion": { "type": "string", "const": "1.0" },
+          "occurredAt": { "type": "integer", "format": "int64", "description": "Event creation time in Unix milliseconds." },
+          "data": { "$ref": "#/components/schemas/TransferWebhookData" }
+        }
+      },
+      "TransferWebhookData": {
+        "type": "object",
+        "required": ["txnId", "orderId", "userId", "amount", "currency", "direction", "state", "completedAt"],
+        "properties": {
+          "txnId": { "type": "string", "description": "Broker idempotency key." },
+          "orderId": { "type": "string", "description": "Platform transfer order ID." },
+          "userId": { "type": "string", "description": "Broker-side user ID." },
+          "amount": { "type": "string", "description": "Transfer amount." },
+          "currency": { "type": "string", "const": "USDC" },
+          "direction": { "type": "integer", "enum": [1, 2], "description": "1 is deposit and 2 is withdrawal." },
+          "state": { "type": "string", "enum": ["SUCCESS", "FAILED"] },
+          "reasonCode": { "type": "string", "description": "Failure reason code; present only for failed events." },
+          "reasonMessage": { "type": "string", "description": "Failure reason; present only for failed events." },
+          "completedAt": { "type": "integer", "format": "int64", "description": "Completion time in Unix milliseconds." }
+        }
+      }
+    }
+  }
+}

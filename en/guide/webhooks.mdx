@@ -1,0 +1,33 @@
+---
+title: "Webhooks"
+description: "Configure one endpoint to receive signed broker events."
+---
+
+Configure one backend `webhookUrl` for all broker events. The platform sends signed JSON payloads to this URL, and your service routes each payload by `eventType`.
+
+## Register an endpoint
+
+1. Create a backend HTTPS endpoint that accepts `POST` requests.
+2. Save it as the broker `webhookUrl`.
+3. Verify the signature against the raw body before processing data.
+4. Route the event using `eventType`.
+
+```json
+{
+  "name": "broker-name",
+  "domain": "broker.example.com",
+  "webhookUrl": "https://broker.example.com/webhooks/xbit"
+}
+```
+
+## Event types
+
+| Event type | Trigger |
+| --- | --- |
+| [`broker.transferred`](/en/api-reference/broker/webhooks/broker-transferred) | A broker user transfer succeeds or fails |
+
+## Delivery
+
+Delivery is at least once. Persist the event and return `2xx`. Use `eventId` under a unique database constraint so duplicate deliveries cannot apply a balance change twice.
+
+Verify `x-webhook-signature` with the broker API Secret and the raw body. The signed input is `timestamp + "\n" + webhookId + "\n" + rawBody`.

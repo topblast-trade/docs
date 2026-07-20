@@ -16,7 +16,7 @@ export const SignatureCalculator = () => {
   const [apiSecret, setApiSecret] = useState("");
   const [timestamp, setTimestamp] = useState(() => String(Date.now()));
   const [method, setMethod] = useState("POST");
-  const [path, setPath] = useState("/broker/v2/user/login");
+  const [path, setPath] = useState("/api/v1/broker/user/login");
   const [query, setQuery] = useState("");
   const [body, setBody] = useState("");
   const [stringToSign, setStringToSign] = useState("");
@@ -139,7 +139,7 @@ export const SignatureCalculator = () => {
           className={inputClassName}
           value={path}
           onChange={(event) => setPath(event.target.value)}
-          placeholder="/broker/v2/user/login"
+          placeholder="/api/v1/broker/user/login"
         />
       </div>
 

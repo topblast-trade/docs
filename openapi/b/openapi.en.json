@@ -7,7 +7,7 @@
     "description": "Broker integration APIs authenticated with an API key, timestamp, and HMAC-SHA256 signature."
   },
   "paths": {
-    "/broker/v2/assets": {
+    "/api/v1/broker/assets": {
       "get": {
         "security": [
           {
@@ -80,7 +80,7 @@
         }
       }
     },
-    "/broker/v2/dailySummaries": {
+    "/api/v1/broker/dailySummaries": {
       "get": {
         "security": [
           {
@@ -153,7 +153,7 @@
         }
       }
     },
-    "/broker/v2/dashboard": {
+    "/api/v1/broker/dashboard": {
       "get": {
         "security": [
           {
@@ -208,7 +208,7 @@
         }
       }
     },
-    "/broker/v2/events": {
+    "/api/v1/broker/events": {
       "get": {
         "security": [
           {
@@ -313,7 +313,7 @@
         }
       }
     },
-    "/broker/v2/events/{eventSlug}/disable": {
+    "/api/v1/broker/events/{eventSlug}/disable": {
       "post": {
         "security": [
           {
@@ -366,7 +366,7 @@
         }
       }
     },
-    "/broker/v2/events/{eventSlug}/enable": {
+    "/api/v1/broker/events/{eventSlug}/enable": {
       "post": {
         "security": [
           {
@@ -419,7 +419,7 @@
         }
       }
     },
-    "/broker/v2/events/{eventSlug}/markets": {
+    "/api/v1/broker/events/{eventSlug}/markets": {
       "get": {
         "security": [
           {
@@ -469,7 +469,7 @@
         }
       }
     },
-    "/broker/v2/events/{eventSlug}/markets/{marketId}/disable": {
+    "/api/v1/broker/events/{eventSlug}/markets/{marketId}/disable": {
       "post": {
         "security": [
           {
@@ -531,7 +531,7 @@
         }
       }
     },
-    "/broker/v2/events/{eventSlug}/markets/{marketId}/enable": {
+    "/api/v1/broker/events/{eventSlug}/markets/{marketId}/enable": {
       "post": {
         "security": [
           {
@@ -593,7 +593,7 @@
         }
       }
     },
-    "/broker/v2/reports/summary": {
+    "/api/v1/broker/reports/summary": {
       "get": {
         "security": [
           {
@@ -656,7 +656,7 @@
         }
       }
     },
-    "/broker/v2/reports/trend": {
+    "/api/v1/broker/reports/trend": {
       "get": {
         "security": [
           {
@@ -719,7 +719,7 @@
         }
       }
     },
-    "/broker/v2/risk/config": {
+    "/api/v1/broker/risk/config": {
       "get": {
         "security": [
           {
@@ -816,7 +816,7 @@
         }
       }
     },
-    "/broker/v2/risk/exposures": {
+    "/api/v1/broker/risk/exposures": {
       "get": {
         "security": [
           {
@@ -889,7 +889,7 @@
         }
       }
     },
-    "/broker/v2/risk/policies": {
+    "/api/v1/broker/risk/policies": {
       "get": {
         "security": [
           {
@@ -954,7 +954,7 @@
         }
       }
     },
-    "/broker/v2/trade/openOrders": {
+    "/api/v1/broker/trade/openOrders": {
       "get": {
         "security": [
           {
@@ -1059,7 +1059,7 @@
         }
       }
     },
-    "/broker/v2/trade/orders/cancel": {
+    "/api/v1/broker/trade/orders/cancel": {
       "post": {
         "security": [
           {
@@ -1109,7 +1109,7 @@
         }
       }
     },
-    "/broker/v2/trade/positions": {
+    "/api/v1/broker/trade/positions": {
       "get": {
         "security": [
           {
@@ -1206,7 +1206,7 @@
         }
       }
     },
-    "/broker/v2/trade/positions/close": {
+    "/api/v1/broker/trade/positions/close": {
       "post": {
         "security": [
           {
@@ -1256,7 +1256,7 @@
         }
       }
     },
-    "/broker/v2/trade/trades": {
+    "/api/v1/broker/trade/trades": {
       "get": {
         "security": [
           {
@@ -1361,7 +1361,7 @@
         }
       }
     },
-    "/broker/v2/transfer": {
+    "/api/v1/broker/transfer": {
       "post": {
         "security": [
           {
@@ -1399,7 +1399,7 @@
                       "type": "object",
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/v2.brokerTransferAcceptedData"
+                          "$ref": "#/components/schemas/service.TransferRecord"
                         }
                       }
                     }
@@ -1411,7 +1411,7 @@
         }
       }
     },
-    "/broker/v2/transfer/detail": {
+    "/api/v1/broker/transfer/detail": {
       "get": {
         "security": [
           {
@@ -1426,17 +1426,8 @@
         "summary": "查询划转详情",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "userId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "划转订单 ID",
-            "name": "orderId",
+            "description": "券商侧唯一交易流水号",
+            "name": "txnId",
             "in": "query",
             "required": true,
             "schema": {
@@ -1470,7 +1461,7 @@
         }
       }
     },
-    "/broker/v2/transfer/list": {
+    "/api/v1/broker/transfer/list": {
       "get": {
         "security": [
           {
@@ -1562,7 +1553,7 @@
         }
       }
     },
-    "/broker/v2/user/createSpecial": {
+    "/api/v1/broker/user/createSpecial": {
       "post": {
         "security": [
           {
@@ -1612,7 +1603,7 @@
         }
       }
     },
-    "/broker/v2/user/login": {
+    "/api/v1/broker/user/login": {
       "post": {
         "security": [
           {
@@ -1662,7 +1653,7 @@
         }
       }
     },
-    "/broker/v2/user/logout": {
+    "/api/v1/broker/user/logout": {
       "post": {
         "security": [
           {
@@ -1712,7 +1703,7 @@
         }
       }
     },
-    "/broker/v2/user/update": {
+    "/api/v1/broker/user/update": {
       "post": {
         "security": [
           {
@@ -1762,7 +1753,7 @@
         }
       }
     },
-    "/broker/v2/user/users": {
+    "/api/v1/broker/user/users": {
       "get": {
         "security": [
           {
@@ -2407,7 +2398,7 @@
             "description": "划转金额",
             "type": "number"
           },
-          "created_at": {
+          "createdAt": {
             "description": "创建时间",
             "type": "string"
           },
@@ -2419,7 +2410,7 @@
             "description": "划转方向：1 入金，2 出金",
             "type": "integer"
           },
-          "order_id": {
+          "orderId": {
             "description": "平台划转订单 ID",
             "type": "string"
           },
@@ -2427,19 +2418,27 @@
             "description": "备注",
             "type": "string"
           },
+          "reasonCode": {
+            "description": "Failure reason code",
+            "type": "string"
+          },
+          "reasonMessage": {
+            "description": "Failure reason message",
+            "type": "string"
+          },
           "state": {
             "description": "划转状态",
             "type": "string"
           },
-          "txn_id": {
+          "txnId": {
             "description": "券商侧唯一交易流水号",
             "type": "string"
           },
-          "updated_at": {
+          "updatedAt": {
             "description": "更新时间",
             "type": "string"
           },
-          "user_id": {
+          "userId": {
             "description": "平台用户 UID",
             "type": "integer"
           }

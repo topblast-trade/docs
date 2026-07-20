@@ -1,0 +1,77 @@
+---
+title: "Webhooks"
+description: "配置一个统一地址，实时接收券商业务事件。"
+---
+
+网络钩子允许您配置一个后端 URL。券商相关业务完成或状态发生变化时，平台会向该地址发送带签名的 JSON 事件。所有事件共用同一个 URL，并通过 `eventType` 区分业务场景。
+
+## 注册接收地址
+
+1. 在您的后端创建一个接受 `POST` 请求的 HTTPS 接口。
+2. 在券商配置中将该地址设置为 `webhookUrl`。
+3. 保存原始请求体，并在处理业务数据前验证签名。
+4. 根据 `eventType` 将事件路由到对应处理器。
+
+```json
+{
+  "name": "broker-name",
+  "domain": "broker.example.com",
+  "webhookUrl": "https://broker.example.com/webhooks/xbit"
+}
+```
+
+<Warning>
+生产环境必须使用 HTTPS。Webhook 接口应部署在服务端，不应使用浏览器页面作为接收地址。
+</Warning>
+
+## 通用事件结构
+
+```json
+{
+  "eventId": "evt_20357690001",
+  "eventType": "broker.transferred",
+  "eventVersion": "1.0",
+  "occurredAt": 1784454000123,
+  "data": {}
+}
+```
+
+| 字段 | 说明 |
+| --- | --- |
+| `eventId` | 事件唯一 ID，也是消费幂等键 |
+| `eventType` | 事件类型，用于区分业务场景 |
+| `eventVersion` | 事件结构版本 |
+| `occurredAt` | 事件产生时间，Unix 毫秒时间戳 |
+| `data` | 与事件类型对应的业务数据 |
+
+## 事件类型
+
+| 事件类型 | 触发时机 |
+| --- | --- |
+| [`broker.transferred`](/cn/broker/api-reference/webhooks/broker-transferred) | 券商用户资金划转成功或失败 |
+
+## 签名验证
+
+平台使用券商 API Secret 计算 HMAC-SHA256 签名。请求包含：
+
+- `x-webhook-id`
+- `x-webhook-timestamp`
+- `x-webhook-signature`
+
+待签名内容：
+
+```text
+timestamp + "\n" + webhookId + "\n" + rawBody
+```
+
+必须使用原始请求体字节进行验签，并使用恒定时间比较验证签名。建议拒绝与当前时间相差超过 5 分钟的请求。
+
+## 投递与重试
+
+平台采用至少一次投递语义。接收方持久化事件后应返回 `2xx`。连接失败、超时或非 `2xx` 响应会触发退避重试，最多尝试 12 次。
+
+请在数据库中为 `eventId` 建立唯一索引。重复事件不能再次修改余额，但仍应返回 `2xx`。
+
+## 本地测试
+
+本地服务不能直接接收公网回调。可以使用 ngrok 或 Cloudflare Tunnel 暴露测试地址，再将该 HTTPS 地址配置为 `webhookUrl`。

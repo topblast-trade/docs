@@ -10,34 +10,34 @@ export const BrokerApiDebugger = () => {
     "bs11_f154c04553ddd705662184d3728bfb398aa78182d014e8b09a7c2ee7e9c28b57";
   const credentialStorageKey = "topblast-broker-api-debugger-credentials";
   const endpoints = [
-    ["POST", "/broker/v2/user/login", "用户登录"],
-    ["POST", "/broker/v2/user/logout", "用户登出"],
-    ["POST", "/broker/v2/user/update", "更新用户"],
-    ["POST", "/broker/v2/user/createSpecial", "创建特殊账户"],
-    ["GET", "/broker/v2/user/users", "查询用户列表"],
-    ["POST", "/broker/v2/transfer", "创建划转"],
-    ["GET", "/broker/v2/transfer/list", "查询划转列表"],
-    ["GET", "/broker/v2/transfer/detail", "查询划转详情"],
-    ["GET", "/broker/v2/assets", "查询资产"],
-    ["GET", "/broker/v2/trade/trades", "查询成交记录"],
-    ["GET", "/broker/v2/trade/positions", "查询仓位"],
-    ["GET", "/broker/v2/trade/openOrders", "查询当前委托"],
-    ["POST", "/broker/v2/trade/orders/cancel", "取消委托"],
-    ["POST", "/broker/v2/trade/positions/close", "平仓"],
-    ["GET", "/broker/v2/reports/summary", "查询汇总报表"],
-    ["GET", "/broker/v2/reports/trend", "查询趋势报表"],
-    ["GET", "/broker/v2/dailySummaries", "查询每日汇总"],
-    ["GET", "/broker/v2/dashboard", "查询仪表盘"],
-    ["GET", "/broker/v2/events", "查询事件"],
-    ["POST", "/broker/v2/events/{eventSlug}/enable", "启用事件"],
-    ["POST", "/broker/v2/events/{eventSlug}/disable", "停用事件"],
-    ["GET", "/broker/v2/events/{eventSlug}/markets", "查询事件市场"],
-    ["POST", "/broker/v2/events/{eventSlug}/markets/{marketId}/enable", "启用市场"],
-    ["POST", "/broker/v2/events/{eventSlug}/markets/{marketId}/disable", "停用市场"],
-    ["GET", "/broker/v2/risk/policies", "查询风控策略"],
-    ["GET", "/broker/v2/risk/exposures", "查询风险敞口"],
-    ["GET", "/broker/v2/risk/config", "查询风控配置"],
-    ["POST", "/broker/v2/risk/config", "保存风控配置"],
+    ["POST", "/api/v1/broker/user/login", "用户登录"],
+    ["POST", "/api/v1/broker/user/logout", "用户登出"],
+    ["POST", "/api/v1/broker/user/update", "更新用户"],
+    ["POST", "/api/v1/broker/user/createSpecial", "创建特殊账户"],
+    ["GET", "/api/v1/broker/user/users", "查询用户列表"],
+    ["POST", "/api/v1/broker/transfer", "创建划转"],
+    ["GET", "/api/v1/broker/transfer/list", "查询划转列表"],
+    ["GET", "/api/v1/broker/transfer/detail", "查询划转详情"],
+    ["GET", "/api/v1/broker/assets", "查询资产"],
+    ["GET", "/api/v1/broker/trade/trades", "查询成交记录"],
+    ["GET", "/api/v1/broker/trade/positions", "查询仓位"],
+    ["GET", "/api/v1/broker/trade/openOrders", "查询当前委托"],
+    ["POST", "/api/v1/broker/trade/orders/cancel", "取消委托"],
+    ["POST", "/api/v1/broker/trade/positions/close", "平仓"],
+    ["GET", "/api/v1/broker/reports/summary", "查询汇总报表"],
+    ["GET", "/api/v1/broker/reports/trend", "查询趋势报表"],
+    ["GET", "/api/v1/broker/dailySummaries", "查询每日汇总"],
+    ["GET", "/api/v1/broker/dashboard", "查询仪表盘"],
+    ["GET", "/api/v1/broker/events", "查询事件"],
+    ["POST", "/api/v1/broker/events/{eventSlug}/enable", "启用事件"],
+    ["POST", "/api/v1/broker/events/{eventSlug}/disable", "停用事件"],
+    ["GET", "/api/v1/broker/events/{eventSlug}/markets", "查询事件市场"],
+    ["POST", "/api/v1/broker/events/{eventSlug}/markets/{marketId}/enable", "启用市场"],
+    ["POST", "/api/v1/broker/events/{eventSlug}/markets/{marketId}/disable", "停用市场"],
+    ["GET", "/api/v1/broker/risk/policies", "查询风控策略"],
+    ["GET", "/api/v1/broker/risk/exposures", "查询风险敞口"],
+    ["GET", "/api/v1/broker/risk/config", "查询风控配置"],
+    ["POST", "/api/v1/broker/risk/config", "保存风控配置"],
   ].map(([method, path, summary]) => ({
     id: `${method} ${path}`,
     method,
@@ -324,7 +324,7 @@ export const BrokerApiDebugger = () => {
             className={inputClassName}
             value={requestPath}
             onChange={(event) => setRequestPath(event.target.value)}
-            placeholder="/broker/v2/user/login"
+            placeholder="/api/v1/broker/user/login"
           />
         </div>
         <div className="mt-4">

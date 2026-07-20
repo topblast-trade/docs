@@ -1,0 +1,131 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "XBIT Broker Webhooks",
+    "version": "1.0.0",
+    "description": "Webhook events sent by XBIT to broker systems."
+  },
+  "webhooks": {
+    "broker.transferred": {
+      "post": {
+        "operationId": "brokerTransferredWebhook",
+        "summary": "Broker transferred",
+        "description": "当券商用户的异步资金划转进入 SUCCESS 或 FAILED 终态时，平台向券商统一 webhookUrl 发送此事件。通过 data.state 区分成功和失败。",
+        "parameters": [
+          {
+            "name": "x-webhook-id",
+            "in": "header",
+            "required": true,
+            "description": "Webhook 事件唯一 ID，券商必须使用该值进行消费幂等。",
+            "schema": { "type": "string", "example": "evt_20357690001" }
+          },
+          {
+            "name": "x-webhook-timestamp",
+            "in": "header",
+            "required": true,
+            "description": "发送时间，Unix 毫秒时间戳。",
+            "schema": { "type": "string", "example": "1784454000123" }
+          },
+          {
+            "name": "x-webhook-signature",
+            "in": "header",
+            "required": true,
+            "description": "使用券商 API Secret 计算并进行 Base64 编码的 HMAC-SHA256 签名。",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TransferWebhookEvent" },
+              "examples": {
+                "succeeded": {
+                  "summary": "划转成功",
+                  "value": {
+                    "eventId": "evt_20357690001",
+                    "eventType": "broker.transferred",
+                    "eventVersion": "1.0",
+                    "occurredAt": 1784454000123,
+                    "data": {
+                      "txnId": "broker-txn-1001",
+                      "orderId": "2035768923456789",
+                      "userId": "broker-user-001",
+                      "amount": "100.25",
+                      "currency": "USDC",
+                      "direction": 1,
+                      "state": "SUCCESS",
+                      "completedAt": 1784454000000
+                    }
+                  }
+                },
+                "failed": {
+                  "summary": "划转失败",
+                  "value": {
+                    "eventId": "evt_20357690002",
+                    "eventType": "broker.transferred",
+                    "eventVersion": "1.0",
+                    "occurredAt": 1784454000123,
+                    "data": {
+                      "txnId": "broker-txn-1002",
+                      "orderId": "2035768923456790",
+                      "userId": "broker-user-001",
+                      "amount": "200",
+                      "currency": "USDC",
+                      "direction": 2,
+                      "state": "FAILED",
+                      "reasonCode": "2",
+                      "reasonMessage": "insufficient balance",
+                      "completedAt": 1784454000000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "事件已成功接收并持久化。任意 2xx 响应都会被视为投递成功。"
+          },
+          "400": { "description": "请求或签名无效。平台仍会进行有限次数重试。" },
+          "500": { "description": "券商处理失败，平台稍后重试。" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TransferWebhookEvent": {
+        "type": "object",
+        "required": ["eventId", "eventType", "eventVersion", "occurredAt", "data"],
+        "properties": {
+          "eventId": { "type": "string", "description": "事件唯一 ID。" },
+          "eventType": {
+            "type": "string",
+            "const": "broker.transferred"
+          },
+          "eventVersion": { "type": "string", "const": "1.0" },
+          "occurredAt": { "type": "integer", "format": "int64", "description": "事件产生时间，Unix 毫秒时间戳。" },
+          "data": { "$ref": "#/components/schemas/TransferWebhookData" }
+        }
+      },
+      "TransferWebhookData": {
+        "type": "object",
+        "required": ["txnId", "orderId", "userId", "amount", "currency", "direction", "state", "completedAt"],
+        "properties": {
+          "txnId": { "type": "string", "description": "券商侧幂等流水号。" },
+          "orderId": { "type": "string", "description": "平台划转订单 ID。" },
+          "userId": { "type": "string", "description": "券商侧用户 ID。" },
+          "amount": { "type": "string", "description": "划转金额。" },
+          "currency": { "type": "string", "const": "USDC" },
+          "direction": { "type": "integer", "enum": [1, 2], "description": "1 表示入金，2 表示出金。" },
+          "state": { "type": "string", "enum": ["SUCCESS", "FAILED"] },
+          "reasonCode": { "type": "string", "description": "失败原因码，仅失败事件提供。" },
+          "reasonMessage": { "type": "string", "description": "失败原因说明，仅失败事件提供。" },
+          "completedAt": { "type": "integer", "format": "int64", "description": "划转完成时间，Unix 毫秒时间戳。" }
+        }
+      }
+    }
+  }
+}
