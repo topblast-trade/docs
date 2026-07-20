@@ -268,12 +268,6 @@
                     ]
                   },
                   {
-                    "group": "Webhooks",
-                    "pages": [
-                      "en/broker/api-reference/webhooks/broker-transferred"
-                    ]
-                  },
-                  {
                     "group": "Trading management",
                     "pages": [
                       "en/broker/api-reference/trade/trades",
@@ -310,6 +304,12 @@
                       "en/broker/api-reference/risk/exposures",
                       "en/broker/api-reference/risk/get-config",
                       "en/broker/api-reference/risk/save-config"
+                    ]
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "en/broker/api-reference/webhooks/broker-transferred"
                     ]
                   }
                 ]
