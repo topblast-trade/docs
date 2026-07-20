@@ -1,8 +1,0 @@
----
-title: "Create transfer"
-openapi: "/openapi/b/openapi.en.json POST /v1/broker/transfer"
----
-
-<Note>
-A transfer may complete asynchronously. Business code `20201` means the order remains `PROCESSING`; it is not a failure. Wait for [`broker.transferred`](/en/api-reference/broker/webhooks/broker-transferred), or query transfer detail with the same `txnId`. Do not retry with a new `txnId`.
-</Note>
