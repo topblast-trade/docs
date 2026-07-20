@@ -16,25 +16,25 @@ Store the API Secret on the broker server only. Never embed it in a Web, mobile,
 
 ## Base URL
 
-Use the test environment for integration testing by default:
+The following examples use the production environment by default:
 
 ```text
-https://apitest-predict.xbit.trade
+https://api.topblast.trade
 ```
 
 | Environment | Base URL | Status |
 | :--- | :--- | :--- |
-| Test | `https://apitest-predict.xbit.trade` | Recommended for integration testing |
-| Development | `https://predict.xbit.trade` | Use when required |
-| Production | Not available yet | — |
+| Development | `https://api-dev.topblast.trade` | Internal development |
+| Test | `https://api-test.topblast.trade` | Recommended for integration testing |
+| Production | `https://api.topblast.trade` | Production environment |
 
 All requests must use HTTPS. Append an operation path from API Reference to the Base URL to form the complete request URL.
 
 ## Authentication
 
 <Tabs>
-  <Tab title="Broker Management API">
-    Broker Management API requests use an API key and an HMAC-SHA256 signature. Include these headers with every request:
+  <Tab title="Broker REST API">
+    Broker REST API requests use an API key and an HMAC-SHA256 signature. Include these headers with every request:
 
     <ParamField header="x-api-key" type="string" example="ba11_xxxxxxxxxxxxxxxxxxxxxxxx" required>
       API key assigned to the broker or partner by topblast.
@@ -48,27 +48,27 @@ All requests must use HTTPS. Append an operation path from API Reference to the 
       Base64-encoded HMAC-SHA256 request signature calculated with the API Secret.
     </ParamField>
 
-    The signature payload is `Timestamp + Method + Path + [?Query] + Body`. See [Broker Management API authentication](/en/guide/authentication-b) for details.
+    The signature payload is `Timestamp + Method + Path + [?Query] + Body`. See [Broker REST API authentication](/en/guide/authentication-b) for details.
   </Tab>
 
-  <Tab title="User Trading API">
-    User Trading API requests identify the signed-in user with a bearer token.
+  <Tab title="Trading REST API">
+    Trading REST API requests identify the signed-in user with a bearer token.
 
     <ParamField header="Authorization" type="string" example="Bearer &lt;access_token&gt;" required>
       Bearer token issued by the user login flow.
     </ParamField>
 
-    Never send the token in a query parameter or request body. See [User Trading API authentication](/en/guide/authentication-c) for details.
+    Never send the token in a query parameter or request body. See [Trading REST API authentication](/en/guide/authentication-c) for details.
   </Tab>
 </Tabs>
 
 ## Examples
 
 <Tabs>
-  <Tab title="Broker Management API">
+  <Tab title="Broker REST API">
     ```bash
     curl --request GET \
-      --url "https://apitest-predict.xbit.trade/api/v1/broker/user/users?page=1&pageSize=20" \
+      --url "https://api.topblast.trade/api/v1/broker/user/users?page=1&pageSize=20" \
       --header "x-api-key: <broker_api_key>" \
       --header "x-timestamp: <timestamp>" \
       --header "x-signature: <signature>"
@@ -79,10 +79,10 @@ All requests must use HTTPS. Append an operation path from API Reference to the 
     </Info>
   </Tab>
 
-  <Tab title="User Trading API">
+  <Tab title="Trading REST API">
     ```bash
     curl --request GET \
-      --url "https://apitest-predict.xbit.trade/api/v1/trade/spot/orders-pending" \
+      --url "https://api.topblast.trade/api/v2/private/orders" \
       --header "Authorization: Bearer <access_token>" \
       --header "Content-Type: application/json"
     ```

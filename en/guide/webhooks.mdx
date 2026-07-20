@@ -20,14 +20,58 @@ Configure one backend `webhookUrl` for all broker events. The platform sends sig
 }
 ```
 
+<Warning>
+Production endpoints must use HTTPS. The Webhook receiver must run on your backend, not in a browser page.
+</Warning>
+
+## Common event structure
+
+```json
+{
+  "eventId": "evt_20357690001",
+  "eventType": "broker.transferred",
+  "eventVersion": "1.0",
+  "occurredAt": 1784454000123,
+  "data": {}
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `eventId` | Unique event ID and idempotency key |
+| `eventType` | Event type used to route the business scenario |
+| `eventVersion` | Event schema version |
+| `occurredAt` | Event creation time as a Unix timestamp in milliseconds |
+| `data` | Business payload for the event type |
+
 ## Event types
 
 | Event type | Trigger |
 | --- | --- |
 | [`broker.transferred`](/en/api-reference/broker/webhooks/broker-transferred) | A broker user transfer succeeds or fails |
 
-## Delivery
+## Signature verification
 
-Delivery is at least once. Persist the event and return `2xx`. Use `eventId` under a unique database constraint so duplicate deliveries cannot apply a balance change twice.
+The platform calculates an HMAC-SHA256 signature with the broker API Secret. Each request includes:
 
-Verify `x-webhook-signature` with the broker API Secret and the raw body. The signed input is `timestamp + "\n" + webhookId + "\n" + rawBody`.
+- `x-webhook-id`
+- `x-webhook-timestamp`
+- `x-webhook-signature`
+
+The signature input is:
+
+```text
+timestamp + "\n" + webhookId + "\n" + rawBody
+```
+
+Verify the signature against the raw request body bytes and use a constant-time comparison. We recommend rejecting requests whose timestamp differs from the current time by more than five minutes.
+
+## Delivery and retries
+
+Delivery uses at-least-once semantics. Persist the event before returning `2xx`. Connection failures, timeouts, and non-`2xx` responses trigger backoff retries, up to 12 attempts.
+
+Create a unique database index on `eventId`. A duplicate event must not apply a balance change again, but the receiver should still return `2xx`.
+
+## Local testing
+
+A local service cannot receive callbacks from the public internet directly. Use ngrok or Cloudflare Tunnel to expose a test endpoint, then configure its HTTPS URL as `webhookUrl`.

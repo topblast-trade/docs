@@ -16,25 +16,25 @@ API Secret 只能保存在券商服务端。不要将其写入 Web、App 或其�
 
 ## Base URL
 
-联调默认使用测试环境：
+以下示例默认使用生产环境：
 
 ```text
-https://apitest-predict.xbit.trade
+https://api.topblast.trade
 ```
 
 | 环境 | Base URL | 状态 |
 | :--- | :--- | :--- |
-| 测试环境 | `https://apitest-predict.xbit.trade` | 推荐用于联调 |
-| 开发环境 | `https://predict.xbit.trade` | 按需使用 |
-| 生产环境 | 暂不提供 | — |
+| 开发环境 | `https://api-dev.topblast.trade` | 内部开发 |
+| 测试环境 | `https://api-test.topblast.trade` | 推荐用于联调 |
+| 生产环境 | `https://api.topblast.trade` | 正式环境 |
 
 所有请求必须使用 HTTPS。将 API Reference 中的接口 Path 拼接到 Base URL 后即可得到完整请求地址。
 
 ## 鉴权
 
 <Tabs>
-  <Tab title="券商管理 API">
-    券商管理 API 使用 API Key 和 HMAC-SHA256 请求签名。每个请求必须包含以下 Header：
+  <Tab title="Broker REST API">
+    Broker REST API 使用 API Key 和 HMAC-SHA256 请求签名。每个请求必须包含以下 Header：
 
     <ParamField header="x-api-key" type="string" example="ba11_xxxxxxxxxxxxxxxxxxxxxxxx" required>
       topblast 分配给券商或合作方的 API Key。
@@ -48,27 +48,27 @@ https://apitest-predict.xbit.trade
       使用 API Secret 计算并经过 Base64 编码的 HMAC-SHA256 请求签名。
     </ParamField>
 
-    签名原文为 `Timestamp + Method + Path + [?Query] + Body`。详细规则请参阅[券商管理 API 鉴权](/cn/broker/guide/authentication)。
+    签名原文为 `Timestamp + Method + Path + [?Query] + Body`。详细规则请参阅[Broker REST API 鉴权](/cn/broker/guide/authentication)。
   </Tab>
 
-  <Tab title="用户交易 API">
-    用户交易 API 使用 Bearer Token 识别当前登录用户。
+  <Tab title="Trading REST API">
+    Trading REST API 使用 Bearer Token 识别当前登录用户。
 
     <ParamField header="Authorization" type="string" example="Bearer &lt;access_token&gt;" required>
       Bearer Token。Token 由用户登录流程签发。
     </ParamField>
 
-    不要通过查询参数或请求体传递 Token。详细说明请参阅[用户交易 API 鉴权](/cn/user/guide/authentication)。
+    不要通过查询参数或请求体传递 Token。详细说明请参阅[Trading REST API 鉴权](/cn/user/guide/authentication)。
   </Tab>
 </Tabs>
 
 ## 请求示例
 
 <Tabs>
-  <Tab title="券商管理 API">
+  <Tab title="Broker REST API">
     ```bash
     curl --request GET \
-      --url "https://apitest-predict.xbit.trade/api/v1/broker/user/users?page=1&pageSize=20" \
+      --url "https://api.topblast.trade/api/v1/broker/user/users?page=1&pageSize=20" \
       --header "x-api-key: <broker_api_key>" \
       --header "x-timestamp: <timestamp>" \
       --header "x-signature: <signature>"
@@ -79,10 +79,10 @@ https://apitest-predict.xbit.trade
     </Info>
   </Tab>
 
-  <Tab title="用户交易 API">
+  <Tab title="Trading REST API">
     ```bash
     curl --request GET \
-      --url "https://apitest-predict.xbit.trade/api/v1/trade/spot/orders-pending" \
+      --url "https://api.topblast.trade/api/v2/private/orders" \
       --header "Authorization: Bearer <access_token>" \
       --header "Content-Type: application/json"
     ```

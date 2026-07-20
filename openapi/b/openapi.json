@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "topblast Broker Management API",
+    "title": "topblast Broker REST API",
     "contact": {},
     "version": "v1.0.0",
     "description": "Broker integration APIs authenticated with an API key, timestamp, and HMAC-SHA256 signature."
@@ -3466,8 +3466,8 @@
   },
   "servers": [
     {
-      "url": "https://apitest-predict.xbit.trade",
-      "description": "测试环境"
+      "url": "https://api.topblast.trade",
+      "description": "生产环境"
     }
   ],
   "security": [

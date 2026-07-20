@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "description": "`/api/v2/public` 提供公开事件与行情数据；`/api/v2/private` 提供需要用户 Token 的交易和账户接口。",
-    "title": "zpm 预测市场用户 API v2",
+    "title": "topblast Trading REST API",
     "contact": {},
     "version": "v2"
   },
@@ -1859,12 +1859,8 @@
   },
   "servers": [
     {
-      "url": "https://predict.xbit.trade",
-      "description": "开发环境"
-    },
-    {
-      "url": "https://apitest-predict.xbit.trade",
-      "description": "测试环境"
+      "url": "https://api.topblast.trade",
+      "description": "生产环境"
     }
   ],
   "components": {

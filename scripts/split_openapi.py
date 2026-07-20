@@ -119,13 +119,19 @@ def build(source: dict, side: str) -> dict:
         spec["paths"] = {
             path: item for path, item in spec.get("paths", {}).items() if is_c_side(path)
         }
-        spec["info"]["title"] = "topblast User Trading API"
+        spec["info"]["title"] = "topblast Trading REST API"
+        spec["servers"] = [
+            {
+                "url": "https://api.topblast.trade",
+                "description": "生产环境",
+            }
+        ]
         configure_auth = configure_c_auth
     else:
         spec["paths"] = {
             path: item for path, item in spec.get("paths", {}).items() if not is_c_side(path)
         }
-        spec["info"]["title"] = "topblast Broker Management API"
+        spec["info"]["title"] = "topblast Broker REST API"
         configure_auth = configure_b_auth
 
     remove_legacy_auth_parameters(spec)

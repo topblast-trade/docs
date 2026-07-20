@@ -1,13 +1,13 @@
 ---
-title: "Integration guide"
-description: "Learn how to integrate with the topblast Broker Management API and manage users, assets, trading, reports, events, and risk."
+title: "Introduction"
+description: "Learn about Broker REST API authentication, integration flows, and capabilities."
 ---
 
-Welcome to topblast OpenAPI. This documentation is for brokers and partners integrating with the topblast trading platform from their servers. It explains Broker Management API authentication, the integration flow, and available capabilities.
+Welcome to the Broker REST API. This documentation is for brokers and partners integrating with the topblast trading platform from their servers. It explains signature authentication, integration flows, and available capabilities.
 
 ## Capabilities
 
-After integration, your broker server can use the Broker Management API to manage:
+After integration, your broker server can use the Broker REST API to manage:
 
 1. **Users**: Map broker users to topblast users, synchronize login tokens and logout state, update user details, create special accounts, and list users under the broker.
 2. **Assets**: Create deposits or withdrawals, query transfer records and details, and retrieve user assets and balances.
@@ -15,6 +15,7 @@ After integration, your broker server can use the Broker Management API to manag
 4. **Reports**: Retrieve summary, trend, daily summary, and dashboard data for user growth, activity, fund flows, and trading volume.
 5. **Events**: Query platform events and markets, and enable or disable events or individual markets for the broker.
 6. **Risk management**: Query policies and exposures, and read or save global and event-level risk settings.
+7. **Webhooks**: Subscribe to broker events through one callback URL and process status changes in your application.
 
 All endpoints use the `/api/v1/broker/*` prefix and must be called from the broker server. Requests are authenticated with an API key, timestamp, and HMAC-SHA256 signature and can access only data within the current broker's scope.
 
@@ -22,9 +23,23 @@ All endpoints use the `/api/v1/broker/*` prefix and must be called from the brok
 Store the API Secret on the broker server only. Never expose it to browsers, mobile clients, or end users.
 </Warning>
 
+## API gateways
+
+| Environment | Gateway |
+| :--- | :--- |
+| Development | `https://api-dev.topblast.trade` |
+| Test | `https://api-test.topblast.trade` |
+| Production | `https://api.topblast.trade` |
+
 ## Prerequisites
 
-Obtain a broker-level `API Key` and `API Secret` from topblast and confirm access to the test environment. Every request must include `x-api-key`, `x-timestamp`, and `x-signature`. See [Broker Management API authentication](/en/guide/authentication-b).
+Obtain a broker-level `API Key` and `API Secret` from topblast and confirm access to the required environment. Every Broker REST API request must include:
+
+- `x-api-key`
+- `x-timestamp`
+- `x-signature`
+
+See [Authorization and signatures](/en/guide/authentication-b) for signature rules and code examples.
 
 ## User integration flow
 
@@ -43,6 +58,7 @@ sequenceDiagram
         Note over BrokerClient,Core: Phase 1: Sign-in and user mapping
 
         BrokerClient->>BrokerServer: Sign in
+        BrokerServer->>BrokerServer: Issue a token
         BrokerServer->>Gateway: Synchronize user information and token
         activate Gateway
         Gateway->>Gateway: Authenticate with API key and secret
@@ -58,7 +74,7 @@ sequenceDiagram
     rect rgb(240, 253, 244)
         Note over BrokerClient,Core: Phase 2: Subsequent business requests
 
-        BrokerClient->>Gateway: Send a business request with the token
+        BrokerClient->>Gateway: Send a request with the API key and token
         activate Gateway
         Gateway->>Gateway: Authenticate the token
         Gateway->>Core: Forward the business request
@@ -70,18 +86,10 @@ sequenceDiagram
     end
 ```
 
-## API gateways
-
-| Environment | Gateway |
-| :--- | :--- |
-| Development | `https://predict.xbit.trade` |
-| Test | `https://apitest-predict.xbit.trade` |
-| Production | Not available yet |
-
 ## Next steps
 
 <CardGroup cols={3}>
-  <Card title="Configure authentication" icon="key" href="/en/guide/authentication-b">Generate and verify Broker Management API signatures.</Card>
+  <Card title="Configure authentication" icon="key" href="/en/guide/authentication-b">Generate and verify Broker REST API signatures.</Card>
   <Card title="Synchronize a user" icon="user" href="/en/api-reference/broker/user/login">Review the complete login endpoint.</Card>
   <Card title="Create a transfer" icon="arrow-right-arrow-left" href="/en/api-reference/broker/transfer/create">Deposit or withdraw assets for a user.</Card>
 </CardGroup>

@@ -1,13 +1,13 @@
 ---
-title: "接入指南"
-description: "了解 topblast 券商管理 API 的接入方式，以及用户、资产、交易、报表、事件和风控管理能力。"
+title: "介绍"
+description: "了解 Broker REST API 的鉴权方式、接入流程和业务能力。"
 ---
 
-欢迎使用 topblast OpenAPI。本文档面向通过服务端接入 topblast 交易平台的券商及合作方，介绍券商管理 API 的签名鉴权、业务接入流程和接口能力。
+欢迎使用 Broker REST API。本文档面向通过服务端接入 topblast 交易平台的券商及合作方，介绍签名鉴权、业务接入流程和接口能力。
 
 ## 接口能力
 
-完成接入后，券商服务端可以使用券商管理 API 管理以下业务：
+完成接入后，券商服务端可以使用 Broker REST API 管理以下业务：
 
 1. **用户管理**：建立券商用户与 topblast 用户的映射，同步登录 Token 和登出状态，更新用户信息，创建特殊账户，并查询券商名下的用户列表。
 2. **资产管理**：为券商用户发起充值或提现，查询划转列表和划转详情，并查看用户资产及余额信息。
@@ -15,6 +15,7 @@ description: "了解 topblast 券商管理 API 的接入方式，以及用户、
 4. **报表分析**：查询汇总报表、趋势报表、每日业务汇总和仪表盘数据，了解用户增长、活跃情况、资金流动及成交规模。
 5. **事件管理**：查询平台事件及其市场信息，按券商业务需要启用或停用事件和单个市场，控制可运营范围。
 6. **风控管理**：查询风控策略和风险敞口，读取或保存全局及事件级风控配置，控制最大最坏情况赔付额等风险指标。
+7. **Webhooks**：通过统一的回调地址订阅券商业务事件，并在应用程序中处理状态变化。
 
 所有接口均位于 `/api/v1/broker/*` 路径下，只能由券商服务端调用。请求通过 API Key、时间戳和 HMAC-SHA256 签名完成身份验证，并且只能访问当前券商权限范围内的数据。
 
@@ -22,17 +23,26 @@ description: "了解 topblast 券商管理 API 的接入方式，以及用户、
 请仅在券商服务端保存 API Secret。不要将 API Secret 暴露给浏览器、移动客户端或终端用户。
 </Warning>
 
+## API 网关地址
+
+| 环境 | 网关地址 |
+| :--- | :--- |
+| 开发环境 | `https://api-dev.topblast.trade` |
+| 测试环境 | `https://api-test.topblast.trade` |
+| 生产环境 | `https://api.topblast.trade` |
+
+
 ## 接入前准备
 
 开始联调前，请向 topblast 获取券商级 `API Key` 和 `API Secret`，并确认已开通测试环境访问权限。
 
-所有券商管理 API 请求都必须携带以下 Header：
+所有 Broker REST API 请求都必须携带以下 Header：
 
 - `x-api-key`
 - `x-timestamp`
 - `x-signature`
 
-签名规则和代码示例请参阅[券商管理 API 鉴权](/cn/broker/guide/authentication)。
+签名规则和代码示例请参阅[授权签名](/cn/broker/guide/authentication)。
 
 ## 用户接入流程
 
@@ -79,19 +89,11 @@ sequenceDiagram
     end
 ```
 
-## API 网关地址
-
-| 环境 | 网关地址 |
-| :--- | :--- |
-| 开发环境 | `https://predict.xbit.trade` |
-| 测试环境 | `https://apitest-predict.xbit.trade` |
-| 生产环境 | `暂不提供` |
-
 ## 下一步
 
 <CardGroup cols={3}>
   <Card title="配置鉴权" icon="key" href="/cn/broker/guide/authentication">
-    生成券商管理 API 签名并验证请求。
+    生成 Broker REST API 签名并验证请求。
   </Card>
   <Card title="同步用户" icon="user" href="/cn/broker/api-reference/user/login">
     查看登录接口的完整请求定义。

@@ -44,10 +44,10 @@
             "tab": "API Reference",
             "menu": [
               {
-                "item": "券商管理 API",
+                "item": "Broker REST API",
                 "groups": [
                   {
-                    "group": "接入指南",
+                    "group": "Broker REST API",
                     "pages": [
                       "cn/broker/guide/introduction",
                       "cn/broker/guide/authentication",
@@ -129,10 +129,10 @@
                 ]
               },
               {
-                "item": "用户交易 API",
+                "item": "Trading REST API",
                 "groups": [
                   {
-                    "group": "接入指南",
+                    "group": "Trading REST API",
                     "pages": [
                       "cn/user/guide/authentication",
                       "cn/user/guide/response"
@@ -230,10 +230,10 @@
             "tab": "API Reference",
             "menu": [
               {
-                "item": "Broker Management API",
+                "item": "Broker REST API",
                 "groups": [
                   {
-                    "group": "Integration guides",
+                    "group": "Broker REST API",
                     "pages": [
                       "en/guide/introduction",
                       "en/guide/authentication-b",
@@ -315,32 +315,66 @@
                 ]
               },
               {
-                "item": "User Trading API",
+                "item": "Trading REST API",
                 "groups": [
                   {
-                    "group": "Guides",
+                    "group": "Trading REST API",
                     "pages": [
-                      "en/guide/authentication-c"
+                      "en/guide/authentication-c",
+                      "en/guide/response-c"
                     ]
                   },
                   {
-                    "group": "Spot",
+                    "group": "Event data",
                     "pages": [
-                      "en/api-reference/trade/spot/orders-pending",
-                      "en/api-reference/trade/spot/orders-history",
-                      "en/api-reference/trade/spot/fills"
+                      "en/api-reference/user/events/search",
+                      "en/api-reference/user/events/list",
+                      "en/api-reference/user/events/list-deprecated",
+                      "en/api-reference/user/events/detail",
+                      "en/api-reference/user/events/carousel",
+                      "en/api-reference/user/events/tags",
+                      "en/api-reference/user/events/filtered-tags",
+                      "en/api-reference/user/events/tag-detail",
+                      "en/api-reference/user/events/tag-detail-by-slug"
                     ]
                   },
                   {
-                    "group": "Futures",
+                    "group": "Market data",
                     "pages": [
-                      "en/api-reference/trade/futures/positions",
-                      "en/api-reference/trade/futures/orders-pending",
-                      "en/api-reference/trade/futures/algo-orders-pending",
-                      "en/api-reference/trade/futures/positions-history",
-                      "en/api-reference/trade/futures/orders-history",
-                      "en/api-reference/trade/futures/fills",
-                      "en/api-reference/trade/futures/bills"
+                      "en/api-reference/user/market/markets",
+                      "en/api-reference/user/market/orderbook",
+                      "en/api-reference/user/market/ticker",
+                      "en/api-reference/user/market/midpoint",
+                      "en/api-reference/user/market/spread",
+                      "en/api-reference/user/market/prices",
+                      "en/api-reference/user/market/price-history",
+                      "en/api-reference/user/market/kline"
+                    ]
+                  },
+                  {
+                    "group": "Trades",
+                    "pages": [
+                      "en/api-reference/user/trades/public",
+                      "en/api-reference/user/trades/account"
+                    ]
+                  },
+                  {
+                    "group": "Order management",
+                    "pages": [
+                      "en/api-reference/user/orders/create",
+                      "en/api-reference/user/orders/detail",
+                      "en/api-reference/user/orders/cancel",
+                      "en/api-reference/user/orders/open",
+                      "en/api-reference/user/orders/history",
+                      "en/api-reference/user/orders/batch-create",
+                      "en/api-reference/user/orders/batch-cancel"
+                    ]
+                  },
+                  {
+                    "group": "Accounts and positions",
+                    "pages": [
+                      "en/api-reference/user/account/summary",
+                      "en/api-reference/user/account/positions"
                     ]
                   }
                 ]
