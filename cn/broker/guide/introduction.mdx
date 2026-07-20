@@ -17,7 +17,7 @@ description: "了解 Broker REST API 的鉴权方式、接入流程和业务能�
 6. **风控管理**：查询风控策略和风险敞口，读取或保存全局及事件级风控配置，控制最大最坏情况赔付额等风险指标。
 7. **Webhooks**：通过统一的回调地址订阅券商业务事件，并在应用程序中处理状态变化。
 
-所有接口均位于 `/api/v1/broker/*` 路径下，只能由券商服务端调用。请求通过 API Key、时间戳和 HMAC-SHA256 签名完成身份验证，并且只能访问当前券商权限范围内的数据。
+所有接口均位于 `/v1/broker/*` 路径下，只能由券商服务端调用。请求通过 API Key、时间戳和 HMAC-SHA256 签名完成身份验证，并且只能访问当前券商权限范围内的数据。
 
 <Warning>
 请仅在券商服务端保存 API Secret。不要将 API Secret 暴露给浏览器、移动客户端或终端用户。
@@ -46,7 +46,7 @@ description: "了解 Broker REST API 的鉴权方式、接入流程和业务能�
 
 ## 用户接入流程
 
-券商用户登录成功后，券商服务端调用 `POST /api/v1/broker/user/login`，将券商侧用户 ID 和 Token 同步到 topblast。如果用户映射不存在，topblast 会在登录过程中自动创建。
+券商用户登录成功后，券商服务端调用 `POST /v1/broker/user/login`，将券商侧用户 ID 和 Token 同步到 topblast。如果用户映射不存在，topblast 会在登录过程中自动创建。
 
 ```mermaid
 sequenceDiagram

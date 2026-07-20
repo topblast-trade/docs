@@ -17,7 +17,7 @@ After integration, your broker server can use the Broker REST API to manage:
 6. **Risk management**: Query policies and exposures, and read or save global and event-level risk settings.
 7. **Webhooks**: Subscribe to broker events through one callback URL and process status changes in your application.
 
-All endpoints use the `/api/v1/broker/*` prefix and must be called from the broker server. Requests are authenticated with an API key, timestamp, and HMAC-SHA256 signature and can access only data within the current broker's scope.
+All endpoints use the `/v1/broker/*` prefix and must be called from the broker server. Requests are authenticated with an API key, timestamp, and HMAC-SHA256 signature and can access only data within the current broker's scope.
 
 <Warning>
 Store the API Secret on the broker server only. Never expose it to browsers, mobile clients, or end users.
@@ -43,7 +43,7 @@ See [Authorization and signatures](/en/guide/authentication-b) for signature rul
 
 ## User integration flow
 
-After a broker user signs in, call `POST /api/v1/broker/user/login` from the broker server to synchronize the broker user ID and token with topblast. topblast automatically creates the mapping if it does not exist.
+After a broker user signs in, call `POST /v1/broker/user/login` from the broker server to synchronize the broker user ID and token with topblast. topblast automatically creates the mapping if it does not exist.
 
 ```mermaid
 sequenceDiagram
