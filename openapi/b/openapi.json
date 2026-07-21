@@ -22,27 +22,13 @@
         "summary": "查询资产",
         "parameters": [
           {
-            "description": "每页数量",
-            "name": "limit",
+            "description": "返回数量，最大 100",
+            "name": "size",
             "in": "query",
             "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "description": "下一页游标",
-            "name": "next",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "上一页游标",
-            "name": "prev",
-            "in": "query",
-            "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
             }
           },
           {
@@ -60,147 +46,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerAssetListData"
-                        }
-                      }
-                    }
-                  ]
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/v2.brokerAssetItem"
+                  }
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/v1/broker/dailySummaries": {
-      "get": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-后管"
-        ],
-        "summary": "查询每日汇总",
-        "parameters": [
-          {
-            "description": "汇总日期范围终点",
-            "name": "endTime",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           },
-          {
-            "description": "每页数量",
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "description": "页码",
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "description": "汇总日期范围起点",
-            "name": "startTime",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
+          "400": {
+            "description": "请求参数或请求体无效",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerDailySummaryListData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/v1/broker/dashboard": {
-      "get": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-后管"
-        ],
-        "summary": "查询仪表盘",
-        "parameters": [
-          {
-            "description": "统计周期",
-            "name": "period",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "1d",
-                "7d",
-                "30d"
-              ],
-              "default": "1d"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerDashboardData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -223,6 +102,15 @@
         "summary": "查询事件",
         "parameters": [
           {
+            "description": "开始时间（Unix 毫秒，包含）",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
             "description": "是否已为券商启用",
             "name": "enabled",
             "in": "query",
@@ -231,11 +119,12 @@
             }
           },
           {
-            "description": "结束时间",
-            "name": "endTime",
+            "description": "结束时间（Unix 毫秒，不包含）",
+            "name": "end",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 0
             }
           },
           {
@@ -247,19 +136,12 @@
             }
           },
           {
-            "description": "每页数量",
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
             "description": "页码",
             "name": "page",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1
             }
           },
           {
@@ -271,11 +153,13 @@
             }
           },
           {
-            "description": "开始时间",
-            "name": "startTime",
+            "description": "每页数量，最大 100",
+            "name": "size",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
             }
           },
           {
@@ -293,19 +177,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerEventListData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerEventListData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -313,8 +215,8 @@
         }
       }
     },
-    "/v1/broker/events/{eventSlug}/disable": {
-      "post": {
+    "/v1/broker/events/{eventSlug}": {
+      "patch": {
         "security": [
           {
             "BrokerApiKey": [],
@@ -325,7 +227,7 @@
         "tags": [
           "券商接口-事件"
         ],
-        "summary": "停用事件",
+        "summary": "更新事件",
         "parameters": [
           {
             "description": "事件标识",
@@ -338,7 +240,15 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/req.BrokerEventSwitchRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerEventSwitchRequest"
+              }
+            }
+          },
+          "description": "事件配置",
+          "required": true
         },
         "responses": {
           "200": {
@@ -346,72 +256,47 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerEventView"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/service.BrokerEventView"
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/v1/broker/events/{eventSlug}/enable": {
-      "post": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-事件"
-        ],
-        "summary": "启用事件",
-        "parameters": [
-          {
-            "description": "事件标识",
-            "name": "eventSlug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/req.BrokerEventSwitchRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerEventView"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -449,19 +334,47 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerMarketListResult"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/service.BrokerMarketListResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -469,8 +382,8 @@
         }
       }
     },
-    "/v1/broker/events/{eventSlug}/markets/{marketId}/disable": {
-      "post": {
+    "/v1/broker/events/{eventSlug}/markets/{marketId}": {
+      "patch": {
         "security": [
           {
             "BrokerApiKey": [],
@@ -481,7 +394,7 @@
         "tags": [
           "券商接口-事件"
         ],
-        "summary": "停用市场",
+        "summary": "更新市场",
         "parameters": [
           {
             "description": "事件标识",
@@ -503,7 +416,15 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/req.BrokerMarketSwitchRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerMarketSwitchRequest"
+              }
+            }
+          },
+          "description": "市场配置",
+          "required": true
         },
         "responses": {
           "200": {
@@ -511,19 +432,47 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerMarketView"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/service.BrokerMarketView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -531,7 +480,313 @@
         }
       }
     },
-    "/v1/broker/events/{eventSlug}/markets/{marketId}/enable": {
+    "/v1/broker/orders": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询当前委托",
+        "parameters": [
+          {
+            "description": "用户邮箱",
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "市场 ID",
+            "name": "marketId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "返回数量，最大 100",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "description": "结果 Token ID",
+            "name": "tokenId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "平台用户 UID",
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/orders/{orderId}": {
+      "delete": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "取消委托",
+        "parameters": [
+          {
+            "description": "订单 ID",
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "平台用户 UID",
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权访问该资源",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/positions": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询仓位",
+        "parameters": [
+          {
+            "description": "用户邮箱",
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "市场 ID",
+            "name": "marketId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "返回数量，最大 100",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "description": "平台用户 UID",
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/v2.brokerPositionItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/positions/closures": {
       "post": {
         "security": [
           {
@@ -541,31 +796,19 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "券商接口-后管"
         ],
-        "summary": "启用市场",
-        "parameters": [
-          {
-            "description": "事件标识",
-            "name": "eventSlug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "summary": "平仓",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerClosePositionRequest"
+              }
             }
           },
-          {
-            "description": "市场 ID",
-            "name": "marketId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/req.BrokerMarketSwitchRequest"
+          "description": "平仓信息",
+          "required": true
         },
         "responses": {
           "200": {
@@ -573,19 +816,57 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerMarketView"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerClosePositionData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权访问该资源",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -593,7 +874,176 @@
         }
       }
     },
-    "/v1/broker/reports/summary": {
+    "/v1/broker/reports/daily-summaries": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询每日汇总",
+        "parameters": [
+          {
+            "description": "汇总日期范围起点（Unix 毫秒，包含）",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "汇总日期范围终点（Unix 毫秒，不包含）",
+            "name": "end",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "页码，从 1 开始",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "description": "返回数量，最大 100",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerDailySummaryListData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/reports/dashboard": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询仪表盘",
+        "parameters": [
+          {
+            "description": "统计周期",
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d"
+              ],
+              "default": "1d"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerDashboardData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/reports/summaries/{period}": {
       "get": {
         "security": [
           {
@@ -610,23 +1060,23 @@
           {
             "description": "统计周期",
             "name": "period",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string",
               "enum": [
                 "1d",
                 "7d",
                 "30d"
-              ],
-              "default": "1d"
+              ]
             }
           },
           {
-            "description": "结束时间",
-            "name": "endTime",
+            "description": "结束时间（Unix 毫秒）",
+            "name": "end",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           }
         ],
@@ -636,19 +1086,47 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerReportSummaryData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerReportSummaryData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -656,7 +1134,7 @@
         }
       }
     },
-    "/v1/broker/reports/trend": {
+    "/v1/broker/reports/trends": {
       "get": {
         "security": [
           {
@@ -671,25 +1149,40 @@
         "summary": "查询趋势报表",
         "parameters": [
           {
-            "description": "统计周期",
-            "name": "period",
+            "description": "汇总日期范围起点（Unix 毫秒，包含）",
+            "name": "begin",
             "in": "query",
             "schema": {
-              "type": "string",
-              "enum": [
-                "1d",
-                "7d",
-                "30d"
-              ],
-              "default": "1d"
+              "type": "integer",
+              "minimum": 0
             }
           },
           {
-            "description": "结束时间（Unix 秒）",
-            "name": "endTime",
+            "description": "汇总日期范围终点（Unix 毫秒，不包含）",
+            "name": "end",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "页码，从 1 开始",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "description": "返回数量，最大 100",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
             }
           }
         ],
@@ -699,19 +1192,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerDailySummaryListData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerDailySummaryListData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -748,26 +1259,44 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerRiskConfigView"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/service.BrokerRiskConfigView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           }
         }
       },
-      "post": {
+      "patch": {
         "security": [
           {
             "BrokerApiKey": [],
@@ -796,19 +1325,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerRiskConfigView"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/service.BrokerRiskConfigView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -831,19 +1378,12 @@
         "summary": "查询风险敞口",
         "parameters": [
           {
-            "description": "每页数量",
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
             "description": "页码",
             "name": "page",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1
             }
           },
           {
@@ -852,6 +1392,16 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "每页数量，最大 100",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
             }
           },
           {
@@ -869,19 +1419,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerRiskExposureData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerRiskExposureListData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -904,19 +1472,12 @@
         "summary": "查询风控策略",
         "parameters": [
           {
-            "description": "每页数量",
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
             "description": "页码",
             "name": "page",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1
             }
           },
           {
@@ -926,6 +1487,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "每页数量，最大 100",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
           }
         ],
         "responses": {
@@ -934,19 +1505,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerRiskPolicyListResult"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/service.BrokerRiskPolicyListResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -973,26 +1562,44 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerInfoView"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerSettingsData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           }
         }
       },
-      "post": {
+      "patch": {
         "security": [
           {
             "BrokerApiKey": [],
@@ -1021,124 +1628,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.BrokerInfoView"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerSettingsData"
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/v1/broker/trade/openOrders": {
-      "get": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-后管"
-        ],
-        "summary": "查询当前委托",
-        "parameters": [
-          {
-            "description": "用户邮箱",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           },
-          {
-            "description": "事件标识",
-            "name": "eventSlug",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "每页数量",
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "description": "市场 ID",
-            "name": "marketId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "下一页游标",
-            "name": "next",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "上一页游标",
-            "name": "prev",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结果 Token ID",
-            "name": "tokenId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "平台用户 UID",
-            "name": "uid",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
+          "400": {
+            "description": "请求参数或请求体无效",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerOpenOrderListData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1146,7 +1666,7 @@
         }
       }
     },
-    "/v1/broker/trade/orders/cancel": {
+    "/v1/broker/special-users": {
       "post": {
         "security": [
           {
@@ -1156,39 +1676,57 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "券商接口-用户"
         ],
-        "summary": "取消委托",
+        "summary": "创建特殊账户",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/req.BrokerCancelOrdersRequest"
+                "$ref": "#/components/schemas/req.BrokerCreateSpecialUserRequest"
               }
             }
           },
-          "description": "撤单信息",
+          "description": "特殊账户信息",
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerCancelOrdersData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerUIDData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1196,104 +1734,7 @@
         }
       }
     },
-    "/v1/broker/trade/positions": {
-      "get": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-后管"
-        ],
-        "summary": "查询仓位",
-        "parameters": [
-          {
-            "description": "用户邮箱",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "事件标识",
-            "name": "eventSlug",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "每页数量",
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "description": "市场 ID",
-            "name": "marketId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "下一页游标",
-            "name": "next",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "上一页游标",
-            "name": "prev",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "平台用户 UID",
-            "name": "uid",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerPositionListData"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/trade/positions/close": {
+    "/v1/broker/tokens": {
       "post": {
         "security": [
           {
@@ -1303,39 +1744,57 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "券商接口-用户"
         ],
-        "summary": "平仓",
+        "summary": "用户登录",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/req.BrokerClosePositionRequest"
+                "$ref": "#/components/schemas/req.BrokerTokenSyncRequest"
               }
             }
           },
-          "description": "平仓信息",
+          "description": "用户 Token 同步信息",
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerClosePositionData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerUIDData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1343,7 +1802,7 @@
         }
       }
     },
-    "/v1/broker/trade/trades": {
+    "/v1/broker/trades": {
       "get": {
         "security": [
           {
@@ -1358,6 +1817,15 @@
         "summary": "查询成交记录",
         "parameters": [
           {
+            "description": "成交时间范围起点（Unix 毫秒，包含）",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
             "description": "用户邮箱",
             "name": "email",
             "in": "query",
@@ -1366,11 +1834,12 @@
             }
           },
           {
-            "description": "成交时间范围终点",
-            "name": "endTime",
+            "description": "成交时间范围终点（Unix 毫秒，不包含）",
+            "name": "end",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 0
             }
           },
           {
@@ -1382,35 +1851,13 @@
             }
           },
           {
-            "description": "每页数量",
-            "name": "limit",
+            "description": "返回数量，最大 100",
+            "name": "size",
             "in": "query",
             "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "description": "下一页游标",
-            "name": "next",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "上一页游标",
-            "name": "prev",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "成交时间范围起点",
-            "name": "startTime",
-            "in": "query",
-            "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
             }
           },
           {
@@ -1428,69 +1875,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerTradeListData"
-                        }
-                      }
-                    }
-                  ]
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/v2.brokerTradeItem"
+                  }
                 }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/transfer": {
-      "post": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-划转"
-        ],
-        "summary": "创建划转",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/v2.BrokerTransferReq"
               }
             }
           },
-          "description": "划转信息",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
+          "400": {
+            "description": "请求参数或请求体无效",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.TransferRecord"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1498,57 +1916,7 @@
         }
       }
     },
-    "/v1/broker/transfer/detail": {
-      "get": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-划转"
-        ],
-        "summary": "查询划转详情",
-        "parameters": [
-          {
-            "description": "券商侧唯一交易流水号",
-            "name": "txnId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/service.TransferRecord"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/transfer/list": {
+    "/v1/broker/transfers": {
       "get": {
         "security": [
           {
@@ -1563,10 +1931,9 @@
         "summary": "查询划转列表",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
+            "description": "券商侧用户 ID；不传表示当前券商全部用户",
             "name": "userId",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "string"
             }
@@ -1596,291 +1963,16 @@
             }
           },
           {
-            "description": "页码",
-            "name": "page",
+            "description": "开始时间（Unix 毫秒，包含）",
+            "name": "begin",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "default": 1
+              "type": "integer"
             }
           },
           {
-            "description": "每页数量",
-            "name": "pageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 20
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.transferListData"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/user/createSpecial": {
-      "post": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-用户"
-        ],
-        "summary": "创建特殊账户",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/req.BrokerCreateSpecialUserRequest"
-              }
-            }
-          },
-          "description": "特殊账户信息",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerUIDData"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/user/login": {
-      "post": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-用户"
-        ],
-        "summary": "用户登录",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/req.LoginUserRequest"
-              }
-            }
-          },
-          "description": "登录信息",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerUIDData"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/user/logout": {
-      "post": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-用户"
-        ],
-        "summary": "用户登出",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/req.LogoutUserRequest"
-              }
-            }
-          },
-          "description": "登出信息",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerOperationData"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/user/update": {
-      "post": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-用户"
-        ],
-        "summary": "更新用户",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/req.UpdateUserRequest"
-              }
-            }
-          },
-          "description": "用户信息",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerOperationData"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/user/users": {
-      "get": {
-        "security": [
-          {
-            "BrokerApiKey": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-用户"
-        ],
-        "summary": "查询用户列表",
-        "parameters": [
-          {
-            "description": "券商侧用户 ID",
-            "name": "brokerUid",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "用户邮箱",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "创建时间范围终点",
-            "name": "endTime",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "每页数量，最大 200",
-            "name": "limit",
+            "description": "结束时间（Unix 毫秒，不包含）",
+            "name": "end",
             "in": "query",
             "schema": {
               "type": "integer"
@@ -1895,16 +1987,313 @@
             }
           },
           {
-            "description": "创建时间范围起点",
-            "name": "startTime",
+            "description": "返回数量，最大 100",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.transferListData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-划转"
+        ],
+        "summary": "创建划转",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v2.BrokerTransferReq"
+              }
+            }
+          },
+          "description": "划转信息",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service.TransferRecord"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.transferAcceptedData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "资源状态冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/transfers/{transferId}": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-划转"
+        ],
+        "summary": "查询划转详情",
+        "parameters": [
+          {
+            "description": "券商侧唯一交易流水号",
+            "name": "transferId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service.TransferRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/users": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "查询用户列表",
+        "parameters": [
+          {
+            "description": "创建时间范围起点（Unix 毫秒，包含）",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "用户邮箱",
+            "name": "email",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
+            "description": "创建时间范围终点（Unix 毫秒，不包含）",
+            "name": "end",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "页码，从 1 开始",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "description": "每页数量，最大 100",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
             "description": "平台用户 UID",
             "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "券商侧用户 ID",
+            "name": "userId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1917,19 +2306,190 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/resp.BrokerResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "$ref": "#/components/schemas/v2.brokerUserListData"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/v2.brokerUserListData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/users/{userId}": {
+      "patch": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "更新用户",
+        "parameters": [
+          {
+            "description": "券商侧用户 ID",
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.UpdateUserRequest"
+              }
+            }
+          },
+          "description": "用户信息",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/{userId}/tokens": {
+      "delete": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "用户登出",
+        "parameters": [
+          {
+            "description": "券商侧用户 ID",
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "请求参数或请求体无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "鉴权失败或签名无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1939,30 +2499,6 @@
     }
   },
   "components": {
-    "requestBodies": {
-      "req.BrokerMarketSwitchRequest": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/req.BrokerMarketSwitchRequest"
-            }
-          }
-        },
-        "description": "市场配置",
-        "required": true
-      },
-      "req.BrokerEventSwitchRequest": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/req.BrokerEventSwitchRequest"
-            }
-          }
-        },
-        "description": "事件配置",
-        "required": true
-      }
-    },
     "securitySchemes": {
       "BrokerApiKey": {
         "type": "apiKey",
@@ -1984,48 +2520,6 @@
       }
     },
     "schemas": {
-      "http.PagePagination": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "description": "当前页记录数",
-            "type": "integer"
-          },
-          "mode": {
-            "description": "分页模式",
-            "type": "string"
-          },
-          "page": {
-            "description": "当前页码",
-            "type": "integer"
-          },
-          "total": {
-            "description": "记录总数",
-            "type": "integer"
-          },
-          "totalPages": {
-            "description": "总页数",
-            "type": "integer"
-          }
-        }
-      },
-      "req.BrokerCancelOrdersRequest": {
-        "type": "object",
-        "required": [
-          "orderId",
-          "uid"
-        ],
-        "properties": {
-          "orderId": {
-            "description": "待取消的订单 ID",
-            "type": "string"
-          },
-          "uid": {
-            "description": "平台用户 UID",
-            "type": "string"
-          }
-        }
-      },
       "req.BrokerClosePositionRequest": {
         "type": "object",
         "required": [
@@ -2051,38 +2545,43 @@
       "req.BrokerCreateSpecialUserRequest": {
         "type": "object",
         "required": [
-          "brokerId",
           "type"
         ],
         "properties": {
-          "brokerId": {
-            "description": "券商 ID，必须与当前鉴权券商一致",
-            "type": "integer"
-          },
           "type": {
-            "description": "特殊账户类型：sys 系统账户，mm 做市账户",
+            "description": "特殊账户类型",
             "type": "string",
             "enum": [
-              "sys",
-              "mm"
+              "SYSTEM",
+              "MARKET_MAKER"
             ]
           }
         }
       },
       "req.BrokerEventSwitchRequest": {
         "type": "object",
+        "required": [
+          "enabled"
+        ],
         "properties": {
-          "eventSlug": {
-            "description": "请求体中的事件标识；通常以路径参数为准",
-            "type": "string"
+          "enabled": {
+            "description": "是否启用事件",
+            "type": "boolean"
           }
         }
       },
       "req.BrokerMarketSwitchRequest": {
         "type": "object",
+        "required": [
+          "enabled"
+        ],
         "properties": {
           "cancelOpenOrders": {
             "description": "预留；当前版本不自动撤单",
+            "type": "boolean"
+          },
+          "enabled": {
+            "description": "是否启用市场",
             "type": "boolean"
           },
           "reason": {
@@ -2116,7 +2615,7 @@
           }
         }
       },
-      "req.LoginUserRequest": {
+      "req.BrokerTokenSyncRequest": {
         "type": "object",
         "required": [
           "token",
@@ -2145,18 +2644,6 @@
           }
         }
       },
-      "req.LogoutUserRequest": {
-        "type": "object",
-        "required": [
-          "userId"
-        ],
-        "properties": {
-          "userId": {
-            "description": "券商侧用户 ID",
-            "type": "string"
-          }
-        }
-      },
       "req.UpdateBrokerRequest": {
         "type": "object",
         "properties": {
@@ -2176,39 +2663,14 @@
       },
       "req.UpdateUserRequest": {
         "type": "object",
-        "required": [
-          "userId"
-        ],
         "properties": {
           "desc": {
             "description": "新的用户备注",
             "type": "string"
           },
-          "userId": {
-            "description": "券商侧用户 ID",
-            "type": "string"
-          },
           "userName": {
             "description": "新的用户名称",
             "type": "string"
-          }
-        }
-      },
-      "resp.BrokerResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "description": "业务状态码，200 表示成功",
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "description": "成功时返回的业务数据，失败时可省略"
-          },
-          "message": {
-            "description": "业务处理结果说明",
-            "type": "string",
-            "example": "success"
           }
         }
       },
@@ -2265,38 +2727,6 @@
           },
           "updatedAt": {
             "description": "券商配置更新时间",
-            "type": "string"
-          }
-        }
-      },
-      "service.BrokerInfoView": {
-        "type": "object",
-        "properties": {
-          "api_key": {
-            "type": "string"
-          },
-          "api_secret": {
-            "type": "string"
-          },
-          "broker_id": {
-            "type": "integer"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "domain": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "status": {
-            "type": "integer"
-          },
-          "updated_at": {
-            "type": "string"
-          },
-          "webhookUrl": {
             "type": "string"
           }
         }
@@ -2399,13 +2829,9 @@
               "$ref": "#/components/schemas/service.BrokerRiskPolicyView"
             }
           },
-          "pagination": {
-            "description": "分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/http.PagePagination"
-              }
-            ]
+          "total": {
+            "description": "风控策略总数",
+            "type": "integer"
           }
         }
       },
@@ -2573,99 +2999,6 @@
           }
         }
       },
-      "v2.brokerAssetListData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "资产列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerAssetItem"
-            }
-          },
-          "pagination": {
-            "description": "游标分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerCursorPagination"
-              }
-            ]
-          }
-        }
-      },
-      "v2.brokerCancelFailure": {
-        "type": "object",
-        "properties": {
-          "orderId": {
-            "description": "取消失败的订单 ID",
-            "type": "string"
-          },
-          "reason": {
-            "description": "失败原因",
-            "type": "string"
-          }
-        }
-      },
-      "v2.brokerCancelOrdersData": {
-        "type": "object",
-        "properties": {
-          "orderId": {
-            "description": "请求取消的订单 ID",
-            "type": "string"
-          },
-          "result": {
-            "description": "撤单执行结果",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerCancelResult"
-              }
-            ]
-          },
-          "uid": {
-            "description": "平台用户 UID",
-            "type": "string"
-          }
-        }
-      },
-      "v2.brokerCancelResult": {
-        "type": "object",
-        "properties": {
-          "account": {
-            "description": "用户账户 ID",
-            "type": "string"
-          },
-          "canceled": {
-            "description": "已取消的订单 ID 列表",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "count": {
-            "description": "已处理订单数量",
-            "type": "integer"
-          },
-          "failed": {
-            "description": "取消失败的订单列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerCancelFailure"
-            }
-          },
-          "status": {
-            "description": "撤单状态",
-            "type": "string"
-          },
-          "success": {
-            "description": "撤单是否成功",
-            "type": "boolean"
-          },
-          "tokenId": {
-            "description": "结果 Token ID",
-            "type": "string"
-          }
-        }
-      },
       "v2.brokerClosePositionData": {
         "type": "object",
         "properties": {
@@ -2699,81 +3032,12 @@
           }
         }
       },
-      "v2.brokerCursorPagination": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "description": "当前页记录数",
-            "type": "integer"
-          },
-          "mode": {
-            "description": "分页模式",
-            "type": "string"
-          },
-          "next": {
-            "description": "下一页游标",
-            "type": "string"
-          },
-          "prev": {
-            "description": "上一页游标",
-            "type": "string"
-          }
-        }
-      },
-      "v2.brokerDailySummaryItem": {
-        "type": "object",
-        "properties": {
-          "activeUsers": {
-            "description": "当日活跃用户数",
-            "type": "integer"
-          },
-          "brokerId": {
-            "description": "券商 ID",
-            "type": "integer"
-          },
-          "day": {
-            "description": "汇总日期",
-            "type": "string"
-          },
-          "dayStartTime": {
-            "description": "日期开始时间",
-            "type": "integer"
-          },
-          "newUsers": {
-            "description": "当日新增用户数",
-            "type": "integer"
-          },
-          "totalDeposit": {
-            "description": "当日入金总额",
-            "type": "string"
-          },
-          "totalTradeVolume": {
-            "description": "当日成交总额",
-            "type": "integer"
-          },
-          "totalWithdraw": {
-            "description": "当日出金总额",
-            "type": "string"
-          }
-        }
-      },
       "v2.brokerDailySummaryListData": {
         "type": "object",
         "properties": {
-          "items": {
-            "description": "每日汇总列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerDailySummaryItem"
-            }
-          },
-          "pagination": {
-            "description": "页码分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerPagePagination"
-              }
-            ]
+          "items": {},
+          "total": {
+            "type": "integer"
           }
         }
       },
@@ -2871,43 +3135,6 @@
           }
         }
       },
-      "v2.brokerEventExposureSummary": {
-        "type": "object",
-        "properties": {
-          "available": {
-            "description": "剩余可用额度",
-            "type": "number"
-          },
-          "eventsBreached": {
-            "description": "已超限事件数",
-            "type": "integer"
-          },
-          "eventsTotal": {
-            "description": "事件总数",
-            "type": "integer"
-          },
-          "eventsUnderLimit": {
-            "description": "未超限事件数",
-            "type": "integer"
-          },
-          "status": {
-            "description": "总体风险状态",
-            "type": "string"
-          },
-          "totalCurrentExposure": {
-            "description": "所有事件当前风险敞口",
-            "type": "number"
-          },
-          "totalLimit": {
-            "description": "所有事件风险上限合计",
-            "type": "number"
-          },
-          "utilizationPercent": {
-            "description": "总体上限使用率",
-            "type": "number"
-          }
-        }
-      },
       "v2.brokerEventListData": {
         "type": "object",
         "properties": {
@@ -2918,13 +3145,9 @@
               "$ref": "#/components/schemas/v2.brokerEventListItem"
             }
           },
-          "pagination": {
-            "description": "分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerPagePagination"
-              }
-            ]
+          "total": {
+            "description": "事件总数",
+            "type": "integer"
           }
         }
       },
@@ -2974,31 +3197,6 @@
           "updatedAt": {
             "description": "最近更新时间",
             "type": "string"
-          }
-        }
-      },
-      "v2.brokerExposureSummary": {
-        "type": "object",
-        "properties": {
-          "available": {
-            "description": "剩余可用额度",
-            "type": "number"
-          },
-          "currentExposure": {
-            "description": "当前风险敞口",
-            "type": "number"
-          },
-          "limit": {
-            "description": "风险敞口上限",
-            "type": "number"
-          },
-          "status": {
-            "description": "风险状态",
-            "type": "string"
-          },
-          "utilizationPercent": {
-            "description": "上限使用率",
-            "type": "number"
           }
         }
       },
@@ -3096,35 +3294,6 @@
           }
         }
       },
-      "v2.brokerOpenOrderListData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "当前委托列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
-            }
-          },
-          "pagination": {
-            "description": "游标分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerCursorPagination"
-              }
-            ]
-          }
-        }
-      },
-      "v2.brokerOperationData": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "description": "操作是否成功",
-            "type": "boolean"
-          }
-        }
-      },
       "v2.brokerOrderResult": {
         "type": "object",
         "properties": {
@@ -3151,31 +3320,6 @@
           "success": {
             "description": "下单是否成功",
             "type": "boolean"
-          }
-        }
-      },
-      "v2.brokerPagePagination": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "description": "当前页记录数",
-            "type": "integer"
-          },
-          "mode": {
-            "description": "分页模式",
-            "type": "string"
-          },
-          "page": {
-            "description": "当前页码",
-            "type": "integer"
-          },
-          "total": {
-            "description": "记录总数",
-            "type": "integer"
-          },
-          "totalPages": {
-            "description": "总页数",
-            "type": "integer"
           }
         }
       },
@@ -3249,26 +3393,6 @@
           }
         }
       },
-      "v2.brokerPositionListData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "仓位列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerPositionItem"
-            }
-          },
-          "pagination": {
-            "description": "游标分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerCursorPagination"
-              }
-            ]
-          }
-        }
-      },
       "v2.brokerReportSummaryData": {
         "type": "object",
         "properties": {
@@ -3310,17 +3434,9 @@
           }
         }
       },
-      "v2.brokerRiskExposureData": {
+      "v2.brokerRiskExposureListData": {
         "type": "object",
         "properties": {
-          "eventBasedExposure": {
-            "description": "事件级风险敞口汇总",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerEventExposureSummary"
-              }
-            ]
-          },
           "items": {
             "description": "事件风险敞口列表",
             "type": "array",
@@ -3328,25 +3444,50 @@
               "$ref": "#/components/schemas/v2.brokerEventExposureItem"
             }
           },
-          "lastUpdated": {
-            "description": "风险数据最近更新时间",
+          "total": {
+            "description": "风险敞口总数",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerSettingsData": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "description": "Broker REST API Key",
             "type": "string"
           },
-          "pagination": {
-            "description": "页码分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerPagePagination"
-              }
-            ]
+          "apiSecret": {
+            "description": "Broker REST API Secret",
+            "type": "string"
           },
-          "platformExposure": {
-            "description": "券商全局风险敞口汇总",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerExposureSummary"
-              }
-            ]
+          "brokerId": {
+            "description": "券商 ID",
+            "type": "integer"
+          },
+          "createdAt": {
+            "description": "创建时间",
+            "type": "string"
+          },
+          "domain": {
+            "description": "券商域名",
+            "type": "string"
+          },
+          "name": {
+            "description": "券商名称",
+            "type": "string"
+          },
+          "status": {
+            "description": "券商状态",
+            "type": "integer"
+          },
+          "updatedAt": {
+            "description": "更新时间",
+            "type": "string"
+          },
+          "webhookUrl": {
+            "description": "Webhook 地址",
+            "type": "string"
           }
         }
       },
@@ -3476,26 +3617,6 @@
           }
         }
       },
-      "v2.brokerTradeListData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "成交记录列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerTradeItem"
-            }
-          },
-          "pagination": {
-            "description": "游标分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/v2.brokerCursorPagination"
-              }
-            ]
-          }
-        }
-      },
       "v2.brokerUIDData": {
         "type": "object",
         "properties": {
@@ -3521,10 +3642,6 @@
       "v2.brokerUserItem": {
         "type": "object",
         "properties": {
-          "brokerUid": {
-            "description": "券商侧用户 ID",
-            "type": "string"
-          },
           "createdAt": {
             "description": "用户创建时间",
             "type": "string"
@@ -3540,6 +3657,10 @@
           "uid": {
             "description": "平台用户 UID",
             "type": "integer"
+          },
+          "userId": {
+            "description": "券商侧用户 ID",
+            "type": "string"
           },
           "username": {
             "description": "用户名称",
@@ -3557,21 +3678,31 @@
               "$ref": "#/components/schemas/v2.brokerUserItem"
             }
           },
-          "pagination": {
-            "description": "分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/http.PagePagination"
-              }
-            ]
+          "total": {
+            "description": "符合条件的用户总数",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.transferAcceptedData": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/service.TransferRecord"
+          },
+          "queryAfterMs": {
+            "type": "integer"
+          },
+          "retryable": {
+            "type": "boolean"
           }
         }
       },
       "v2.transferListData": {
         "type": "object",
         "properties": {
-          "list": {
-            "description": "划转记录列表",
+          "items": {
+            "description": "当前页划转记录",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/service.TransferRecord"
@@ -3580,6 +3711,19 @@
           "total": {
             "description": "符合条件的记录总数",
             "type": "integer"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "错误原因",
+            "example": "invalid request"
           }
         }
       }
@@ -3609,10 +3753,10 @@
       "name": "券商接口-风控"
     },
     {
-      "name": "券商接口-划转"
+      "name": "券商接口-用户"
     },
     {
-      "name": "券商接口-用户"
+      "name": "券商接口-划转"
     }
   ],
   "x-api-side": "BROKER"

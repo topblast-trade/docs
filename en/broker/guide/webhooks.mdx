@@ -73,7 +73,7 @@ A local service cannot receive callbacks from the public internet directly. Use 
 After implementing and verifying the receiver, call [Update broker settings](/en/broker/api-reference/settings/update) and submit only the `webhookUrl` you want to set:
 
 ```http
-POST https://api.topblast.trade/v1/broker/settings
+PATCH https://api.topblast.trade/v1/broker/settings
 x-api-key: <API_KEY>
 x-timestamp: <TIMESTAMP>
 x-signature: <SIGNATURE>
@@ -86,6 +86,6 @@ Content-Type: application/json
 }
 ```
 
-Omitted `name` and `domain` fields remain unchanged. When calculating the signature, use `POST` as the method, `/v1/broker/settings` as the path, and the exact raw JSON sent as the body. See [Authentication](/en/broker/guide/authentication) for the signing rules.
+Omitted `name` and `domain` fields remain unchanged. When calculating the signature, use `PATCH` as the method, `/v1/broker/settings` as the path, and the exact raw JSON sent as the body. See [Authentication](/en/broker/guide/authentication) for the signing rules.
 
 New events are sent to this URL after the update succeeds. Complete an end-to-end test with a test endpoint before switching to the production URL.

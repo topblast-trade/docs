@@ -23,7 +23,7 @@ After the user signs in to the broker, call the login endpoint from the broker s
 <CodeGroup>
   ```bash cURL
   curl --request POST \
-    --url https://api.topblast.trade/v1/broker/user/login \
+    --url https://api.topblast.trade/v1/broker/tokens \
     --header 'Content-Type: application/json' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
@@ -36,11 +36,7 @@ topblast creates the mapping when necessary and returns the platform user UID:
 
 ```json
 {
-  "code": 200,
-  "message": "success",
-  "data": {
-    "uid": 1000000000001
-  }
+  "uid": 1000000000001
 }
 ```
 
@@ -50,12 +46,12 @@ Use the [API debugger](/en/broker/guide/api-debugger) to generate the signature 
 
 ## 2. Query the user
 
-Use the returned `uid` or broker-side `brokerUid` to verify the mapping:
+Use the returned `uid` or broker-side `userId` to verify the mapping:
 
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/broker/user/users?uid=1000000000001&page=1&limit=20' \
+    --url 'https://api.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
@@ -73,7 +69,7 @@ Retrieve assets and balances with the platform user UID:
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/broker/assets?uid=1000000000001&limit=20' \
+    --url 'https://api.topblast.trade/v1/broker/assets?uid=1000000000001&size=20' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'

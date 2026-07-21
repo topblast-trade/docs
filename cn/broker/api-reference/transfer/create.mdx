@@ -1,8 +1,8 @@
 ---
 title: "创建划转"
-openapi: "/openapi/b/openapi.json POST /v1/broker/transfer"
+openapi: "/openapi/b/openapi.json POST /v1/broker/transfers"
 ---
 
 <Note>
-划转可能异步完成。业务码 `20201` 表示订单仍在 `PROCESSING`，不是失败。请等待 [`broker.transferred`](/cn/broker/api-reference/webhooks/broker-transferred) 事件，或使用相同 `txnId` 查询详情。不要生成新的 `txnId` 盲目重试。
+划转可能异步完成。HTTP `202 Accepted` 表示请求已受理、划转仍在 `PROCESSING`，不是失败。请等待 [`broker.transferred`](/cn/broker/api-reference/webhooks/broker-transferred) 事件，或使用创建请求中的同一个 `txnId` 调用详情接口（将其作为 `{transferId}`）。不要生成新的 `txnId` 盲目重试。
 </Note>

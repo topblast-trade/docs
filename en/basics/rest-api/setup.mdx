@@ -15,21 +15,15 @@ Choose the caller type and obtain the corresponding credentials:
 Store the API Secret only on a trusted server. Never embed it in a Web, mobile, or other end-user client.
 </Warning>
 
-## Base URL
+## Trading REST API endpoint
 
-The following examples use the production environment by default:
+The Trading REST API provides one endpoint:
 
 ```text
 https://api.topblast.trade
 ```
 
-| Environment | Base URL | Status |
-| :--- | :--- | :--- |
-| Development | `https://api-dev.topblast.trade` | Internal development |
-| Test | `https://api-test.topblast.trade` | Recommended for integration testing |
-| Production | `https://api.topblast.trade` | Production environment |
-
-All requests must use HTTPS. Append an operation path from API Reference to the Base URL to form the complete request URL.
+All requests must use HTTPS. Append a path from the Trading API Reference to this endpoint to form the complete request URL.
 
 ## Authentication
 
@@ -69,7 +63,7 @@ All requests must use HTTPS. Append an operation path from API Reference to the 
   <Tab title="Broker REST API">
     ```bash
     curl --request GET \
-      --url "https://api.topblast.trade/v1/broker/user/users?page=1&pageSize=20" \
+      --url "https://api.topblast.trade/v1/broker/users?page=1&size=20" \
       --header "x-api-key: <broker_api_key>" \
       --header "x-timestamp: <timestamp>" \
       --header "x-signature: <signature>"

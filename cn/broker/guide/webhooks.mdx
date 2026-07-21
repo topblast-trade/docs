@@ -73,7 +73,7 @@ timestamp + "\n" + webhookId + "\n" + rawBody
 接收端实现并验证完成后，调用[更新券商设置](/cn/broker/api-reference/settings/update)，只提交需要设置的 `webhookUrl`：
 
 ```http
-POST https://api.topblast.trade/v1/broker/settings
+PATCH https://api.topblast.trade/v1/broker/settings
 x-api-key: <API_KEY>
 x-timestamp: <TIMESTAMP>
 x-signature: <SIGNATURE>
@@ -86,6 +86,6 @@ Content-Type: application/json
 }
 ```
 
-未提交的 `name` 和 `domain` 会保持不变。签名时 Method 使用 `POST`，Path 使用 `/v1/broker/settings`，Body 必须与实际发送的原始 JSON 完全一致。签名规则参见[授权签名](/cn/broker/guide/authentication)。
+未提交的 `name` 和 `domain` 会保持不变。签名时 Method 使用 `PATCH`，Path 使用 `/v1/broker/settings`，Body 必须与实际发送的原始 JSON 完全一致。签名规则参见[授权签名](/cn/broker/guide/authentication)。
 
 设置成功后，后续事件会发送到该 URL。建议先使用测试地址完成端到端验证，再切换为生产地址。

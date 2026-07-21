@@ -1,4 +1,12 @@
 ---
 title: "停用事件"
-openapi: "/openapi/b/openapi.json POST /v1/broker/events/{eventSlug}/disable"
+openapi: "/openapi/b/openapi.json PATCH /v1/broker/events/{eventSlug}"
 ---
+
+通过将 `enabled` 设置为 `false` 停用事件：
+
+```json
+{
+  "enabled": false
+}
+```

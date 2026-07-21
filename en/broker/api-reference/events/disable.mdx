@@ -1,4 +1,14 @@
 ---
 title: "Disable event"
-openapi: "/openapi/b/openapi.en.json POST /v1/broker/events/{eventSlug}/disable"
+openapi: "/openapi/b/openapi.en.json PATCH /v1/broker/events/{eventSlug}"
 ---
+
+Set `enabled` to `false` to disable the event:
+
+```json
+{
+  "enabled": false
+}
+```
+
+Enabling and disabling use the same resource update operation; do not call a `/disable` subpath.

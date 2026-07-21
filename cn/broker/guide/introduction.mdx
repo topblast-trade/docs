@@ -46,7 +46,7 @@ description: "了解 Broker REST API 的鉴权方式、接入流程和业务能�
 
 ## 用户接入流程
 
-券商用户登录成功后，券商服务端调用 `POST /v1/broker/user/login`，将券商侧用户 ID 和 Token 同步到 topblast。如果用户映射不存在，topblast 会在登录过程中自动创建。
+券商用户登录成功后，券商服务端调用 `POST /v1/broker/tokens`，将券商侧用户 ID 和 Token 同步到 topblast。如果用户映射不存在，topblast 会在同步过程中自动创建。
 
 ```mermaid
 sequenceDiagram

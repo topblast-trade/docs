@@ -1,4 +1,12 @@
 ---
 title: "启用市场"
-openapi: "/openapi/b/openapi.json POST /v1/broker/events/{eventSlug}/markets/{marketId}/enable"
+openapi: "/openapi/b/openapi.json PATCH /v1/broker/events/{eventSlug}/markets/{marketId}"
 ---
+
+通过将 `enabled` 设置为 `true` 启用市场：
+
+```json
+{
+  "enabled": true
+}
+```

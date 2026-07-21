@@ -15,21 +15,15 @@ description: "配置直接调用 topblast REST API 所需的环境、鉴权方�
 API Secret 只能保存在可信服务端。不要将其写入 Web、App 或其他面向终端用户的客户端。
 </Warning>
 
-## Base URL
+## Trading REST API 端点
 
-以下示例默认使用生产环境：
+Trading REST API 仅提供以下端点：
 
 ```text
 https://api.topblast.trade
 ```
 
-| 环境 | Base URL | 状态 |
-| :--- | :--- | :--- |
-| 开发环境 | `https://api-dev.topblast.trade` | 内部开发 |
-| 测试环境 | `https://api-test.topblast.trade` | 推荐用于联调 |
-| 生产环境 | `https://api.topblast.trade` | 正式环境 |
-
-所有请求必须使用 HTTPS。将 API Reference 中的接口 Path 拼接到 Base URL 后即可得到完整请求地址。
+所有请求必须使用 HTTPS。将 Trading API Reference 中的接口 Path 拼接到该端点后，即可得到完整请求地址。
 
 ## 鉴权
 
@@ -69,7 +63,7 @@ https://api.topblast.trade
   <Tab title="Broker REST API">
     ```bash
     curl --request GET \
-      --url "https://api.topblast.trade/v1/broker/user/users?page=1&pageSize=20" \
+      --url "https://api.topblast.trade/v1/broker/users?page=1&size=20" \
       --header "x-api-key: <broker_api_key>" \
       --header "x-timestamp: <timestamp>" \
       --header "x-signature: <signature>"

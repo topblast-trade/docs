@@ -1,4 +1,14 @@
 ---
 title: "Disable market"
-openapi: "/openapi/b/openapi.en.json POST /v1/broker/events/{eventSlug}/markets/{marketId}/disable"
+openapi: "/openapi/b/openapi.en.json PATCH /v1/broker/events/{eventSlug}/markets/{marketId}"
 ---
+
+Set `enabled` to `false` to disable the market:
+
+```json
+{
+  "enabled": false
+}
+```
+
+Enabling and disabling use the same market update operation; do not call a `/disable` subpath.

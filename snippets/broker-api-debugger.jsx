@@ -10,34 +10,34 @@ export const BrokerApiDebugger = () => {
     "bs11_f154c04553ddd705662184d3728bfb398aa78182d014e8b09a7c2ee7e9c28b57";
   const credentialStorageKey = "topblast-broker-api-debugger-credentials";
   const endpoints = [
-    ["POST", "/v1/broker/user/login", "用户登录"],
-    ["POST", "/v1/broker/user/logout", "用户登出"],
-    ["POST", "/v1/broker/user/update", "更新用户"],
-    ["POST", "/v1/broker/user/createSpecial", "创建特殊账户"],
-    ["GET", "/v1/broker/user/users", "查询用户列表"],
-    ["POST", "/v1/broker/transfer", "创建划转"],
-    ["GET", "/v1/broker/transfer/list", "查询划转列表"],
-    ["GET", "/v1/broker/transfer/detail", "查询划转详情"],
+    ["POST", "/v1/broker/tokens", "同步用户 Token"],
+    ["DELETE", "/v1/broker/{userId}/tokens", "删除用户 Token"],
+    ["PATCH", "/v1/broker/users/{userId}", "更新用户"],
+    ["POST", "/v1/broker/special-users", "创建特殊账户"],
+    ["GET", "/v1/broker/users", "查询用户列表"],
+    ["POST", "/v1/broker/transfers", "创建划转"],
+    ["GET", "/v1/broker/transfers", "查询划转列表"],
+    ["GET", "/v1/broker/transfers/{transferId}", "查询划转详情"],
     ["GET", "/v1/broker/assets", "查询资产"],
-    ["GET", "/v1/broker/trade/trades", "查询成交记录"],
-    ["GET", "/v1/broker/trade/positions", "查询仓位"],
-    ["GET", "/v1/broker/trade/openOrders", "查询当前委托"],
-    ["POST", "/v1/broker/trade/orders/cancel", "取消委托"],
-    ["POST", "/v1/broker/trade/positions/close", "平仓"],
-    ["GET", "/v1/broker/reports/summary", "查询汇总报表"],
-    ["GET", "/v1/broker/reports/trend", "查询趋势报表"],
-    ["GET", "/v1/broker/dailySummaries", "查询每日汇总"],
-    ["GET", "/v1/broker/dashboard", "查询仪表盘"],
+    ["GET", "/v1/broker/trades", "查询成交记录"],
+    ["GET", "/v1/broker/positions", "查询仓位"],
+    ["GET", "/v1/broker/orders", "查询当前委托"],
+    ["DELETE", "/v1/broker/orders/{orderId}", "取消委托"],
+    ["POST", "/v1/broker/positions/closures", "平仓"],
+    ["GET", "/v1/broker/reports/summaries/{period}", "查询汇总报表"],
+    ["GET", "/v1/broker/reports/trends", "查询趋势报表"],
+    ["GET", "/v1/broker/reports/daily-summaries", "查询每日汇总"],
+    ["GET", "/v1/broker/reports/dashboard", "查询仪表盘"],
     ["GET", "/v1/broker/events", "查询事件"],
-    ["POST", "/v1/broker/events/{eventSlug}/enable", "启用事件"],
-    ["POST", "/v1/broker/events/{eventSlug}/disable", "停用事件"],
+    ["PATCH", "/v1/broker/events/{eventSlug}", "更新事件"],
     ["GET", "/v1/broker/events/{eventSlug}/markets", "查询事件市场"],
-    ["POST", "/v1/broker/events/{eventSlug}/markets/{marketId}/enable", "启用市场"],
-    ["POST", "/v1/broker/events/{eventSlug}/markets/{marketId}/disable", "停用市场"],
+    ["PATCH", "/v1/broker/events/{eventSlug}/markets/{marketId}", "更新市场"],
     ["GET", "/v1/broker/risk/policies", "查询风控策略"],
     ["GET", "/v1/broker/risk/exposures", "查询风险敞口"],
     ["GET", "/v1/broker/risk/config", "查询风控配置"],
-    ["POST", "/v1/broker/risk/config", "保存风控配置"],
+    ["PATCH", "/v1/broker/risk/config", "保存风控配置"],
+    ["GET", "/v1/broker/settings", "查询券商设置"],
+    ["PATCH", "/v1/broker/settings", "更新券商设置"],
   ].map(([method, path, summary]) => ({
     id: `${method} ${path}`,
     method,
@@ -325,7 +325,7 @@ export const BrokerApiDebugger = () => {
             className={inputClassName}
             value={requestPath}
             onChange={(event) => setRequestPath(event.target.value)}
-            placeholder="/v1/broker/user/login"
+            placeholder="/v1/broker/tokens"
           />
         </div>
         <div className="mt-4">
@@ -334,7 +334,7 @@ export const BrokerApiDebugger = () => {
             className={inputClassName}
             value={rawQuery}
             onChange={(event) => setRawQuery(event.target.value)}
-            placeholder="userId=10001&page=1&pageSize=20"
+            placeholder="page=1&size=20"
           />
         </div>
         <div className="mt-4">

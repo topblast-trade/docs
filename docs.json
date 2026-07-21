@@ -65,11 +65,11 @@
                   {
                     "group": "用户管理",
                     "pages": [
-                      "cn/broker/api-reference/user/login",
-                      "cn/broker/api-reference/user/logout",
+                      "cn/broker/api-reference/user/users",
                       "cn/broker/api-reference/user/update",
                       "cn/broker/api-reference/user/create-special",
-                      "cn/broker/api-reference/user/users"
+                      "cn/broker/api-reference/user/login",
+                      "cn/broker/api-reference/user/logout"
                     ]
                   },
                   {
@@ -92,9 +92,9 @@
                     "group": "交易管理",
                     "pages": [
                       "cn/broker/api-reference/trade/trades",
-                      "cn/broker/api-reference/trade/positions",
                       "cn/broker/api-reference/trade/open-orders",
                       "cn/broker/api-reference/trade/cancel-orders",
+                      "cn/broker/api-reference/trade/positions",
                       "cn/broker/api-reference/trade/close-position"
                     ]
                   },
@@ -102,8 +102,8 @@
                     "group": "报表分析",
                     "pages": [
                       "cn/broker/api-reference/reports/summary",
-                      "cn/broker/api-reference/reports/trend",
                       "cn/broker/api-reference/reports/daily-summaries",
+                      "cn/broker/api-reference/reports/trend",
                       "cn/broker/api-reference/overview/dashboard"
                     ]
                   },

@@ -23,7 +23,7 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
 <CodeGroup>
   ```bash cURL
   curl --request POST \
-    --url https://api.topblast.trade/v1/broker/user/login \
+    --url https://api.topblast.trade/v1/broker/tokens \
     --header 'Content-Type: application/json' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
@@ -36,11 +36,7 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
 
 ```json
 {
-  "code": 200,
-  "message": "success",
-  "data": {
-    "uid": 1000000000001
-  }
+  "uid": 1000000000001
 }
 ```
 
@@ -50,12 +46,12 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
 
 ## 2. 查询用户
 
-使用返回的 `uid` 或券商侧 `brokerUid` 查询用户，确认映射已经生效：
+使用返回的 `uid` 或券商侧 `userId` 查询用户，确认映射已经生效：
 
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/broker/user/users?uid=1000000000001&page=1&limit=20' \
+    --url 'https://api.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
@@ -73,7 +69,7 @@ Query 参数的顺序和编码是签名的一部分，必须与请求 URL 完全
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/broker/assets?uid=1000000000001&limit=20' \
+    --url 'https://api.topblast.trade/v1/broker/assets?uid=1000000000001&size=20' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
