@@ -17,12 +17,12 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "查询资产",
+        "summary": "List assets",
         "parameters": [
           {
-            "description": "每页数量",
+            "description": "Number of items per page.",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -30,7 +30,7 @@
             }
           },
           {
-            "description": "下一页游标",
+            "description": "Next-page cursor.",
             "name": "next",
             "in": "query",
             "schema": {
@@ -38,7 +38,7 @@
             }
           },
           {
-            "description": "上一页游标",
+            "description": "Previous-page cursor.",
             "name": "prev",
             "in": "query",
             "schema": {
@@ -46,7 +46,7 @@
             }
           },
           {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -90,12 +90,12 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "查询每日汇总",
+        "summary": "List daily summaries",
         "parameters": [
           {
-            "description": "汇总日期范围终点",
+            "description": "Parameters.",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -103,7 +103,7 @@
             }
           },
           {
-            "description": "每页数量",
+            "description": "Number of items per page.",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -111,7 +111,7 @@
             }
           },
           {
-            "description": "页码",
+            "description": "Page number.",
             "name": "page",
             "in": "query",
             "schema": {
@@ -119,7 +119,7 @@
             }
           },
           {
-            "description": "汇总日期范围起点",
+            "description": "Parameters.",
             "name": "startTime",
             "in": "query",
             "schema": {
@@ -163,12 +163,12 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "查询仪表盘",
+        "summary": "Get dashboard",
         "parameters": [
           {
-            "description": "统计周期",
+            "description": "Aggregation period.",
             "name": "period",
             "in": "query",
             "schema": {
@@ -218,12 +218,12 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "Events"
         ],
-        "summary": "查询事件",
+        "summary": "List events",
         "parameters": [
           {
-            "description": "是否已为券商启用",
+            "description": "Parameters.",
             "name": "enabled",
             "in": "query",
             "schema": {
@@ -231,7 +231,7 @@
             }
           },
           {
-            "description": "结束时间",
+            "description": "End time.",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -239,7 +239,7 @@
             }
           },
           {
-            "description": "事件标识",
+            "description": "Event slug.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -247,7 +247,7 @@
             }
           },
           {
-            "description": "每页数量",
+            "description": "Number of items per page.",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -255,7 +255,7 @@
             }
           },
           {
-            "description": "页码",
+            "description": "Page number.",
             "name": "page",
             "in": "query",
             "schema": {
@@ -263,7 +263,7 @@
             }
           },
           {
-            "description": "模糊搜索关键词",
+            "description": "Search keyword.",
             "name": "q",
             "in": "query",
             "schema": {
@@ -271,7 +271,7 @@
             }
           },
           {
-            "description": "开始时间",
+            "description": "Start time.",
             "name": "startTime",
             "in": "query",
             "schema": {
@@ -279,7 +279,7 @@
             }
           },
           {
-            "description": "事件状态",
+            "description": "Parameters.",
             "name": "status",
             "in": "query",
             "schema": {
@@ -301,7 +301,7 @@
                       "type": "object",
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/service.BrokerEventListResult"
+                          "$ref": "#/components/schemas/v2.brokerEventListData"
                         }
                       }
                     }
@@ -323,12 +323,12 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "Events"
         ],
-        "summary": "停用事件",
+        "summary": "Disable event",
         "parameters": [
           {
-            "description": "事件标识",
+            "description": "Event slug.",
             "name": "eventSlug",
             "in": "path",
             "required": true,
@@ -376,12 +376,12 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "Events"
         ],
-        "summary": "启用事件",
+        "summary": "Enable event",
         "parameters": [
           {
-            "description": "事件标识",
+            "description": "Event slug.",
             "name": "eventSlug",
             "in": "path",
             "required": true,
@@ -429,12 +429,12 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "Events"
         ],
-        "summary": "查询事件下的市场",
+        "summary": "List event markets",
         "parameters": [
           {
-            "description": "事件标识",
+            "description": "Event slug.",
             "name": "eventSlug",
             "in": "path",
             "required": true,
@@ -479,12 +479,12 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "Events"
         ],
-        "summary": "停用市场",
+        "summary": "Disable market",
         "parameters": [
           {
-            "description": "事件标识",
+            "description": "Event slug.",
             "name": "eventSlug",
             "in": "path",
             "required": true,
@@ -493,7 +493,7 @@
             }
           },
           {
-            "description": "市场 ID",
+            "description": "Market ID.",
             "name": "marketId",
             "in": "path",
             "required": true,
@@ -541,12 +541,12 @@
           }
         ],
         "tags": [
-          "券商接口-事件"
+          "Events"
         ],
-        "summary": "启用市场",
+        "summary": "Enable market",
         "parameters": [
           {
-            "description": "事件标识",
+            "description": "Event slug.",
             "name": "eventSlug",
             "in": "path",
             "required": true,
@@ -555,7 +555,7 @@
             }
           },
           {
-            "description": "市场 ID",
+            "description": "Market ID.",
             "name": "marketId",
             "in": "path",
             "required": true,
@@ -603,12 +603,12 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "查询汇总报表",
+        "summary": "Get summary report",
         "parameters": [
           {
-            "description": "统计周期",
+            "description": "Aggregation period.",
             "name": "period",
             "in": "query",
             "schema": {
@@ -622,7 +622,7 @@
             }
           },
           {
-            "description": "结束时间",
+            "description": "End time.",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -666,12 +666,12 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "查询趋势报表",
+        "summary": "Get trend report",
         "parameters": [
           {
-            "description": "统计周期",
+            "description": "Aggregation period.",
             "name": "period",
             "in": "query",
             "schema": {
@@ -685,7 +685,7 @@
             }
           },
           {
-            "description": "结束时间（Unix 秒）",
+            "description": "End time in Unix seconds.",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -729,12 +729,12 @@
           }
         ],
         "tags": [
-          "券商接口-风控"
+          "Risk management"
         ],
-        "summary": "查询风控配置",
+        "summary": "Get risk configuration",
         "parameters": [
           {
-            "description": "事件标识；为空时仅查询券商全局配置",
+            "description": "Parameters.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -776,9 +776,9 @@
           }
         ],
         "tags": [
-          "券商接口-风控"
+          "Risk management"
         ],
-        "summary": "保存风控配置",
+        "summary": "Save risk configuration",
         "requestBody": {
           "content": {
             "application/json": {
@@ -787,7 +787,7 @@
               }
             }
           },
-          "description": "风控配置",
+          "description": "Request Body.",
           "required": true
         },
         "responses": {
@@ -826,12 +826,12 @@
           }
         ],
         "tags": [
-          "券商接口-风控"
+          "Risk management"
         ],
-        "summary": "查询风险敞口",
+        "summary": "List risk exposures",
         "parameters": [
           {
-            "description": "每页数量",
+            "description": "Number of items per page.",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -839,7 +839,7 @@
             }
           },
           {
-            "description": "页码",
+            "description": "Page number.",
             "name": "page",
             "in": "query",
             "schema": {
@@ -847,7 +847,7 @@
             }
           },
           {
-            "description": "模糊搜索关键词",
+            "description": "Search keyword.",
             "name": "q",
             "in": "query",
             "schema": {
@@ -855,7 +855,7 @@
             }
           },
           {
-            "description": "风险敞口状态",
+            "description": "Parameters.",
             "name": "status",
             "in": "query",
             "schema": {
@@ -899,12 +899,12 @@
           }
         ],
         "tags": [
-          "券商接口-风控"
+          "Risk management"
         ],
-        "summary": "查询风控策略",
+        "summary": "List risk policies",
         "parameters": [
           {
-            "description": "每页数量",
+            "description": "Number of items per page.",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -912,7 +912,7 @@
             }
           },
           {
-            "description": "页码",
+            "description": "Page number.",
             "name": "page",
             "in": "query",
             "schema": {
@@ -920,7 +920,7 @@
             }
           },
           {
-            "description": "规则作用域",
+            "description": "Parameters.",
             "name": "ruleScope",
             "in": "query",
             "schema": {
@@ -964,12 +964,12 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "查询当前委托",
+        "summary": "List open orders",
         "parameters": [
           {
-            "description": "用户邮箱",
+            "description": "User email address.",
             "name": "email",
             "in": "query",
             "schema": {
@@ -977,7 +977,7 @@
             }
           },
           {
-            "description": "事件标识",
+            "description": "Event slug.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -985,7 +985,7 @@
             }
           },
           {
-            "description": "每页数量",
+            "description": "Number of items per page.",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -993,7 +993,7 @@
             }
           },
           {
-            "description": "市场 ID",
+            "description": "Market ID.",
             "name": "marketId",
             "in": "query",
             "schema": {
@@ -1001,7 +1001,7 @@
             }
           },
           {
-            "description": "下一页游标",
+            "description": "Next-page cursor.",
             "name": "next",
             "in": "query",
             "schema": {
@@ -1009,7 +1009,7 @@
             }
           },
           {
-            "description": "上一页游标",
+            "description": "Previous-page cursor.",
             "name": "prev",
             "in": "query",
             "schema": {
@@ -1017,7 +1017,7 @@
             }
           },
           {
-            "description": "结果 Token ID",
+            "description": "Outcome token ID.",
             "name": "tokenId",
             "in": "query",
             "schema": {
@@ -1025,7 +1025,7 @@
             }
           },
           {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -1069,9 +1069,9 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "取消委托",
+        "summary": "Cancel orders",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1080,7 +1080,7 @@
               }
             }
           },
-          "description": "撤单信息",
+          "description": "Request Body.",
           "required": true
         },
         "responses": {
@@ -1119,12 +1119,12 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "查询仓位",
+        "summary": "List positions",
         "parameters": [
           {
-            "description": "用户邮箱",
+            "description": "User email address.",
             "name": "email",
             "in": "query",
             "schema": {
@@ -1132,7 +1132,7 @@
             }
           },
           {
-            "description": "事件标识",
+            "description": "Event slug.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -1140,7 +1140,7 @@
             }
           },
           {
-            "description": "每页数量",
+            "description": "Number of items per page.",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -1148,7 +1148,7 @@
             }
           },
           {
-            "description": "市场 ID",
+            "description": "Market ID.",
             "name": "marketId",
             "in": "query",
             "schema": {
@@ -1156,7 +1156,7 @@
             }
           },
           {
-            "description": "下一页游标",
+            "description": "Next-page cursor.",
             "name": "next",
             "in": "query",
             "schema": {
@@ -1164,7 +1164,7 @@
             }
           },
           {
-            "description": "上一页游标",
+            "description": "Previous-page cursor.",
             "name": "prev",
             "in": "query",
             "schema": {
@@ -1172,7 +1172,7 @@
             }
           },
           {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -1216,9 +1216,9 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "平仓",
+        "summary": "Close position",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1227,7 +1227,7 @@
               }
             }
           },
-          "description": "平仓信息",
+          "description": "Request Body.",
           "required": true
         },
         "responses": {
@@ -1266,12 +1266,12 @@
           }
         ],
         "tags": [
-          "券商接口-后管"
+          "Broker management"
         ],
-        "summary": "查询成交记录",
+        "summary": "List trades",
         "parameters": [
           {
-            "description": "用户邮箱",
+            "description": "User email address.",
             "name": "email",
             "in": "query",
             "schema": {
@@ -1279,7 +1279,7 @@
             }
           },
           {
-            "description": "成交时间范围终点",
+            "description": "Parameters.",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -1287,7 +1287,7 @@
             }
           },
           {
-            "description": "事件标识",
+            "description": "Event slug.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -1295,7 +1295,7 @@
             }
           },
           {
-            "description": "每页数量",
+            "description": "Number of items per page.",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -1303,7 +1303,7 @@
             }
           },
           {
-            "description": "下一页游标",
+            "description": "Next-page cursor.",
             "name": "next",
             "in": "query",
             "schema": {
@@ -1311,7 +1311,7 @@
             }
           },
           {
-            "description": "上一页游标",
+            "description": "Previous-page cursor.",
             "name": "prev",
             "in": "query",
             "schema": {
@@ -1319,7 +1319,7 @@
             }
           },
           {
-            "description": "成交时间范围起点",
+            "description": "Parameters.",
             "name": "startTime",
             "in": "query",
             "schema": {
@@ -1327,7 +1327,7 @@
             }
           },
           {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -1371,9 +1371,9 @@
           }
         ],
         "tags": [
-          "券商接口-划转"
+          "Transfers"
         ],
-        "summary": "创建划转",
+        "summary": "Create transfer",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1382,7 +1382,7 @@
               }
             }
           },
-          "description": "划转信息",
+          "description": "Request Body.",
           "required": true
         },
         "responses": {
@@ -1421,12 +1421,12 @@
           }
         ],
         "tags": [
-          "券商接口-划转"
+          "Transfers"
         ],
-        "summary": "查询划转详情",
+        "summary": "Get transfer",
         "parameters": [
           {
-            "description": "券商侧唯一交易流水号",
+            "description": "Unique broker transaction ID.",
             "name": "txnId",
             "in": "query",
             "required": true,
@@ -1471,12 +1471,12 @@
           }
         ],
         "tags": [
-          "券商接口-划转"
+          "Transfers"
         ],
-        "summary": "查询划转列表",
+        "summary": "List transfers",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
+            "description": "Broker-side user ID.",
             "name": "userId",
             "in": "query",
             "required": true,
@@ -1485,7 +1485,7 @@
             }
           },
           {
-            "description": "币种",
+            "description": "Currency.",
             "name": "currency",
             "in": "query",
             "schema": {
@@ -1493,7 +1493,7 @@
             }
           },
           {
-            "description": "划转方向：1 入金，2 出金",
+            "description": "Transfer direction: 1 for deposit, 2 for withdrawal.",
             "name": "direction",
             "in": "query",
             "schema": {
@@ -1501,7 +1501,7 @@
             }
           },
           {
-            "description": "划转状态",
+            "description": "Transfer state.",
             "name": "state",
             "in": "query",
             "schema": {
@@ -1509,7 +1509,7 @@
             }
           },
           {
-            "description": "页码",
+            "description": "Page number.",
             "name": "page",
             "in": "query",
             "schema": {
@@ -1518,7 +1518,7 @@
             }
           },
           {
-            "description": "每页数量",
+            "description": "Number of items per page.",
             "name": "pageSize",
             "in": "query",
             "schema": {
@@ -1563,9 +1563,9 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "Users"
         ],
-        "summary": "创建特殊账户",
+        "summary": "Create special account",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1574,7 +1574,7 @@
               }
             }
           },
-          "description": "特殊账户信息",
+          "description": "Request Body.",
           "required": true
         },
         "responses": {
@@ -1613,9 +1613,9 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "Users"
         ],
-        "summary": "用户登录",
+        "summary": "User login",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1624,7 +1624,7 @@
               }
             }
           },
-          "description": "登录信息",
+          "description": "Request Body.",
           "required": true
         },
         "responses": {
@@ -1663,9 +1663,9 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "Users"
         ],
-        "summary": "用户登出",
+        "summary": "User logout",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1674,7 +1674,7 @@
               }
             }
           },
-          "description": "登出信息",
+          "description": "Request Body.",
           "required": true
         },
         "responses": {
@@ -1713,9 +1713,9 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "Users"
         ],
-        "summary": "更新用户",
+        "summary": "Update user",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1724,7 +1724,7 @@
               }
             }
           },
-          "description": "用户信息",
+          "description": "Request Body.",
           "required": true
         },
         "responses": {
@@ -1763,12 +1763,12 @@
           }
         ],
         "tags": [
-          "券商接口-用户"
+          "Users"
         ],
-        "summary": "查询用户列表",
+        "summary": "List users",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
+            "description": "Broker-side user ID.",
             "name": "brokerUid",
             "in": "query",
             "schema": {
@@ -1776,7 +1776,7 @@
             }
           },
           {
-            "description": "用户邮箱",
+            "description": "User email address.",
             "name": "email",
             "in": "query",
             "schema": {
@@ -1784,7 +1784,7 @@
             }
           },
           {
-            "description": "创建时间范围终点",
+            "description": "Parameters.",
             "name": "endTime",
             "in": "query",
             "schema": {
@@ -1792,7 +1792,7 @@
             }
           },
           {
-            "description": "每页数量，最大 200",
+            "description": "Number of items per page, up to 200.",
             "name": "limit",
             "in": "query",
             "schema": {
@@ -1800,7 +1800,7 @@
             }
           },
           {
-            "description": "页码，从 1 开始",
+            "description": "Page number, starting from 1.",
             "name": "page",
             "in": "query",
             "schema": {
@@ -1808,7 +1808,7 @@
             }
           },
           {
-            "description": "创建时间范围起点",
+            "description": "Parameters.",
             "name": "startTime",
             "in": "query",
             "schema": {
@@ -1816,7 +1816,7 @@
             }
           },
           {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "name": "uid",
             "in": "query",
             "schema": {
@@ -1861,7 +1861,7 @@
             }
           }
         },
-        "description": "市场配置",
+        "description": "Broker Market Switch Request.",
         "required": true
       },
       "req.BrokerEventSwitchRequest": {
@@ -1872,7 +1872,7 @@
             }
           }
         },
-        "description": "事件配置",
+        "description": "Broker Event Switch Request.",
         "required": true
       }
     },
@@ -1901,23 +1901,23 @@
         "type": "object",
         "properties": {
           "count": {
-            "description": "当前页记录数",
+            "description": "Count.",
             "type": "integer"
           },
           "mode": {
-            "description": "分页模式",
+            "description": "Mode.",
             "type": "string"
           },
           "page": {
-            "description": "当前页码",
+            "description": "Page.",
             "type": "integer"
           },
           "total": {
-            "description": "记录总数",
+            "description": "Total.",
             "type": "integer"
           },
           "totalPages": {
-            "description": "总页数",
+            "description": "Total Pages.",
             "type": "integer"
           }
         }
@@ -1930,11 +1930,11 @@
         ],
         "properties": {
           "orderId": {
-            "description": "待取消的订单 ID",
+            "description": "Order Id.",
             "type": "string"
           },
           "uid": {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "type": "string"
           }
         }
@@ -1948,15 +1948,15 @@
         ],
         "properties": {
           "quantity": {
-            "description": "平仓数量",
+            "description": "Quantity.",
             "type": "string"
           },
           "tokenId": {
-            "description": "待平仓的结果 Token ID",
+            "description": "Token Id.",
             "type": "string"
           },
           "uid": {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "type": "string"
           }
         }
@@ -1969,11 +1969,11 @@
         ],
         "properties": {
           "brokerId": {
-            "description": "券商 ID，必须与当前鉴权券商一致",
+            "description": "Broker Id.",
             "type": "integer"
           },
           "type": {
-            "description": "特殊账户类型：sys 系统账户，mm 做市账户",
+            "description": "Type.",
             "type": "string",
             "enum": [
               "sys",
@@ -1986,7 +1986,7 @@
         "type": "object",
         "properties": {
           "eventSlug": {
-            "description": "请求体中的事件标识；通常以路径参数为准",
+            "description": "Event Slug.",
             "type": "string"
           }
         }
@@ -1995,11 +1995,11 @@
         "type": "object",
         "properties": {
           "cancelOpenOrders": {
-            "description": "预留；当前版本不自动撤单",
+            "description": "Cancel Open Orders.",
             "type": "boolean"
           },
           "reason": {
-            "description": "操作原因",
+            "description": "Reason for the operation.",
             "type": "string"
           }
         }
@@ -2008,23 +2008,23 @@
         "type": "object",
         "properties": {
           "eventEnabled": {
-            "description": "是否启用事件级风控",
+            "description": "Event Enabled.",
             "type": "boolean"
           },
           "eventSlug": {
-            "description": "事件标识；设置事件级配置时必填",
+            "description": "Event Slug.",
             "type": "string"
           },
           "globalEnabled": {
-            "description": "是否启用券商全局风控",
+            "description": "Global Enabled.",
             "type": "boolean"
           },
           "maxEventWorstCasePayout": {
-            "description": "单个事件最大最坏情况赔付额",
+            "description": "Max Event Worst Case Payout.",
             "type": "number"
           },
           "maxGlobalWorstCasePayout": {
-            "description": "券商全局最大最坏情况赔付额",
+            "description": "Max Global Worst Case Payout.",
             "type": "number"
           }
         }
@@ -2037,23 +2037,23 @@
         ],
         "properties": {
           "desc": {
-            "description": "用户备注",
+            "description": "User description.",
             "type": "string"
           },
           "email": {
-            "description": "用户邮箱",
+            "description": "User email address.",
             "type": "string"
           },
           "token": {
-            "description": "券商用户登录令牌",
+            "description": "Broker user login token.",
             "type": "string"
           },
           "userId": {
-            "description": "券商侧用户 ID",
+            "description": "Broker-side user ID.",
             "type": "string"
           },
           "userName": {
-            "description": "用户名称",
+            "description": "User name.",
             "type": "string"
           }
         }
@@ -2065,7 +2065,7 @@
         ],
         "properties": {
           "userId": {
-            "description": "券商侧用户 ID",
+            "description": "Broker-side user ID.",
             "type": "string"
           }
         }
@@ -2077,15 +2077,15 @@
         ],
         "properties": {
           "desc": {
-            "description": "新的用户备注",
+            "description": "Desc.",
             "type": "string"
           },
           "userId": {
-            "description": "券商侧用户 ID",
+            "description": "Broker-side user ID.",
             "type": "string"
           },
           "userName": {
-            "description": "新的用户名称",
+            "description": "User Name.",
             "type": "string"
           }
         }
@@ -2094,86 +2094,17 @@
         "type": "object",
         "properties": {
           "code": {
-            "description": "业务状态码，200 表示成功",
+            "description": "Business status code; 200 indicates success.",
             "type": "integer",
             "example": 200
           },
           "data": {
-            "description": "成功时返回的业务数据，失败时可省略"
+            "description": "Business data on success; may be omitted on failure."
           },
           "message": {
-            "description": "业务处理结果说明",
+            "description": "Business result message.",
             "type": "string",
             "example": "success"
-          }
-        }
-      },
-      "service.BrokerEventListItem": {
-        "type": "object",
-        "properties": {
-          "brokerId": {
-            "description": "券商 ID",
-            "type": "integer"
-          },
-          "category": {
-            "description": "事件分类",
-            "type": "string"
-          },
-          "enabled": {
-            "description": "是否已为券商启用",
-            "type": "boolean"
-          },
-          "endAt": {
-            "description": "事件结束时间",
-            "type": "string"
-          },
-          "eventId": {
-            "description": "事件 ID",
-            "type": "string"
-          },
-          "eventSlug": {
-            "description": "事件标识",
-            "type": "string"
-          },
-          "eventStatus": {
-            "description": "事件状态",
-            "type": "string"
-          },
-          "eventTitle": {
-            "description": "事件标题",
-            "type": "string"
-          },
-          "marketCount": {
-            "description": "市场数量",
-            "type": "integer"
-          },
-          "startAt": {
-            "description": "事件开始时间",
-            "type": "string"
-          },
-          "updatedAt": {
-            "description": "最近更新时间",
-            "type": "string"
-          }
-        }
-      },
-      "service.BrokerEventListResult": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "事件列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/service.BrokerEventListItem"
-            }
-          },
-          "pagination": {
-            "description": "分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/http.PagePagination"
-              }
-            ]
           }
         }
       },
@@ -2181,55 +2112,55 @@
         "type": "object",
         "properties": {
           "brokerId": {
-            "description": "券商 ID",
+            "description": "Broker Id.",
             "type": "integer"
           },
           "category": {
-            "description": "事件分类",
+            "description": "Category.",
             "type": "string"
           },
           "enabled": {
-            "description": "是否已为券商启用",
+            "description": "Enabled.",
             "type": "boolean"
           },
           "endAt": {
-            "description": "事件结束时间",
+            "description": "End At.",
             "type": "string"
           },
           "eventId": {
-            "description": "事件 ID",
+            "description": "Event Id.",
             "type": "string"
           },
           "eventSlug": {
-            "description": "事件标识",
+            "description": "Event slug.",
             "type": "string"
           },
           "eventStatus": {
-            "description": "事件状态",
+            "description": "Event Status.",
             "type": "string"
           },
           "eventTitle": {
-            "description": "事件标题",
+            "description": "Event Title.",
             "type": "string"
           },
           "marketCount": {
-            "description": "市场数量",
+            "description": "Market Count.",
             "type": "integer"
           },
           "source": {
-            "description": "事件数据来源",
+            "description": "Source.",
             "type": "string"
           },
           "sourceUpdatedAt": {
-            "description": "来源数据更新时间",
+            "description": "Source Updated At.",
             "type": "string"
           },
           "startAt": {
-            "description": "事件开始时间",
+            "description": "Start At.",
             "type": "string"
           },
           "updatedAt": {
-            "description": "券商配置更新时间",
+            "description": "Updated At.",
             "type": "string"
           }
         }
@@ -2293,15 +2224,15 @@
         "type": "object",
         "properties": {
           "brokerId": {
-            "description": "券商 ID",
+            "description": "Broker Id.",
             "type": "integer"
           },
           "eventId": {
-            "description": "事件 ID",
+            "description": "Event Id.",
             "type": "string"
           },
           "eventPolicy": {
-            "description": "事件级风控策略",
+            "description": "Event Policy.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/service.BrokerRiskPolicyView"
@@ -2309,11 +2240,11 @@
             ]
           },
           "eventSlug": {
-            "description": "事件标识",
+            "description": "Event slug.",
             "type": "string"
           },
           "globalPolicy": {
-            "description": "券商全局风控策略",
+            "description": "Global Policy.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/service.BrokerRiskPolicyView"
@@ -2326,14 +2257,14 @@
         "type": "object",
         "properties": {
           "items": {
-            "description": "风控策略列表",
+            "description": "Items.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/service.BrokerRiskPolicyView"
             }
           },
           "pagination": {
-            "description": "分页信息",
+            "description": "Pagination.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/http.PagePagination"
@@ -2346,47 +2277,47 @@
         "type": "object",
         "properties": {
           "brokerId": {
-            "description": "券商 ID",
+            "description": "Broker Id.",
             "type": "integer"
           },
           "enabled": {
-            "description": "是否启用策略",
+            "description": "Enabled.",
             "type": "boolean"
           },
           "eventSlug": {
-            "description": "事件标识",
+            "description": "Event slug.",
             "type": "string"
           },
           "maxEventWorstCasePayout": {
-            "description": "单个事件最大最坏情况赔付额",
+            "description": "Max Event Worst Case Payout.",
             "type": "number"
           },
           "maxGlobalWorstCasePayout": {
-            "description": "券商全局最大最坏情况赔付额",
+            "description": "Max Global Worst Case Payout.",
             "type": "number"
           },
           "policyId": {
-            "description": "风控策略 ID",
+            "description": "Policy Id.",
             "type": "string"
           },
           "ruleScope": {
-            "description": "规则作用域",
+            "description": "Rule Scope.",
             "type": "string"
           },
           "ruleType": {
-            "description": "规则类型",
+            "description": "Rule Type.",
             "type": "string"
           },
           "targetId": {
-            "description": "规则目标 ID",
+            "description": "Target Id.",
             "type": "string"
           },
           "updatedAt": {
-            "description": "最近更新时间",
+            "description": "Updated At.",
             "type": "string"
           },
           "version": {
-            "description": "策略版本",
+            "description": "Version.",
             "type": "integer"
           }
         }
@@ -2395,51 +2326,49 @@
         "type": "object",
         "properties": {
           "amount": {
-            "description": "划转金额",
+            "description": "Amount.",
             "type": "number"
           },
           "createdAt": {
-            "description": "创建时间",
+            "description": "Created At.",
             "type": "string"
           },
           "currency": {
-            "description": "币种",
+            "description": "Currency.",
             "type": "string"
           },
           "direction": {
-            "description": "划转方向：1 入金，2 出金",
+            "description": "Transfer direction: 1 for deposit, 2 for withdrawal.",
             "type": "integer"
           },
           "orderId": {
-            "description": "平台划转订单 ID",
-            "type": "string"
-          },
-          "remark": {
-            "description": "备注",
+            "description": "Platform transfer order ID.",
             "type": "string"
           },
           "reasonCode": {
-            "description": "Failure reason code",
             "type": "string"
           },
           "reasonMessage": {
-            "description": "Failure reason message",
+            "type": "string"
+          },
+          "remark": {
+            "description": "Remark.",
             "type": "string"
           },
           "state": {
-            "description": "划转状态",
+            "description": "Transfer state.",
             "type": "string"
           },
           "txnId": {
-            "description": "券商侧唯一交易流水号",
+            "description": "Unique broker transaction ID.",
             "type": "string"
           },
           "updatedAt": {
-            "description": "更新时间",
+            "description": "Updated At.",
             "type": "string"
           },
           "userId": {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "type": "integer"
           }
         }
@@ -2455,15 +2384,15 @@
         ],
         "properties": {
           "amount": {
-            "description": "划转金额，必须大于 0",
+            "description": "Transfer amount; must be greater than zero.",
             "type": "string"
           },
           "currency": {
-            "description": "币种",
+            "description": "Currency.",
             "type": "string"
           },
           "direction": {
-            "description": "划转方向：1 入金，2 出金",
+            "description": "Transfer direction: 1 for deposit, 2 for withdrawal.",
             "type": "integer",
             "enum": [
               1,
@@ -2471,15 +2400,15 @@
             ]
           },
           "remark": {
-            "description": "备注",
+            "description": "Remark.",
             "type": "string"
           },
           "txnId": {
-            "description": "券商侧唯一交易流水号",
+            "description": "Unique broker transaction ID.",
             "type": "string"
           },
           "userId": {
-            "description": "券商侧用户 ID",
+            "description": "Broker-side user ID.",
             "type": "string"
           }
         }
@@ -2488,18 +2417,18 @@
         "type": "object",
         "properties": {
           "accountId": {
-            "description": "用户账户 ID",
+            "description": "Account Id.",
             "type": "string"
           },
           "tokens": {
-            "description": "结果 Token 余额列表",
+            "description": "Tokens.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/v2.brokerTokenBalance"
             }
           },
           "usdc": {
-            "description": "USDC 余额",
+            "description": "Usdc.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerUSDCBalance"
@@ -2512,14 +2441,14 @@
         "type": "object",
         "properties": {
           "items": {
-            "description": "资产列表",
+            "description": "Items.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/v2.brokerAssetItem"
             }
           },
           "pagination": {
-            "description": "游标分页信息",
+            "description": "Pagination.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerCursorPagination"
@@ -2532,11 +2461,11 @@
         "type": "object",
         "properties": {
           "orderId": {
-            "description": "取消失败的订单 ID",
+            "description": "Order Id.",
             "type": "string"
           },
           "reason": {
-            "description": "失败原因",
+            "description": "Reason.",
             "type": "string"
           }
         }
@@ -2545,11 +2474,11 @@
         "type": "object",
         "properties": {
           "orderId": {
-            "description": "请求取消的订单 ID",
+            "description": "Order Id.",
             "type": "string"
           },
           "result": {
-            "description": "撤单执行结果",
+            "description": "Result.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerCancelResult"
@@ -2557,7 +2486,7 @@
             ]
           },
           "uid": {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "type": "string"
           }
         }
@@ -2566,37 +2495,37 @@
         "type": "object",
         "properties": {
           "account": {
-            "description": "用户账户 ID",
+            "description": "Account.",
             "type": "string"
           },
           "canceled": {
-            "description": "已取消的订单 ID 列表",
+            "description": "Canceled.",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "count": {
-            "description": "已处理订单数量",
+            "description": "Count.",
             "type": "integer"
           },
           "failed": {
-            "description": "取消失败的订单列表",
+            "description": "Failed.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/v2.brokerCancelFailure"
             }
           },
           "status": {
-            "description": "撤单状态",
+            "description": "Status.",
             "type": "string"
           },
           "success": {
-            "description": "撤单是否成功",
+            "description": "Success.",
             "type": "boolean"
           },
           "tokenId": {
-            "description": "结果 Token ID",
+            "description": "Outcome token ID.",
             "type": "string"
           }
         }
@@ -2605,15 +2534,15 @@
         "type": "object",
         "properties": {
           "price": {
-            "description": "平仓委托价格",
+            "description": "Price.",
             "type": "string"
           },
           "quantity": {
-            "description": "平仓数量",
+            "description": "Quantity.",
             "type": "string"
           },
           "result": {
-            "description": "平仓委托结果",
+            "description": "Result.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerOrderResult"
@@ -2621,15 +2550,15 @@
             ]
           },
           "side": {
-            "description": "委托方向",
+            "description": "Side.",
             "type": "string"
           },
           "tokenId": {
-            "description": "结果 Token ID",
+            "description": "Outcome token ID.",
             "type": "string"
           },
           "uid": {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "type": "string"
           }
         }
@@ -2638,19 +2567,19 @@
         "type": "object",
         "properties": {
           "count": {
-            "description": "当前页记录数",
+            "description": "Count.",
             "type": "integer"
           },
           "mode": {
-            "description": "分页模式",
+            "description": "Mode.",
             "type": "string"
           },
           "next": {
-            "description": "下一页游标",
+            "description": "Next-page cursor.",
             "type": "string"
           },
           "prev": {
-            "description": "上一页游标",
+            "description": "Previous-page cursor.",
             "type": "string"
           }
         }
@@ -2659,35 +2588,35 @@
         "type": "object",
         "properties": {
           "activeUsers": {
-            "description": "当日活跃用户数",
+            "description": "Active Users.",
             "type": "integer"
           },
           "brokerId": {
-            "description": "券商 ID",
+            "description": "Broker Id.",
             "type": "integer"
           },
           "day": {
-            "description": "汇总日期",
+            "description": "Day.",
             "type": "string"
           },
           "dayStartTime": {
-            "description": "日期开始时间",
+            "description": "Day Start Time.",
             "type": "integer"
           },
           "newUsers": {
-            "description": "当日新增用户数",
+            "description": "New Users.",
             "type": "integer"
           },
           "totalDeposit": {
-            "description": "当日入金总额",
+            "description": "Total Deposit.",
             "type": "string"
           },
           "totalTradeVolume": {
-            "description": "当日成交总额",
+            "description": "Total Trade Volume.",
             "type": "integer"
           },
           "totalWithdraw": {
-            "description": "当日出金总额",
+            "description": "Total Withdraw.",
             "type": "string"
           }
         }
@@ -2696,14 +2625,14 @@
         "type": "object",
         "properties": {
           "items": {
-            "description": "每日汇总列表",
+            "description": "Items.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/v2.brokerDailySummaryItem"
             }
           },
           "pagination": {
-            "description": "页码分页信息",
+            "description": "Pagination.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerPagePagination"
@@ -2716,15 +2645,15 @@
         "type": "object",
         "properties": {
           "activeEvents": {
-            "description": "活跃事件数",
+            "description": "Active Events.",
             "type": "integer"
           },
           "activeMarkets": {
-            "description": "活跃市场数",
+            "description": "Active Markets.",
             "type": "integer"
           },
           "changePercent": {
-            "description": "当前周期相对上一周期的变化百分比",
+            "description": "Change Percent.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerMetricChanges"
@@ -2732,7 +2661,7 @@
             ]
           },
           "current": {
-            "description": "当前周期汇总指标",
+            "description": "Current.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerPeriodMetrics"
@@ -2740,15 +2669,15 @@
             ]
           },
           "endTime": {
-            "description": "当前统计周期结束时间（Unix 秒）",
+            "description": "End Time.",
             "type": "integer"
           },
           "period": {
-            "description": "统计周期",
+            "description": "Aggregation period.",
             "type": "string"
           },
           "previousPeriod": {
-            "description": "上一周期汇总指标",
+            "description": "Previous Period.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerPeriodMetrics"
@@ -2756,11 +2685,11 @@
             ]
           },
           "startTime": {
-            "description": "当前统计周期开始时间（Unix 秒）",
+            "description": "Start Time.",
             "type": "integer"
           },
           "totalUsers": {
-            "description": "券商用户总数",
+            "description": "Total Users.",
             "type": "integer"
           }
         }
@@ -2769,39 +2698,39 @@
         "type": "object",
         "properties": {
           "available": {
-            "description": "剩余可用额度",
+            "description": "Available.",
             "type": "number"
           },
           "currentExposure": {
-            "description": "当前风险敞口",
+            "description": "Current Exposure.",
             "type": "number"
           },
           "eventId": {
-            "description": "事件 ID",
+            "description": "Event Id.",
             "type": "string"
           },
           "eventSlug": {
-            "description": "事件标识",
+            "description": "Event slug.",
             "type": "string"
           },
           "eventTitle": {
-            "description": "事件标题",
+            "description": "Event Title.",
             "type": "string"
           },
           "lastUpdated": {
-            "description": "最近更新时间",
+            "description": "Last Updated.",
             "type": "string"
           },
           "limit": {
-            "description": "风险敞口上限",
+            "description": "Limit.",
             "type": "number"
           },
           "status": {
-            "description": "风险状态",
+            "description": "Status.",
             "type": "string"
           },
           "utilizationPercent": {
-            "description": "上限使用率",
+            "description": "Utilization Percent.",
             "type": "number"
           }
         }
@@ -2810,36 +2739,105 @@
         "type": "object",
         "properties": {
           "available": {
-            "description": "剩余可用额度",
+            "description": "Available.",
             "type": "number"
           },
           "eventsBreached": {
-            "description": "已超限事件数",
+            "description": "Events Breached.",
             "type": "integer"
           },
           "eventsTotal": {
-            "description": "事件总数",
+            "description": "Events Total.",
             "type": "integer"
           },
           "eventsUnderLimit": {
-            "description": "未超限事件数",
+            "description": "Events Under Limit.",
             "type": "integer"
           },
           "status": {
-            "description": "总体风险状态",
+            "description": "Status.",
             "type": "string"
           },
           "totalCurrentExposure": {
-            "description": "所有事件当前风险敞口",
+            "description": "Total Current Exposure.",
             "type": "number"
           },
           "totalLimit": {
-            "description": "所有事件风险上限合计",
+            "description": "Total Limit.",
             "type": "number"
           },
           "utilizationPercent": {
-            "description": "总体上限使用率",
+            "description": "Utilization Percent.",
             "type": "number"
+          }
+        }
+      },
+      "v2.brokerEventListData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "Items.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerEventListItem"
+            }
+          },
+          "pagination": {
+            "description": "Pagination.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPagePagination"
+              }
+            ]
+          }
+        }
+      },
+      "v2.brokerEventListItem": {
+        "type": "object",
+        "properties": {
+          "brokerId": {
+            "description": "Broker Id.",
+            "type": "integer"
+          },
+          "category": {
+            "description": "Category.",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "Enabled.",
+            "type": "boolean"
+          },
+          "endAt": {
+            "description": "End At.",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "Event Id.",
+            "type": "string"
+          },
+          "eventSlug": {
+            "description": "Event slug.",
+            "type": "string"
+          },
+          "eventStatus": {
+            "description": "Event Status.",
+            "type": "string"
+          },
+          "eventTitle": {
+            "description": "Event Title.",
+            "type": "string"
+          },
+          "marketCount": {
+            "description": "Market Count.",
+            "type": "integer"
+          },
+          "startAt": {
+            "description": "Start At.",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "Updated At.",
+            "type": "string"
           }
         }
       },
@@ -2847,23 +2845,23 @@
         "type": "object",
         "properties": {
           "available": {
-            "description": "剩余可用额度",
+            "description": "Available.",
             "type": "number"
           },
           "currentExposure": {
-            "description": "当前风险敞口",
+            "description": "Current Exposure.",
             "type": "number"
           },
           "limit": {
-            "description": "风险敞口上限",
+            "description": "Limit.",
             "type": "number"
           },
           "status": {
-            "description": "风险状态",
+            "description": "Status.",
             "type": "string"
           },
           "utilizationPercent": {
-            "description": "上限使用率",
+            "description": "Utilization Percent.",
             "type": "number"
           }
         }
@@ -2872,23 +2870,23 @@
         "type": "object",
         "properties": {
           "activeUsers": {
-            "description": "活跃用户数环比变化百分比；无上期数据时为空",
+            "description": "Active Users.",
             "type": "number"
           },
           "newUsers": {
-            "description": "新增用户数环比变化百分比；无上期数据时为空",
+            "description": "New Users.",
             "type": "number"
           },
           "totalDeposit": {
-            "description": "入金总额环比变化百分比；无上期数据时为空",
+            "description": "Total Deposit.",
             "type": "number"
           },
           "totalTradeVolume": {
-            "description": "成交总额环比变化百分比；无上期数据时为空",
+            "description": "Total Trade Volume.",
             "type": "number"
           },
           "totalWithdraw": {
-            "description": "出金总额环比变化百分比；无上期数据时为空",
+            "description": "Total Withdraw.",
             "type": "number"
           }
         }
@@ -2897,67 +2895,67 @@
         "type": "object",
         "properties": {
           "accountId": {
-            "description": "用户账户 ID",
+            "description": "Account Id.",
             "type": "string"
           },
           "commitPos": {
-            "description": "提交位置",
+            "description": "Commit Pos.",
             "type": "string"
           },
           "conditionId": {
-            "description": "条件 ID",
+            "description": "Condition Id.",
             "type": "string"
           },
           "createdAt": {
-            "description": "创建时间",
+            "description": "Created At.",
             "type": "integer"
           },
           "filledQty": {
-            "description": "已成交数量",
+            "description": "Filled Qty.",
             "type": "integer"
           },
           "marketId": {
-            "description": "市场 ID",
+            "description": "Market ID.",
             "type": "string"
           },
           "orderId": {
-            "description": "订单 ID",
+            "description": "Order Id.",
             "type": "string"
           },
           "outcome": {
-            "description": "结果名称",
+            "description": "Outcome.",
             "type": "string"
           },
           "price": {
-            "description": "委托价格",
+            "description": "Price.",
             "type": "string"
           },
           "quantity": {
-            "description": "委托数量",
+            "description": "Quantity.",
             "type": "integer"
           },
           "reasonCode": {
-            "description": "状态原因码",
+            "description": "Reason Code.",
             "type": "integer"
           },
           "remainingQty": {
-            "description": "剩余数量",
+            "description": "Remaining Qty.",
             "type": "integer"
           },
           "side": {
-            "description": "买卖方向",
+            "description": "Side.",
             "type": "string"
           },
           "status": {
-            "description": "订单状态",
+            "description": "Status.",
             "type": "string"
           },
           "tokenId": {
-            "description": "结果 Token ID",
+            "description": "Outcome token ID.",
             "type": "string"
           },
           "updatedAt": {
-            "description": "更新时间",
+            "description": "Updated At.",
             "type": "integer"
           }
         }
@@ -2966,14 +2964,14 @@
         "type": "object",
         "properties": {
           "items": {
-            "description": "当前委托列表",
+            "description": "Items.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
             }
           },
           "pagination": {
-            "description": "游标分页信息",
+            "description": "Pagination.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerCursorPagination"
@@ -2986,7 +2984,7 @@
         "type": "object",
         "properties": {
           "success": {
-            "description": "操作是否成功",
+            "description": "Success.",
             "type": "boolean"
           }
         }
@@ -2995,27 +2993,27 @@
         "type": "object",
         "properties": {
           "message": {
-            "description": "执行结果说明",
+            "description": "Message.",
             "type": "string"
           },
           "orderId": {
-            "description": "新订单 ID",
+            "description": "Order Id.",
             "type": "string"
           },
           "reason": {
-            "description": "原因说明",
+            "description": "Reason.",
             "type": "string"
           },
           "reasonCode": {
-            "description": "原因码",
+            "description": "Reason Code.",
             "type": "integer"
           },
           "status": {
-            "description": "订单状态",
+            "description": "Status.",
             "type": "string"
           },
           "success": {
-            "description": "下单是否成功",
+            "description": "Success.",
             "type": "boolean"
           }
         }
@@ -3024,23 +3022,23 @@
         "type": "object",
         "properties": {
           "count": {
-            "description": "当前页记录数",
+            "description": "Count.",
             "type": "integer"
           },
           "mode": {
-            "description": "分页模式",
+            "description": "Mode.",
             "type": "string"
           },
           "page": {
-            "description": "当前页码",
+            "description": "Page.",
             "type": "integer"
           },
           "total": {
-            "description": "记录总数",
+            "description": "Total.",
             "type": "integer"
           },
           "totalPages": {
-            "description": "总页数",
+            "description": "Total Pages.",
             "type": "integer"
           }
         }
@@ -3049,23 +3047,23 @@
         "type": "object",
         "properties": {
           "activeUsers": {
-            "description": "活跃用户数",
+            "description": "Active Users.",
             "type": "integer"
           },
           "newUsers": {
-            "description": "新增用户数",
+            "description": "New Users.",
             "type": "integer"
           },
           "totalDeposit": {
-            "description": "入金总额",
+            "description": "Total Deposit.",
             "type": "integer"
           },
           "totalTradeVolume": {
-            "description": "成交总额",
+            "description": "Total Trade Volume.",
             "type": "integer"
           },
           "totalWithdraw": {
-            "description": "出金总额",
+            "description": "Total Withdraw.",
             "type": "integer"
           }
         }
@@ -3074,43 +3072,43 @@
         "type": "object",
         "properties": {
           "accountId": {
-            "description": "用户账户 ID",
+            "description": "Account Id.",
             "type": "string"
           },
           "availableQty": {
-            "description": "可用仓位数量",
+            "description": "Available Qty.",
             "type": "integer"
           },
           "averagePrice": {
-            "description": "平均持仓价格",
+            "description": "Average Price.",
             "type": "string"
           },
           "commitPos": {
-            "description": "提交位置",
+            "description": "Commit Pos.",
             "type": "string"
           },
           "conditionId": {
-            "description": "条件 ID",
+            "description": "Condition Id.",
             "type": "string"
           },
           "lockedQty": {
-            "description": "锁定仓位数量",
+            "description": "Locked Qty.",
             "type": "integer"
           },
           "marketId": {
-            "description": "市场 ID",
+            "description": "Market ID.",
             "type": "string"
           },
           "tokenId": {
-            "description": "结果 Token ID",
+            "description": "Outcome token ID.",
             "type": "string"
           },
           "unrealizedPnL": {
-            "description": "未实现盈亏",
+            "description": "Unrealized Pn L.",
             "type": "string"
           },
           "unrealizedPnLPercent": {
-            "description": "未实现盈亏比例",
+            "description": "Unrealized Pn LPercent.",
             "type": "string"
           }
         }
@@ -3119,14 +3117,14 @@
         "type": "object",
         "properties": {
           "items": {
-            "description": "仓位列表",
+            "description": "Items.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/v2.brokerPositionItem"
             }
           },
           "pagination": {
-            "description": "游标分页信息",
+            "description": "Pagination.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerCursorPagination"
@@ -3139,7 +3137,7 @@
         "type": "object",
         "properties": {
           "changePercent": {
-            "description": "当前周期相对上一周期的变化百分比",
+            "description": "Change Percent.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerMetricChanges"
@@ -3147,7 +3145,7 @@
             ]
           },
           "current": {
-            "description": "当前周期汇总指标",
+            "description": "Current.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerPeriodMetrics"
@@ -3155,15 +3153,15 @@
             ]
           },
           "endTime": {
-            "description": "当前统计周期结束时间（Unix 秒）",
+            "description": "End Time.",
             "type": "integer"
           },
           "period": {
-            "description": "统计周期",
+            "description": "Aggregation period.",
             "type": "string"
           },
           "previousPeriod": {
-            "description": "上一周期汇总指标",
+            "description": "Previous Period.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerPeriodMetrics"
@@ -3171,7 +3169,7 @@
             ]
           },
           "startTime": {
-            "description": "当前统计周期开始时间（Unix 秒）",
+            "description": "Start Time.",
             "type": "integer"
           }
         }
@@ -3180,7 +3178,7 @@
         "type": "object",
         "properties": {
           "eventBasedExposure": {
-            "description": "事件级风险敞口汇总",
+            "description": "Event Based Exposure.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerEventExposureSummary"
@@ -3188,18 +3186,18 @@
             ]
           },
           "items": {
-            "description": "事件风险敞口列表",
+            "description": "Items.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/v2.brokerEventExposureItem"
             }
           },
           "lastUpdated": {
-            "description": "风险数据最近更新时间",
+            "description": "Last Updated.",
             "type": "string"
           },
           "pagination": {
-            "description": "页码分页信息",
+            "description": "Pagination.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerPagePagination"
@@ -3207,7 +3205,7 @@
             ]
           },
           "platformExposure": {
-            "description": "券商全局风险敞口汇总",
+            "description": "Platform Exposure.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerExposureSummary"
@@ -3220,15 +3218,15 @@
         "type": "object",
         "properties": {
           "available": {
-            "description": "可用余额",
+            "description": "Available.",
             "type": "string"
           },
           "locked": {
-            "description": "锁定余额",
+            "description": "Locked.",
             "type": "string"
           },
           "tokenId": {
-            "description": "结果 Token ID",
+            "description": "Outcome token ID.",
             "type": "string"
           }
         }
@@ -3237,43 +3235,43 @@
         "type": "object",
         "properties": {
           "accountId": {
-            "description": "用户账户 ID",
+            "description": "Account Id.",
             "type": "string"
           },
           "avgCostPrice": {
-            "description": "平均成本价",
+            "description": "Avg Cost Price.",
             "type": "string"
           },
           "commitPos": {
-            "description": "提交位置",
+            "description": "Commit Pos.",
             "type": "string"
           },
           "conditionId": {
-            "description": "条件 ID",
+            "description": "Condition Id.",
             "type": "string"
           },
           "eventTime": {
-            "description": "成交时间",
+            "description": "Event Time.",
             "type": "integer"
           },
           "isImplied": {
-            "description": "是否为隐含成交",
+            "description": "Is Implied.",
             "type": "boolean"
           },
           "makerAccountId": {
-            "description": "Maker 账户 ID",
+            "description": "Maker Account Id.",
             "type": "string"
           },
           "makerOrderId": {
-            "description": "Maker 订单 ID",
+            "description": "Maker Order Id.",
             "type": "string"
           },
           "makerPrice": {
-            "description": "Maker 价格",
+            "description": "Maker Price.",
             "type": "string"
           },
           "makerSide": {
-            "description": "Maker 买卖方向",
+            "description": "Maker Side.",
             "type": "string"
           },
           "makerTokenId": {
@@ -3281,47 +3279,47 @@
             "type": "string"
           },
           "marketId": {
-            "description": "市场 ID",
+            "description": "Market ID.",
             "type": "string"
           },
           "orderId": {
-            "description": "订单 ID",
+            "description": "Order Id.",
             "type": "string"
           },
           "price": {
-            "description": "成交价格",
+            "description": "Price.",
             "type": "string"
           },
           "quantity": {
-            "description": "成交数量",
+            "description": "Quantity.",
             "type": "integer"
           },
           "realizedPnL": {
-            "description": "已实现盈亏",
+            "description": "Realized Pn L.",
             "type": "string"
           },
           "role": {
-            "description": "成交角色",
+            "description": "Role.",
             "type": "string"
           },
           "side": {
-            "description": "买卖方向",
+            "description": "Side.",
             "type": "string"
           },
           "takerAccountId": {
-            "description": "Taker 账户 ID",
+            "description": "Taker Account Id.",
             "type": "string"
           },
           "takerOrderId": {
-            "description": "Taker 订单 ID",
+            "description": "Taker Order Id.",
             "type": "string"
           },
           "takerPrice": {
-            "description": "Taker 价格",
+            "description": "Taker Price.",
             "type": "string"
           },
           "takerSide": {
-            "description": "Taker 买卖方向",
+            "description": "Taker Side.",
             "type": "string"
           },
           "takerTokenId": {
@@ -3329,15 +3327,15 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "结果 Token ID",
+            "description": "Outcome token ID.",
             "type": "string"
           },
           "tradeId": {
-            "description": "成交 ID",
+            "description": "Trade Id.",
             "type": "string"
           },
           "tradeKind": {
-            "description": "成交类型",
+            "description": "Trade Kind.",
             "type": "string"
           }
         }
@@ -3346,14 +3344,14 @@
         "type": "object",
         "properties": {
           "items": {
-            "description": "成交记录列表",
+            "description": "Items.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/v2.brokerTradeItem"
             }
           },
           "pagination": {
-            "description": "游标分页信息",
+            "description": "Pagination.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/v2.brokerCursorPagination"
@@ -3362,24 +3360,11 @@
           }
         }
       },
-      "v2.brokerTransferAcceptedData": {
-        "type": "object",
-        "properties": {
-          "orderId": {
-            "description": "平台划转订单 ID",
-            "type": "string"
-          },
-          "status": {
-            "description": "受理状态",
-            "type": "string"
-          }
-        }
-      },
       "v2.brokerUIDData": {
         "type": "object",
         "properties": {
           "uid": {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "type": "integer"
           }
         }
@@ -3388,11 +3373,11 @@
         "type": "object",
         "properties": {
           "available": {
-            "description": "可用 USDC 余额",
+            "description": "Available.",
             "type": "string"
           },
           "locked": {
-            "description": "锁定 USDC 余额",
+            "description": "Locked.",
             "type": "string"
           }
         }
@@ -3401,27 +3386,27 @@
         "type": "object",
         "properties": {
           "brokerUid": {
-            "description": "券商侧用户 ID",
+            "description": "Broker-side user ID.",
             "type": "string"
           },
           "createdAt": {
-            "description": "用户创建时间",
+            "description": "Created At.",
             "type": "string"
           },
           "email": {
-            "description": "用户邮箱",
+            "description": "User email address.",
             "type": "string"
           },
           "lastLoginAt": {
-            "description": "最近登录时间，未登录时为空",
+            "description": "Last Login At.",
             "type": "string"
           },
           "uid": {
-            "description": "平台用户 UID",
+            "description": "Platform user UID.",
             "type": "integer"
           },
           "username": {
-            "description": "用户名称",
+            "description": "User name.",
             "type": "string"
           }
         }
@@ -3430,14 +3415,14 @@
         "type": "object",
         "properties": {
           "items": {
-            "description": "当前页用户列表",
+            "description": "Items.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/v2.brokerUserItem"
             }
           },
           "pagination": {
-            "description": "分页信息",
+            "description": "Pagination.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/http.PagePagination"
@@ -3450,14 +3435,14 @@
         "type": "object",
         "properties": {
           "list": {
-            "description": "划转记录列表",
+            "description": "List.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/service.TransferRecord"
             }
           },
           "total": {
-            "description": "符合条件的记录总数",
+            "description": "Total.",
             "type": "integer"
           }
         }
@@ -3479,19 +3464,19 @@
   ],
   "tags": [
     {
-      "name": "券商接口-后管"
+      "name": "Broker management"
     },
     {
-      "name": "券商接口-事件"
+      "name": "Events"
     },
     {
-      "name": "券商接口-风控"
+      "name": "Risk management"
     },
     {
-      "name": "券商接口-划转"
+      "name": "Transfers"
     },
     {
-      "name": "券商接口-用户"
+      "name": "Users"
     }
   ],
   "x-api-side": "BROKER"

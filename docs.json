@@ -234,81 +234,81 @@
                   {
                     "group": "Broker REST API",
                     "pages": [
-                      "en/guide/introduction",
-                      "en/guide/authentication-b",
-                      "en/guide/response",
-                      "en/guide/webhooks"
+                      "en/broker/guide/introduction",
+                      "en/broker/guide/authentication",
+                      "en/broker/guide/response",
+                      "en/broker/guide/webhooks"
                     ]
                   },
                   {
                     "group": "Developer tools",
                     "pages": [
-                      "en/guide/signature-calculator",
-                      "en/guide/api-debugger"
+                      "en/broker/guide/signature-calculator",
+                      "en/broker/guide/api-debugger"
                     ]
                   },
                   {
                     "group": "User management",
                     "pages": [
-                      "en/api-reference/broker/user/login",
-                      "en/api-reference/broker/user/logout",
-                      "en/api-reference/broker/user/update",
-                      "en/api-reference/broker/user/create-special",
-                      "en/api-reference/broker/user/users"
+                      "en/broker/api-reference/user/login",
+                      "en/broker/api-reference/user/logout",
+                      "en/broker/api-reference/user/update",
+                      "en/broker/api-reference/user/create-special",
+                      "en/broker/api-reference/user/users"
                     ]
                   },
                   {
                     "group": "Asset management",
                     "pages": [
-                      "en/api-reference/broker/transfer/create",
-                      "en/api-reference/broker/transfer/list",
-                      "en/api-reference/broker/transfer/detail",
-                      "en/api-reference/broker/assets/list"
-                    ]
-                  },
-                  {
-                    "group": "Webhooks",
-                    "pages": [
-                      "en/api-reference/broker/webhooks/broker-transferred"
+                      "en/broker/api-reference/transfer/create",
+                      "en/broker/api-reference/transfer/list",
+                      "en/broker/api-reference/transfer/detail",
+                      "en/broker/api-reference/assets/list"
                     ]
                   },
                   {
                     "group": "Trading management",
                     "pages": [
-                      "en/api-reference/broker/trade/trades",
-                      "en/api-reference/broker/trade/positions",
-                      "en/api-reference/broker/trade/open-orders",
-                      "en/api-reference/broker/trade/cancel-orders",
-                      "en/api-reference/broker/trade/close-position"
+                      "en/broker/api-reference/trade/trades",
+                      "en/broker/api-reference/trade/positions",
+                      "en/broker/api-reference/trade/open-orders",
+                      "en/broker/api-reference/trade/cancel-orders",
+                      "en/broker/api-reference/trade/close-position"
                     ]
                   },
                   {
                     "group": "Reports and analytics",
                     "pages": [
-                      "en/api-reference/broker/reports/summary",
-                      "en/api-reference/broker/reports/trend",
-                      "en/api-reference/broker/reports/daily-summaries",
-                      "en/api-reference/broker/overview/dashboard"
+                      "en/broker/api-reference/reports/summary",
+                      "en/broker/api-reference/reports/trend",
+                      "en/broker/api-reference/reports/daily-summaries",
+                      "en/broker/api-reference/overview/dashboard"
                     ]
                   },
                   {
                     "group": "Event management",
                     "pages": [
-                      "en/api-reference/broker/events/list",
-                      "en/api-reference/broker/events/enable",
-                      "en/api-reference/broker/events/disable",
-                      "en/api-reference/broker/events/markets",
-                      "en/api-reference/broker/events/market-enable",
-                      "en/api-reference/broker/events/market-disable"
+                      "en/broker/api-reference/events/list",
+                      "en/broker/api-reference/events/enable",
+                      "en/broker/api-reference/events/disable",
+                      "en/broker/api-reference/events/markets",
+                      "en/broker/api-reference/events/market-enable",
+                      "en/broker/api-reference/events/market-disable"
                     ]
                   },
                   {
                     "group": "Risk management",
                     "pages": [
-                      "en/api-reference/broker/risk/policies",
-                      "en/api-reference/broker/risk/exposures",
-                      "en/api-reference/broker/risk/get-config",
-                      "en/api-reference/broker/risk/save-config"
+                      "en/broker/api-reference/risk/policies",
+                      "en/broker/api-reference/risk/exposures",
+                      "en/broker/api-reference/risk/get-config",
+                      "en/broker/api-reference/risk/save-config"
+                    ]
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "en/broker/api-reference/webhooks/broker-transferred"
                     ]
                   }
                 ]
@@ -319,60 +319,60 @@
                   {
                     "group": "Trading REST API",
                     "pages": [
-                      "en/guide/authentication-c",
-                      "en/guide/response-c"
+                      "en/user/guide/authentication",
+                      "en/user/guide/response"
                     ]
                   },
                   {
                     "group": "Event data",
                     "pages": [
-                      "en/api-reference/user/events/search",
-                      "en/api-reference/user/events/list",
-                      "en/api-reference/user/events/list-deprecated",
-                      "en/api-reference/user/events/detail",
-                      "en/api-reference/user/events/carousel",
-                      "en/api-reference/user/events/tags",
-                      "en/api-reference/user/events/filtered-tags",
-                      "en/api-reference/user/events/tag-detail",
-                      "en/api-reference/user/events/tag-detail-by-slug"
+                      "en/user/api-reference/events/search",
+                      "en/user/api-reference/events/list",
+                      "en/user/api-reference/events/list-deprecated",
+                      "en/user/api-reference/events/detail",
+                      "en/user/api-reference/events/carousel",
+                      "en/user/api-reference/events/tags",
+                      "en/user/api-reference/events/filtered-tags",
+                      "en/user/api-reference/events/tag-detail",
+                      "en/user/api-reference/events/tag-detail-by-slug"
                     ]
                   },
                   {
                     "group": "Market data",
                     "pages": [
-                      "en/api-reference/user/market/markets",
-                      "en/api-reference/user/market/orderbook",
-                      "en/api-reference/user/market/ticker",
-                      "en/api-reference/user/market/midpoint",
-                      "en/api-reference/user/market/spread",
-                      "en/api-reference/user/market/prices",
-                      "en/api-reference/user/market/price-history"
+                      "en/user/api-reference/market/markets",
+                      "en/user/api-reference/market/orderbook",
+                      "en/user/api-reference/market/ticker",
+                      "en/user/api-reference/market/midpoint",
+                      "en/user/api-reference/market/spread",
+                      "en/user/api-reference/market/prices",
+                      "en/user/api-reference/market/price-history"
                     ]
                   },
                   {
                     "group": "Trades",
                     "pages": [
-                      "en/api-reference/user/trades/public",
-                      "en/api-reference/user/trades/account"
+                      "en/user/api-reference/trades/public",
+                      "en/user/api-reference/trades/account"
                     ]
                   },
                   {
                     "group": "Order management",
                     "pages": [
-                      "en/api-reference/user/orders/create",
-                      "en/api-reference/user/orders/detail",
-                      "en/api-reference/user/orders/cancel",
-                      "en/api-reference/user/orders/open",
-                      "en/api-reference/user/orders/history",
-                      "en/api-reference/user/orders/batch-create",
-                      "en/api-reference/user/orders/batch-cancel"
+                      "en/user/api-reference/orders/create",
+                      "en/user/api-reference/orders/detail",
+                      "en/user/api-reference/orders/cancel",
+                      "en/user/api-reference/orders/open",
+                      "en/user/api-reference/orders/history",
+                      "en/user/api-reference/orders/batch-create",
+                      "en/user/api-reference/orders/batch-cancel"
                     ]
                   },
                   {
                     "group": "Accounts and positions",
                     "pages": [
-                      "en/api-reference/user/account/summary",
-                      "en/api-reference/user/account/positions"
+                      "en/user/api-reference/account/summary",
+                      "en/user/api-reference/account/positions"
                     ]
                   }
                 ]

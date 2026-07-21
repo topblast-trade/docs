@@ -301,7 +301,7 @@
                       "type": "object",
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/service.BrokerEventListResult"
+                          "$ref": "#/components/schemas/v2.brokerEventListData"
                         }
                       }
                     }
@@ -2108,75 +2108,6 @@
           }
         }
       },
-      "service.BrokerEventListItem": {
-        "type": "object",
-        "properties": {
-          "brokerId": {
-            "description": "券商 ID",
-            "type": "integer"
-          },
-          "category": {
-            "description": "事件分类",
-            "type": "string"
-          },
-          "enabled": {
-            "description": "是否已为券商启用",
-            "type": "boolean"
-          },
-          "endAt": {
-            "description": "事件结束时间",
-            "type": "string"
-          },
-          "eventId": {
-            "description": "事件 ID",
-            "type": "string"
-          },
-          "eventSlug": {
-            "description": "事件标识",
-            "type": "string"
-          },
-          "eventStatus": {
-            "description": "事件状态",
-            "type": "string"
-          },
-          "eventTitle": {
-            "description": "事件标题",
-            "type": "string"
-          },
-          "marketCount": {
-            "description": "市场数量",
-            "type": "integer"
-          },
-          "startAt": {
-            "description": "事件开始时间",
-            "type": "string"
-          },
-          "updatedAt": {
-            "description": "最近更新时间",
-            "type": "string"
-          }
-        }
-      },
-      "service.BrokerEventListResult": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "事件列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/service.BrokerEventListItem"
-            }
-          },
-          "pagination": {
-            "description": "分页信息",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/http.PagePagination"
-              }
-            ]
-          }
-        }
-      },
       "service.BrokerEventView": {
         "type": "object",
         "properties": {
@@ -2414,16 +2345,14 @@
             "description": "平台划转订单 ID",
             "type": "string"
           },
-          "remark": {
-            "description": "备注",
-            "type": "string"
-          },
           "reasonCode": {
-            "description": "失败原因码",
             "type": "string"
           },
           "reasonMessage": {
-            "description": "失败原因说明",
+            "type": "string"
+          },
+          "remark": {
+            "description": "备注",
             "type": "string"
           },
           "state": {
@@ -2840,6 +2769,75 @@
           "utilizationPercent": {
             "description": "总体上限使用率",
             "type": "number"
+          }
+        }
+      },
+      "v2.brokerEventListData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "事件列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerEventListItem"
+            }
+          },
+          "pagination": {
+            "description": "分页信息",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPagePagination"
+              }
+            ]
+          }
+        }
+      },
+      "v2.brokerEventListItem": {
+        "type": "object",
+        "properties": {
+          "brokerId": {
+            "description": "券商 ID",
+            "type": "integer"
+          },
+          "category": {
+            "description": "事件分类",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "是否已为券商启用",
+            "type": "boolean"
+          },
+          "endAt": {
+            "description": "事件结束时间",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "eventSlug": {
+            "description": "事件标识",
+            "type": "string"
+          },
+          "eventStatus": {
+            "description": "事件状态",
+            "type": "string"
+          },
+          "eventTitle": {
+            "description": "事件标题",
+            "type": "string"
+          },
+          "marketCount": {
+            "description": "市场数量",
+            "type": "integer"
+          },
+          "startAt": {
+            "description": "事件开始时间",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "最近更新时间",
+            "type": "string"
           }
         }
       },
@@ -3359,19 +3357,6 @@
                 "$ref": "#/components/schemas/v2.brokerCursorPagination"
               }
             ]
-          }
-        }
-      },
-      "v2.brokerTransferAcceptedData": {
-        "type": "object",
-        "properties": {
-          "orderId": {
-            "description": "平台划转订单 ID",
-            "type": "string"
-          },
-          "status": {
-            "description": "受理状态",
-            "type": "string"
           }
         }
       },

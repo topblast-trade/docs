@@ -48,7 +48,7 @@ All requests must use HTTPS. Append an operation path from API Reference to the 
       Base64-encoded HMAC-SHA256 request signature calculated with the API Secret.
     </ParamField>
 
-    The signature payload is `Timestamp + Method + Path + [?Query] + Body`. See [Broker REST API authentication](/en/guide/authentication-b) for details.
+    The signature payload is `Timestamp + Method + Path + [?Query] + Body`. See [Broker REST API authentication](/en/broker/guide/authentication) for details.
   </Tab>
 
   <Tab title="Trading REST API">
@@ -58,7 +58,7 @@ All requests must use HTTPS. Append an operation path from API Reference to the 
       Bearer token issued by the user login flow.
     </ParamField>
 
-    Never send the token in a query parameter or request body. See [Trading REST API authentication](/en/guide/authentication-c) for details.
+    Never send the token in a query parameter or request body. See [Trading REST API authentication](/en/user/guide/authentication) for details.
   </Tab>
 </Tabs>
 
@@ -75,7 +75,7 @@ All requests must use HTTPS. Append an operation path from API Reference to the 
     ```
 
     <Info>
-      Use the [signature calculator](/en/guide/signature-calculator) to generate a signature, or send a test request with the [API debugger](/en/guide/api-debugger).
+      Use the [signature calculator](/en/broker/guide/signature-calculator) to generate a signature, or send a test request with the [API debugger](/en/broker/guide/api-debugger).
     </Info>
   </Tab>
 
