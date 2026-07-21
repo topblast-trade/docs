@@ -146,23 +146,22 @@
                     ]
                   },
                   {
-                    "group": "事件数据",
+                    "group": "元数据",
                     "pages": [
                       "cn/user/api-reference/events/search",
                       "cn/user/api-reference/events/list",
-                      "cn/user/api-reference/events/list-deprecated",
                       "cn/user/api-reference/events/detail",
                       "cn/user/api-reference/events/carousel",
                       "cn/user/api-reference/events/tags",
                       "cn/user/api-reference/events/filtered-tags",
                       "cn/user/api-reference/events/tag-detail",
-                      "cn/user/api-reference/events/tag-detail-by-slug"
+                      "cn/user/api-reference/events/tag-detail-by-slug",
+                      "cn/user/api-reference/market/markets"
                     ]
                   },
                   {
                     "group": "市场行情",
                     "pages": [
-                      "cn/user/api-reference/market/markets",
                       "cn/user/api-reference/market/orderbook",
                       "cn/user/api-reference/market/ticker",
                       "cn/user/api-reference/market/midpoint",
