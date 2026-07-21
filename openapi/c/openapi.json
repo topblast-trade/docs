@@ -418,26 +418,13 @@
             "BearerAuth": []
           }
         ]
-      }
-    },
-    "/v1/private/orders/batch": {
+      },
       "post": {
-        "description": "一次创建 1 至 50 笔委托。每项 timestamp 使用 Unix 毫秒且每次请求都应取当前时间；expiration 支持 Unix 秒或毫秒，传秒时服务端自动转换。async=true 时仅表示异步提交，不代表委托已成交。",
+        "description": "同步创建 1 至 50 笔委托并返回每笔处理结果。每项 timestamp 使用 Unix 毫秒且每次请求都应取当前时间；expiration 支持 Unix 秒或毫秒，传秒时服务端自动转换。",
         "tags": [
           "用户接口-委托"
         ],
         "summary": "批量创建委托",
-        "parameters": [
-          {
-            "description": "是否异步提交；支持 true、1、yes，默认 false",
-            "name": "async",
-            "in": "query",
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2681,10 +2668,6 @@
       "http_order.AckBatchCancel": {
         "type": "object",
         "properties": {
-          "async": {
-            "description": "是否异步处理；批量撤单固定为 false",
-            "type": "boolean"
-          },
           "count": {
             "description": "结果数量",
             "type": "integer"
@@ -2705,10 +2688,6 @@
       "http_order.AckBatchPlace": {
         "type": "object",
         "properties": {
-          "async": {
-            "description": "是否采用异步提交",
-            "type": "boolean"
-          },
           "count": {
             "description": "结果数量",
             "type": "integer"
