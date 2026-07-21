@@ -161,8 +161,7 @@
                       "cn/user/api-reference/market/midpoint",
                       "cn/user/api-reference/market/spread",
                       "cn/user/api-reference/market/prices",
-                      "cn/user/api-reference/market/price-history",
-                      "cn/user/api-reference/market/kline"
+                      "cn/user/api-reference/market/price-history"
                     ]
                   },
                   {
@@ -347,8 +346,7 @@
                       "en/api-reference/user/market/midpoint",
                       "en/api-reference/user/market/spread",
                       "en/api-reference/user/market/prices",
-                      "en/api-reference/user/market/price-history",
-                      "en/api-reference/user/market/kline"
+                      "en/api-reference/user/market/price-history"
                     ]
                   },
                   {

@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "`/api/v2/public` 提供公开事件与行情数据；`/api/v2/private` 提供需要用户 Token 的交易和账户接口。",
-    "title": "topblast Trading REST API",
+    "description": "`/v1/public` 提供公开事件与行情数据；`/v1/private` 提供需要用户 Token 的交易和账户接口。",
+    "title": "zpm 预测市场用户 API v2",
     "contact": {},
     "version": "v2"
   },
   "paths": {
-    "/api/v2/private/account/summary": {
+    "/v1/private/account/summary": {
       "get": {
         "description": "返回当前登录账户的 USDC 可用/锁定余额及各结果 Token 余额。",
         "tags": [
@@ -53,7 +53,7 @@
         ]
       }
     },
-    "/api/v2/private/account/trades": {
+    "/v1/private/account/trades": {
       "get": {
         "description": "查询当前登录账户的成交记录。eventId/event 为同义参数，优先使用 eventId。",
         "tags": [
@@ -128,7 +128,7 @@
         ]
       }
     },
-    "/api/v2/private/order": {
+    "/v1/private/order": {
       "post": {
         "description": "为当前登录账户创建委托。timestamp 使用 Unix 毫秒且每次请求都应取当前时间；GTD 的 expiration 必填，支持 Unix 秒或毫秒，服务端会将秒转换为毫秒。非 MARKET 委托的 price 必须在 0 到 1 之间并符合市场最小价格步长。",
         "tags": [
@@ -205,7 +205,7 @@
         ]
       }
     },
-    "/api/v2/private/order/{orderID}": {
+    "/v1/private/order/{orderID}": {
       "get": {
         "description": "查询当前登录账户下的指定委托。",
         "tags": [
@@ -345,7 +345,7 @@
         ]
       }
     },
-    "/api/v2/private/orders": {
+    "/v1/private/orders": {
       "get": {
         "description": "查询当前登录账户的未完成委托。",
         "tags": [
@@ -420,7 +420,7 @@
         ]
       }
     },
-    "/api/v2/private/orders/batch": {
+    "/v1/private/orders/batch": {
       "post": {
         "description": "一次创建 1 至 50 笔委托。每项 timestamp 使用 Unix 毫秒且每次请求都应取当前时间；expiration 支持 Unix 秒或毫秒，传秒时服务端自动转换。async=true 时仅表示异步提交，不代表委托已成交。",
         "tags": [
@@ -563,7 +563,7 @@
         ]
       }
     },
-    "/api/v2/private/orders/history": {
+    "/v1/private/orders/history": {
       "get": {
         "description": "查询当前登录账户的历史委托。afterCursor 是上一页最后一条订单的 ID，仅用于继续向后翻页。",
         "tags": [
@@ -636,7 +636,7 @@
         ]
       }
     },
-    "/api/v2/private/position": {
+    "/v1/private/position": {
       "get": {
         "description": "查询当前登录账户的持仓，并计算当前价值和未实现盈亏。eventId/event 为同义参数，优先使用 eventId。",
         "tags": [
@@ -690,7 +690,7 @@
         ]
       }
     },
-    "/api/v2/public/carousel": {
+    "/v1/public/carousel": {
       "get": {
         "description": "按可选标签查询轮播事件。",
         "tags": [
@@ -755,9 +755,9 @@
         }
       }
     },
-    "/api/v2/public/events": {
+    "/v1/public/events": {
       "get": {
-        "description": "该偏移量分页接口已废弃并固定返回 HTTP 410；请改用 GET /api/v2/public/events/keyset。若仍传 slug，请改用 GET /api/v2/public/events/slug/{slug}。",
+        "description": "该偏移量分页接口已废弃并固定返回 HTTP 410；请改用 GET /v1/public/events/keyset。若仍传 slug，请改用 GET /v1/public/events/slug/{slug}。",
         "tags": [
           "用户接口-事件"
         ],
@@ -777,7 +777,7 @@
         }
       }
     },
-    "/api/v2/public/events/keyset": {
+    "/v1/public/events/keyset": {
       "get": {
         "description": "返回事件列表和下一页游标。afterCursor 只能原样用于相同筛选与排序条件的下一页请求，不应解析、修改或跨查询复用。",
         "tags": [
@@ -880,7 +880,7 @@
         }
       }
     },
-    "/api/v2/public/events/slug/{slug}": {
+    "/v1/public/events/slug/{slug}": {
       "get": {
         "description": "返回指定 slug 的事件及其市场信息。",
         "tags": [
@@ -932,107 +932,7 @@
         }
       }
     },
-    "/api/v2/public/kline": {
-      "get": {
-        "description": "查询指定结果 Token 的 OHLCV K 线。该接口保留兼容用途，新接入请优先使用 GET /api/v2/public/price-history。startTs/endTs 使用 Unix 毫秒，传 0 或不传表示不限制对应边界。",
-        "tags": [
-          "用户接口-市场"
-        ],
-        "summary": "查询 K 线（兼容接口）",
-        "deprecated": true,
-        "parameters": [
-          {
-            "description": "结果 Token ID，十进制正整数",
-            "name": "tokenId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "K 线周期，默认 1m",
-            "name": "interval",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "1m",
-                "5m",
-                "30m",
-                "1h",
-                "4h",
-                "6h",
-                "1d"
-              ],
-              "default": "1m"
-            }
-          },
-          {
-            "description": "开始时间（Unix 毫秒）；0 或不传表示不限开始时间",
-            "name": "startTs",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0
-            }
-          },
-          {
-            "description": "结束时间（Unix 毫秒）；0 或不传表示不限结束时间",
-            "name": "endTs",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0
-            }
-          },
-          {
-            "description": "返回最近记录数，默认 100，最大 500",
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 500,
-              "default": 100
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "K 线数据",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_market.AckKlines"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Token、周期或时间范围无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "K 线不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/public/markets": {
+    "/v1/public/markets": {
       "get": {
         "description": "从可访问事件中汇总市场，并按事件、状态和数字游标分页。",
         "tags": [
@@ -1107,7 +1007,7 @@
         }
       }
     },
-    "/api/v2/public/orderbook": {
+    "/v1/public/orderbook": {
       "get": {
         "description": "返回指定结果 Token 的买卖盘快照；缓存尚未建立时返回结构完整的空订单簿。",
         "tags": [
@@ -1149,7 +1049,7 @@
         }
       }
     },
-    "/api/v2/public/price-history": {
+    "/v1/public/price-history": {
       "get": {
         "description": "按固定时间窗口查询指定结果 Token 的价格点。时间戳为 Unix 毫秒。",
         "tags": [
@@ -1217,7 +1117,7 @@
         }
       }
     },
-    "/api/v2/public/prices": {
+    "/v1/public/prices": {
       "get": {
         "description": "tokenIds 与 ids 为同义参数，优先使用 tokenIds；值为逗号分隔的结果 Token ID。无效或无行情的 ID 不会出现在结果中。",
         "tags": [
@@ -1266,7 +1166,7 @@
         }
       }
     },
-    "/api/v2/public/search": {
+    "/v1/public/search": {
       "get": {
         "description": "按事件标题、描述、标识或代码进行不区分大小写的模糊搜索。",
         "tags": [
@@ -1308,7 +1208,7 @@
         }
       }
     },
-    "/api/v2/public/tags": {
+    "/v1/public/tags": {
       "get": {
         "description": "分页查询活动标签。",
         "tags": [
@@ -1406,7 +1306,7 @@
         }
       }
     },
-    "/api/v2/public/tags/filtered": {
+    "/v1/public/tags/filtered": {
       "get": {
         "description": "按父标签和事件状态查询筛选标签；可选择返回事件数量和子标签。",
         "tags": [
@@ -1510,7 +1410,7 @@
         }
       }
     },
-    "/api/v2/public/tags/slug/{slug}": {
+    "/v1/public/tags/slug/{slug}": {
       "get": {
         "description": "返回指定 slug 的标签。",
         "tags": [
@@ -1562,7 +1462,7 @@
         }
       }
     },
-    "/api/v2/public/tags/{id}": {
+    "/v1/public/tags/{id}": {
       "get": {
         "description": "返回指定字符串 ID 的标签。",
         "tags": [
@@ -1614,7 +1514,7 @@
         }
       }
     },
-    "/api/v2/public/ticker": {
+    "/v1/public/ticker": {
       "get": {
         "description": "返回市场级行情和各结果 Token 的最优买卖价、最新价及更新时间。",
         "tags": [
@@ -1666,7 +1566,7 @@
         }
       }
     },
-    "/api/v2/public/ticker/midpoint": {
+    "/v1/public/ticker/midpoint": {
       "get": {
         "description": "返回指定结果 Token 的最优买价与最优卖价中间值。",
         "tags": [
@@ -1718,7 +1618,7 @@
         }
       }
     },
-    "/api/v2/public/ticker/spread": {
+    "/v1/public/ticker/spread": {
       "get": {
         "description": "返回指定结果 Token 的最优买价、最优卖价和二者价差。",
         "tags": [
@@ -1770,7 +1670,7 @@
         }
       }
     },
-    "/api/v2/public/trade": {
+    "/v1/public/trade": {
       "get": {
         "description": "按事件或市场筛选最近成交；eventId/event 与 marketId/market 分别是同义参数，优先使用 *Id 形式。",
         "tags": [
@@ -1859,8 +1759,12 @@
   },
   "servers": [
     {
-      "url": "https://api.topblast.trade",
-      "description": "生产环境"
+      "url": "https://predict.xbit.trade",
+      "description": "开发环境"
+    },
+    {
+      "url": "https://apitest-predict.xbit.trade",
+      "description": "测试环境"
     }
   ],
   "components": {
@@ -2344,18 +2248,6 @@
           }
         }
       },
-      "http_market.AckKlines": {
-        "type": "object",
-        "properties": {
-          "history": {
-            "description": "K 线记录",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_market.Kline"
-            }
-          }
-        }
-      },
       "http_market.AckMarkets": {
         "type": "object",
         "properties": {
@@ -2560,35 +2452,6 @@
             "items": {
               "$ref": "#/components/schemas/http_market.Trade"
             }
-          }
-        }
-      },
-      "http_market.Kline": {
-        "type": "object",
-        "properties": {
-          "c": {
-            "description": "收盘价",
-            "type": "string"
-          },
-          "h": {
-            "description": "最高价",
-            "type": "string"
-          },
-          "l": {
-            "description": "最低价",
-            "type": "string"
-          },
-          "o": {
-            "description": "开盘价",
-            "type": "string"
-          },
-          "t": {
-            "description": "K 线起始时间（Unix 秒）",
-            "type": "integer"
-          },
-          "v": {
-            "description": "成交量",
-            "type": "string"
           }
         }
       },
@@ -3350,52 +3213,12 @@
             "description": "当前估值",
             "type": "string"
           },
-          "endDate": {
-            "description": "事件结束时间",
-            "type": "string"
-          },
-          "eventId": {
-            "description": "事件 ID",
-            "type": "string"
-          },
-          "eventSlug": {
-            "description": "事件 slug",
-            "type": "string"
-          },
-          "icon": {
-            "description": "市场或事件图标 URL",
-            "type": "string"
-          },
-          "image": {
-            "description": "市场或事件图片 URL",
-            "type": "string"
-          },
           "locked": {
             "description": "委托锁定数量",
             "type": "string"
           },
-          "marketQuestion": {
-            "description": "市场问题",
-            "type": "string"
-          },
-          "marketSlug": {
-            "description": "市场 slug",
-            "type": "string"
-          },
-          "outcome": {
-            "description": "持有的结果名称",
-            "type": "string"
-          },
           "size": {
             "description": "总持仓数量",
-            "type": "string"
-          },
-          "slug": {
-            "description": "展示 slug",
-            "type": "string"
-          },
-          "title": {
-            "description": "展示标题",
             "type": "string"
           },
           "toWin": {
@@ -3422,7 +3245,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-token",
-        "description": "用户登录后获得的访问 Token。仅 `/api/v2/private` 接口需要传入。"
+        "description": "用户登录后获得的访问 Token。仅 `/v1/private` 接口需要传入。"
       }
     }
   },

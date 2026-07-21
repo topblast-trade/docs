@@ -87,7 +87,7 @@ Web and mobile clients use a bearer token to query current spot orders:
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/api/v2/private/orders?user_id=broker-user-10001' \
+    --url 'https://api.topblast.trade/v1/private/orders?user_id=broker-user-10001' \
     --header 'Authorization: Bearer <user_access_token>' \
     --header 'Content-Type: application/json'
   ```
