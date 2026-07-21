@@ -2750,13 +2750,6 @@
       "http_order.AckCancelOrder": {
         "type": "object",
         "properties": {
-          "canceled": {
-            "description": "已取消订单 ID",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "message": {
             "description": "补充说明",
             "type": "string"
