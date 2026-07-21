@@ -1,9 +1,9 @@
 ---
 title: "API 鉴权"
-description: "了解 C 端 Trading REST API 的 Bearer Token 与 API Key 鉴权。"
+description: "了解 Trading REST API 的 Bearer Token 与 API Key 鉴权。"
 ---
 
-C 端和 OpenAPI 客户端共用 `/v1` 路径。`/v1/public/*` 接口无需鉴权，`/v1/private/*` 接口支持 Bearer Token 或 API Key 鉴权。
+`/v1/public/*` 接口无需鉴权，`/v1/private/*` 接口支持 Bearer Token 或 API Key 鉴权。
 
 <Note>
 不再提供 `/openapi/v1/*` 镜像路径。使用 API Key 鉴权时也应请求 `/v1/private/*`。
