@@ -763,7 +763,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/http_event.Event"
+                    "$ref": "#/components/schemas/http_meta.Event"
                   }
                 }
               }
@@ -873,7 +873,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_event.AckEvents"
+                  "$ref": "#/components/schemas/http_meta.AckEvents"
                 }
               }
             }
@@ -947,7 +947,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_event.Event"
+                  "$ref": "#/components/schemas/http_meta.Event"
                 }
               }
             }
@@ -979,7 +979,7 @@
       "get": {
         "description": "从可访问事件中汇总市场，按事件、状态和排序条件筛选后进行页码分页。",
         "tags": [
-          "用户接口-市场"
+          "用户接口-元数据"
         ],
         "summary": "查询市场列表",
         "parameters": [
@@ -1059,7 +1059,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_market.AckMarkets"
+                  "$ref": "#/components/schemas/http_meta.AckMarkets"
                 }
               }
             }
@@ -1312,7 +1312,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_event.AckSearch"
+                  "$ref": "#/components/schemas/http_meta.AckSearch"
                 }
               }
             }
@@ -1456,7 +1456,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_event.AckTags"
+                  "$ref": "#/components/schemas/http_meta.AckTags"
                 }
               }
             }
@@ -1549,7 +1549,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/http_event.FilteredTag"
+                    "$ref": "#/components/schemas/http_meta.FilteredTag"
                   }
                 }
               }
@@ -1612,7 +1612,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_event.Tag"
+                  "$ref": "#/components/schemas/http_meta.Tag"
                 }
               }
             }
@@ -1664,7 +1664,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_event.Tag"
+                  "$ref": "#/components/schemas/http_meta.Tag"
                 }
               }
             }
@@ -2070,276 +2070,6 @@
           "ErrorCodeAssetServiceNotConfigured"
         ]
       },
-      "http_event.AckEvents": {
-        "type": "object",
-        "properties": {
-          "events": {
-            "description": "当前页事件",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_event.Event"
-            }
-          },
-          "total": {
-            "description": "筛选后的事件总数",
-            "type": "integer"
-          }
-        }
-      },
-      "http_event.AckSearch": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "description": "匹配数量",
-            "type": "integer"
-          },
-          "data": {
-            "description": "匹配事件",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_event.Event"
-            }
-          }
-        }
-      },
-      "http_event.AckTags": {
-        "type": "object",
-        "properties": {
-          "tags": {
-            "description": "当前页标签",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_event.Tag"
-            }
-          },
-          "total": {
-            "description": "筛选后的标签总数",
-            "type": "integer"
-          }
-        }
-      },
-      "http_event.Event": {
-        "type": "object",
-        "properties": {
-          "channel": {
-            "description": "实时数据频道",
-            "type": "string"
-          },
-          "closed": {
-            "description": "是否已关闭",
-            "type": "boolean"
-          },
-          "createdAt": {
-            "description": "创建时间",
-            "type": "string"
-          },
-          "description": {
-            "description": "事件描述",
-            "type": "string"
-          },
-          "endDate": {
-            "description": "结束时间",
-            "type": "string"
-          },
-          "eventId": {
-            "description": "事件 ID",
-            "type": "string"
-          },
-          "iconUrl": {
-            "description": "图标 URL",
-            "type": "string"
-          },
-          "imageUrl": {
-            "description": "图片 URL",
-            "type": "string"
-          },
-          "markets": {
-            "description": "事件下的市场",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_event.EventMarket"
-            }
-          },
-          "resolutionSource": {
-            "description": "结算来源",
-            "type": "string"
-          },
-          "slug": {
-            "description": "事件 slug",
-            "type": "string"
-          },
-          "startDate": {
-            "description": "开始时间",
-            "type": "string"
-          },
-          "status": {
-            "description": "事件状态",
-            "type": "string"
-          },
-          "title": {
-            "description": "事件标题",
-            "type": "string"
-          },
-          "updatedAt": {
-            "description": "更新时间",
-            "type": "string"
-          },
-          "volume": {
-            "description": "事件下所有市场的累计成交量之和",
-            "type": "string"
-          }
-        }
-      },
-      "http_event.EventMarket": {
-        "type": "object",
-        "properties": {
-          "bestAsk": {
-            "description": "最优卖价",
-            "type": "string"
-          },
-          "bestBid": {
-            "description": "最优买价",
-            "type": "string"
-          },
-          "conditionId": {
-            "description": "条件 ID",
-            "type": "string"
-          },
-          "disputeFlag": {
-            "description": "是否处于争议状态",
-            "type": "boolean"
-          },
-          "endDate": {
-            "description": "结束时间",
-            "type": "string"
-          },
-          "groupItemTitle": {
-            "description": "分组展示标题",
-            "type": "string"
-          },
-          "lastPrice": {
-            "description": "最新成交价",
-            "type": "string"
-          },
-          "marketId": {
-            "description": "市场 ID",
-            "type": "string"
-          },
-          "marketQuestion": {
-            "description": "市场问题",
-            "type": "string"
-          },
-          "marketSlug": {
-            "description": "市场 slug",
-            "type": "string"
-          },
-          "orderMinSize": {
-            "description": "最小委托数量",
-            "type": "integer"
-          },
-          "orderMinTickSize": {
-            "description": "最小价格步长；创建委托时价格必须是其整数倍",
-            "type": "number"
-          },
-          "pricePrecision": {
-            "description": "价格精度类型",
-            "type": "string"
-          },
-          "startDate": {
-            "description": "开始时间",
-            "type": "string"
-          },
-          "status": {
-            "description": "市场状态",
-            "type": "string"
-          },
-          "tokenIdNo": {
-            "description": "NO 结果 Token ID",
-            "type": "string"
-          },
-          "tokenIdYes": {
-            "description": "YES 结果 Token ID",
-            "type": "string"
-          },
-          "tokenNameNo": {
-            "description": "NO 结果展示名",
-            "type": "string"
-          },
-          "tokenNameYes": {
-            "description": "YES 结果展示名",
-            "type": "string"
-          },
-          "volume": {
-            "description": "累计成交量",
-            "type": "string"
-          }
-        }
-      },
-      "http_event.FilteredTag": {
-        "type": "object",
-        "properties": {
-          "activeEventsCount": {
-            "description": "活动事件数量；仅请求时启用才返回",
-            "type": "integer"
-          },
-          "children": {
-            "description": "子标签；仅请求时启用才返回",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_event.FilteredTag"
-            }
-          },
-          "id": {
-            "description": "标签 ID",
-            "type": "string"
-          },
-          "label": {
-            "description": "标签显示名称",
-            "type": "string"
-          },
-          "parentId": {
-            "description": "父标签 ID",
-            "type": "string"
-          },
-          "slug": {
-            "description": "标签 slug",
-            "type": "string"
-          }
-        }
-      },
-      "http_event.Tag": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "description": "标签 ID",
-            "type": "string"
-          },
-          "label": {
-            "description": "标签显示名称",
-            "type": "string"
-          },
-          "slug": {
-            "description": "标签 slug",
-            "type": "string"
-          }
-        }
-      },
-      "http_market.AckMarkets": {
-        "type": "object",
-        "properties": {
-          "markets": {
-            "description": "当前页市场",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_market.Market"
-            }
-          },
-          "total": {
-            "description": "筛选后的市场总数",
-            "type": "integer"
-          }
-        }
-      },
       "http_market.AckMidpoint": {
         "type": "object",
         "properties": {
@@ -2523,7 +2253,197 @@
           }
         }
       },
-      "http_market.Market": {
+      "http_market.PriceHistoryPoint": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "description": "价格",
+            "type": "number"
+          },
+          "timestamp": {
+            "description": "时间戳（Unix 毫秒）",
+            "type": "integer"
+          }
+        }
+      },
+      "http_market.Trade": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "conditionId": {
+            "description": "条件 ID",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "id": {
+            "description": "成交 ID",
+            "type": "string"
+          },
+          "market": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "price": {
+            "description": "成交价",
+            "type": "string"
+          },
+          "side": {
+            "description": "方向：BUY 或 SELL",
+            "type": "string"
+          },
+          "size": {
+            "description": "成交数量",
+            "type": "string"
+          },
+          "timestamp": {
+            "description": "成交时间戳（Unix 毫秒）",
+            "type": "integer"
+          }
+        }
+      },
+      "http_meta.AckEvents": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "description": "当前页事件",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.Event"
+            }
+          },
+          "total": {
+            "description": "筛选后的事件总数",
+            "type": "integer"
+          }
+        }
+      },
+      "http_meta.AckMarkets": {
+        "type": "object",
+        "properties": {
+          "markets": {
+            "description": "当前页市场",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.Market"
+            }
+          },
+          "total": {
+            "description": "筛选后的市场总数",
+            "type": "integer"
+          }
+        }
+      },
+      "http_meta.AckSearch": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "匹配数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "匹配事件",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.Event"
+            }
+          }
+        }
+      },
+      "http_meta.AckTags": {
+        "type": "object",
+        "properties": {
+          "tags": {
+            "description": "当前页标签",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.Tag"
+            }
+          },
+          "total": {
+            "description": "筛选后的标签总数",
+            "type": "integer"
+          }
+        }
+      },
+      "http_meta.Event": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "description": "实时数据频道",
+            "type": "string"
+          },
+          "closed": {
+            "description": "是否已关闭",
+            "type": "boolean"
+          },
+          "createdAt": {
+            "description": "创建时间",
+            "type": "string"
+          },
+          "description": {
+            "description": "事件描述",
+            "type": "string"
+          },
+          "endDate": {
+            "description": "结束时间",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "iconUrl": {
+            "description": "图标 URL",
+            "type": "string"
+          },
+          "imageUrl": {
+            "description": "图片 URL",
+            "type": "string"
+          },
+          "markets": {
+            "description": "事件下的市场",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.EventMarket"
+            }
+          },
+          "resolutionSource": {
+            "description": "结算来源",
+            "type": "string"
+          },
+          "slug": {
+            "description": "事件 slug",
+            "type": "string"
+          },
+          "startDate": {
+            "description": "开始时间",
+            "type": "string"
+          },
+          "status": {
+            "description": "事件状态",
+            "type": "string"
+          },
+          "title": {
+            "description": "事件标题",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "更新时间",
+            "type": "string"
+          },
+          "volume": {
+            "description": "事件下所有市场的累计成交量之和",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.EventMarket": {
         "type": "object",
         "properties": {
           "bestAsk": {
@@ -2608,57 +2528,137 @@
           }
         }
       },
-      "http_market.PriceHistoryPoint": {
+      "http_meta.FilteredTag": {
         "type": "object",
         "properties": {
-          "price": {
-            "description": "价格",
-            "type": "number"
-          },
-          "timestamp": {
-            "description": "时间戳（Unix 毫秒）",
+          "activeEventsCount": {
+            "description": "活动事件数量；仅请求时启用才返回",
             "type": "integer"
+          },
+          "children": {
+            "description": "子标签；仅请求时启用才返回",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.FilteredTag"
+            }
+          },
+          "id": {
+            "description": "标签 ID",
+            "type": "string"
+          },
+          "label": {
+            "description": "标签显示名称",
+            "type": "string"
+          },
+          "parentId": {
+            "description": "父标签 ID",
+            "type": "string"
+          },
+          "slug": {
+            "description": "标签 slug",
+            "type": "string"
           }
         }
       },
-      "http_market.Trade": {
+      "http_meta.Market": {
         "type": "object",
         "properties": {
-          "assetId": {
-            "description": "结果 Token ID",
+          "bestAsk": {
+            "description": "最优卖价",
+            "type": "string"
+          },
+          "bestBid": {
+            "description": "最优买价",
             "type": "string"
           },
           "conditionId": {
             "description": "条件 ID",
             "type": "string"
           },
-          "eventId": {
-            "description": "事件 ID",
+          "disputeFlag": {
+            "description": "是否处于争议状态",
+            "type": "boolean"
+          },
+          "endDate": {
+            "description": "结束时间",
             "type": "string"
           },
-          "id": {
-            "description": "成交 ID",
+          "groupItemTitle": {
+            "description": "分组展示标题",
             "type": "string"
           },
-          "market": {
+          "lastPrice": {
+            "description": "最新成交价",
+            "type": "string"
+          },
+          "marketId": {
             "description": "市场 ID",
             "type": "string"
           },
-          "price": {
-            "description": "成交价",
+          "marketQuestion": {
+            "description": "市场问题",
             "type": "string"
           },
-          "side": {
-            "description": "方向：BUY 或 SELL",
+          "marketSlug": {
+            "description": "市场 slug",
             "type": "string"
           },
-          "size": {
-            "description": "成交数量",
-            "type": "string"
-          },
-          "timestamp": {
-            "description": "成交时间戳（Unix 毫秒）",
+          "orderMinSize": {
+            "description": "最小委托数量",
             "type": "integer"
+          },
+          "orderMinTickSize": {
+            "description": "最小价格步长；创建委托时价格必须是其整数倍",
+            "type": "number"
+          },
+          "pricePrecision": {
+            "description": "价格精度类型",
+            "type": "string"
+          },
+          "startDate": {
+            "description": "开始时间",
+            "type": "string"
+          },
+          "status": {
+            "description": "市场状态",
+            "type": "string"
+          },
+          "tokenIdNo": {
+            "description": "NO 结果 Token ID",
+            "type": "string"
+          },
+          "tokenIdYes": {
+            "description": "YES 结果 Token ID",
+            "type": "string"
+          },
+          "tokenNameNo": {
+            "description": "NO 结果展示名",
+            "type": "string"
+          },
+          "tokenNameYes": {
+            "description": "YES 结果展示名",
+            "type": "string"
+          },
+          "volume": {
+            "description": "累计成交量",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "标签 ID",
+            "type": "string"
+          },
+          "label": {
+            "description": "标签显示名称",
+            "type": "string"
+          },
+          "slug": {
+            "description": "标签 slug",
+            "type": "string"
           }
         }
       },
@@ -3247,6 +3247,9 @@
     },
     {
       "name": "用户接口-事件"
+    },
+    {
+      "name": "用户接口-元数据"
     },
     {
       "name": "用户接口-市场"
