@@ -48,7 +48,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -123,7 +123,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -200,7 +200,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -267,7 +267,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       },
@@ -340,7 +340,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -415,7 +415,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -493,7 +493,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       },
@@ -558,7 +558,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -631,7 +631,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -685,7 +685,7 @@
         },
         "security": [
           {
-            "ApiKeyAuth": []
+            "BearerAuth": []
           }
         ]
       }
@@ -3241,10 +3241,9 @@
       }
     },
     "securitySchemes": {
-      "ApiKeyAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "x-token",
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
         "description": "用户登录后获得的访问 Token。仅 `/v1/private` 接口需要传入。"
       }
     }
