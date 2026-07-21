@@ -1,15 +1,104 @@
 ---
 title: "Trading REST API authentication"
+description: "Authenticate C-end Trading REST API requests with a Bearer token or API Key authentication."
 ---
 
-Trading REST APIs identify authenticated users with an access token. Send the token through standard Bearer Authentication:
+C-end and OpenAPI clients share the `/v1` path. `/v1/public/*` endpoints require no authentication. `/v1/private/*` endpoints accept either a Bearer token or API Key authentication.
+
+<Note>
+The `/openapi/v1/*` mirror path is no longer available. API Key clients must also request `/v1/private/*`.
+</Note>
+
+## Authentication selection order
+
+The server selects an authentication method in this order:
+
+1. If the request includes `Authorization: Bearer <access_token>`, the server performs token authentication.
+2. If there is no Bearer token but any of `x-api-key`, `x-timestamp`, or `x-signature` is present, the server performs API Key authentication and requires all three headers.
+3. If neither credential type is present, the server returns `401 Unauthorized`.
+
+Bearer authentication takes precedence when both credential types are present. An invalid token does not fall back to API Key authentication.
+
+## Bearer token authentication
+
+Signed-in web and app clients send the user access token through standard Bearer Authentication:
 
 ```http
 Authorization: Bearer <access_token>
 ```
 
-The user login flow issues the token. Clients must not send it in a query parameter or request body.
+The user login flow issues the token. Never send it in a query parameter or request body.
 
-<Note>
-This initial architecture marks the bearer token format as JWT. Document token issuance, refresh, expiration, and revocation after the authentication service contract is finalized.
-</Note>
+```bash
+curl --request GET \
+  --url 'https://<api-host>/v1/private/orders' \
+  --header 'Authorization: Bearer <access_token>'
+```
+
+## API Key authentication
+
+API Key authentication uses AK/SK credentials and an HMAC-SHA256 request signature. It follows the same signing rules as the Broker REST API authorization module. Trading bots and other trusted server-side clients can sign requests with an Access Key and Secret Key. Every request must include these headers:
+
+| Header | Description | Example |
+| :--- | :--- | :--- |
+| `x-api-key` | Platform-issued Access Key (AK) | `7007b96cf748fdd0` |
+| `x-timestamp` | Unix timestamp in milliseconds | `1717027200000` |
+| `x-signature` | Base64-encoded HMAC-SHA256 signature | `o7iQ...=` |
+
+<Warning>
+Use the Secret Key (SK) only to calculate signatures locally. Never include it in a request or expose it in logs, browser code, or a mobile app. Store it only on a trusted server.
+</Warning>
+
+### Build the signature payload
+
+Concatenate these fields in order:
+
+`Timestamp + Method + Path + [?RawQuery] + Body`
+
+- **Timestamp**: Must exactly match `x-timestamp`.
+- **Method**: Use the uppercase HTTP method, such as `GET`, `POST`, or `DELETE`.
+- **Path**: Use the actual request path without the domain, such as `/v1/private/orders`.
+- **RawQuery**: When query parameters exist, append `?` and the exact raw query string sent on the wire. Do not append `?` when there is no query.
+- **Body**: Use the exact request body sent on the wire, or an empty string when there is no body.
+
+Calculate HMAC-SHA256 over the payload with the SK, then Base64-encode the result. Any change to the path, query encoding, parameter order, or JSON whitespace changes the signature.
+
+```go
+func CalculateSignature(secret, timestamp, method, path, rawQuery, body string) string {
+    payload := timestamp + strings.ToUpper(method) + path
+    if rawQuery != "" {
+        payload += "?" + rawQuery
+    }
+    payload += body
+
+    h := hmac.New(sha256.New, []byte(secret))
+    h.Write([]byte(payload))
+    return base64.StdEncoding.EncodeToString(h.Sum(nil))
+}
+```
+
+For `GET /v1/private/orders?limit=20`, the signature payload is:
+
+```text
+1717027200000GET/v1/private/orders?limit=20
+```
+
+Send the three authentication headers with the request:
+
+```bash
+curl --request GET \
+  --url 'https://<api-host>/v1/private/orders?limit=20' \
+  --header 'x-api-key: <access_key>' \
+  --header 'x-timestamp: 1717027200000' \
+  --header 'x-signature: <base64_signature>'
+```
+
+## Common authentication errors
+
+| HTTP status | Cause |
+| :--- | :--- |
+| `401` | The request has no token or API Key headers |
+| `401` | The Bearer token is invalid or expired |
+| `401` | The API Key header set is incomplete |
+| `401` | The AK does not exist, is disabled, or is expired |
+| `401` | The timestamp, path, query, body, or SK does not match the signature |

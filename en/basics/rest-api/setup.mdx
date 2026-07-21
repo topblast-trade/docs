@@ -9,9 +9,10 @@ Choose the caller type and obtain the corresponding credentials:
 
 - **Broker server**: Request a broker-level `API Key` and `API Secret` from topblast.
 - **Web or mobile client**: Obtain an access token through the user login flow.
+- **Trusted server-side bot or trading program**: Request a user-level `API Key` and `API Secret`.
 
 <Warning>
-Store the API Secret on the broker server only. Never embed it in a Web, mobile, or other end-user client.
+Store the API Secret only on a trusted server. Never embed it in a Web, mobile, or other end-user client.
 </Warning>
 
 ## Base URL
@@ -52,13 +53,13 @@ All requests must use HTTPS. Append an operation path from API Reference to the 
   </Tab>
 
   <Tab title="Trading REST API">
-    Trading REST API requests identify the signed-in user with a bearer token.
+    Trading REST API requests support Bearer token or API Key authentication. Web and mobile clients use Bearer tokens. Trusted server-side bots and trading programs can use API Key authentication.
 
     <ParamField header="Authorization" type="string" example="Bearer &lt;access_token&gt;" required>
       Bearer token issued by the user login flow.
     </ParamField>
 
-    Never send the token in a query parameter or request body. See [Trading REST API authentication](/en/user/guide/authentication) for details.
+    Never send the token in a query parameter or request body. API Key authentication uses the same HMAC-SHA256 signing rules as the Broker REST API. See [Trading REST API authentication](/en/user/guide/authentication) for details.
   </Tab>
 </Tabs>
 

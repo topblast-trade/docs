@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "`/v1/public` 提供公开事件与行情数据；`/v1/private` 提供需要用户 Token 的交易和账户接口。",
+    "description": "`/v1/public` 提供公开事件与行情数据；`/v1/private` 提供交易和账户接口，支持用户 Token 或 API Key 鉴权。",
     "title": "zpm 预测市场用户 API v2",
     "contact": {},
     "version": "v2"
@@ -49,6 +49,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       }
@@ -124,6 +129,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       }
@@ -201,6 +211,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       }
@@ -268,6 +283,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       },
@@ -341,6 +361,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       }
@@ -416,6 +441,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       },
@@ -481,6 +511,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       },
@@ -546,6 +581,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       }
@@ -619,6 +659,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       }
@@ -673,6 +718,11 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
           }
         ]
       }
@@ -3217,6 +3267,24 @@
         "type": "http",
         "scheme": "bearer",
         "description": "用户登录后获得的访问 Token。仅 `/v1/private` 接口需要传入。"
+      },
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "用户 API Key（AK），用于 API Key 鉴权。"
+      },
+      "TimestampAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-timestamp",
+        "description": "参与 HMAC 签名的毫秒时间戳。"
+      },
+      "SignatureAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-signature",
+        "description": "使用 Secret Key 生成并经过 Base64 编码的 HMAC-SHA256 签名。"
       }
     }
   },

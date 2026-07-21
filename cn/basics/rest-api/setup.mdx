@@ -9,9 +9,10 @@ description: "配置直接调用 topblast REST API 所需的环境、鉴权方�
 
 - **券商服务端**：向 topblast 申请券商级 `API Key` 和 `API Secret`。
 - **Web、App 等用户客户端**：通过用户登录流程获取访问 Token。
+- **量化程序、机器人等可信服务端**：申请用户级 `API Key` 和 `API Secret`。
 
 <Warning>
-API Secret 只能保存在券商服务端。不要将其写入 Web、App 或其他面向终端用户的客户端。
+API Secret 只能保存在可信服务端。不要将其写入 Web、App 或其他面向终端用户的客户端。
 </Warning>
 
 ## Base URL
@@ -52,13 +53,13 @@ https://api.topblast.trade
   </Tab>
 
   <Tab title="Trading REST API">
-    Trading REST API 使用 Bearer Token 识别当前登录用户。
+    Trading REST API 支持 Bearer Token 或 API Key 鉴权。Web、App 使用 Bearer Token；量化程序、机器人等可信服务端可以使用 API Key 鉴权。
 
     <ParamField header="Authorization" type="string" example="Bearer &lt;access_token&gt;" required>
       Bearer Token。Token 由用户登录流程签发。
     </ParamField>
 
-    不要通过查询参数或请求体传递 Token。详细说明请参阅[Trading REST API 鉴权](/cn/user/guide/authentication)。
+    不要通过查询参数或请求体传递 Token。API Key 鉴权采用与 Broker REST API 相同的 HMAC-SHA256 签名规则。详细说明请参阅[Trading REST API 鉴权](/cn/user/guide/authentication)。
   </Tab>
 </Tabs>
 
