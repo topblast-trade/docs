@@ -5,20 +5,12 @@ description: "Configure one endpoint to receive signed broker events."
 
 Configure one backend `webhookUrl` for all broker events. The platform sends signed JSON payloads to this URL, and your service routes each payload by `eventType`.
 
-## Register an endpoint
+## Implement the Webhook receiver
 
 1. Create a backend HTTPS endpoint that accepts `POST` requests.
-2. Save it as the broker `webhookUrl`.
-3. Verify the signature against the raw body before processing data.
-4. Route the event using `eventType`.
-
-```json
-{
-  "name": "broker-name",
-  "domain": "broker.example.com",
-  "webhookUrl": "https://broker.example.com/webhooks/xbit"
-}
-```
+2. Preserve the raw request body and verify the signature before processing data.
+3. Route the event using `eventType`.
+4. Return `2xx` after persisting the event.
 
 <Warning>
 Production endpoints must use HTTPS. The Webhook receiver must run on your backend, not in a browser page.
@@ -74,4 +66,26 @@ Create a unique database index on `eventId`. A duplicate event must not apply a 
 
 ## Local testing
 
-A local service cannot receive callbacks from the public internet directly. Use ngrok or Cloudflare Tunnel to expose a test endpoint, then configure its HTTPS URL as `webhookUrl`.
+A local service cannot receive callbacks from the public internet directly. Use ngrok or Cloudflare Tunnel to expose a test endpoint. After confirming that the generated HTTPS URL is reachable, configure it as described in the next section.
+
+## Set the Webhook URL
+
+After implementing and verifying the receiver, call [Update broker settings](/en/broker/api-reference/settings/update) and submit only the `webhookUrl` you want to set:
+
+```http
+POST https://api.topblast.trade/v1/broker/settings
+x-api-key: <API_KEY>
+x-timestamp: <TIMESTAMP>
+x-signature: <SIGNATURE>
+Content-Type: application/json
+```
+
+```json
+{
+  "webhookUrl": "https://broker.example.com/webhooks/xbit"
+}
+```
+
+Omitted `name` and `domain` fields remain unchanged. When calculating the signature, use `POST` as the method, `/v1/broker/settings` as the path, and the exact raw JSON sent as the body. See [Authentication](/en/broker/guide/authentication) for the signing rules.
+
+New events are sent to this URL after the update succeeds. Complete an end-to-end test with a test endpoint before switching to the production URL.

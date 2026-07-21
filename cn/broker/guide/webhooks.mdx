@@ -5,20 +5,12 @@ description: "配置一个统一地址，实时接收券商业务事件。"
 
 网络钩子允许您配置一个后端 URL。券商相关业务完成或状态发生变化时，平台会向该地址发送带签名的 JSON 事件。所有事件共用同一个 URL，并通过 `eventType` 区分业务场景。
 
-## 注册接收地址
+## 实现 Webhook 接收端
 
 1. 在您的后端创建一个接受 `POST` 请求的 HTTPS 接口。
-2. 在券商配置中将该地址设置为 `webhookUrl`。
-3. 保存原始请求体，并在处理业务数据前验证签名。
-4. 根据 `eventType` 将事件路由到对应处理器。
-
-```json
-{
-  "name": "broker-name",
-  "domain": "broker.example.com",
-  "webhookUrl": "https://broker.example.com/webhooks/xbit"
-}
-```
+2. 保存原始请求体，并在处理业务数据前验证签名。
+3. 根据 `eventType` 将事件路由到对应处理器。
+4. 持久化事件后返回 `2xx`。
 
 <Warning>
 生产环境必须使用 HTTPS。Webhook 接口应部署在服务端，不应使用浏览器页面作为接收地址。
@@ -74,4 +66,26 @@ timestamp + "\n" + webhookId + "\n" + rawBody
 
 ## 本地测试
 
-本地服务不能直接接收公网回调。可以使用 ngrok 或 Cloudflare Tunnel 暴露测试地址，再将该 HTTPS 地址配置为 `webhookUrl`。
+本地服务不能直接接收公网回调。可以使用 ngrok 或 Cloudflare Tunnel 暴露测试地址。确认生成的 HTTPS 地址能够访问后，再按下一节完成配置。
+
+## 设置 Webhook URL
+
+接收端实现并验证完成后，调用[更新券商设置](/cn/broker/api-reference/settings/update)，只提交需要设置的 `webhookUrl`：
+
+```http
+POST https://api.topblast.trade/v1/broker/settings
+x-api-key: <API_KEY>
+x-timestamp: <TIMESTAMP>
+x-signature: <SIGNATURE>
+Content-Type: application/json
+```
+
+```json
+{
+  "webhookUrl": "https://broker.example.com/webhooks/xbit"
+}
+```
+
+未提交的 `name` 和 `domain` 会保持不变。签名时 Method 使用 `POST`，Path 使用 `/v1/broker/settings`，Body 必须与实际发送的原始 JSON 完全一致。签名规则参见[授权签名](/cn/broker/guide/authentication)。
+
+设置成功后，后续事件会发送到该 URL。建议先使用测试地址完成端到端验证，再切换为生产地址。

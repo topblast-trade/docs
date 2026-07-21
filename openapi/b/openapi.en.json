@@ -954,6 +954,93 @@
         }
       }
     },
+    "/v1/broker/settings": {
+      "get": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Broker management"
+        ],
+        "summary": "Get broker settings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerInfoView"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BrokerApiKey": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Broker management"
+        ],
+        "summary": "Update broker settings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.UpdateBrokerRequest"
+              }
+            }
+          },
+          "description": "Request Body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/resp.BrokerResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/service.BrokerInfoView"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/broker/trade/openOrders": {
       "get": {
         "security": [
@@ -2070,6 +2157,23 @@
           }
         }
       },
+      "req.UpdateBrokerRequest": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "webhookUrl": {
+            "type": "string",
+            "maxLength": 512
+          }
+        }
+      },
       "req.UpdateUserRequest": {
         "type": "object",
         "required": [
@@ -2161,6 +2265,38 @@
           },
           "updatedAt": {
             "description": "Updated At.",
+            "type": "string"
+          }
+        }
+      },
+      "service.BrokerInfoView": {
+        "type": "object",
+        "properties": {
+          "api_key": {
+            "type": "string"
+          },
+          "api_secret": {
+            "type": "string"
+          },
+          "broker_id": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "webhookUrl": {
             "type": "string"
           }
         }
