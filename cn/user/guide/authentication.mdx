@@ -13,8 +13,8 @@ description: "了解 Trading REST API 的 Bearer Token 与 API Key 鉴权。"
 
 服务端按以下顺序选择鉴权方式：
 
-1. 请求携带 `Authorization: Bearer <access_token>` 时，执行 Token 鉴权。
-2. 未取得 Bearer Token、但携带 `x-api-key`、`x-timestamp`、`x-signature` 中任一 Header 时，执行 API Key 鉴权，并要求三个 Header 完整。
+1. 请求 Header 中携带 `Authorization: Bearer <access_token>` 时，执行 Token 鉴权。
+2. 未取得 Bearer Token、但携带 `x-api-key`、`x-timestamp`、`x-signature`，执行 API Key 鉴权。
 3. 两类鉴权信息都没有时，返回 `401 Unauthorized`。
 
 同时携带 Bearer Token 和 API Key Header 时，服务端优先执行 Token 鉴权。Token 无效时不会回退到 API Key 鉴权。
