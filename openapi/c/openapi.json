@@ -794,37 +794,25 @@
     },
     "/v1/public/events": {
       "get": {
-        "description": "该偏移量分页接口已废弃并固定返回 HTTP 410；请改用 GET /v1/public/events/keyset。若仍传 slug，请改用 GET /v1/public/events/slug/{slug}。",
+        "description": "按标签、关闭状态和排序条件分页查询事件，返回当前页事件和筛选后的总数。若按 slug 查询，请使用 GET /v1/public/events/slug/{slug}。",
         "tags": [
           "用户接口-事件"
         ],
-        "summary": "查询事件列表（已废弃）",
-        "deprecated": true,
-        "responses": {
-          "410": {
-            "description": "接口已废弃",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/public/events/keyset": {
-      "get": {
-        "description": "返回事件列表和下一页游标。afterCursor 只能原样用于相同筛选与排序条件的下一页请求，不应解析、修改或跨查询复用。",
-        "tags": [
-          "用户接口-事件"
-        ],
-        "summary": "游标分页查询事件",
+        "summary": "分页查询事件",
         "parameters": [
           {
+            "description": "页码，默认 1",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
             "description": "每页数量，默认 20，最大 100",
-            "name": "limit",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -839,6 +827,14 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "是否查询已关闭事件；不传表示不按关闭状态筛选",
+            "name": "closed",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -858,44 +854,32 @@
             }
           },
           {
-            "description": "是否升序，默认 false",
-            "name": "ascending",
+            "description": "排序方向，默认 desc",
+            "name": "sort",
             "in": "query",
             "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          },
-          {
-            "description": "上一页返回的 nextCursor；仅在获取下一页时传入",
-            "name": "afterCursor",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "是否查询已关闭事件；不传表示不按关闭状态筛选",
-            "name": "closed",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "事件列表和下一页游标",
+            "description": "事件列表和事件总数",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_event.AckEventsKeyset"
+                  "$ref": "#/components/schemas/http_event.AckEvents"
                 }
               }
             }
           },
           "400": {
-            "description": "游标或请求参数无效",
+            "description": "请求参数无效",
             "content": {
               "application/json": {
                 "schema": {
@@ -906,6 +890,28 @@
           },
           "500": {
             "description": "事件查询失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/public/events/keyset": {
+      "get": {
+        "description": "该游标分页接口已废弃并固定返回 HTTP 410；请改用 GET /v1/public/events。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "游标分页查询事件（已废弃）",
+        "deprecated": true,
+        "responses": {
+          "410": {
+            "description": "接口已废弃",
             "content": {
               "application/json": {
                 "schema": {
@@ -971,15 +977,25 @@
     },
     "/v1/public/markets": {
       "get": {
-        "description": "从可访问事件中汇总市场，并按事件、状态和数字游标分页。",
+        "description": "从可访问事件中汇总市场，按事件、状态和排序条件筛选后进行页码分页。",
         "tags": [
           "用户接口-市场"
         ],
         "summary": "查询市场列表",
         "parameters": [
           {
+            "description": "页码，默认 1",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
             "description": "每页数量，默认 20，最大 100",
-            "name": "limit",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -989,13 +1005,30 @@
             }
           },
           {
-            "description": "结果偏移游标，首次请求不传，后续原样传入上一页 nextCursor",
-            "name": "cursor",
+            "description": "排序字段，默认 volume",
+            "name": "order",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "default": 0
+              "type": "string",
+              "enum": [
+                "volume",
+                "startDate",
+                "endDate"
+              ],
+              "default": "volume"
+            }
+          },
+          {
+            "description": "排序方向，默认 desc",
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
             }
           },
           {
@@ -1033,6 +1066,58 @@
           },
           "400": {
             "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/public/midpoint": {
+      "get": {
+        "description": "返回指定结果 Token 的最优买价与最优卖价中间值。",
+        "tags": [
+          "用户接口-市场"
+        ],
+        "summary": "查询中间价",
+        "parameters": [
+          {
+            "description": "结果 Token ID，十进制正整数",
+            "name": "tokenId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "中间价",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_market.AckMidpoint"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "中间价不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -1245,6 +1330,58 @@
         }
       }
     },
+    "/v1/public/spread": {
+      "get": {
+        "description": "返回指定结果 Token 的最优买价、最优卖价和二者价差。",
+        "tags": [
+          "用户接口-市场"
+        ],
+        "summary": "查询买卖价差",
+        "parameters": [
+          {
+            "description": "结果 Token ID，十进制正整数",
+            "name": "tokenId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "买卖价差",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_market.AckSpread"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "价差数据不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/public/tags": {
       "get": {
         "description": "分页查询活动标签。",
@@ -1254,24 +1391,24 @@
         "summary": "查询标签列表",
         "parameters": [
           {
+            "description": "页码，默认 1",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
             "description": "每页数量，默认 20，最大 100",
-            "name": "limit",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
               "maximum": 100,
               "default": 20
-            }
-          },
-          {
-            "description": "偏移量，默认 0",
-            "name": "offset",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "default": 0
             }
           },
           {
@@ -1283,12 +1420,16 @@
             }
           },
           {
-            "description": "是否升序，默认 false",
-            "name": "ascending",
+            "description": "排序方向，默认 desc",
+            "name": "sort",
             "in": "query",
             "schema": {
-              "type": "boolean",
-              "default": false
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
             }
           },
           {
@@ -1553,15 +1694,15 @@
     },
     "/v1/public/ticker": {
       "get": {
-        "description": "返回市场级行情和各结果 Token 的最优买卖价、最新价及更新时间。",
+        "description": "根据结果 Token 定位所属市场，返回市场级行情和市场内各结果 Token 的最优买卖价、最新价及更新时间。",
         "tags": [
           "用户接口-市场"
         ],
         "summary": "查询市场行情",
         "parameters": [
           {
-            "description": "市场 ID，十进制正整数",
-            "name": "marketId",
+            "description": "结果 Token ID，十进制正整数",
+            "name": "tokenId",
             "in": "query",
             "required": true,
             "schema": {
@@ -1581,7 +1722,7 @@
             }
           },
           "400": {
-            "description": "市场 ID 无效",
+            "description": "Token ID 无效",
             "content": {
               "application/json": {
                 "schema": {
@@ -1592,110 +1733,6 @@
           },
           "404": {
             "description": "市场行情不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/public/ticker/midpoint": {
-      "get": {
-        "description": "返回指定结果 Token 的最优买价与最优卖价中间值。",
-        "tags": [
-          "用户接口-市场"
-        ],
-        "summary": "查询中间价",
-        "parameters": [
-          {
-            "description": "结果 Token ID，十进制正整数",
-            "name": "tokenId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "中间价",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_market.AckMidpoint"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Token ID 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "中间价不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/public/ticker/spread": {
-      "get": {
-        "description": "返回指定结果 Token 的最优买价、最优卖价和二者价差。",
-        "tags": [
-          "用户接口-市场"
-        ],
-        "summary": "查询买卖价差",
-        "parameters": [
-          {
-            "description": "结果 Token ID，十进制正整数",
-            "name": "tokenId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "买卖价差",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_market.AckSpread"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Token ID 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "价差数据不存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -1956,6 +1993,7 @@
           4012,
           4013,
           4014,
+          4015,
           5001,
           5002,
           6001,
@@ -2020,6 +2058,7 @@
           "ErrorCodeEventSlugQueryGone",
           "ErrorCodeEventsOffsetQueryGone",
           "ErrorCodeInvalidCursor",
+          "ErrorCodeEventsKeysetQueryGone",
           "ErrorCodeTradesNotFound",
           "ErrorCodeAccountTradesNotFound",
           "ErrorCodeAccountNotFound",
@@ -2031,7 +2070,7 @@
           "ErrorCodeAssetServiceNotConfigured"
         ]
       },
-      "http_event.AckEventsKeyset": {
+      "http_event.AckEvents": {
         "type": "object",
         "properties": {
           "events": {
@@ -2041,9 +2080,9 @@
               "$ref": "#/components/schemas/http_event.Event"
             }
           },
-          "nextCursor": {
-            "description": "下一页不透明游标；为空表示没有下一页",
-            "type": "string"
+          "total": {
+            "description": "筛选后的事件总数",
+            "type": "integer"
           }
         }
       },
@@ -2066,16 +2105,16 @@
       "http_event.AckTags": {
         "type": "object",
         "properties": {
-          "count": {
-            "description": "本次返回数量",
-            "type": "integer"
-          },
-          "data": {
-            "description": "标签列表",
+          "tags": {
+            "description": "当前页标签",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/http_event.Tag"
             }
+          },
+          "total": {
+            "description": "筛选后的标签总数",
+            "type": "integer"
           }
         }
       },
@@ -2288,23 +2327,15 @@
       "http_market.AckMarkets": {
         "type": "object",
         "properties": {
-          "count": {
-            "description": "本次返回数量",
-            "type": "integer"
-          },
-          "data": {
-            "description": "市场列表",
+          "markets": {
+            "description": "当前页市场",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/http_market.Market"
             }
           },
-          "nextCursor": {
-            "description": "下一页数字游标；为空表示没有下一页",
-            "type": "string"
-          },
           "total": {
-            "description": "当前筛选条件下的总数",
+            "description": "筛选后的市场总数",
             "type": "integer"
           }
         }
@@ -2495,152 +2526,85 @@
       "http_market.Market": {
         "type": "object",
         "properties": {
-          "active": {
-            "description": "是否活跃",
-            "type": "boolean"
-          },
-          "approved": {
-            "description": "是否已审核",
-            "type": "boolean"
-          },
           "bestAsk": {
             "description": "最优卖价",
-            "type": "number"
+            "type": "string"
           },
           "bestBid": {
             "description": "最优买价",
-            "type": "number"
-          },
-          "closed": {
-            "description": "是否已关闭",
-            "type": "boolean"
+            "type": "string"
           },
           "conditionId": {
             "description": "条件 ID",
             "type": "string"
           },
-          "description": {
-            "description": "市场描述",
-            "type": "string"
-          },
-          "devNegRisk": {
-            "description": "开发环境负风险标记",
-            "type": "boolean"
-          },
-          "devVolume1mo": {
-            "description": "1 月成交量",
-            "type": "number"
-          },
-          "devVolume1wk": {
-            "description": "1 周成交量",
-            "type": "number"
-          },
-          "devVolume1yr": {
-            "description": "1 年成交量",
-            "type": "number"
-          },
-          "devVolume24hr": {
-            "description": "24 小时成交量",
-            "type": "number"
-          },
-          "enableOrderBook": {
-            "description": "是否启用订单簿",
+          "disputeFlag": {
+            "description": "是否处于争议状态",
             "type": "boolean"
           },
           "endDate": {
             "description": "结束时间",
             "type": "string"
           },
-          "funded": {
-            "description": "是否已注资",
-            "type": "boolean"
-          },
-          "icon": {
-            "description": "图标 URL",
-            "type": "string"
-          },
-          "id": {
-            "description": "市场 ID",
-            "type": "string"
-          },
-          "image": {
-            "description": "图片 URL",
+          "groupItemTitle": {
+            "description": "分组展示标题",
             "type": "string"
           },
           "lastPrice": {
             "description": "最新成交价",
-            "type": "number"
+            "type": "string"
           },
-          "liquidity": {
-            "description": "流动性",
-            "type": "number"
+          "marketId": {
+            "description": "市场 ID",
+            "type": "string"
           },
-          "liquidityClob": {
-            "description": "订单簿流动性",
-            "type": "number"
+          "marketQuestion": {
+            "description": "市场问题",
+            "type": "string"
           },
-          "negRisk": {
-            "description": "是否为负风险市场",
-            "type": "boolean"
-          },
-          "negRiskMarketId": {
-            "description": "负风险市场 ID",
+          "marketSlug": {
+            "description": "市场 slug",
             "type": "string"
           },
           "orderMinSize": {
             "description": "最小委托数量",
             "type": "integer"
           },
-          "orderPriceMinTickSize": {
-            "description": "最小价格步长",
+          "orderMinTickSize": {
+            "description": "最小价格步长；创建委托时价格必须是其整数倍",
             "type": "number"
           },
-          "outcomePrices": {
-            "description": "结果价格的 JSON 字符串",
+          "pricePrecision": {
+            "description": "价格精度类型",
             "type": "string"
-          },
-          "outcomes": {
-            "description": "结果名称的 JSON 字符串",
-            "type": "string"
-          },
-          "question": {
-            "description": "市场问题",
-            "type": "string"
-          },
-          "ready": {
-            "description": "是否已准备交易",
-            "type": "boolean"
-          },
-          "resolutionSource": {
-            "description": "结算来源",
-            "type": "string"
-          },
-          "slug": {
-            "description": "市场 slug",
-            "type": "string"
-          },
-          "spread": {
-            "description": "买卖价差",
-            "type": "number"
           },
           "startDate": {
             "description": "开始时间",
             "type": "string"
           },
-          "tokens": {
-            "description": "结果 Token",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_market.Token"
-            }
+          "status": {
+            "description": "市场状态",
+            "type": "string"
+          },
+          "tokenIdNo": {
+            "description": "NO 结果 Token ID",
+            "type": "string"
+          },
+          "tokenIdYes": {
+            "description": "YES 结果 Token ID",
+            "type": "string"
+          },
+          "tokenNameNo": {
+            "description": "NO 结果展示名",
+            "type": "string"
+          },
+          "tokenNameYes": {
+            "description": "YES 结果展示名",
+            "type": "string"
           },
           "volume": {
             "description": "累计成交量",
-            "type": "number"
-          },
-          "volumeClob": {
-            "description": "订单簿累计成交量",
-            "type": "number"
+            "type": "string"
           }
         }
       },
@@ -2654,23 +2618,6 @@
           "timestamp": {
             "description": "时间戳（Unix 毫秒）",
             "type": "integer"
-          }
-        }
-      },
-      "http_market.Token": {
-        "type": "object",
-        "properties": {
-          "lastPrice": {
-            "description": "最新成交价",
-            "type": "string"
-          },
-          "outcome": {
-            "description": "结果名称",
-            "type": "string"
-          },
-          "tokenId": {
-            "description": "结果 Token ID",
-            "type": "string"
           }
         }
       },
