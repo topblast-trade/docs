@@ -73,6 +73,13 @@
                     ]
                   },
                   {
+                    "group": "券商设置",
+                    "pages": [
+                      "cn/broker/api-reference/settings/get",
+                      "cn/broker/api-reference/settings/update"
+                    ]
+                  },
+                  {
                     "group": "资产管理",
                     "pages": [
                       "cn/broker/api-reference/transfer/create",
@@ -255,6 +262,13 @@
                       "en/broker/api-reference/user/update",
                       "en/broker/api-reference/user/create-special",
                       "en/broker/api-reference/user/users"
+                    ]
+                  },
+                  {
+                    "group": "Broker settings",
+                    "pages": [
+                      "en/broker/api-reference/settings/get",
+                      "en/broker/api-reference/settings/update"
                     ]
                   },
                   {
