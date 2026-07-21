@@ -69,7 +69,10 @@
                       "cn/broker/api-reference/user/update",
                       "cn/broker/api-reference/user/create-special",
                       "cn/broker/api-reference/user/login",
-                      "cn/broker/api-reference/user/logout"
+                      "cn/broker/api-reference/user/logout",
+                      "cn/broker/api-reference/user/api-keys",
+                      "cn/broker/api-reference/user/create-api-key",
+                      "cn/broker/api-reference/user/delete-api-key"
                     ]
                   },
                   {
@@ -261,6 +264,9 @@
                       "en/broker/api-reference/user/update",
                       "en/broker/api-reference/user/create-special",
                       "en/broker/api-reference/user/users"
+                      ,"en/broker/api-reference/user/api-keys"
+                      ,"en/broker/api-reference/user/create-api-key"
+                      ,"en/broker/api-reference/user/delete-api-key"
                     ]
                   },
                   {
