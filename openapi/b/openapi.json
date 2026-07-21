@@ -2453,7 +2453,7 @@
         "summary": "查询用户 API Key",
         "parameters": [
           {
-            "description": "券商侧用户 ID 或平台 UID",
+            "description": "券商侧用户 ID",
             "name": "userId",
             "in": "path",
             "required": true,
@@ -2532,7 +2532,7 @@
         "summary": "创建用户 API Key",
         "parameters": [
           {
-            "description": "券商侧用户 ID 或平台 UID",
+            "description": "券商侧用户 ID",
             "name": "userId",
             "in": "path",
             "required": true,
@@ -2621,7 +2621,7 @@
         "summary": "删除用户 API Key",
         "parameters": [
           {
-            "description": "券商侧用户 ID 或平台 UID",
+            "description": "券商侧用户 ID",
             "name": "userId",
             "in": "path",
             "required": true,
