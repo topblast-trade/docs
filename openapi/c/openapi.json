@@ -24,6 +24,26 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "账户汇总缓存未就绪或刷新失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -81,6 +101,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_account.AckAccountTrades"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "成交记录查询失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -154,6 +194,16 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -191,6 +241,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_order.AckOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "委托参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "市场不可交易或风控拒绝",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "交易集群不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -236,6 +326,36 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "列表为空、超过 50 条或委托参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "市场不可交易或风控拒绝",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -273,6 +393,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_order.AckBatchCancel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "列表为空、超过 100 条或订单参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "市场当前不允许撤单",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -344,6 +494,16 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -383,6 +543,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_order.AckOrderDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "订单 ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "委托不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -434,6 +624,36 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "订单 ID 或请求参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "市场当前不允许撤单",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -480,6 +700,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_position.AckPositions"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -581,6 +811,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "请求参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "catalog 或 ticker 全量快照尚未就绪",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -593,7 +843,18 @@
         ],
         "summary": "游标分页查询事件（已废弃）",
         "deprecated": true,
-        "responses": {}
+        "responses": {
+          "410": {
+            "description": "接口已废弃",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/public/events/slug/{slug}": {
@@ -621,6 +882,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_meta.Event"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "事件 slug 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "事件不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -720,6 +1001,36 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "券商域名不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "catalog 或 ticker 全量快照尚未就绪",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -752,13 +1063,33 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "中间价不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
     },
     "/v1/public/orderbook": {
       "get": {
-        "description": "返回指定结果 Token 的买卖盘快照；缓存尚未建立时返回结构完整的空订单簿。",
+        "description": "返回指定结果 Token 的买卖盘快照；缓存未命中时触发 orderbook rebroadcast 并等待本地缓存更新，超时仍无数据时返回结构完整的空订单簿。",
         "tags": [
           "用户接口-市场"
         ],
@@ -781,6 +1112,68 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckOrderbook"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/public/price": {
+      "get": {
+        "description": "返回指定结果 Token 的最新价格。",
+        "tags": [
+          "用户接口-市场"
+        ],
+        "summary": "查询最新价格",
+        "parameters": [
+          {
+            "description": "结果 Token ID，十进制正整数",
+            "name": "tokenId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "最新价格",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_market.AckPrice"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "价格不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -832,42 +1225,23 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/v1/public/prices": {
-      "get": {
-        "description": "tokenIds 与 ids 为同义参数，优先使用 tokenIds；值为逗号分隔的结果 Token ID。无效或无行情的 ID 不会出现在结果中。",
-        "tags": [
-          "用户接口-市场"
-        ],
-        "summary": "批量查询价格",
-        "parameters": [
-          {
-            "description": "逗号分隔的结果 Token ID，例如 101,102；与 ids 至少传一个",
-            "name": "tokenIds",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           },
-          {
-            "description": "tokenIds 的兼容参数；tokenIds 为空时生效",
-            "name": "ids",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Token ID 到最新价的映射",
+          "400": {
+            "description": "Token 或时间窗口无效",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_market.AckPrices"
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "价格历史不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -903,13 +1277,23 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
     },
     "/v1/public/spread": {
       "get": {
-        "description": "返回指定结果 Token 的最优买价、最优卖价和二者价差。",
+        "description": "返回指定结果 Token 的最优买价与最优卖价之差。",
         "tags": [
           "用户接口-市场"
         ],
@@ -932,6 +1316,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckSpread"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "价差数据不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1017,6 +1421,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "标签查询失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -1046,6 +1470,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_meta.Tag"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "标签 slug 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "标签不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1081,6 +1525,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "标签 ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "标签不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -1113,13 +1577,33 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Token ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "市场行情不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
     },
     "/v1/public/trade": {
       "get": {
-        "description": "按事件或市场筛选最近成交；eventId/event 与 marketId/market 分别是同义参数，优先使用 *Id 形式。",
+        "description": "按事件或市场筛选最近成交；eventId 与 marketId 必须且只能传一个。",
         "tags": [
           "用户接口-成交"
         ],
@@ -1145,27 +1629,11 @@
             }
           },
           {
-            "description": "事件 ID 的兼容参数；eventId 为空时生效",
-            "name": "event",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "市场 ID",
             "name": "marketId",
             "in": "query",
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "市场 ID 的兼容参数；marketId 为空时生效",
-            "name": "market",
-            "in": "query",
-            "schema": {
-              "type": "string"
+              "type": "integer"
             }
           }
         ],
@@ -1179,6 +1647,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "read-service 不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -1186,11 +1674,7 @@
   },
   "servers": [
     {
-      "url": "https://predict.xbit.trade",
-      "description": "开发环境"
-    },
-    {
-      "url": "https://apitest-predict.xbit.trade",
+      "url": "https://api-test.topblast.trade",
       "description": "测试环境"
     }
   ],
@@ -1307,6 +1791,7 @@
           1106,
           1107,
           1108,
+          1109,
           1201,
           1202,
           1203,
@@ -1332,6 +1817,7 @@
           3008,
           3009,
           3010,
+          3011,
           4001,
           4002,
           4003,
@@ -1350,6 +1836,8 @@
           5001,
           5002,
           6001,
+          6002,
+          6003,
           7001,
           7002,
           7003,
@@ -1367,11 +1855,12 @@
           "ErrorCodeOpenAPIMissingHeader",
           "ErrorCodeOpenAPIAuthFailed",
           "ErrorCodeRejectAnonymous",
-          "ErrorCodeBrokerDomainNotFound",
+          "ErrorCodeBrokerAppIDNotFound",
           "ErrorCodeBrokerEventNotAllowed",
           "ErrorCodeRouteNotFound",
           "ErrorCodeMethodNotAllowed",
           "ErrorCodeBrokerMarketNotAllowed",
+          "ErrorCodeOpenAPIForbidden",
           "ErrorCodeClusterUnavailable",
           "ErrorCodeClusterBackpressured",
           "ErrorCodeIngressTimeout",
@@ -1397,6 +1886,7 @@
           "ErrorCodeMidpointNotFound",
           "ErrorCodeMarketTickerNotFound",
           "ErrorCodeSpreadNotFound",
+          "ErrorCodePriceNotFound",
           "ErrorCodeEventNotFound",
           "ErrorCodeEventsNotFound",
           "ErrorCodeTagsQueryFailed",
@@ -1415,6 +1905,8 @@
           "ErrorCodeTradesNotFound",
           "ErrorCodeAccountTradesNotFound",
           "ErrorCodeAccountNotFound",
+          "ErrorCodeAccountSummaryNotReady",
+          "ErrorCodeAccountSummaryUnavailable",
           "ErrorCodeInvalidAmount",
           "ErrorCodeInvalidAccountType",
           "ErrorCodeAssetDepositFailed",
@@ -1428,10 +1920,6 @@
         "properties": {
           "midpoint": {
             "description": "最优买卖价中间值",
-            "type": "string"
-          },
-          "tokenId": {
-            "description": "结果 Token ID",
             "type": "string"
           }
         }
@@ -1480,6 +1968,15 @@
           }
         }
       },
+      "http_market.AckPrice": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "description": "最新价格",
+            "type": "string"
+          }
+        }
+      },
       "http_market.AckPriceHistory": {
         "type": "object",
         "properties": {
@@ -1500,35 +1997,11 @@
           }
         }
       },
-      "http_market.AckPrices": {
-        "type": "object",
-        "properties": {
-          "prices": {
-            "description": "Token ID 到最新价的映射",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "http_market.AckSpread": {
         "type": "object",
         "properties": {
-          "bestAsk": {
-            "description": "最优卖价",
-            "type": "string"
-          },
-          "bestBid": {
-            "description": "最优买价",
-            "type": "string"
-          },
           "spread": {
             "description": "卖一价减买一价",
-            "type": "string"
-          },
-          "tokenId": {
-            "description": "结果 Token ID",
             "type": "string"
           }
         }
@@ -1622,10 +2095,6 @@
       "http_market.Trade": {
         "type": "object",
         "properties": {
-          "assetId": {
-            "description": "结果 Token ID",
-            "type": "string"
-          },
           "conditionId": {
             "description": "条件 ID",
             "type": "string"
@@ -1638,7 +2107,7 @@
             "description": "成交 ID",
             "type": "string"
           },
-          "market": {
+          "marketId": {
             "description": "市场 ID",
             "type": "string"
           },
@@ -1657,6 +2126,10 @@
           "timestamp": {
             "description": "成交时间戳（Unix 毫秒）",
             "type": "integer"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
+            "type": "string"
           }
         }
       },
@@ -1680,10 +2153,10 @@
         "type": "object",
         "properties": {
           "markets": {
-            "description": "当前页市场列表",
+            "description": "当前页市场列表；与 events.markets 使用同一字段契约",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/http_meta.Market"
+              "$ref": "#/components/schemas/http_meta.EventMarket"
             }
           },
           "total": {
@@ -1881,182 +2354,6 @@
           }
         }
       },
-      "http_meta.Market": {
-        "type": "object",
-        "properties": {
-          "active": {
-            "description": "市场是否处于可交易状态",
-            "type": "boolean"
-          },
-          "approved": {
-            "description": "市场是否已审核通过",
-            "type": "boolean"
-          },
-          "bestAsk": {
-            "description": "当前最优卖价",
-            "type": "number"
-          },
-          "bestBid": {
-            "description": "当前最优买价",
-            "type": "number"
-          },
-          "closed": {
-            "description": "市场是否已关闭、已结算或已作废",
-            "type": "boolean"
-          },
-          "conditionId": {
-            "description": "链上条件 ID",
-            "type": "string"
-          },
-          "description": {
-            "description": "市场描述",
-            "type": "string"
-          },
-          "devNegRisk": {
-            "description": "开发兼容字段；是否启用负风险市场模式",
-            "type": "boolean"
-          },
-          "devVolume1mo": {
-            "description": "开发兼容字段；最近 1 个月成交量",
-            "type": "number"
-          },
-          "devVolume1wk": {
-            "description": "开发兼容字段；最近 1 周成交量",
-            "type": "number"
-          },
-          "devVolume1yr": {
-            "description": "开发兼容字段；最近 1 年成交量",
-            "type": "number"
-          },
-          "devVolume24hr": {
-            "description": "开发兼容字段；最近 24 小时成交量",
-            "type": "number"
-          },
-          "enableOrderBook": {
-            "description": "是否启用订单簿",
-            "type": "boolean"
-          },
-          "endDate": {
-            "description": "市场结束时间",
-            "type": "string"
-          },
-          "eventId": {
-            "description": "所属事件 ID",
-            "type": "string"
-          },
-          "eventSlug": {
-            "description": "所属事件 slug",
-            "type": "string"
-          },
-          "funded": {
-            "description": "市场是否已完成资金配置",
-            "type": "boolean"
-          },
-          "icon": {
-            "description": "市场图标 URL",
-            "type": "string"
-          },
-          "id": {
-            "description": "市场 ID",
-            "type": "string"
-          },
-          "image": {
-            "description": "市场图片 URL",
-            "type": "string"
-          },
-          "lastPrice": {
-            "description": "最新成交价",
-            "type": "number"
-          },
-          "liquidity": {
-            "description": "市场当前流动性",
-            "type": "number"
-          },
-          "liquidityClob": {
-            "description": "订单簿当前流动性",
-            "type": "number"
-          },
-          "negRisk": {
-            "description": "是否属于负风险市场",
-            "type": "boolean"
-          },
-          "negRiskMarketId": {
-            "description": "负风险市场组 ID",
-            "type": "string"
-          },
-          "orderMinSize": {
-            "description": "最小委托数量",
-            "type": "integer"
-          },
-          "orderPriceMinTickSize": {
-            "description": "最小价格步长；创建委托时价格必须是其整数倍",
-            "type": "number"
-          },
-          "outcomePrices": {
-            "description": "JSON 编码的各结果最新价格数组",
-            "type": "string"
-          },
-          "outcomes": {
-            "description": "JSON 编码的结果名称数组",
-            "type": "string"
-          },
-          "question": {
-            "description": "市场问题",
-            "type": "string"
-          },
-          "quoteReady": {
-            "description": "买卖报价是否已就绪",
-            "type": "boolean"
-          },
-          "ready": {
-            "description": "市场行情数据是否已就绪",
-            "type": "boolean"
-          },
-          "resolutionSource": {
-            "description": "结算结果来源",
-            "type": "string"
-          },
-          "slug": {
-            "description": "市场 slug",
-            "type": "string"
-          },
-          "spread": {
-            "description": "当前最优买卖价差",
-            "type": "number"
-          },
-          "startDate": {
-            "description": "市场开始时间",
-            "type": "string"
-          },
-          "status": {
-            "description": "市场状态",
-            "type": "string"
-          },
-          "tokens": {
-            "description": "市场结果 Token 列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_meta.Token"
-            }
-          },
-          "updatedAt": {
-            "description": "市场数据更新时间",
-            "type": "string"
-          },
-          "volume": {
-            "description": "市场累计成交量",
-            "type": "number"
-          },
-          "volume24hr": {
-            "description": "最近 24 小时成交量",
-            "type": "number"
-          },
-          "volumeClob": {
-            "description": "订单簿累计成交量",
-            "type": "number"
-          }
-        }
-      },
       "http_meta.Tag": {
         "type": "object",
         "properties": {
@@ -2070,31 +2367,6 @@
           },
           "slug": {
             "description": "标签 slug",
-            "type": "string"
-          }
-        }
-      },
-      "http_meta.Token": {
-        "type": "object",
-        "properties": {
-          "bestAsk": {
-            "description": "Token 当前最优卖价",
-            "type": "string"
-          },
-          "bestBid": {
-            "description": "Token 当前最优买价",
-            "type": "string"
-          },
-          "lastPrice": {
-            "description": "Token 最新成交价",
-            "type": "string"
-          },
-          "outcome": {
-            "description": "Token 对应的结果名称",
-            "type": "string"
-          },
-          "tokenId": {
-            "description": "结果 Token ID",
             "type": "string"
           }
         }
