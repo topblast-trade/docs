@@ -14,7 +14,7 @@
         "parameters": [
           { "name": "x-webhook-id", "in": "header", "required": true, "description": "Unique event ID and the consumer idempotency key.", "schema": { "type": "string", "example": "evt_20357690001" } },
           { "name": "x-webhook-timestamp", "in": "header", "required": true, "description": "Delivery time as a Unix millisecond timestamp.", "schema": { "type": "string", "example": "1784454000123" } },
-          { "name": "x-webhook-signature", "in": "header", "required": true, "description": "Base64-encoded HMAC-SHA256 signature calculated with the broker API Secret.", "schema": { "type": "string" } }
+          { "name": "x-webhook-signature", "in": "header", "required": true, "description": "Base64-encoded HMAC-SHA256 signature calculated with the broker App Secret.", "schema": { "type": "string" } }
         ],
         "requestBody": {
           "required": true,

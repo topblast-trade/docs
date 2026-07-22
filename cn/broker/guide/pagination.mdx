@@ -22,7 +22,7 @@ Broker REST API 的列表接口根据数据特点使用页码分页或流式分�
 
 ```bash
 curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
-  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-app-id: <broker-app-id>' \
   -H 'x-timestamp: <unix-milliseconds>' \
   -H 'x-signature: <signature>'
 ```
@@ -73,7 +73,7 @@ curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
 
 ```bash
 curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1784620800000&size=20' \
-  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-app-id: <broker-app-id>' \
   -H 'x-timestamp: <unix-milliseconds>' \
   -H 'x-signature: <signature>'
 ```
@@ -91,7 +91,7 @@ curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1
 
 ```bash
 curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1784620800000&to=72895202682998785&size=20' \
-  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-app-id: <broker-app-id>' \
   -H 'x-timestamp: <unix-milliseconds>' \
   -H 'x-signature: <signature>'
 ```

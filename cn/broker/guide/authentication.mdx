@@ -2,11 +2,11 @@
 title: "授权签名"
 ---
 
-Broker REST API 使用 API Key 和 HMAC-SHA256 请求签名。每个请求必须包含以下 Header：
+Broker REST API 使用 `App ID` 和 `App Secret` 完成 HMAC-SHA256 请求签名。每个请求必须包含以下 Header：
 
 | Header | 说明 | 示例 |
 | :--- | :--- | :--- |
-| `x-api-key` | 券商或合作方的 API Key | `7007b96cf748fdd0` |
+| `x-app-id` | 券商或合作方的 App ID | `ba11_xxxxxxxxxxxxxxxxxxxxxxxx` |
 | `x-timestamp` | 请求时间戳，单位为秒或毫秒 | `1689584042` |
 | `x-signature` | Base64 编码的 HMAC-SHA256 签名 | `2a8b...` |
 
@@ -19,13 +19,17 @@ Broker REST API 使用 API Key 和 HMAC-SHA256 请求签名。每个请求必须
 - **Timestamp**：必须与 `x-timestamp` 完全一致。
 - **Method**：大写 HTTP 方法，例如 `GET` 或 `POST`。
 - **Path**：不包含域名的请求路径。
-- **Query**：存在查询参数时包含开头的 `?`，否则为空字符串。
-- **Body**：原始 JSON 请求体；无请求体时为空字符串。
+- **Query**：使用实际发送的原始 query string，参数顺序和百分号编码必须保持不变；存在查询参数时在前面拼接 `?`。
+- **Body**：使用实际发送的原始请求体字节；无请求体时为空字符串。不要在签名后重新格式化或重新序列化 JSON。
 
-使用 API Secret 对签名字符串计算 HMAC-SHA256，并将结果进行 Base64 编码。
+使用 App Secret 对签名字符串计算 HMAC-SHA256，并将二进制摘要进行标准 Base64 编码。`x-timestamp` 支持 Unix 秒或毫秒时间戳，必须位于服务器当前时间前后 5 分钟内。
+
+<Warning>
+App Secret 只用于券商服务端计算签名。不要将其放入请求、日志、浏览器代码或移动端应用。
+</Warning>
 
 <Tip>
-您也可以使用[签名计算器](/cn/broker/guide/signature-calculator)填写 AK、SK 和请求参数，在浏览器本地生成签名。
+您也可以使用[签名计算器](/cn/broker/guide/signature-calculator)填写 App ID、App Secret 和请求参数，在浏览器本地生成签名。
 </Tip>
 
 ```go
@@ -40,4 +44,20 @@ func CalculateSignature(secret, timestamp, method, path, query, body string) str
     h.Write([]byte(payload))
     return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
+```
+
+例如，请求 `GET /v1/broker/users?page=1&size=20` 时，签名原文为：
+
+```text
+1717027200000GET/v1/broker/users?page=1&size=20
+```
+
+发送请求时必须使用同一个时间戳、query string 和请求体：
+
+```bash
+curl --request GET \
+  --url 'https://api-test.topblast.trade/v1/broker/users?page=1&size=20' \
+  --header 'x-app-id: <broker_app_id>' \
+  --header 'x-timestamp: 1717027200000' \
+  --header 'x-signature: <base64_signature>'
 ```

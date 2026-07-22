@@ -44,7 +44,7 @@ description: "配置一个统一地址，实时接收券商业务事件。"
 
 ## 签名验证
 
-平台使用券商 API Secret 计算 HMAC-SHA256 签名。请求包含：
+平台使用券商 App Secret 计算 HMAC-SHA256 签名。请求包含：
 
 - `x-webhook-id`
 - `x-webhook-timestamp`
@@ -74,7 +74,7 @@ timestamp + "\n" + webhookId + "\n" + rawBody
 
 ```http
 PATCH https://api-test.topblast.trade/v1/broker/settings
-x-api-key: <API_KEY>
+x-app-id: <APP_ID>
 x-timestamp: <TIMESTAMP>
 x-signature: <SIGNATURE>
 Content-Type: application/json

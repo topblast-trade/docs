@@ -4,14 +4,14 @@
     "title": "topblast Broker REST API",
     "contact": {},
     "version": "v1.0.0",
-    "description": "Broker integration APIs authenticated with an API key, timestamp, and HMAC-SHA256 signature."
+    "description": "Broker integration APIs authenticated with an App ID, timestamp, and HMAC-SHA256 signature."
   },
   "paths": {
     "/v1/broker/assets": {
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -67,7 +67,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -165,7 +165,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -214,7 +214,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -252,7 +252,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -310,7 +310,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -320,15 +320,6 @@
         ],
         "summary": "List open orders",
         "parameters": [
-          {
-            "description": "Page number, starting from 1.",
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            }
-          },
           {
             "description": "User email address.",
             "name": "email",
@@ -351,6 +342,15 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "Page number, starting from 1.",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
             }
           },
           {
@@ -398,7 +398,7 @@
       "delete": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -431,7 +431,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerSuccessData"
                 }
@@ -445,7 +445,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -455,15 +455,6 @@
         ],
         "summary": "List positions",
         "parameters": [
-          {
-            "description": "Page number, starting from 1.",
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            }
-          },
           {
             "description": "User email address.",
             "name": "email",
@@ -486,6 +477,15 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "Page number, starting from 1.",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
             }
           },
           {
@@ -525,7 +525,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -563,7 +563,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -629,7 +629,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -672,7 +672,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -723,7 +723,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -789,7 +789,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -824,7 +824,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -862,7 +862,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -926,7 +926,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -982,7 +982,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1007,7 +1007,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1045,7 +1045,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1083,7 +1083,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1121,7 +1121,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1166,6 +1166,14 @@
             }
           },
           {
+            "description": "Parameters.",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
             "description": "Number of records to return, up to 100.",
             "name": "size",
             "in": "query",
@@ -1176,29 +1184,19 @@
             }
           },
           {
+            "description": "Parameters.",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
             "description": "Platform user UID.",
             "name": "uid",
             "in": "query",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "description": "Exclusive starting trade record ID.",
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0
-            }
-          },
-          {
-            "description": "Exclusive ending trade record ID.",
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0
             }
           }
         ],
@@ -1223,7 +1221,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1315,7 +1313,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1363,7 +1361,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1401,7 +1399,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1503,7 +1501,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1552,7 +1550,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1591,7 +1589,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1623,8 +1621,8 @@
           "required": true
         },
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1640,7 +1638,7 @@
       "delete": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1673,7 +1671,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerSuccessData"
                 }
@@ -1687,7 +1685,7 @@
       "delete": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1724,11 +1722,11 @@
   },
   "components": {
     "securitySchemes": {
-      "BrokerApiKey": {
+      "BrokerAppID": {
         "type": "apiKey",
         "in": "header",
-        "name": "x-api-key",
-        "description": "Broker API key."
+        "name": "x-app-id",
+        "description": "Broker App ID."
       },
       "BrokerTimestamp": {
         "type": "apiKey",
@@ -2249,6 +2247,20 @@
           }
         }
       },
+      "v2.brokerAssetPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerAssetItem"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
       "v2.brokerClosePositionData": {
         "type": "object",
         "properties": {
@@ -2329,93 +2341,11 @@
           }
         }
       },
-      "v2.brokerDailySummaryItem": {
-        "type": "object",
-        "required": [
-          "brokerId",
-          "day",
-          "dayStartTime",
-          "totalDeposit",
-          "totalWithdraw",
-          "totalTradeVolume",
-          "totalTradeQty",
-          "totalTradePnl",
-          "newUsers",
-          "activeUsers"
-        ],
-        "properties": {
-          "brokerId": {
-            "description": "Broker ID.",
-            "type": "integer",
-            "format": "uint32",
-            "example": 10001
-          },
-          "day": {
-            "description": "Summary date in YYYY-MM-DD format.",
-            "type": "string",
-            "example": "2026-07-21"
-          },
-          "dayStartTime": {
-            "description": "Start of the summary date in Unix milliseconds.",
-            "type": "integer",
-            "format": "int64",
-            "example": 1784563200000
-          },
-          "totalDeposit": {
-            "description": "Total deposits for the day as a decimal string.",
-            "type": "string",
-            "example": "12500.50"
-          },
-          "totalWithdraw": {
-            "description": "Total withdrawals for the day as a decimal string.",
-            "type": "string",
-            "example": "3200.00"
-          },
-          "totalTradeVolume": {
-            "description": "Total trading volume for the day as a decimal string.",
-            "type": "string",
-            "example": "98765.43"
-          },
-          "totalTradeQty": {
-            "description": "Total traded quantity for the day as a decimal string.",
-            "type": "string",
-            "example": "4567.89"
-          },
-          "totalTradePnl": {
-            "description": "Total trading PnL for the day as a decimal string.",
-            "type": "string",
-            "example": "123.45"
-          },
-          "newUsers": {
-            "description": "Number of new users for the day.",
-            "type": "integer",
-            "format": "int64",
-            "example": 18
-          },
-          "activeUsers": {
-            "description": "Number of active users for the day.",
-            "type": "integer",
-            "format": "int64",
-            "example": 126
-          }
-        }
-      },
       "v2.brokerDailySummaryListData": {
         "type": "object",
-        "required": [
-          "items",
-          "total"
-        ],
         "properties": {
-          "items": {
-            "description": "Daily summaries on the current page.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerDailySummaryItem"
-            }
-          },
+          "items": {},
           "total": {
-            "description": "Total number of matching daily summaries.",
             "type": "integer"
           }
         }
@@ -2673,6 +2603,20 @@
           }
         }
       },
+      "v2.brokerOpenOrderPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
       "v2.brokerOrderResult": {
         "type": "object",
         "properties": {
@@ -2772,6 +2716,20 @@
           }
         }
       },
+      "v2.brokerPositionPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerPositionItem"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
       "v2.brokerReportSummaryData": {
         "type": "object",
         "properties": {
@@ -2832,12 +2790,12 @@
       "v2.brokerSettingsData": {
         "type": "object",
         "properties": {
-          "apiKey": {
-            "description": "Broker REST API Key",
+          "appId": {
+            "description": "Broker REST App ID",
             "type": "string"
           },
-          "apiSecret": {
-            "description": "Broker REST API Secret",
+          "appSecret": {
+            "description": "Broker REST App Secret",
             "type": "string"
           },
           "brokerId": {
@@ -2867,6 +2825,15 @@
           "webhookUrl": {
             "description": "Webhook Url.",
             "type": "string"
+          }
+        }
+      },
+      "v2.brokerSuccessData": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "description": "Success.",
+            "type": "boolean"
           }
         }
       },
@@ -2909,6 +2876,10 @@
           "eventTime": {
             "description": "Event Time.",
             "type": "integer"
+          },
+          "id": {
+            "description": "Id.",
+            "type": "string"
           },
           "isImplied": {
             "description": "Is Implied.",
@@ -2993,10 +2964,6 @@
           "tradeKind": {
             "description": "Trade Kind.",
             "type": "string"
-          },
-          "id": {
-            "description": "Unique trade record ID used by from/to stream pagination.",
-            "type": "string"
           }
         }
       },
@@ -3018,6 +2985,47 @@
           },
           "locked": {
             "description": "Locked.",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerUpdatedUserData": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "description": "Created At.",
+            "type": "string"
+          },
+          "desc": {
+            "description": "User description.",
+            "type": "string"
+          },
+          "email": {
+            "description": "User email address.",
+            "type": "string"
+          },
+          "lastLoginAt": {
+            "description": "Last Login At.",
+            "type": "string"
+          },
+          "uid": {
+            "description": "Platform user UID.",
+            "type": "integer"
+          },
+          "updatedAt": {
+            "description": "Updated At.",
+            "type": "string"
+          },
+          "userId": {
+            "description": "Broker-side user ID.",
+            "type": "string"
+          },
+          "userName": {
+            "description": "User name.",
+            "type": "string"
+          },
+          "userType": {
+            "description": "NORMAL or MARKET_MAKER",
             "type": "string"
           }
         }
@@ -3113,134 +3121,18 @@
             "example": "invalid request"
           }
         }
-      },
-      "v2.brokerOpenOrderPageData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "Open orders on the current page.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
-            }
-          },
-          "total": {
-            "description": "Total number of open orders.",
-            "type": "integer"
-          }
-        }
-      },
-      "v2.brokerPositionPageData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "Positions on the current page.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerPositionItem"
-            }
-          },
-          "total": {
-            "description": "Total number of positions.",
-            "type": "integer"
-          }
-        }
-      },
-      "v2.brokerAssetPageData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "Assets on the current page.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerAssetItem"
-            }
-          },
-          "total": {
-            "description": "Total number of asset records.",
-            "type": "integer"
-          }
-        }
-      },
-      "v2.brokerSuccessData": {
-        "type": "object",
-        "required": [
-          "success"
-        ],
-        "properties": {
-          "success": {
-            "description": "Whether the operation succeeded.",
-            "type": "boolean",
-            "example": true
-          }
-        }
-      },
-      "v2.brokerUpdatedUserData": {
-        "type": "object",
-        "required": [
-          "uid",
-          "userId",
-          "userType",
-          "userName",
-          "email",
-          "desc",
-          "createdAt",
-          "updatedAt"
-        ],
-        "properties": {
-          "uid": {
-            "description": "Platform user UID.",
-            "type": "integer"
-          },
-          "userId": {
-            "description": "Broker-side user ID.",
-            "type": "string"
-          },
-          "userType": {
-            "description": "User type.",
-            "type": "string"
-          },
-          "userName": {
-            "description": "Updated user name.",
-            "type": "string"
-          },
-          "email": {
-            "description": "User email address.",
-            "type": "string"
-          },
-          "desc": {
-            "description": "Updated user description.",
-            "type": "string"
-          },
-          "createdAt": {
-            "description": "User creation time.",
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "description": "User update time.",
-            "type": "string",
-            "format": "date-time"
-          },
-          "lastLoginAt": {
-            "description": "Most recent login time; null if the user has never logged in.",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        }
       }
     }
   },
   "servers": [
     {
-      "url": "https://api-test.topblast.trade",
-      "description": "Test environment"
+      "url": "https://api.topblast.trade",
+      "description": "Production environment"
     }
   ],
   "security": [
     {
-      "BrokerApiKey": [],
+      "BrokerAppID": [],
       "BrokerTimestamp": [],
       "BrokerSignature": []
     }

@@ -24,7 +24,7 @@ Broker REST API 直接使用 HTTP 状态码作为错误代码，所有非 `2xx` 
 | HTTP 状态码 | 含义 | 建议处理方式 |
 | :--- | :--- | :--- |
 | `400 Bad Request` | 查询参数、路径参数或请求体无效 | 根据 `error` 修正请求，不要原样重试。 |
-| `401 Unauthorized` | 鉴权信息缺失或无效 | 检查 API Key、时间戳、签名及券商启用状态。 |
+| `401 Unauthorized` | 鉴权信息缺失或无效 | 检查 App ID、时间戳、签名及券商启用状态。 |
 | `403 Forbidden` | 已通过鉴权，但无权访问目标资源 | 检查资源是否属于当前券商以及账户权限。 |
 | `404 Not Found` | 路由或资源不存在 | 检查资源 ID、用户 ID 和请求路径。 |
 | `405 Method Not Allowed` | 请求路径存在，但 HTTP 方法不受支持 | 对照 API Reference 修正 HTTP 方法。 |
@@ -37,10 +37,10 @@ Broker REST API 直接使用 HTTP 状态码作为错误代码，所有非 `2xx` 
 
 | `error` | 原因 |
 | :--- | :--- |
-| `missing auth headers (x-api-key, x-timestamp, x-signature)` | 缺少一个或多个鉴权 Header。 |
+| `missing auth headers (x-app-id, x-timestamp, x-signature)` | 缺少一个或多个鉴权 Header。 |
 | `invalid x-timestamp format` | `x-timestamp` 不是有效整数。 |
 | `timestamp expired or invalid` | 时间戳与服务端时间相差超过 5 分钟。 |
-| `invalid x-api-key` | API Key 不存在。 |
+| `invalid x-app-id` | App ID 不存在。 |
 | `broker is disabled` | 当前券商已被停用。 |
 | `invalid signature` | 签名与服务端计算结果不一致。 |
 

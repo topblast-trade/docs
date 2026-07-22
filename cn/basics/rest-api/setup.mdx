@@ -7,12 +7,12 @@ description: "配置直接调用 topblast REST API 所需的环境、鉴权方�
 
 开始前，请先确定调用方类型并获取对应凭证：
 
-- **券商服务端**：向 topblast 申请券商级 `API Key` 和 `API Secret`。
+- **券商服务端**：向 topblast 申请券商级 `App ID` 和 `App Secret`。
 - **Web、App 等用户客户端**：通过用户登录流程获取访问 Token。
 - **量化程序、机器人等可信服务端**：申请用户级 `API Key` 和 `API Secret`。
 
 <Warning>
-API Secret 只能保存在可信服务端。不要将其写入 Web、App 或其他面向终端用户的客户端。
+App Secret 和用户 API Secret 只能保存在可信服务端。不要将它们写入 Web、App 或其他面向终端用户的客户端。
 </Warning>
 
 ## Trading REST API 端点
@@ -29,10 +29,10 @@ https://api-test.topblast.trade
 
 <Tabs>
   <Tab title="Broker REST API">
-    Broker REST API 使用 API Key 和 HMAC-SHA256 请求签名。每个请求必须包含以下 Header：
+    Broker REST API 使用 App ID 和 HMAC-SHA256 请求签名。每个请求必须包含以下 Header：
 
-    <ParamField header="x-api-key" type="string" example="ba11_xxxxxxxxxxxxxxxxxxxxxxxx" required>
-      topblast 分配给券商或合作方的 API Key。
+    <ParamField header="x-app-id" type="string" example="ba11_xxxxxxxxxxxxxxxxxxxxxxxx" required>
+      topblast 分配给券商或合作方的 App ID。
     </ParamField>
 
     <ParamField header="x-timestamp" type="string" example="1752710400000" required>
@@ -40,7 +40,7 @@ https://api-test.topblast.trade
     </ParamField>
 
     <ParamField header="x-signature" type="string" example="Base64EncodedHmacSha256Signature" required>
-      使用 API Secret 计算并经过 Base64 编码的 HMAC-SHA256 请求签名。
+      使用 App Secret 计算并经过 Base64 编码的 HMAC-SHA256 请求签名。
     </ParamField>
 
     签名原文为 `Timestamp + Method + Path + [?Query] + Body`。详细规则请参阅[Broker REST API 鉴权](/cn/broker/guide/authentication)。
@@ -64,7 +64,7 @@ https://api-test.topblast.trade
     ```bash
     curl --request GET \
       --url "https://api-test.topblast.trade/v1/broker/users?page=1&size=20" \
-      --header "x-api-key: <broker_api_key>" \
+      --header "x-app-id: <broker_app_id>" \
       --header "x-timestamp: <timestamp>" \
       --header "x-signature: <signature>"
     ```

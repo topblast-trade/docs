@@ -5,8 +5,8 @@ export const BrokerApiDebugger = () => {
     "mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200";
   const panelClassName =
     "rounded-xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-800 dark:bg-gray-950";
-  const defaultApiKey = "ba11_90ea03143437e68fc1c2eb6b";
-  const defaultApiSecret =
+  const defaultAppId = "ba11_90ea03143437e68fc1c2eb6b";
+  const defaultAppSecret =
     "bs11_f154c04553ddd705662184d3728bfb398aa78182d014e8b09a7c2ee7e9c28b57";
   const credentialStorageKey = "topblast-broker-api-debugger-credentials";
   const endpoints = [
@@ -47,8 +47,8 @@ export const BrokerApiDebugger = () => {
 
   const [selectedID, setSelectedID] = useState(endpoints[0].id);
   const [environment, setEnvironment] = useState("https://api-test.topblast.trade");
-  const [apiKey, setApiKey] = useState(defaultApiKey);
-  const [apiSecret, setApiSecret] = useState(defaultApiSecret);
+  const [appId, setAppId] = useState(defaultAppId);
+  const [appSecret, setAppSecret] = useState(defaultAppSecret);
   const [credentialStatus, setCredentialStatus] = useState("");
   const [requestPath, setRequestPath] = useState(endpoints[0].path);
   const [rawQuery, setRawQuery] = useState("");
@@ -64,10 +64,10 @@ export const BrokerApiDebugger = () => {
       const savedCredentials = JSON.parse(
         localStorage.getItem(credentialStorageKey) || "null",
       );
-      if (savedCredentials?.apiKey && savedCredentials?.apiSecret) {
-        setApiKey(savedCredentials.apiKey);
-        setApiSecret(savedCredentials.apiSecret);
-        setCredentialStatus("已从本地恢复 AK / SK");
+      if (savedCredentials?.appId && savedCredentials?.appSecret) {
+        setAppId(savedCredentials.appId);
+        setAppSecret(savedCredentials.appSecret);
+        setCredentialStatus("已从本地恢复 App ID / App Secret");
       }
     } catch (_) {
       localStorage.removeItem(credentialStorageKey);
@@ -116,8 +116,8 @@ export const BrokerApiDebugger = () => {
     setError("");
     setResult(null);
 
-    if (!apiKey.trim() || !apiSecret) {
-      setError("请填写 AK 和 SK。");
+    if (!appId.trim() || !appSecret) {
+      setError("请填写 App ID 和 App Secret。");
       return;
     }
     if (!requestPath.startsWith("/")) {
@@ -149,10 +149,10 @@ export const BrokerApiDebugger = () => {
         requestPath +
         (query ? `?${query}` : "") +
         body;
-      const signature = await calculateSignature(apiSecret, stringToSign);
+      const signature = await calculateSignature(appSecret, stringToSign);
       const requestURL = `${environment}${requestPath}${query ? `?${query}` : ""}`;
       const headers = {
-        "x-api-key": apiKey.trim(),
+        "x-app-id": appId.trim(),
         "x-timestamp": timestamp,
         "x-signature": signature,
       };
@@ -217,23 +217,23 @@ export const BrokerApiDebugger = () => {
   };
 
   const saveCredentials = () => {
-    if (!apiKey.trim() || !apiSecret) {
-      setCredentialStatus("请先填写 AK 和 SK");
+    if (!appId.trim() || !appSecret) {
+      setCredentialStatus("请先填写 App ID 和 App Secret");
       return;
     }
     localStorage.setItem(
       credentialStorageKey,
-      JSON.stringify({ apiKey: apiKey.trim(), apiSecret }),
+      JSON.stringify({ appId: appId.trim(), appSecret }),
     );
-    setApiKey(apiKey.trim());
-    setCredentialStatus("AK / SK 已保存到当前浏览器");
+    setAppId(appId.trim());
+    setCredentialStatus("App ID / App Secret 已保存到当前浏览器");
   };
 
   const clearCredentials = () => {
     localStorage.removeItem(credentialStorageKey);
-    setApiKey(defaultApiKey);
-    setApiSecret(defaultApiSecret);
-    setCredentialStatus("已清除本地保存值并恢复默认 AK / SK");
+    setAppId(defaultAppId);
+    setAppSecret(defaultAppSecret);
+    setCredentialStatus("已清除本地保存值并恢复默认 App ID / App Secret");
     setResult(null);
   };
 
@@ -266,29 +266,29 @@ export const BrokerApiDebugger = () => {
             </select>
           </div>
           <div>
-            <label className={labelClassName}>AK（API Key）</label>
+            <label className={labelClassName}>App ID</label>
             <input
               className={inputClassName}
-              value={apiKey}
+              value={appId}
               onChange={(event) => {
-                setApiKey(event.target.value);
+                setAppId(event.target.value);
                 setCredentialStatus("");
               }}
-              placeholder="输入 x-api-key"
+              placeholder="输入 x-app-id"
               autoComplete="off"
             />
           </div>
           <div>
-            <label className={labelClassName}>SK（API Secret）</label>
+            <label className={labelClassName}>App Secret</label>
             <input
               className={inputClassName}
               type="password"
-              value={apiSecret}
+              value={appSecret}
               onChange={(event) => {
-                setApiSecret(event.target.value);
+                setAppSecret(event.target.value);
                 setCredentialStatus("");
               }}
-              placeholder="输入 x-api-secret"
+              placeholder="输入 x-app-secret"
               autoComplete="new-password"
             />
           </div>
@@ -299,14 +299,14 @@ export const BrokerApiDebugger = () => {
             onClick={saveCredentials}
             className="rounded-md bg-orange-600 px-2 py-1 text-xs font-medium text-white hover:bg-orange-700"
           >
-            保存 AK / SK
+            保存 App ID / App Secret
           </button>
           <button
             type="button"
             onClick={clearCredentials}
             className="text-sm text-gray-500 underline dark:text-gray-400"
           >
-            清除 AK / SK
+            清除 App ID / App Secret
           </button>
           {credentialStatus && (
             <span className="text-sm text-gray-500 dark:text-gray-400">

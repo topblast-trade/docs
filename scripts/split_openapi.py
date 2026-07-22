@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "openapi.json"
 OUTPUTS = {"c": ROOT / "openapi" / "c" / "openapi.json"}
 HTTP_METHODS = {"get", "post", "put", "patch", "delete", "options", "head"}
-LEGACY_AUTH_HEADERS = {"x-api-key", "x-timestamp", "x-signature", "authorization"}
+LEGACY_AUTH_HEADERS = {"x-api-key", "x-app-id", "x-timestamp", "x-signature", "authorization"}
 
 
 def is_c_side(path: str) -> bool:
@@ -48,11 +48,11 @@ def configure_b_auth(spec: dict) -> None:
     schemes.clear()
     schemes.update(
         {
-            "BrokerApiKey": {
+            "BrokerAppID": {
                 "type": "apiKey",
                 "in": "header",
-                "name": "x-api-key",
-                "description": "Broker API key.",
+                "name": "x-app-id",
+                "description": "Broker App ID.",
             },
             "RequestTimestamp": {
                 "type": "apiKey",
@@ -69,7 +69,7 @@ def configure_b_auth(spec: dict) -> None:
         }
     )
     spec["security"] = [
-        {"BrokerApiKey": [], "RequestTimestamp": [], "RequestSignature": []}
+        {"BrokerAppID": [], "RequestTimestamp": [], "RequestSignature": []}
     ]
 
 

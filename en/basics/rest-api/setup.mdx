@@ -7,12 +7,12 @@ description: "Configure environments, authentication, and credentials for direct
 
 Choose the caller type and obtain the corresponding credentials:
 
-- **Broker server**: Request a broker-level `API Key` and `API Secret` from topblast.
+- **Broker server**: Request a broker-level `App ID` and `App Secret` from topblast.
 - **Web or mobile client**: Obtain an access token through the user login flow.
 - **Trusted server-side bot or trading program**: Request a user-level `API Key` and `API Secret`.
 
 <Warning>
-Store the API Secret only on a trusted server. Never embed it in a Web, mobile, or other end-user client.
+Store the App Secret and user API Secret only on a trusted server. Never embed either secret in a Web, mobile, or other end-user client.
 </Warning>
 
 ## Trading REST API endpoint
@@ -29,10 +29,10 @@ All requests must use HTTPS. Append a path from the Trading API Reference to thi
 
 <Tabs>
   <Tab title="Broker REST API">
-    Broker REST API requests use an API key and an HMAC-SHA256 signature. Include these headers with every request:
+    Broker REST API requests use an App ID and an HMAC-SHA256 signature. Include these headers with every request:
 
-    <ParamField header="x-api-key" type="string" example="ba11_xxxxxxxxxxxxxxxxxxxxxxxx" required>
-      API key assigned to the broker or partner by topblast.
+    <ParamField header="x-app-id" type="string" example="ba11_xxxxxxxxxxxxxxxxxxxxxxxx" required>
+      App ID assigned to the broker or partner by topblast.
     </ParamField>
 
     <ParamField header="x-timestamp" type="string" example="1752710400000" required>
@@ -40,7 +40,7 @@ All requests must use HTTPS. Append a path from the Trading API Reference to thi
     </ParamField>
 
     <ParamField header="x-signature" type="string" example="Base64EncodedHmacSha256Signature" required>
-      Base64-encoded HMAC-SHA256 request signature calculated with the API Secret.
+      Base64-encoded HMAC-SHA256 request signature calculated with the App Secret.
     </ParamField>
 
     The signature payload is `Timestamp + Method + Path + [?Query] + Body`. See [Broker REST API authentication](/en/broker/guide/authentication) for details.
@@ -64,7 +64,7 @@ All requests must use HTTPS. Append a path from the Trading API Reference to thi
     ```bash
     curl --request GET \
       --url "https://api-test.topblast.trade/v1/broker/users?page=1&size=20" \
-      --header "x-api-key: <broker_api_key>" \
+      --header "x-app-id: <broker_app_id>" \
       --header "x-timestamp: <timestamp>" \
       --header "x-signature: <signature>"
     ```

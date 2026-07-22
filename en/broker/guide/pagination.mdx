@@ -22,7 +22,7 @@ Request page `2` of the user list with `20` users per page:
 
 ```bash
 curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
-  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-app-id: <broker-app-id>' \
   -H 'x-timestamp: <unix-milliseconds>' \
   -H 'x-signature: <signature>'
 ```
@@ -73,7 +73,7 @@ Request up to `20` trades in a specified time range:
 
 ```bash
 curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1784620800000&size=20' \
-  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-app-id: <broker-app-id>' \
   -H 'x-timestamp: <unix-milliseconds>' \
   -H 'x-signature: <signature>'
 ```
@@ -91,7 +91,7 @@ To read older trades, pass the `id` of the last record in the current batch as `
 
 ```bash
 curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1784620800000&to=72895202682998785&size=20' \
-  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-app-id: <broker-app-id>' \
   -H 'x-timestamp: <unix-milliseconds>' \
   -H 'x-signature: <signature>'
 ```

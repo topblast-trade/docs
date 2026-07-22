@@ -4,14 +4,14 @@
     "title": "topblast Broker REST API",
     "contact": {},
     "version": "v1.0.0",
-    "description": "Broker integration APIs authenticated with an API key, timestamp, and HMAC-SHA256 signature."
+    "description": "Broker integration APIs authenticated with an App ID, timestamp, and HMAC-SHA256 signature."
   },
   "paths": {
     "/v1/broker/assets": {
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -67,7 +67,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -165,7 +165,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -214,7 +214,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -252,7 +252,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -310,7 +310,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -320,15 +320,6 @@
         ],
         "summary": "查询当前委托",
         "parameters": [
-          {
-            "description": "页码，从 1 开始",
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            }
-          },
           {
             "description": "用户邮箱",
             "name": "email",
@@ -351,6 +342,15 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "页码，从 1 开始",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
             }
           },
           {
@@ -398,7 +398,7 @@
       "delete": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -431,7 +431,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerSuccessData"
                 }
@@ -445,7 +445,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -455,15 +455,6 @@
         ],
         "summary": "查询仓位",
         "parameters": [
-          {
-            "description": "页码，从 1 开始",
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            }
-          },
           {
             "description": "用户邮箱",
             "name": "email",
@@ -486,6 +477,15 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "页码，从 1 开始",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
             }
           },
           {
@@ -525,7 +525,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -563,7 +563,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -629,7 +629,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -672,7 +672,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -723,7 +723,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -789,7 +789,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -824,7 +824,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -862,7 +862,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -926,7 +926,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -982,7 +982,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1007,7 +1007,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1045,7 +1045,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1083,7 +1083,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1121,7 +1121,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1166,6 +1166,14 @@
             }
           },
           {
+            "description": "起始成交记录 ID（不包含）",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
             "description": "返回数量，最大 100",
             "name": "size",
             "in": "query",
@@ -1176,29 +1184,19 @@
             }
           },
           {
+            "description": "结束成交记录 ID（不包含）",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
             "description": "平台用户 UID",
             "name": "uid",
             "in": "query",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "description": "起始成交记录 ID（不包含）",
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0
-            }
-          },
-          {
-            "description": "结束成交记录 ID（不包含）",
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0
             }
           }
         ],
@@ -1223,7 +1221,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1315,7 +1313,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1363,7 +1361,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1401,7 +1399,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1503,7 +1501,7 @@
       "patch": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1552,7 +1550,7 @@
       "get": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1563,7 +1561,7 @@
         "summary": "查询用户 API Key",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
+            "description": "券商侧用户 ID 或平台 UID",
             "name": "userId",
             "in": "path",
             "required": true,
@@ -1591,7 +1589,7 @@
       "post": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1602,7 +1600,7 @@
         "summary": "创建用户 API Key",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
+            "description": "券商侧用户 ID 或平台 UID",
             "name": "userId",
             "in": "path",
             "required": true,
@@ -1623,8 +1621,8 @@
           "required": true
         },
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1640,7 +1638,7 @@
       "delete": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1651,7 +1649,7 @@
         "summary": "删除用户 API Key",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
+            "description": "券商侧用户 ID 或平台 UID",
             "name": "userId",
             "in": "path",
             "required": true,
@@ -1673,7 +1671,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerSuccessData"
                 }
@@ -1687,7 +1685,7 @@
       "delete": {
         "security": [
           {
-            "BrokerApiKey": [],
+            "BrokerAppID": [],
             "BrokerTimestamp": [],
             "BrokerSignature": []
           }
@@ -1724,11 +1722,11 @@
   },
   "components": {
     "securitySchemes": {
-      "BrokerApiKey": {
+      "BrokerAppID": {
         "type": "apiKey",
         "in": "header",
-        "name": "x-api-key",
-        "description": "券商 API Key，用于标识调用方身份。"
+        "name": "x-app-id",
+        "description": "券商 App ID，用于标识调用方身份。"
       },
       "BrokerTimestamp": {
         "type": "apiKey",
@@ -2249,6 +2247,20 @@
           }
         }
       },
+      "v2.brokerAssetPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerAssetItem"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
       "v2.brokerClosePositionData": {
         "type": "object",
         "properties": {
@@ -2329,93 +2341,11 @@
           }
         }
       },
-      "v2.brokerDailySummaryItem": {
-        "type": "object",
-        "required": [
-          "brokerId",
-          "day",
-          "dayStartTime",
-          "totalDeposit",
-          "totalWithdraw",
-          "totalTradeVolume",
-          "totalTradeQty",
-          "totalTradePnl",
-          "newUsers",
-          "activeUsers"
-        ],
-        "properties": {
-          "brokerId": {
-            "description": "券商 ID",
-            "type": "integer",
-            "format": "uint32",
-            "example": 10001
-          },
-          "day": {
-            "description": "汇总日期，格式为 YYYY-MM-DD",
-            "type": "string",
-            "example": "2026-07-21"
-          },
-          "dayStartTime": {
-            "description": "汇总日期开始时间（Unix 毫秒）",
-            "type": "integer",
-            "format": "int64",
-            "example": 1784563200000
-          },
-          "totalDeposit": {
-            "description": "当日入金总额，十进制字符串",
-            "type": "string",
-            "example": "12500.50"
-          },
-          "totalWithdraw": {
-            "description": "当日出金总额，十进制字符串",
-            "type": "string",
-            "example": "3200.00"
-          },
-          "totalTradeVolume": {
-            "description": "当日成交总额，十进制字符串",
-            "type": "string",
-            "example": "98765.43"
-          },
-          "totalTradeQty": {
-            "description": "当日成交数量，十进制字符串",
-            "type": "string",
-            "example": "4567.89"
-          },
-          "totalTradePnl": {
-            "description": "当日成交盈亏，十进制字符串",
-            "type": "string",
-            "example": "123.45"
-          },
-          "newUsers": {
-            "description": "当日新增用户数",
-            "type": "integer",
-            "format": "int64",
-            "example": 18
-          },
-          "activeUsers": {
-            "description": "当日活跃用户数",
-            "type": "integer",
-            "format": "int64",
-            "example": 126
-          }
-        }
-      },
       "v2.brokerDailySummaryListData": {
         "type": "object",
-        "required": [
-          "items",
-          "total"
-        ],
         "properties": {
-          "items": {
-            "description": "当前页每日汇总列表",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerDailySummaryItem"
-            }
-          },
+          "items": {},
           "total": {
-            "description": "符合条件的每日汇总记录总数",
             "type": "integer"
           }
         }
@@ -2673,6 +2603,20 @@
           }
         }
       },
+      "v2.brokerOpenOrderPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
       "v2.brokerOrderResult": {
         "type": "object",
         "properties": {
@@ -2772,6 +2716,20 @@
           }
         }
       },
+      "v2.brokerPositionPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerPositionItem"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
       "v2.brokerReportSummaryData": {
         "type": "object",
         "properties": {
@@ -2832,12 +2790,12 @@
       "v2.brokerSettingsData": {
         "type": "object",
         "properties": {
-          "apiKey": {
-            "description": "Broker REST API Key",
+          "appId": {
+            "description": "Broker REST App ID",
             "type": "string"
           },
-          "apiSecret": {
-            "description": "Broker REST API Secret",
+          "appSecret": {
+            "description": "Broker REST App Secret",
             "type": "string"
           },
           "brokerId": {
@@ -2867,6 +2825,15 @@
           "webhookUrl": {
             "description": "Webhook 地址",
             "type": "string"
+          }
+        }
+      },
+      "v2.brokerSuccessData": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "description": "操作是否成功",
+            "type": "boolean"
           }
         }
       },
@@ -2909,6 +2876,10 @@
           "eventTime": {
             "description": "成交时间",
             "type": "integer"
+          },
+          "id": {
+            "description": "唯一成交记录 ID，用于 from/to 流式分页",
+            "type": "string"
           },
           "isImplied": {
             "description": "是否为隐含成交",
@@ -2993,10 +2964,6 @@
           "tradeKind": {
             "description": "成交类型",
             "type": "string"
-          },
-          "id": {
-            "description": "唯一成交记录 ID，用于 from/to 流式分页",
-            "type": "string"
           }
         }
       },
@@ -3018,6 +2985,47 @@
           },
           "locked": {
             "description": "锁定 USDC 余额",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerUpdatedUserData": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "description": "用户创建时间",
+            "type": "string"
+          },
+          "desc": {
+            "description": "用户备注",
+            "type": "string"
+          },
+          "email": {
+            "description": "用户邮箱",
+            "type": "string"
+          },
+          "lastLoginAt": {
+            "description": "最近登录时间，未登录时为空",
+            "type": "string"
+          },
+          "uid": {
+            "description": "平台用户 UID",
+            "type": "integer"
+          },
+          "updatedAt": {
+            "description": "用户更新时间",
+            "type": "string"
+          },
+          "userId": {
+            "description": "券商侧用户 ID",
+            "type": "string"
+          },
+          "userName": {
+            "description": "用户名称",
+            "type": "string"
+          },
+          "userType": {
+            "description": "NORMAL or MARKET_MAKER",
             "type": "string"
           }
         }
@@ -3113,134 +3121,18 @@
             "example": "invalid request"
           }
         }
-      },
-      "v2.brokerOpenOrderPageData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "当前页挂单",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
-            }
-          },
-          "total": {
-            "description": "挂单总数",
-            "type": "integer"
-          }
-        }
-      },
-      "v2.brokerPositionPageData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "当前页仓位",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerPositionItem"
-            }
-          },
-          "total": {
-            "description": "仓位总数",
-            "type": "integer"
-          }
-        }
-      },
-      "v2.brokerAssetPageData": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "当前页资产",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v2.brokerAssetItem"
-            }
-          },
-          "total": {
-            "description": "资产记录总数",
-            "type": "integer"
-          }
-        }
-      },
-      "v2.brokerSuccessData": {
-        "type": "object",
-        "required": [
-          "success"
-        ],
-        "properties": {
-          "success": {
-            "description": "操作是否成功",
-            "type": "boolean",
-            "example": true
-          }
-        }
-      },
-      "v2.brokerUpdatedUserData": {
-        "type": "object",
-        "required": [
-          "uid",
-          "userId",
-          "userType",
-          "userName",
-          "email",
-          "desc",
-          "createdAt",
-          "updatedAt"
-        ],
-        "properties": {
-          "uid": {
-            "description": "平台用户 UID",
-            "type": "integer"
-          },
-          "userId": {
-            "description": "券商侧用户 ID",
-            "type": "string"
-          },
-          "userType": {
-            "description": "用户类型",
-            "type": "string"
-          },
-          "userName": {
-            "description": "更新后的用户名称",
-            "type": "string"
-          },
-          "email": {
-            "description": "用户邮箱",
-            "type": "string"
-          },
-          "desc": {
-            "description": "更新后的用户备注",
-            "type": "string"
-          },
-          "createdAt": {
-            "description": "用户创建时间",
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "description": "用户更新时间",
-            "type": "string",
-            "format": "date-time"
-          },
-          "lastLoginAt": {
-            "description": "最近登录时间，未登录时为空",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        }
       }
     }
   },
   "servers": [
     {
-      "url": "https://api-test.topblast.trade",
-      "description": "测试环境"
+      "url": "https://api.topblast.trade",
+      "description": "生产环境"
     }
   ],
   "security": [
     {
-      "BrokerApiKey": [],
+      "BrokerAppID": [],
       "BrokerTimestamp": [],
       "BrokerSignature": []
     }

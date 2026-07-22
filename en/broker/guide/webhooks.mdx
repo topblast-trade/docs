@@ -44,7 +44,7 @@ Production endpoints must use HTTPS. The Webhook receiver must run on your backe
 
 ## Signature verification
 
-The platform calculates an HMAC-SHA256 signature with the broker API Secret. Each request includes:
+The platform calculates an HMAC-SHA256 signature with the broker App Secret. Each request includes:
 
 - `x-webhook-id`
 - `x-webhook-timestamp`
@@ -74,7 +74,7 @@ After implementing and verifying the receiver, call [Update broker settings](/en
 
 ```http
 PATCH https://api-test.topblast.trade/v1/broker/settings
-x-api-key: <API_KEY>
+x-app-id: <APP_ID>
 x-timestamp: <TIMESTAMP>
 x-signature: <SIGNATURE>
 Content-Type: application/json

@@ -12,8 +12,8 @@ export const SignatureCalculator = () => {
     return btoa(binary);
   };
 
-  const [apiKey, setApiKey] = useState("");
-  const [apiSecret, setApiSecret] = useState("");
+  const [appId, setAppId] = useState("");
+  const [appSecret, setAppSecret] = useState("");
   const [timestamp, setTimestamp] = useState(() => String(Date.now()));
   const [method, setMethod] = useState("POST");
   const [path, setPath] = useState("/v1/broker/tokens");
@@ -32,8 +32,8 @@ export const SignatureCalculator = () => {
     setError("");
     setCopied(false);
 
-    if (!apiKey.trim() || !apiSecret || !timestamp.trim() || !path.trim()) {
-      setError("请填写 AK、SK、时间戳和请求路径。");
+    if (!appId.trim() || !appSecret || !timestamp.trim() || !path.trim()) {
+      setError("请填写 App ID、App Secret、时间戳和请求路径。");
       return;
     }
 
@@ -53,7 +53,7 @@ export const SignatureCalculator = () => {
       const encoder = new TextEncoder();
       const key = await crypto.subtle.importKey(
         "raw",
-        encoder.encode(apiSecret),
+        encoder.encode(appSecret),
         { name: "HMAC", hash: "SHA-256" },
         false,
         ["sign"],
@@ -70,7 +70,7 @@ export const SignatureCalculator = () => {
   const copyHeaders = async () => {
     if (!signature) return;
     await navigator.clipboard.writeText(
-      `x-api-key: ${apiKey.trim()}\nx-timestamp: ${timestamp.trim()}\nx-signature: ${signature}`,
+      `x-app-id: ${appId.trim()}\nx-timestamp: ${timestamp.trim()}\nx-signature: ${signature}`,
     );
     setCopied(true);
   };
@@ -79,22 +79,22 @@ export const SignatureCalculator = () => {
     <div className="my-6 rounded-xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-800 dark:bg-gray-950">
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className={labelClassName}>AK（API Key）</label>
+          <label className={labelClassName}>App ID</label>
           <input
             className={inputClassName}
-            value={apiKey}
-            onChange={(event) => setApiKey(event.target.value)}
-            placeholder="输入 x-api-key"
+            value={appId}
+            onChange={(event) => setAppId(event.target.value)}
+            placeholder="输入 x-app-id"
             autoComplete="off"
           />
         </div>
         <div>
-          <label className={labelClassName}>SK（API Secret）</label>
+          <label className={labelClassName}>App Secret</label>
           <input
             className={inputClassName}
             type="password"
-            value={apiSecret}
-            onChange={(event) => setApiSecret(event.target.value)}
+            value={appSecret}
+            onChange={(event) => setAppSecret(event.target.value)}
             placeholder="仅在当前浏览器中参与计算"
             autoComplete="new-password"
           />

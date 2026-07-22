@@ -17,10 +17,10 @@ description: "了解 Broker REST API 的鉴权方式、接入流程和业务能�
 6. **风控管理**：查询风控策略和风险敞口，读取或保存全局及事件级风控配置，控制最大最坏情况赔付额等风险指标。
 7. **Webhooks**：通过统一的回调地址订阅券商业务事件，并在应用程序中处理状态变化。
 
-所有接口均位于 `/v1/broker/*` 路径下，只能由券商服务端调用。请求通过 API Key、时间戳和 HMAC-SHA256 签名完成身份验证，并且只能访问当前券商权限范围内的数据。
+所有接口均位于 `/v1/broker/*` 路径下，只能由券商服务端调用。请求通过 App ID、时间戳和 HMAC-SHA256 签名完成身份验证，并且只能访问当前券商权限范围内的数据。
 
 <Warning>
-请仅在券商服务端保存 API Secret。不要将 API Secret 暴露给浏览器、移动客户端或终端用户。
+请仅在券商服务端保存 App Secret。不要将 App Secret 暴露给浏览器、移动客户端或终端用户。
 </Warning>
 
 ## API 网关地址
@@ -32,11 +32,11 @@ description: "了解 Broker REST API 的鉴权方式、接入流程和业务能�
 
 ## 接入前准备
 
-开始联调前，请向 topblast 获取券商级 `API Key` 和 `API Secret`，并确认已开通测试环境访问权限。
+开始联调前，请向 topblast 获取券商级 `App ID` 和 `App Secret`，并确认已开通测试环境访问权限。
 
 所有 Broker REST API 请求都必须携带以下 Header：
 
-- `x-api-key`
+- `x-app-id`
 - `x-timestamp`
 - `x-signature`
 
@@ -62,7 +62,7 @@ sequenceDiagram
         BrokerServer->>BrokerServer: 分配Token
         BrokerServer->>Gateway: 同步用户信息和 Token
         activate Gateway
-        Gateway->>Gateway: AK/SK 鉴权
+        Gateway->>Gateway: App ID/App Secret 鉴权
         Gateway->>Core: 建立用户映射关系
         activate Core
         Core-->>Gateway: 返回用户信息
@@ -75,7 +75,7 @@ sequenceDiagram
     rect rgb(240, 253, 244)
         Note over BrokerClient,Core: 阶段二：后续业务请求
 
-        BrokerClient->>Gateway: 携带 APIKey 和 Token 发起业务请求
+        BrokerClient->>Gateway: 携带用户 Token 发起业务请求
         activate Gateway
         Gateway->>Gateway: Token 鉴权
         Gateway->>Core: 转发业务请求

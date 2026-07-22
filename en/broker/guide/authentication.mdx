@@ -2,11 +2,11 @@
 title: "Authorization and signatures"
 ---
 
-Broker REST APIs use an API key and an HMAC-SHA256 request signature. Every request must include these headers:
+Broker REST APIs use a broker-level `App ID` and `App Secret` for HMAC-SHA256 request signing. These credentials are distinct from user-level `API Key` and `API Secret` credentials. Every request must include these headers:
 
 | Header | Description | Example |
 | :--- | :--- | :--- |
-| `x-api-key` | Broker or partner API key | `7007b96cf748fdd0` |
+| `x-app-id` | Broker or partner App ID | `ba11_xxxxxxxxxxxxxxxxxxxxxxxx` |
 | `x-timestamp` | Request timestamp in seconds or milliseconds | `1689584042` |
 | `x-signature` | Base64-encoded HMAC-SHA256 signature | `2a8b...` |
 
@@ -19,10 +19,14 @@ Concatenate these fields in order:
 - **Timestamp**: Must exactly match `x-timestamp`.
 - **Method**: Uppercase HTTP method, such as `GET` or `POST`.
 - **Path**: Request path without the domain.
-- **Query**: Include the leading `?` when present; otherwise use an empty string.
-- **Body**: Raw JSON request body, or an empty string when there is no body.
+- **Query**: Use the exact raw query string that will be sent. Preserve parameter order and percent encoding, and prepend `?` only when it is non-empty.
+- **Body**: Use the exact request body bytes that will be sent, or an empty string when there is no body. Do not reformat or reserialize JSON after signing.
 
-Calculate an HMAC-SHA256 digest with the API secret and encode the result with Base64.
+Calculate an HMAC-SHA256 digest with the App Secret and encode the binary digest with standard Base64. `x-timestamp` accepts Unix seconds or milliseconds and must be within five minutes of the server time.
+
+<Warning>
+Use the App Secret only on the broker server. Never place it in requests, logs, browser code, or mobile applications.
+</Warning>
 
 <Tip>
 You can also use the [signature calculator](/en/broker/guide/signature-calculator) to generate a signature locally in your browser.
@@ -40,4 +44,20 @@ func CalculateSignature(secret, timestamp, method, path, query, body string) str
     h.Write([]byte(payload))
     return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
+```
+
+For `GET /v1/broker/users?page=1&size=20`, the payload to sign is:
+
+```text
+1717027200000GET/v1/broker/users?page=1&size=20
+```
+
+Send the same timestamp, query string, and body that you used to create the signature:
+
+```bash
+curl --request GET \
+  --url 'https://api-test.topblast.trade/v1/broker/users?page=1&size=20' \
+  --header 'x-app-id: <broker_app_id>' \
+  --header 'x-timestamp: 1717027200000' \
+  --header 'x-signature: <base64_signature>'
 ```

@@ -9,7 +9,7 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
 
 你需要准备：
 
-- Broker REST API 的 `API Key` 和 `API Secret`
+- Broker REST API 的 `App ID` 和 `App Secret`
 - 券商系统中的用户 ID 和该用户的访问 Token
 
 <Note>
@@ -25,7 +25,7 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
   curl --request POST \
     --url https://api-test.topblast.trade/v1/broker/tokens \
     --header 'Content-Type: application/json' \
-    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>' \
     --data '{"userId":"broker-user-10001","userName":"alice","email":"alice@example.com","token":"<user_access_token>"}'
@@ -52,7 +52,7 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
   ```bash cURL
   curl --request GET \
     --url 'https://api-test.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
-    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
   ```
@@ -70,7 +70,7 @@ Query 参数的顺序和编码是签名的一部分，必须与请求 URL 完全
   ```bash cURL
   curl --request GET \
     --url 'https://api-test.topblast.trade/v1/broker/assets?uid=1000000000001&page=1&size=20' \
-    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
   ```

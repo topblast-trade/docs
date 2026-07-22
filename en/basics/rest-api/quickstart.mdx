@@ -9,7 +9,7 @@ This guide requires API credentials. Complete the [REST API setup](/en/basics/re
 
 You need:
 
-- An `API Key` and `API Secret` for the Broker REST API
+- An `App ID` and `App Secret` for the Broker REST API
 - A user ID and access token from your broker system
 
 <Note>
@@ -25,7 +25,7 @@ After the user signs in to the broker, call the login endpoint from the broker s
   curl --request POST \
     --url https://api-test.topblast.trade/v1/broker/tokens \
     --header 'Content-Type: application/json' \
-    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>' \
     --data '{"userId":"broker-user-10001","userName":"alice","email":"alice@example.com","token":"<user_access_token>"}'
@@ -52,7 +52,7 @@ Use the returned `uid` or broker-side `userId` to verify the mapping:
   ```bash cURL
   curl --request GET \
     --url 'https://api-test.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
-    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
   ```
@@ -70,7 +70,7 @@ Retrieve assets and balances with the platform user UID:
   ```bash cURL
   curl --request GET \
     --url 'https://api-test.topblast.trade/v1/broker/assets?uid=1000000000001&page=1&size=20' \
-    --header 'x-api-key: <broker_api_key>' \
+    --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
   ```
