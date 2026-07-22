@@ -159,9 +159,7 @@
                       "cn/user/api-reference/events/search",
                       "cn/user/api-reference/events/list",
                       "cn/user/api-reference/events/detail",
-                      "cn/user/api-reference/events/carousel",
                       "cn/user/api-reference/events/tags",
-                      "cn/user/api-reference/events/filtered-tags",
                       "cn/user/api-reference/events/tag-detail",
                       "cn/user/api-reference/events/tag-detail-by-slug",
                       "cn/user/api-reference/market/markets"
@@ -354,9 +352,7 @@
                       "en/user/api-reference/events/list",
                       "en/user/api-reference/events/list-deprecated",
                       "en/user/api-reference/events/detail",
-                      "en/user/api-reference/events/carousel",
                       "en/user/api-reference/events/tags",
-                      "en/user/api-reference/events/filtered-tags",
                       "en/user/api-reference/events/tag-detail",
                       "en/user/api-reference/events/tag-detail-by-slug"
                     ]

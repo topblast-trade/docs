@@ -497,51 +497,6 @@
         ]
       }
     },
-    "/v1/public/carousel": {
-      "get": {
-        "description": "按可选标签查询轮播事件。",
-        "tags": [
-          "用户接口-事件"
-        ],
-        "summary": "查询轮播事件",
-        "parameters": [
-          {
-            "description": "标签 slug；为空时查询全部轮播事件",
-            "name": "tagSlug",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "返回数量，默认 10，最大 50",
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 50,
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "轮播事件列表",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/http_meta.Event"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/public/events": {
       "get": {
         "description": "按标签、关闭状态和排序条件分页查询事件，返回当前页事件和筛选后的总数。若按 slug 查询，请使用 GET /v1/public/events/slug/{slug}。",
@@ -1059,80 +1014,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_meta.AckTags"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/public/tags/filtered": {
-      "get": {
-        "description": "按父标签和事件状态查询筛选标签；可选择返回事件数量和子标签。",
-        "tags": [
-          "用户接口-事件"
-        ],
-        "summary": "查询筛选标签",
-        "parameters": [
-          {
-            "description": "父标签 ID 或 slug",
-            "name": "tag",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "事件状态；为空时不限制状态",
-            "name": "status",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "ACTIVE",
-                "CLOSED",
-                "RESOLVED"
-              ]
-            }
-          },
-          {
-            "description": "语言代码；当前版本仅用于兼容，服务端不参与查询",
-            "name": "locale",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "是否返回 activeEventsCount，默认 false",
-            "name": "includeEventCount",
-            "in": "query",
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          },
-          {
-            "description": "是否返回 children，默认 false",
-            "name": "includeChildren",
-            "in": "query",
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "筛选标签列表",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/http_meta.FilteredTag"
-                  }
                 }
               }
             }
@@ -1996,38 +1877,6 @@
           },
           "volume": {
             "description": "累计成交量",
-            "type": "string"
-          }
-        }
-      },
-      "http_meta.FilteredTag": {
-        "type": "object",
-        "properties": {
-          "activeEventsCount": {
-            "description": "活动事件数量；仅请求时启用才返回",
-            "type": "integer"
-          },
-          "children": {
-            "description": "子标签；仅请求时启用才返回",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_meta.FilteredTag"
-            }
-          },
-          "id": {
-            "description": "标签 ID",
-            "type": "string"
-          },
-          "label": {
-            "description": "标签显示名称",
-            "type": "string"
-          },
-          "parentId": {
-            "description": "父标签 ID",
-            "type": "string"
-          },
-          "slug": {
-            "description": "标签 slug",
             "type": "string"
           }
         }
