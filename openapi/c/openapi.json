@@ -845,10 +845,9 @@
               "type": "string",
               "enum": [
                 "volume",
-                "createdAt",
+                "eventId",
                 "startDate",
-                "endDate",
-                "title"
+                "endDate"
               ],
               "default": "volume"
             }
@@ -977,29 +976,31 @@
     },
     "/v1/public/markets": {
       "get": {
-        "description": "按事件、状态和 Keyset 游标查询当前券商可见的市场。",
+        "description": "按事件、状态和排序条件分页查询当前券商可见的市场，返回当前页市场和筛选后的总数。",
         "tags": [
           "用户接口-元数据"
         ],
         "summary": "查询市场列表",
         "parameters": [
           {
+            "description": "页码，默认 1",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
             "description": "每页数量，默认 20，最大 100",
-            "name": "limit",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
               "maximum": 100,
               "default": 20
-            }
-          },
-          {
-            "description": "Keyset 游标；首次不传，后续原样传入上一页 nextCursor",
-            "name": "cursor",
-            "in": "query",
-            "schema": {
-              "type": "string"
             }
           },
           {
@@ -1025,6 +1026,34 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "排序字段，默认 volume",
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "volume",
+                "marketId",
+                "startDate",
+                "endDate"
+              ],
+              "default": "volume"
+            }
+          },
+          {
+            "description": "排序方向，默认 desc",
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
+            }
           }
         ],
         "responses": {
@@ -1039,7 +1068,7 @@
             }
           },
           "400": {
-            "description": "请求参数或游标错误",
+            "description": "请求参数错误",
             "content": {
               "application/json": {
                 "schema": {
@@ -2320,20 +2349,12 @@
       "http_meta.AckMarkets": {
         "type": "object",
         "properties": {
-          "count": {
-            "description": "当前页市场数量",
-            "type": "integer"
-          },
-          "data": {
+          "markets": {
             "description": "当前页市场列表",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/http_meta.Market"
             }
-          },
-          "nextCursor": {
-            "description": "下一页 Keyset 游标；为空表示没有下一页",
-            "type": "string"
           },
           "total": {
             "description": "筛选后的市场总数",
