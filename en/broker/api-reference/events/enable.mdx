@@ -1,14 +1,4 @@
 ---
-title: "Enable event"
+title: "Enable/disable event"
 openapi: "/openapi/b/openapi.en.json PATCH /v1/broker/events/{eventSlug}"
 ---
-
-Set `enabled` to `true` to enable the event:
-
-```json
-{
-  "enabled": true
-}
-```
-
-Enabling and disabling use the same resource update operation; do not call an `/enable` subpath.

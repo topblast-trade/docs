@@ -5,10 +5,14 @@ description: "Enter credentials and request parameters to sign and send Broker R
 
 import { BrokerApiDebugger } from "/snippets/broker-api-debugger.jsx";
 
-The debugger includes the current 28 Broker REST API operations. Select an operation, complete its Path, Query, and Body, then click **Send** to generate the timestamp and HMAC-SHA256 signature and send the request.
+The debugger includes the current 28 Broker REST API operations. Select an operation and complete its final Path, Query, and Body. Click **Send** to generate a timestamp and HMAC-SHA256 signature in real time, append the authentication headers, and send the request.
 
-<Warning>The debugger includes default test credentials. Saved credentials are stored in your browser. Never save production credentials on a shared device.</Warning>
+<Warning>
+The debugger includes default test credentials. After you click **Save AK / SK**, the current credentials are stored in the browser's local storage. Never save production credentials on a shared device.
+</Warning>
 
 <BrokerApiDebugger />
 
-<Note>Requests use Mintlify's same-origin proxy. The SK is used only for local signature calculation and is never sent to Mintlify or the API gateway.</Note>
+<Note>
+Requests use Mintlify's same-origin proxy, so the browser does not call the API gateway directly and does not depend on its CORS configuration. The SK is used only to calculate the signature locally in the browser and is never sent to Mintlify or the API gateway.
+</Note>

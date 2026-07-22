@@ -1,0 +1,22 @@
+---
+title: "Error codes"
+description: "Understand common Broker REST API HTTP status codes and recommended handling."
+---
+
+The Broker REST API uses HTTP status codes to indicate request results. See [Response format](/en/broker/guide/response) for the error response body.
+
+## Common HTTP status codes
+
+| HTTP status | Meaning | Recommended handling |
+| :--- | :--- | :--- |
+| `200 OK` | Query or update succeeded | Parse the response using the operation's schema. |
+| `201 Created` | Resource created | Store the returned resource or identifier. |
+| `202 Accepted` | Asynchronous request accepted | Store the transfer ID and track its final state through the detail operation or webhook. |
+| `400 Bad Request` | Invalid parameters, request body, or signature input | Correct the request before resubmitting. Do not replay it unchanged. |
+| `401 Unauthorized` | The API key, timestamp, or signature is invalid | Check the authentication headers, timestamp, and signature calculation. |
+| `403 Forbidden` | The broker cannot perform this operation | Check broker permissions and resource ownership. Stop invalid retries. |
+| `404 Not Found` | The route or resource does not exist | Check the resource ID, user ID, and request path. |
+| `409 Conflict` | Resource state conflict, such as a duplicate transfer | Query the current resource state before retrying. |
+| `500 Internal Server Error` | Internal service error | Record the request context and retry with backoff. |
+
+The status codes and response schemas declared on each API Reference page are authoritative.

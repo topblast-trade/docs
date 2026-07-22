@@ -1,0 +1,99 @@
+---
+title: "Pagination"
+description: "Understand page-based and stream pagination in the Broker REST API."
+---
+
+Broker REST API list operations use page-based or stream pagination depending on the data. Follow the parameters and response schema declared on each API Reference page.
+
+## Page-based pagination
+
+Page-based list operations accept `page` and `size` and return the current page together with the total count.
+
+### Request parameters
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `page` | integer | Page number, starting from `1`. |
+| `size` | integer | Number of items per page. The maximum is declared by each operation. |
+
+### Request example
+
+Request page `2` of the user list with `20` users per page:
+
+```bash
+curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
+  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-timestamp: <unix-milliseconds>' \
+  -H 'x-signature: <signature>'
+```
+
+### Response
+
+```json
+{
+  "items": [
+    {
+      "uid": 10001,
+      "userId": "broker-user-10001",
+      "email": "user@example.com",
+      "username": "example-user",
+      "userType": "NORMAL",
+      "createdAt": "2026-07-22T04:00:00Z",
+      "lastLoginAt": "2026-07-22T06:30:00Z"
+    }
+  ],
+  "total": 45
+}
+```
+
+`items` contains the current page. `total` is the total number of records matching the query.
+
+## Stream pagination
+
+Stream pagination uses record IDs to define result boundaries and can further restrict results by time range.
+
+### Request parameters
+
+Record boundary parameters:
+
+- `from`: Starting record ID, exclusive.
+- `to`: Ending record ID, exclusive.
+
+Filtering and size parameters:
+
+- `begin`: Start time in Unix milliseconds, inclusive.
+- `end`: End time in Unix milliseconds, exclusive.
+- `size`: Number of records to return. The maximum is declared by each operation.
+
+Operations support one or more of these parameter groups depending on their data. `begin/end` restrict the time range, while `from/to` continue reading records before or after a specified record.
+
+### Request example
+
+Request up to `20` trades in a specified time range:
+
+```bash
+curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1784620800000&size=20' \
+  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-timestamp: <unix-milliseconds>' \
+  -H 'x-signature: <signature>'
+```
+
+### Response
+
+```json
+[
+  { "id": "72895202682998786", "tradeId": "72895202682990001", "eventTime": 1784621855801 },
+  { "id": "72895202682998785", "tradeId": "72895202682990002", "eventTime": 1784621855700 }
+]
+```
+
+To read older trades, pass the `id` of the last record in the current batch as `to`:
+
+```bash
+curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1784620800000&to=72895202682998785&size=20' \
+  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-timestamp: <unix-milliseconds>' \
+  -H 'x-signature: <signature>'
+```
+
+Stream pagination returns an array directly, without `total` or a pagination object.

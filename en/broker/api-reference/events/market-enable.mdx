@@ -1,14 +1,4 @@
 ---
-title: "Enable market"
+title: "Enable/disable market"
 openapi: "/openapi/b/openapi.en.json PATCH /v1/broker/events/{eventSlug}/markets/{marketId}"
 ---
-
-Set `enabled` to `true` to enable the market:
-
-```json
-{
-  "enabled": true
-}
-```
-
-Enabling and disabling use the same market update operation; do not call an `/enable` subpath.

@@ -49,6 +49,7 @@ to this project with:
 ```bash
 python3 scripts/generate_broker_openapi.py
 cd ../../zpm-docs
+python3 scripts/keep_success_responses.py
 mint validate
 ```
 
@@ -61,6 +62,7 @@ User API specification after updating it:
 
 ```bash
 python3 scripts/split_openapi.py
+python3 scripts/keep_success_responses.py
 mint validate
 ```
 

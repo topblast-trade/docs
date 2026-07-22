@@ -24,26 +24,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "账户不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -101,26 +81,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_account.AckAccountTrades"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "成交记录查询失败",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -194,16 +154,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -241,46 +191,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_order.AckOrder"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "委托参数无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "市场不可交易或风控拒绝",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "交易集群不可用",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -326,36 +236,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "列表为空、超过 50 条或委托参数无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "市场不可交易或风控拒绝",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -393,36 +273,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_order.AckBatchCancel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "列表为空、超过 100 条或订单参数无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "市场当前不允许撤单",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -494,16 +344,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -543,36 +383,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_order.AckOrderDetail"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "订单 ID 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "委托不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -624,36 +434,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "订单 ID 或请求参数无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "市场当前不允许撤单",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -700,16 +480,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_position.AckPositions"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -765,26 +535,6 @@
                   "items": {
                     "$ref": "#/components/schemas/http_meta.Event"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "请求参数错误",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "轮播事件查询失败",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -876,26 +626,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "请求参数无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "事件查询失败",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         }
       }
@@ -908,18 +638,7 @@
         ],
         "summary": "游标分页查询事件（已废弃）",
         "deprecated": true,
-        "responses": {
-          "410": {
-            "description": "接口已废弃",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        }
+        "responses": {}
       }
     },
     "/v1/public/events/slug/{slug}": {
@@ -947,26 +666,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_meta.Event"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "事件 slug 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "事件不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1066,36 +765,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "请求参数错误",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "券商域名不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "read-service 不可用",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         }
       }
@@ -1128,26 +797,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Token ID 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "中间价不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         }
       }
@@ -1177,16 +826,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckOrderbook"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Token ID 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1238,26 +877,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Token 或时间窗口无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "价格历史不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         }
       }
@@ -1297,16 +916,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Token ID 列表为空",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         }
       }
@@ -1339,16 +948,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "请求参数错误",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         }
       }
@@ -1378,26 +977,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckSpread"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Token ID 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "价差数据不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1483,26 +1062,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "请求参数错误",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "标签查询失败",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         }
       }
@@ -1577,36 +1136,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "标签参数或语言代码无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "父标签不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "筛选标签查询失败",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         }
       }
@@ -1636,26 +1165,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_meta.Tag"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "标签 slug 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "标签不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1691,26 +1200,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "标签 ID 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "标签不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
           }
         }
       }
@@ -1740,26 +1229,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckTicker"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Token ID 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "市场行情不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1826,26 +1295,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckTrades"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "请求参数错误",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "成交记录不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }

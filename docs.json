@@ -122,10 +122,8 @@
                     "pages": [
                       "cn/broker/api-reference/events/list",
                       "cn/broker/api-reference/events/enable",
-                      "cn/broker/api-reference/events/disable",
                       "cn/broker/api-reference/events/markets",
-                      "cn/broker/api-reference/events/market-enable",
-                      "cn/broker/api-reference/events/market-disable"
+                      "cn/broker/api-reference/events/market-enable"
                     ]
                   },
                   {
@@ -253,6 +251,8 @@
                       "en/broker/guide/introduction",
                       "en/broker/guide/authentication",
                       "en/broker/guide/response",
+                      "en/broker/guide/pagination",
+                      "en/broker/guide/errors",
                       "en/broker/guide/webhooks"
                     ]
                   },
@@ -266,14 +266,19 @@
                   {
                     "group": "User management",
                     "pages": [
-                      "en/broker/api-reference/user/login",
-                      "en/broker/api-reference/user/logout",
+                      "en/broker/api-reference/user/users",
                       "en/broker/api-reference/user/update",
                       "en/broker/api-reference/user/create-special",
-                      "en/broker/api-reference/user/users"
-                      ,"en/broker/api-reference/user/api-keys"
-                      ,"en/broker/api-reference/user/create-api-key"
-                      ,"en/broker/api-reference/user/delete-api-key"
+                      "en/broker/api-reference/user/login",
+                      "en/broker/api-reference/user/logout"
+                    ]
+                  },
+                  {
+                    "group": "API Key",
+                    "pages": [
+                      "en/broker/api-reference/user/api-keys",
+                      "en/broker/api-reference/user/create-api-key",
+                      "en/broker/api-reference/user/delete-api-key"
                     ]
                   },
                   {
@@ -296,9 +301,9 @@
                     "group": "Trading management",
                     "pages": [
                       "en/broker/api-reference/trade/trades",
-                      "en/broker/api-reference/trade/positions",
                       "en/broker/api-reference/trade/open-orders",
                       "en/broker/api-reference/trade/cancel-orders",
+                      "en/broker/api-reference/trade/positions",
                       "en/broker/api-reference/trade/close-position"
                     ]
                   },
@@ -306,8 +311,8 @@
                     "group": "Reports and analytics",
                     "pages": [
                       "en/broker/api-reference/reports/summary",
-                      "en/broker/api-reference/reports/trend",
                       "en/broker/api-reference/reports/daily-summaries",
+                      "en/broker/api-reference/reports/trend",
                       "en/broker/api-reference/overview/dashboard"
                     ]
                   },
@@ -316,10 +321,8 @@
                     "pages": [
                       "en/broker/api-reference/events/list",
                       "en/broker/api-reference/events/enable",
-                      "en/broker/api-reference/events/disable",
                       "en/broker/api-reference/events/markets",
-                      "en/broker/api-reference/events/market-enable",
-                      "en/broker/api-reference/events/market-disable"
+                      "en/broker/api-reference/events/market-enable"
                     ]
                   },
                   {

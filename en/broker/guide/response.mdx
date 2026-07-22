@@ -1,44 +1,16 @@
 ---
-title: "Common response format"
-description: "Understand Broker REST API success responses, errors, pagination, and HTTP status codes."
+title: "Response format"
+description: "Understand Broker REST API success and error responses."
 ---
 
-The Broker REST API uses HTTP status codes to indicate request results. Successful responses return the operation's data directly; they are not wrapped in a common `code`, `message`, or `data` envelope. Failed responses use a single `error` field.
+The Broker REST API uses HTTP status codes to indicate request results. Successful responses return the data defined by the operation directly, without a common `code`, `message`, or `data` envelope. Failed responses use a consistent `error` field.
 
 ## Successful responses
 
 A successful request returns a `2xx` HTTP status code. The response body follows the schema declared on the operation page.
 
-### Page-based pagination
-
-Paginated list operations accept `page` and `size` and return the current page together with the total count:
-
-```json
-{
-  "items": [
-    { "userId": "10001", "email": "user@example.com" }
-  ],
-  "total": 10
-}
-```
-
-`page` starts at `1`. `size` is the number of items per page; the maximum is declared by each operation. The response does not include an additional `pagination` object.
-
-### Stream pagination
-
-Stream-style list operations accept `begin`, `end`, and `size` and return an array for the requested time range:
-
-```json
-[
-  { "txnId": "broker-txn-10001", "state": "SUCCESS" },
-  { "txnId": "broker-txn-10002", "state": "PROCESSING" }
-]
-```
-
-`begin` is the inclusive start time in Unix milliseconds, `end` is the exclusive end time, and `size` is the maximum number of returned items. Follow the parameters and response schema declared by each operation.
-
 <Note>
-Creating a transfer normally returns HTTP `201`; an accepted asynchronous transfer returns HTTP `202`. Operations such as logout and updating a user return HTTP `204` with no response body.
+Creating a transfer normally returns HTTP `201`; an accepted asynchronous transfer returns HTTP `202`. Other successful requests normally return HTTP `200`.
 </Note>
 
 ## Error responses
@@ -51,21 +23,4 @@ Failed requests return the corresponding `4xx` or `5xx` HTTP status code and a c
 }
 ```
 
-Do not use a response-body `code` or `message` to determine success. Check the HTTP status first, then use `error` for diagnostics.
-
-## Common HTTP status codes
-
-| HTTP status | Meaning | Recommended handling |
-| :--- | :--- | :--- |
-| `200 OK` | Query or update succeeded | Parse the response using the operation's schema. |
-| `201 Created` | Resource created | Store the returned resource or identifier. |
-| `202 Accepted` | Asynchronous request accepted | Store the transfer ID and track final state through the detail operation or webhook. |
-| `204 No Content` | Operation succeeded with no response body | Do not attempt to parse JSON. |
-| `400 Bad Request` | Invalid parameters, body, or signature input | Correct the request before resubmitting; do not replay it unchanged. |
-| `401 Unauthorized` | API key, timestamp, or signature is invalid | Check authentication headers, timestamp, and signature calculation. |
-| `403 Forbidden` | The broker is not allowed to perform the operation | Verify broker permissions and resource ownership; stop invalid retries. |
-| `404 Not Found` | Route or resource does not exist | Check the resource ID, user ID, and request path. |
-| `409 Conflict` | Resource state conflict, such as a duplicate transfer | Query the current resource state before retrying. |
-| `500 Internal Server Error` | Internal service error | Record request context and retry with backoff. |
-
-The status codes and response schemas supported by each operation are authoritative on its API Reference page.
+See [Pagination](/en/broker/guide/pagination) for pagination parameters and response formats. See [Error codes](/en/broker/guide/errors) for error status codes and recommended handling.

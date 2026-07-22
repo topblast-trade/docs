@@ -14,7 +14,7 @@ After integration, your broker server can use the Broker REST API to manage:
 3. **Trading**: Query trades, positions, and open orders, and perform actions such as canceling orders and closing positions.
 4. **Reports**: Retrieve summary, trend, daily summary, and dashboard data for user growth, activity, fund flows, and trading volume.
 5. **Events**: Query platform events and markets, and enable or disable events or individual markets for the broker.
-6. **Risk management**: Query policies and exposures, and read or save global and event-level risk settings.
+6. **Risk management**: Query policies and exposures, and read or save global and event-level risk settings to control metrics such as maximum worst-case payout.
 7. **Webhooks**: Subscribe to broker events through one callback URL and process status changes in your application.
 
 All endpoints use the `/v1/broker/*` prefix and must be called from the broker server. Requests are authenticated with an API key, timestamp, and HMAC-SHA256 signature and can access only data within the current broker's scope.
@@ -31,7 +31,9 @@ Store the API Secret on the broker server only. Never expose it to browsers, mob
 
 ## Prerequisites
 
-Obtain a broker-level `API Key` and `API Secret` from topblast and confirm access to the required environment. Every Broker REST API request must include:
+Before integration testing, obtain a broker-level `API Key` and `API Secret` from topblast and confirm that test-environment access is enabled.
+
+Every Broker REST API request must include:
 
 - `x-api-key`
 - `x-timestamp`
@@ -62,9 +64,9 @@ sequenceDiagram
         Gateway->>Gateway: Authenticate with API key and secret
         Gateway->>Core: Establish the user mapping
         activate Core
-        Core-->>Gateway: Return topblast trading platform user information
+        Core-->>Gateway: Return user information
         deactivate Core
-        Gateway-->>BrokerServer: Return topblast trading platform user information
+        Gateway-->>BrokerServer: Return the synchronization result
         deactivate Gateway
         BrokerServer-->>BrokerClient: Return the sign-in result
     end
@@ -87,7 +89,13 @@ sequenceDiagram
 ## Next steps
 
 <CardGroup cols={3}>
-  <Card title="Configure authentication" icon="key" href="/en/broker/guide/authentication">Generate and verify Broker REST API signatures.</Card>
-  <Card title="Synchronize a user" icon="user" href="/en/broker/api-reference/user/login">Review the complete login endpoint.</Card>
-  <Card title="Create a transfer" icon="arrow-right-arrow-left" href="/en/broker/api-reference/transfer/create">Deposit or withdraw assets for a user.</Card>
+  <Card title="Configure authentication" icon="key" href="/en/broker/guide/authentication">
+    Generate and verify Broker REST API signatures.
+  </Card>
+  <Card title="Synchronize a user" icon="user" href="/en/broker/api-reference/user/login">
+    Review the complete login endpoint.
+  </Card>
+  <Card title="Create a transfer" icon="arrow-right-arrow-left" href="/en/broker/api-reference/transfer/create">
+    Deposit or withdraw assets for a user.
+  </Card>
 </CardGroup>

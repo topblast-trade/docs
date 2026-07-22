@@ -7,11 +7,15 @@ import { SignatureCalculator } from "/snippets/signature-calculator.jsx";
 
 Enter the AK, SK, and request parameters to calculate `x-signature`. The calculation runs only in your browser; inputs are not sent to a server or saved locally.
 
-<Warning>Do not use a production SK on a shared device.</Warning>
+<Warning>
+Do not use a production SK on a shared device. Close the page after calculation to prevent others from viewing sensitive information.
+</Warning>
 
 <SignatureCalculator />
 
 ## Calculation rules
+
+The calculator concatenates the signature payload in this order:
 
 ```text
 Timestamp + Method + Path + [?Query] + Body
