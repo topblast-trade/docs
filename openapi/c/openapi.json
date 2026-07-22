@@ -138,7 +138,85 @@
         ]
       }
     },
-    "/v1/private/order": {
+    "/v1/private/orders": {
+      "get": {
+        "description": "查询当前登录账户的未完成委托。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "查询当前委托",
+        "parameters": [
+          {
+            "description": "每页数量，默认 20，最大 100",
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "description": "偏移量，默认 0",
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "description": "事件 ID",
+            "name": "eventId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件 ID 的兼容参数；eventId 为空时生效",
+            "name": "event",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "当前委托列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckOpenOrders"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      },
       "post": {
         "description": "为当前登录账户创建委托。timestamp 使用 Unix 毫秒且每次请求都应取当前时间；GTD 的 expiration 必填，支持 Unix 秒或毫秒，服务端会将秒转换为毫秒。非 MARKET 委托的 price 必须在 0 到 1 之间并符合市场最小价格步长。",
         "tags": [
@@ -220,235 +298,7 @@
         ]
       }
     },
-    "/v1/private/order/{orderID}": {
-      "get": {
-        "description": "查询当前登录账户下的指定委托。",
-        "tags": [
-          "用户接口-委托"
-        ],
-        "summary": "查询委托详情",
-        "parameters": [
-          {
-            "description": "订单 ID，十进制正整数",
-            "name": "orderID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "委托详情",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOrderDetail"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "订单 ID 无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "委托不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          },
-          {
-            "ApiKeyAuth": [],
-            "TimestampAuth": [],
-            "SignatureAuth": []
-          }
-        ]
-      },
-      "delete": {
-        "description": "取消当前登录账户下的指定委托。tokenId 可省略，服务端会先从订单详情解析。",
-        "tags": [
-          "用户接口-委托"
-        ],
-        "summary": "取消委托",
-        "parameters": [
-          {
-            "description": "订单 ID，十进制正整数",
-            "name": "orderID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "结果 Token ID；已知时传入可减少一次订单查询",
-            "name": "tokenId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "撤单结果",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_order.AckCancelOrder"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "订单 ID 或请求参数无效",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "市场当前不允许撤单",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          },
-          {
-            "ApiKeyAuth": [],
-            "TimestampAuth": [],
-            "SignatureAuth": []
-          }
-        ]
-      }
-    },
-    "/v1/private/orders": {
-      "get": {
-        "description": "查询当前登录账户的未完成委托。",
-        "tags": [
-          "用户接口-委托"
-        ],
-        "summary": "查询当前委托",
-        "parameters": [
-          {
-            "description": "每页数量，默认 20，最大 100",
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100,
-              "default": 20
-            }
-          },
-          {
-            "description": "偏移量，默认 0",
-            "name": "offset",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "default": 0
-            }
-          },
-          {
-            "description": "事件 ID",
-            "name": "eventId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "事件 ID 的兼容参数；eventId 为空时生效",
-            "name": "event",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "当前委托列表",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOpenOrders"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token 无效或缺失",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          },
-          {
-            "ApiKeyAuth": [],
-            "TimestampAuth": [],
-            "SignatureAuth": []
-          }
-        ]
-      },
+    "/v1/private/orders/batch": {
       "post": {
         "description": "同步创建 1 至 50 笔委托并返回每笔处理结果。每项 timestamp 使用 Unix 毫秒且每次请求都应取当前时间；expiration 支持 Unix 秒或毫秒，传秒时服务端自动转换。",
         "tags": [
@@ -647,6 +497,156 @@
           },
           "401": {
             "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/private/orders/{orderID}": {
+      "get": {
+        "description": "查询当前登录账户下的指定委托。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "查询委托详情",
+        "parameters": [
+          {
+            "description": "订单 ID，十进制正整数",
+            "name": "orderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "委托详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckOrderDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "订单 ID 无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "委托不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "description": "取消当前登录账户下的指定委托。tokenId 可省略，服务端会先从订单详情解析。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "取消委托",
+        "parameters": [
+          {
+            "description": "订单 ID，十进制正整数",
+            "name": "orderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "结果 Token ID；已知时传入可减少一次订单查询",
+            "name": "tokenId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "撤单结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckCancelOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "订单 ID 或请求参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效或缺失",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "市场当前不允许撤单",
             "content": {
               "application/json": {
                 "schema": {
@@ -977,25 +977,15 @@
     },
     "/v1/public/markets": {
       "get": {
-        "description": "从可访问事件中汇总市场，按事件、状态和排序条件筛选后进行页码分页。",
+        "description": "按事件、状态和 Keyset 游标查询当前券商可见的市场。",
         "tags": [
           "用户接口-元数据"
         ],
         "summary": "查询市场列表",
         "parameters": [
           {
-            "description": "页码，默认 1",
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "default": 1
-            }
-          },
-          {
             "description": "每页数量，默认 20，最大 100",
-            "name": "size",
+            "name": "limit",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -1005,30 +995,11 @@
             }
           },
           {
-            "description": "排序字段，默认 volume",
-            "name": "order",
+            "description": "Keyset 游标；首次不传，后续原样传入上一页 nextCursor",
+            "name": "cursor",
             "in": "query",
             "schema": {
-              "type": "string",
-              "enum": [
-                "volume",
-                "startDate",
-                "endDate"
-              ],
-              "default": "volume"
-            }
-          },
-          {
-            "description": "排序方向，默认 desc",
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ],
-              "default": "desc"
+              "type": "string"
             }
           },
           {
@@ -1039,8 +1010,11 @@
               "type": "string",
               "enum": [
                 "ACTIVE",
+                "HALTED",
                 "CLOSED",
-                "RESOLVED"
+                "RESOLVED",
+                "VOIDED",
+                "DISPUTED"
               ]
             }
           },
@@ -1065,7 +1039,27 @@
             }
           },
           "400": {
-            "description": "请求参数错误",
+            "description": "请求参数或游标错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "券商域名不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "read-service 不可用",
             "content": {
               "application/json": {
                 "schema": {
@@ -1833,8 +1827,12 @@
   },
   "servers": [
     {
-      "url": "https://api.topblast.trade",
-      "description": "生产环境"
+      "url": "https://predict.xbit.trade",
+      "description": "开发环境"
+    },
+    {
+      "url": "https://apitest-predict.xbit.trade",
+      "description": "测试环境"
     }
   ],
   "components": {
@@ -2322,12 +2320,20 @@
       "http_meta.AckMarkets": {
         "type": "object",
         "properties": {
-          "markets": {
-            "description": "当前页市场",
+          "count": {
+            "description": "当前页市场数量",
+            "type": "integer"
+          },
+          "data": {
+            "description": "当前页市场列表",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/http_meta.Market"
             }
+          },
+          "nextCursor": {
+            "description": "下一页 Keyset 游标；为空表示没有下一页",
+            "type": "string"
           },
           "total": {
             "description": "筛选后的市场总数",
@@ -2559,85 +2565,176 @@
       "http_meta.Market": {
         "type": "object",
         "properties": {
+          "active": {
+            "description": "市场是否处于可交易状态",
+            "type": "boolean"
+          },
+          "approved": {
+            "description": "市场是否已审核通过",
+            "type": "boolean"
+          },
           "bestAsk": {
-            "description": "最优卖价",
-            "type": "string"
+            "description": "当前最优卖价",
+            "type": "number"
           },
           "bestBid": {
-            "description": "最优买价",
-            "type": "string"
+            "description": "当前最优买价",
+            "type": "number"
+          },
+          "closed": {
+            "description": "市场是否已关闭、已结算或已作废",
+            "type": "boolean"
           },
           "conditionId": {
-            "description": "条件 ID",
+            "description": "链上条件 ID",
             "type": "string"
           },
-          "disputeFlag": {
-            "description": "是否处于争议状态",
+          "description": {
+            "description": "市场描述",
+            "type": "string"
+          },
+          "devNegRisk": {
+            "description": "开发兼容字段；是否启用负风险市场模式",
+            "type": "boolean"
+          },
+          "devVolume1mo": {
+            "description": "开发兼容字段；最近 1 个月成交量",
+            "type": "number"
+          },
+          "devVolume1wk": {
+            "description": "开发兼容字段；最近 1 周成交量",
+            "type": "number"
+          },
+          "devVolume1yr": {
+            "description": "开发兼容字段；最近 1 年成交量",
+            "type": "number"
+          },
+          "devVolume24hr": {
+            "description": "开发兼容字段；最近 24 小时成交量",
+            "type": "number"
+          },
+          "enableOrderBook": {
+            "description": "是否启用订单簿",
             "type": "boolean"
           },
           "endDate": {
-            "description": "结束时间",
+            "description": "市场结束时间",
             "type": "string"
           },
-          "groupItemTitle": {
-            "description": "分组展示标题",
+          "eventId": {
+            "description": "所属事件 ID",
+            "type": "string"
+          },
+          "eventSlug": {
+            "description": "所属事件 slug",
+            "type": "string"
+          },
+          "funded": {
+            "description": "市场是否已完成资金配置",
+            "type": "boolean"
+          },
+          "icon": {
+            "description": "市场图标 URL",
+            "type": "string"
+          },
+          "id": {
+            "description": "市场 ID",
+            "type": "string"
+          },
+          "image": {
+            "description": "市场图片 URL",
             "type": "string"
           },
           "lastPrice": {
             "description": "最新成交价",
-            "type": "string"
+            "type": "number"
           },
-          "marketId": {
-            "description": "市场 ID",
-            "type": "string"
+          "liquidity": {
+            "description": "市场当前流动性",
+            "type": "number"
           },
-          "marketQuestion": {
-            "description": "市场问题",
-            "type": "string"
+          "liquidityClob": {
+            "description": "订单簿当前流动性",
+            "type": "number"
           },
-          "marketSlug": {
-            "description": "市场 slug",
+          "negRisk": {
+            "description": "是否属于负风险市场",
+            "type": "boolean"
+          },
+          "negRiskMarketId": {
+            "description": "负风险市场组 ID",
             "type": "string"
           },
           "orderMinSize": {
             "description": "最小委托数量",
             "type": "integer"
           },
-          "orderMinTickSize": {
+          "orderPriceMinTickSize": {
             "description": "最小价格步长；创建委托时价格必须是其整数倍",
             "type": "number"
           },
-          "pricePrecision": {
-            "description": "价格精度类型",
+          "outcomePrices": {
+            "description": "JSON 编码的各结果最新价格数组",
             "type": "string"
           },
+          "outcomes": {
+            "description": "JSON 编码的结果名称数组",
+            "type": "string"
+          },
+          "question": {
+            "description": "市场问题",
+            "type": "string"
+          },
+          "quoteReady": {
+            "description": "买卖报价是否已就绪",
+            "type": "boolean"
+          },
+          "ready": {
+            "description": "市场行情数据是否已就绪",
+            "type": "boolean"
+          },
+          "resolutionSource": {
+            "description": "结算结果来源",
+            "type": "string"
+          },
+          "slug": {
+            "description": "市场 slug",
+            "type": "string"
+          },
+          "spread": {
+            "description": "当前最优买卖价差",
+            "type": "number"
+          },
           "startDate": {
-            "description": "开始时间",
+            "description": "市场开始时间",
             "type": "string"
           },
           "status": {
             "description": "市场状态",
             "type": "string"
           },
-          "tokenIdNo": {
-            "description": "NO 结果 Token ID",
-            "type": "string"
+          "tokens": {
+            "description": "市场结果 Token 列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.Token"
+            }
           },
-          "tokenIdYes": {
-            "description": "YES 结果 Token ID",
-            "type": "string"
-          },
-          "tokenNameNo": {
-            "description": "NO 结果展示名",
-            "type": "string"
-          },
-          "tokenNameYes": {
-            "description": "YES 结果展示名",
+          "updatedAt": {
+            "description": "市场数据更新时间",
             "type": "string"
           },
           "volume": {
-            "description": "累计成交量",
-            "type": "string"
+            "description": "市场累计成交量",
+            "type": "number"
+          },
+          "volume24hr": {
+            "description": "最近 24 小时成交量",
+            "type": "number"
+          },
+          "volumeClob": {
+            "description": "订单簿累计成交量",
+            "type": "number"
           }
         }
       },
@@ -2654,6 +2751,31 @@
           },
           "slug": {
             "description": "标签 slug",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.Token": {
+        "type": "object",
+        "properties": {
+          "bestAsk": {
+            "description": "Token 当前最优卖价",
+            "type": "string"
+          },
+          "bestBid": {
+            "description": "Token 当前最优买价",
+            "type": "string"
+          },
+          "lastPrice": {
+            "description": "Token 最新成交价",
+            "type": "string"
+          },
+          "outcome": {
+            "description": "Token 对应的结果名称",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "结果 Token ID",
             "type": "string"
           }
         }
