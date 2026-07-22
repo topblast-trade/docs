@@ -22,6 +22,15 @@
         "summary": "List assets",
         "parameters": [
           {
+            "description": "Page number, starting from 1.",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
             "description": "Number of records to return, up to 100.",
             "name": "size",
             "in": "query",
@@ -46,10 +55,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/v2.brokerAssetItem"
-                  }
+                  "$ref": "#/components/schemas/v2.brokerAssetPageData"
                 }
               }
             }
@@ -495,6 +501,15 @@
         "summary": "List open orders",
         "parameters": [
           {
+            "description": "Page number, starting from 1.",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
             "description": "User email address.",
             "name": "email",
             "in": "query",
@@ -551,10 +566,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
-                  }
+                  "$ref": "#/components/schemas/v2.brokerOpenOrderPageData"
                 }
               }
             }
@@ -697,6 +709,15 @@
         "summary": "List positions",
         "parameters": [
           {
+            "description": "Page number, starting from 1.",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
             "description": "User email address.",
             "name": "email",
             "in": "query",
@@ -745,10 +766,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/v2.brokerPositionItem"
-                  }
+                  "$ref": "#/components/schemas/v2.brokerPositionPageData"
                 }
               }
             }
@@ -1866,6 +1884,24 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "Exclusive starting trade record ID.",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "Exclusive ending trade record ID.",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
             }
           }
         ],
@@ -3947,6 +3983,10 @@
           "tradeKind": {
             "description": "Trade Kind.",
             "type": "string"
+          },
+          "id": {
+            "description": "Unique trade record ID used by from/to stream pagination.",
+            "type": "string"
           }
         }
       },
@@ -4063,13 +4103,61 @@
             "example": "invalid request"
           }
         }
+      },
+      "v2.brokerOpenOrderPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "Open orders on the current page.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
+            }
+          },
+          "total": {
+            "description": "Total number of open orders.",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerPositionPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "Positions on the current page.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerPositionItem"
+            }
+          },
+          "total": {
+            "description": "Total number of positions.",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerAssetPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "Assets on the current page.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerAssetItem"
+            }
+          },
+          "total": {
+            "description": "Total number of asset records.",
+            "type": "integer"
+          }
+        }
       }
     }
   },
   "servers": [
     {
-      "url": "https://api.topblast.trade",
-      "description": "Production environment"
+      "url": "https://api-test.topblast.trade",
+      "description": "Test environment"
     }
   ],
   "security": [

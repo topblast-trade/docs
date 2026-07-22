@@ -73,7 +73,7 @@ timestamp + "\n" + webhookId + "\n" + rawBody
 接收端实现并验证完成后，调用[更新券商设置](/cn/broker/api-reference/settings/update)，只提交需要设置的 `webhookUrl`：
 
 ```http
-PATCH https://api.topblast.trade/v1/broker/settings
+PATCH https://api-test.topblast.trade/v1/broker/settings
 x-api-key: <API_KEY>
 x-timestamp: <TIMESTAMP>
 x-signature: <SIGNATURE>

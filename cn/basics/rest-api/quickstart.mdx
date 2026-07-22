@@ -23,7 +23,7 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
 <CodeGroup>
   ```bash cURL
   curl --request POST \
-    --url https://api.topblast.trade/v1/broker/tokens \
+    --url https://api-test.topblast.trade/v1/broker/tokens \
     --header 'Content-Type: application/json' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
@@ -51,7 +51,7 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
+    --url 'https://api-test.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
@@ -69,7 +69,7 @@ Query 参数的顺序和编码是签名的一部分，必须与请求 URL 完全
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/broker/assets?uid=1000000000001&size=20' \
+    --url 'https://api-test.topblast.trade/v1/broker/assets?uid=1000000000001&page=1&size=20' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
@@ -83,7 +83,7 @@ Web、App 等用户客户端使用 Bearer Token 查询当前现货委托：
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/private/orders?user_id=broker-user-10001' \
+    --url 'https://api-test.topblast.trade/v1/private/orders?user_id=broker-user-10001' \
     --header 'Authorization: Bearer <user_access_token>' \
     --header 'Content-Type: application/json'
   ```
@@ -94,4 +94,4 @@ Web、App 等用户客户端使用 Bearer Token 查询当前现货委托：
 1. 查看[Broker REST API 鉴权](/cn/broker/guide/authentication)，在服务端实现签名。
 2. 使用[创建划转](/cn/broker/api-reference/transfer/create)完成充值或提现。
 3. 查看[现货当前委托](/cn/user/api-reference/orders/open)及其他用户交易接口。
-4. 了解[通用响应结构](/cn/broker/guide/response)并统一处理错误。
+4. 了解[响应结构](/cn/broker/guide/response)并统一处理错误。

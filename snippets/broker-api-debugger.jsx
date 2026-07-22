@@ -46,7 +46,7 @@ export const BrokerApiDebugger = () => {
   }));
 
   const [selectedID, setSelectedID] = useState(endpoints[0].id);
-  const [environment, setEnvironment] = useState("https://api.topblast.trade");
+  const [environment, setEnvironment] = useState("https://api-test.topblast.trade");
   const [apiKey, setApiKey] = useState(defaultApiKey);
   const [apiSecret, setApiSecret] = useState(defaultApiSecret);
   const [credentialStatus, setCredentialStatus] = useState("");
@@ -248,9 +248,7 @@ export const BrokerApiDebugger = () => {
               value={environment}
               onChange={(event) => setEnvironment(event.target.value)}
             >
-              <option value="https://api.topblast.trade">生产环境</option>
               <option value="https://api-test.topblast.trade">测试环境</option>
-              <option value="https://api-dev.topblast.trade">开发环境</option>
             </select>
           </div>
           <div>

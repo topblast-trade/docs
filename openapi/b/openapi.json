@@ -22,6 +22,15 @@
         "summary": "查询资产",
         "parameters": [
           {
+            "description": "页码，从 1 开始",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
             "description": "返回数量，最大 100",
             "name": "size",
             "in": "query",
@@ -46,10 +55,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/v2.brokerAssetItem"
-                  }
+                  "$ref": "#/components/schemas/v2.brokerAssetPageData"
                 }
               }
             }
@@ -495,6 +501,15 @@
         "summary": "查询当前委托",
         "parameters": [
           {
+            "description": "页码，从 1 开始",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
             "description": "用户邮箱",
             "name": "email",
             "in": "query",
@@ -551,10 +566,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
-                  }
+                  "$ref": "#/components/schemas/v2.brokerOpenOrderPageData"
                 }
               }
             }
@@ -697,6 +709,15 @@
         "summary": "查询仓位",
         "parameters": [
           {
+            "description": "页码，从 1 开始",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
             "description": "用户邮箱",
             "name": "email",
             "in": "query",
@@ -745,10 +766,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/v2.brokerPositionItem"
-                  }
+                  "$ref": "#/components/schemas/v2.brokerPositionPageData"
                 }
               }
             }
@@ -1866,6 +1884,24 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "起始成交记录 ID（不包含）",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "结束成交记录 ID（不包含）",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
             }
           }
         ],
@@ -3947,6 +3983,10 @@
           "tradeKind": {
             "description": "成交类型",
             "type": "string"
+          },
+          "id": {
+            "description": "唯一成交记录 ID，用于 from/to 流式分页",
+            "type": "string"
           }
         }
       },
@@ -4063,13 +4103,61 @@
             "example": "invalid request"
           }
         }
+      },
+      "v2.brokerOpenOrderPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "当前页挂单",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerOpenOrderItem"
+            }
+          },
+          "total": {
+            "description": "挂单总数",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerPositionPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "当前页仓位",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerPositionItem"
+            }
+          },
+          "total": {
+            "description": "仓位总数",
+            "type": "integer"
+          }
+        }
+      },
+      "v2.brokerAssetPageData": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "当前页资产",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerAssetItem"
+            }
+          },
+          "total": {
+            "description": "资产记录总数",
+            "type": "integer"
+          }
+        }
       }
     }
   },
   "servers": [
     {
-      "url": "https://api.topblast.trade",
-      "description": "生产环境"
+      "url": "https://api-test.topblast.trade",
+      "description": "测试环境"
     }
   ],
   "security": [

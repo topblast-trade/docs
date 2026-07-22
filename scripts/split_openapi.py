@@ -122,8 +122,8 @@ def build(source: dict, side: str) -> dict:
         spec["info"]["title"] = "topblast Trading REST API"
         spec["servers"] = [
             {
-                "url": "https://api.topblast.trade",
-                "description": "生产环境",
+                "url": "https://api-test.topblast.trade",
+                "description": "测试环境",
             }
         ]
         configure_auth = configure_c_auth

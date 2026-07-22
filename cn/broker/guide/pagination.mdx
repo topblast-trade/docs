@@ -1,0 +1,99 @@
+---
+title: "分页规则"
+description: "了解 Broker REST API 的页码分页和流式分页规则。"
+---
+
+Broker REST API 的列表接口根据数据特点使用页码分页或流式分页。具体接口支持的分页参数和响应 Schema 以对应 API Reference 页面为准。
+
+## 页码分页
+
+支持页码分页的列表接口接收 `page` 和 `size`，返回当前页数据及总数。
+
+### 请求参数
+
+| 参数 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `page` | integer | 页码，从 `1` 开始。 |
+| `size` | integer | 每页数量，最大值以接口定义为准。 |
+
+### 请求示例
+
+查询第 `2` 页用户，每页返回 `20` 条：
+
+```bash
+curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
+  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-timestamp: <unix-milliseconds>' \
+  -H 'x-signature: <signature>'
+```
+
+### 响应结果
+
+```json
+{
+  "items": [
+    {
+      "uid": 10001,
+      "userId": "broker-user-10001",
+      "email": "user@example.com",
+      "username": "example-user",
+      "userType": "NORMAL",
+      "createdAt": "2026-07-22T04:00:00Z",
+      "lastLoginAt": "2026-07-22T06:30:00Z"
+    }
+  ],
+  "total": 45
+}
+```
+
+`items` 是当前页的数据，`total` 是符合查询条件的记录总数。
+
+## 流式分页
+
+流式分页使用记录 ID 定位结果边界，并可通过时间范围进一步筛选数据。
+
+### 请求参数
+
+记录边界参数：
+
+- `from`：起始记录 ID，不包含该记录。
+- `to`：结束记录 ID，不包含该记录。
+
+筛选和数量参数：
+
+- `begin`：开始时间，Unix 毫秒，包含该时间。
+- `end`：结束时间，Unix 毫秒，不包含该时间。
+- `size`：返回数量，最大值以接口定义为准。
+
+不同接口根据数据特点支持其中一组或多组参数。`begin/end` 用于限定时间范围；`from/to` 用于继续读取指定记录之前或之后的数据。
+
+### 请求示例
+
+查询指定时间范围内的成交记录，最多返回 `20` 条：
+
+```bash
+curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1784620800000&size=20' \
+  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-timestamp: <unix-milliseconds>' \
+  -H 'x-signature: <signature>'
+```
+
+### 响应结果
+
+```json
+[
+  { "id": "72895202682998786", "tradeId": "72895202682990001", "eventTime": 1784621855801 },
+  { "id": "72895202682998785", "tradeId": "72895202682990002", "eventTime": 1784621855700 }
+]
+```
+
+继续读取更早的成交记录时，将当前批次最后一条记录的 `id` 作为 `to`：
+
+```bash
+curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1784620800000&to=72895202682998785&size=20' \
+  -H 'x-api-key: <broker-api-key>' \
+  -H 'x-timestamp: <unix-milliseconds>' \
+  -H 'x-signature: <signature>'
+```
+
+流式分页响应直接返回数组，不返回 `total` 或分页对象。

@@ -1,0 +1,23 @@
+---
+title: "错误代码"
+description: "了解 Broker REST API 的常用 HTTP 状态码和处理建议。"
+---
+
+Broker REST API 使用 HTTP 状态码表示请求处理结果。失败响应的 JSON 结构请参阅[响应结构](/cn/broker/guide/response)。
+
+## 常用 HTTP 状态码
+
+| HTTP 状态码 | 含义 | 建议处理方式 |
+| :--- | :--- | :--- |
+| `200 OK` | 查询或更新请求成功 | 按当前接口的响应 Schema 解析响应体。 |
+| `201 Created` | 资源创建成功 | 保存响应中的新资源或资源标识。 |
+| `202 Accepted` | 异步请求已受理 | 保存划转标识，通过详情接口或 Webhook 跟踪最终状态。 |
+| `204 No Content` | 操作成功且无响应体 | 不要尝试解析 JSON。 |
+| `400 Bad Request` | 参数、请求体或签名原文格式无效 | 修正请求后再提交，不要原样重试。 |
+| `401 Unauthorized` | API Key、时间戳或签名无效 | 检查鉴权 Header、时间戳和签名计算。 |
+| `403 Forbidden` | 当前券商无权执行该操作 | 检查券商权限和资源归属，停止无效重试。 |
+| `404 Not Found` | 路由或资源不存在 | 检查资源 ID、用户 ID 和请求路径。 |
+| `409 Conflict` | 资源状态冲突（例如重复划转） | 查询资源当前状态，再决定是否重试。 |
+| `500 Internal Server Error` | 服务内部错误 | 记录请求上下文并采用退避策略重试。 |
+
+具体接口支持的状态码和响应 Schema 以各 API Reference 页面为准。

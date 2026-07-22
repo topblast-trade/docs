@@ -23,7 +23,7 @@ After the user signs in to the broker, call the login endpoint from the broker s
 <CodeGroup>
   ```bash cURL
   curl --request POST \
-    --url https://api.topblast.trade/v1/broker/tokens \
+    --url https://api-test.topblast.trade/v1/broker/tokens \
     --header 'Content-Type: application/json' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
@@ -51,7 +51,7 @@ Use the returned `uid` or broker-side `userId` to verify the mapping:
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
+    --url 'https://api-test.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
@@ -69,7 +69,7 @@ Retrieve assets and balances with the platform user UID:
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/broker/assets?uid=1000000000001&size=20' \
+    --url 'https://api-test.topblast.trade/v1/broker/assets?uid=1000000000001&page=1&size=20' \
     --header 'x-api-key: <broker_api_key>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
@@ -83,7 +83,7 @@ Web and mobile clients use a bearer token to query current spot orders:
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api.topblast.trade/v1/private/orders?user_id=broker-user-10001' \
+    --url 'https://api-test.topblast.trade/v1/private/orders?user_id=broker-user-10001' \
     --header 'Authorization: Bearer <user_access_token>' \
     --header 'Content-Type: application/json'
   ```

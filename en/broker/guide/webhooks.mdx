@@ -73,7 +73,7 @@ A local service cannot receive callbacks from the public internet directly. Use 
 After implementing and verifying the receiver, call [Update broker settings](/en/broker/api-reference/settings/update) and submit only the `webhookUrl` you want to set:
 
 ```http
-PATCH https://api.topblast.trade/v1/broker/settings
+PATCH https://api-test.topblast.trade/v1/broker/settings
 x-api-key: <API_KEY>
 x-timestamp: <TIMESTAMP>
 x-signature: <SIGNATURE>

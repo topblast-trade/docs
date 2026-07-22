@@ -52,6 +52,8 @@
                       "cn/broker/guide/introduction",
                       "cn/broker/guide/authentication",
                       "cn/broker/guide/response",
+                      "cn/broker/guide/pagination",
+                      "cn/broker/guide/errors",
                       "cn/broker/guide/webhooks"
                     ]
                   },
