@@ -1,22 +1,62 @@
 ---
 title: "错误代码"
-description: "了解 Broker REST API 的常用 HTTP 状态码和处理建议。"
+description: "了解 Broker REST API 的错误响应、常见 HTTP 状态码和重试策略。"
 ---
 
-Broker REST API 使用 HTTP 状态码表示请求处理结果。失败响应的 JSON 结构请参阅[响应结构](/cn/broker/guide/response)。
+Broker REST API 直接使用 HTTP 状态码作为错误代码，不另外提供数字业务错误码。所有非 `2xx` 响应都表示请求失败。
+
+## 错误响应结构
+
+```json
+{
+  "error": "user not found"
+}
+```
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `error` | `string` | 便于排查问题的错误信息。文案可能随服务版本调整，程序不应依赖该字段进行分支判断。 |
+
+程序应以 HTTP 状态码判断错误类型，以 `error` 辅助记录和排查。成功响应结构请参阅[响应结构](/cn/broker/guide/response)。
 
 ## 常用 HTTP 状态码
 
 | HTTP 状态码 | 含义 | 建议处理方式 |
 | :--- | :--- | :--- |
-| `200 OK` | 查询或更新请求成功 | 按当前接口的响应 Schema 解析响应体。 |
-| `201 Created` | 资源创建成功 | 保存响应中的新资源或资源标识。 |
-| `202 Accepted` | 异步请求已受理 | 保存划转标识，通过详情接口或 Webhook 跟踪最终状态。 |
-| `400 Bad Request` | 参数、请求体或签名原文格式无效 | 修正请求后再提交，不要原样重试。 |
-| `401 Unauthorized` | API Key、时间戳或签名无效 | 检查鉴权 Header、时间戳和签名计算。 |
-| `403 Forbidden` | 当前券商无权执行该操作 | 检查券商权限和资源归属，停止无效重试。 |
+| `400 Bad Request` | 查询参数、路径参数或请求体无效 | 根据 `error` 修正请求，不要原样重试。 |
+| `401 Unauthorized` | 鉴权信息缺失或无效 | 检查 API Key、时间戳、签名及券商启用状态。 |
+| `403 Forbidden` | 已通过鉴权，但无权访问目标资源 | 检查资源是否属于当前券商以及账户权限。 |
 | `404 Not Found` | 路由或资源不存在 | 检查资源 ID、用户 ID 和请求路径。 |
-| `409 Conflict` | 资源状态冲突（例如重复划转） | 查询资源当前状态，再决定是否重试。 |
-| `500 Internal Server Error` | 服务内部错误 | 记录请求上下文并采用退避策略重试。 |
+| `405 Method Not Allowed` | 请求路径存在，但 HTTP 方法不受支持 | 对照 API Reference 修正 HTTP 方法。 |
+| `409 Conflict` | 请求与资源当前状态冲突，例如同一 `txnId` 对应了不同划转参数 | 先查询现有资源状态，不要直接更换参数重试。 |
+| `500 Internal Server Error` | UC 或依赖服务发生未预期错误 | 记录请求时间、路径和响应信息，并采用指数退避重试。 |
 
-具体接口支持的状态码和响应 Schema 以各 API Reference 页面为准。
+UC 可能透传依赖服务返回的其他 `4xx` 或 `5xx` 状态码。遇到表中未列出的状态码时，仍应遵循 HTTP 语义处理，并保留完整响应供排查。
+
+## 鉴权错误
+
+鉴权失败统一返回 `401 Unauthorized`。常见的 `error` 信息如下：
+
+| `error` | 原因 |
+| :--- | :--- |
+| `missing auth headers (x-api-key, x-timestamp, x-signature)` | 缺少一个或多个鉴权 Header。 |
+| `invalid x-timestamp format` | `x-timestamp` 不是有效整数。 |
+| `timestamp expired or invalid` | 时间戳与服务端时间相差超过 5 分钟。 |
+| `invalid x-api-key` | API Key 不存在。 |
+| `broker is disabled` | 当前券商已被停用。 |
+| `invalid signature` | 签名与服务端计算结果不一致。 |
+
+<Note>
+  鉴权错误信息用于定位问题，不属于稳定的机器可读错误码。请始终根据 HTTP `401` 处理鉴权失败。
+</Note>
+
+## 重试策略
+
+| 场景 | 是否重试 | 建议 |
+| :--- | :--- | :--- |
+| `400`、`401`、`403`、`404`、`405` | 否 | 先修正请求、鉴权信息或权限配置。 |
+| `409` | 视情况 | 先查询资源状态；划转请求应使用原 `txnId` 和完全相同的参数。 |
+| `500` 及其他临时性 `5xx` | 是 | 使用带随机抖动的指数退避，并设置最大重试次数。 |
+| 网络超时或连接中断 | 视情况 | 查询类请求可以重试；创建划转时必须复用同一 `txnId`，避免重复执行。 |
+
+具体接口的成功状态码和响应 Schema 以各 API Reference 页面为准。

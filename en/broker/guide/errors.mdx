@@ -1,22 +1,62 @@
 ---
 title: "Error codes"
-description: "Understand common Broker REST API HTTP status codes and recommended handling."
+description: "Understand Broker REST API error responses, common HTTP status codes, and retry strategies."
 ---
 
-The Broker REST API uses HTTP status codes to indicate request results. See [Response format](/en/broker/guide/response) for the error response body.
+The Broker REST API uses the HTTP status code itself as the error code. It does not expose a separate numeric business error code. Every non-`2xx` response indicates failure.
+
+## Error response format
+
+```json
+{
+  "error": "user not found"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `error` | `string` | A diagnostic message. Its wording may change between service versions, so clients must not branch on this field. |
+
+Use the HTTP status code to classify errors and use `error` only for logging and diagnosis. See [Response format](/en/broker/guide/response) for successful responses.
 
 ## Common HTTP status codes
 
 | HTTP status | Meaning | Recommended handling |
 | :--- | :--- | :--- |
-| `200 OK` | Query or update succeeded | Parse the response using the operation's schema. |
-| `201 Created` | Resource created | Store the returned resource or identifier. |
-| `202 Accepted` | Asynchronous request accepted | Store the transfer ID and track its final state through the detail operation or webhook. |
-| `400 Bad Request` | Invalid parameters, request body, or signature input | Correct the request before resubmitting. Do not replay it unchanged. |
-| `401 Unauthorized` | The API key, timestamp, or signature is invalid | Check the authentication headers, timestamp, and signature calculation. |
-| `403 Forbidden` | The broker cannot perform this operation | Check broker permissions and resource ownership. Stop invalid retries. |
+| `400 Bad Request` | An invalid query parameter, path parameter, or request body | Correct the request based on `error`; do not retry it unchanged. |
+| `401 Unauthorized` | Missing or invalid authentication data | Check the API key, timestamp, signature, and broker status. |
+| `403 Forbidden` | Authentication succeeded, but the target resource is not accessible | Check resource ownership and account permissions. |
 | `404 Not Found` | The route or resource does not exist | Check the resource ID, user ID, and request path. |
-| `409 Conflict` | Resource state conflict, such as a duplicate transfer | Query the current resource state before retrying. |
-| `500 Internal Server Error` | Internal service error | Record the request context and retry with backoff. |
+| `405 Method Not Allowed` | The path exists, but the HTTP method is unsupported | Use the method documented in the API Reference. |
+| `409 Conflict` | The request conflicts with current state, such as using one `txnId` with different transfer parameters | Query the existing resource first; do not retry with changed parameters. |
+| `500 Internal Server Error` | An unexpected UC or dependency failure | Record the request time, path, and response, then retry with exponential backoff. |
 
-The status codes and response schemas declared on each API Reference page are authoritative.
+UC may pass through other `4xx` or `5xx` status codes returned by a dependency. Handle unlisted codes according to their standard HTTP semantics and retain the complete response for diagnosis.
+
+## Authentication errors
+
+Authentication failures return `401 Unauthorized`. Common `error` messages include:
+
+| `error` | Cause |
+| :--- | :--- |
+| `missing auth headers (x-api-key, x-timestamp, x-signature)` | One or more authentication headers are missing. |
+| `invalid x-timestamp format` | `x-timestamp` is not a valid integer. |
+| `timestamp expired or invalid` | The timestamp differs from server time by more than five minutes. |
+| `invalid x-api-key` | The API key does not exist. |
+| `broker is disabled` | The broker is disabled. |
+| `invalid signature` | The signature does not match the server-side calculation. |
+
+<Note>
+  Authentication messages are diagnostic text, not stable machine-readable codes. Always handle authentication failure by its HTTP `401` status.
+</Note>
+
+## Retry strategy
+
+| Scenario | Retry? | Recommendation |
+| :--- | :--- | :--- |
+| `400`, `401`, `403`, `404`, `405` | No | Correct the request, authentication data, or permissions first. |
+| `409` | It depends | Query current state first. For transfers, reuse the original `txnId` with exactly the same parameters. |
+| `500` and other transient `5xx` responses | Yes | Use exponential backoff with jitter and cap the number of attempts. |
+| Network timeout or disconnect | It depends | Retry reads. When creating a transfer, always reuse the same `txnId` to prevent duplicate execution. |
+
+The success status and response schema declared on each API Reference page are authoritative.
