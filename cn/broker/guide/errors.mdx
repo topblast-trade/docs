@@ -3,7 +3,7 @@ title: "错误代码"
 description: "了解 Broker REST API 的错误响应、常见 HTTP 状态码和重试策略。"
 ---
 
-Broker REST API 直接使用 HTTP 状态码作为错误代码，不另外提供数字业务错误码。所有非 `2xx` 响应都表示请求失败。
+Broker REST API 直接使用 HTTP 状态码作为错误代码，所有非 `2xx` 响应都表示请求失败。
 
 ## 错误响应结构
 
@@ -30,8 +30,6 @@ Broker REST API 直接使用 HTTP 状态码作为错误代码，不另外提供�
 | `405 Method Not Allowed` | 请求路径存在，但 HTTP 方法不受支持 | 对照 API Reference 修正 HTTP 方法。 |
 | `409 Conflict` | 请求与资源当前状态冲突，例如同一 `txnId` 对应了不同划转参数 | 先查询现有资源状态，不要直接更换参数重试。 |
 | `500 Internal Server Error` | UC 或依赖服务发生未预期错误 | 记录请求时间、路径和响应信息，并采用指数退避重试。 |
-
-UC 可能透传依赖服务返回的其他 `4xx` 或 `5xx` 状态码。遇到表中未列出的状态码时，仍应遵循 HTTP 语义处理，并保留完整响应供排查。
 
 ## 鉴权错误
 

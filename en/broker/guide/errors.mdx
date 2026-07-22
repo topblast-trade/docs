@@ -3,7 +3,7 @@ title: "Error codes"
 description: "Understand Broker REST API error responses, common HTTP status codes, and retry strategies."
 ---
 
-The Broker REST API uses the HTTP status code itself as the error code. It does not expose a separate numeric business error code. Every non-`2xx` response indicates failure.
+The Broker REST API uses the HTTP status code itself as the error code. Every non-`2xx` response indicates failure.
 
 ## Error response format
 
@@ -30,8 +30,6 @@ Use the HTTP status code to classify errors and use `error` only for logging and
 | `405 Method Not Allowed` | The path exists, but the HTTP method is unsupported | Use the method documented in the API Reference. |
 | `409 Conflict` | The request conflicts with current state, such as using one `txnId` with different transfer parameters | Query the existing resource first; do not retry with changed parameters. |
 | `500 Internal Server Error` | An unexpected UC or dependency failure | Record the request time, path, and response, then retry with exponential backoff. |
-
-UC may pass through other `4xx` or `5xx` status codes returned by a dependency. Handle unlisted codes according to their standard HTTP semantics and retain the complete response for diagnosis.
 
 ## Authentication errors
 
