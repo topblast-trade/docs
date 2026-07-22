@@ -175,14 +175,8 @@
                       "cn/user/api-reference/market/midpoint",
                       "cn/user/api-reference/market/spread",
                       "cn/user/api-reference/market/prices",
-                      "cn/user/api-reference/market/price-history"
-                    ]
-                  },
-                  {
-                    "group": "成交记录",
-                    "pages": [
-                      "cn/user/api-reference/trades/public",
-                      "cn/user/api-reference/trades/account"
+                      "cn/user/api-reference/market/price-history",
+                      "cn/user/api-reference/trades/public"
                     ]
                   },
                   {
@@ -198,10 +192,11 @@
                     ]
                   },
                   {
-                    "group": "账户与持仓",
+                    "group": "账户",
                     "pages": [
                       "cn/user/api-reference/account/summary",
-                      "cn/user/api-reference/account/positions"
+                      "cn/user/api-reference/account/positions",
+                      "cn/user/api-reference/trades/account"
                     ]
                   }
                 ]
