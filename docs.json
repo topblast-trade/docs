@@ -190,9 +190,8 @@
                     "pages": [
                       "cn/user/api-reference/orders/create",
                       "cn/user/api-reference/orders/cancel",
-                      "cn/user/api-reference/orders/list",
                       "cn/user/api-reference/orders/detail",
-                      "cn/user/api-reference/orders/open",
+                      "cn/user/api-reference/orders/list",
                       "cn/user/api-reference/orders/history",
                       "cn/user/api-reference/orders/batch-create",
                       "cn/user/api-reference/orders/batch-cancel"
