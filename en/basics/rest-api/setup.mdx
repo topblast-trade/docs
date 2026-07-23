@@ -47,10 +47,14 @@ All requests must use HTTPS. Append a path from the Trading API Reference to thi
   </Tab>
 
   <Tab title="Trading REST API">
-    Trading REST API requests support Bearer token or API Key authentication. Web and mobile clients use Bearer tokens. Trusted server-side bots and trading programs can use API Key authentication.
+    Every Trading REST API request requires `x-app-id` to identify the broker application. `/v1/public/*` operations require no user authentication. `/v1/private/*` operations accept either a bearer token or API Key authentication. Web and mobile clients use bearer tokens. Trusted server-side bots and trading programs can use API keys.
 
-    <ParamField header="Authorization" type="string" example="Bearer &lt;access_token&gt;" required>
-      Bearer token issued by the user login flow.
+    <ParamField header="x-app-id" type="string" example="ba11_xxxxxxxxxxxxxxxxxxxxxxxx" required>
+      App ID assigned to the broker or partner by topblast.
+    </ParamField>
+
+    <ParamField header="Authorization" type="string" example="Bearer &lt;access_token&gt;">
+      Bearer token for private operations, issued by the user login flow.
     </ParamField>
 
     Never send the token in a query parameter or request body. API Key authentication uses the same HMAC-SHA256 signing rules as the Broker REST API. See [Trading REST API authentication](/en/user/guide/authentication) for details.
@@ -78,6 +82,7 @@ All requests must use HTTPS. Append a path from the Trading API Reference to thi
     ```bash
     curl --request GET \
       --url "https://api-test.topblast.trade/v1/private/orders" \
+      --header "x-app-id: <broker_app_id>" \
       --header "Authorization: Bearer <access_token>" \
       --header "Content-Type: application/json"
     ```

@@ -1,5 +1,5 @@
 ---
-title: "Broker transferred"
+title: "broker.transferred"
 description: "当券商用户资金划转完成时触发。"
 openapi: "/openapi/b/webhooks.json webhook broker.transferred"
 ---
@@ -10,4 +10,4 @@ openapi: "/openapi/b/webhooks.json webhook broker.transferred"
 平台采用至少一次投递语义。请使用 `eventId` 保证消费幂等，并在持久化事件后返回 `2xx`。
 </Note>
 
-签名验证、重试机制和接入步骤参见[网络钩子](/cn/broker/guide/webhooks)。
+签名验证、重试机制和接入步骤参见 [Webhooks](/cn/broker/guide/webhooks)。

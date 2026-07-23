@@ -1,17 +1,21 @@
 ---
 title: "Trading REST API authentication"
-description: "Authenticate C-end Trading REST API requests with a Bearer token or API Key authentication."
+description: "Identify the broker application and authenticate Trading REST API requests with a bearer token or API key."
 ---
 
-C-end and OpenAPI clients share the `/v1` path. `/v1/public/*` endpoints require no authentication. `/v1/private/*` endpoints accept either a Bearer token or API Key authentication.
+Every Trading REST API request requires `x-app-id` to identify the broker that owns the request. `/v1/public/*` operations require no user authentication. `/v1/private/*` operations accept either a bearer token or API Key authentication.
 
-<Note>
-The `/openapi/v1/*` mirror path is no longer available. API Key clients must also request `/v1/private/*`.
-</Note>
+## Broker application identity
+
+```http
+x-app-id: <broker_app_id>
+```
+
+topblast assigns this App ID to a broker or partner. It determines tenant routing and permission scope; it does not identify the signed-in user. Include it on both public and private requests.
 
 ## Authentication selection order
 
-The server selects an authentication method in this order:
+For `/v1/private/*` operations, the server selects user authentication in this order:
 
 1. If the request includes `Authorization: Bearer <access_token>`, the server performs token authentication.
 2. If there is no Bearer token but any of `x-api-key`, `x-timestamp`, or `x-signature` is present, the server performs API Key authentication and requires all three headers.
@@ -32,12 +36,13 @@ The user login flow issues the token. Never send it in a query parameter or requ
 ```bash
 curl --request GET \
   --url 'https://<api-host>/v1/private/orders' \
+  --header 'x-app-id: <broker_app_id>' \
   --header 'Authorization: Bearer <access_token>'
 ```
 
 ## API Key authentication
 
-API Key authentication uses AK/SK credentials and an HMAC-SHA256 request signature. It follows the same signing rules as the Broker REST API authorization module. Trading bots and other trusted server-side clients can sign requests with an Access Key and Secret Key. Every request must include these headers:
+API Key authentication uses AK/SK credentials and an HMAC-SHA256 request signature. It follows the same signing rules as the Broker REST API. Trading bots and other trusted server-side clients use an Access Key to identify the user and a Secret Key to sign requests locally. In addition to the common `x-app-id`, every request must include these headers:
 
 | Header | Description | Example |
 | :--- | :--- | :--- |
@@ -83,11 +88,12 @@ For `GET /v1/private/orders?limit=20`, the signature payload is:
 1717027200000GET/v1/private/orders?limit=20
 ```
 
-Send the three authentication headers with the request:
+Send `x-app-id` together with the three API Key authentication headers:
 
 ```bash
 curl --request GET \
   --url 'https://<api-host>/v1/private/orders?limit=20' \
+  --header 'x-app-id: <broker_app_id>' \
   --header 'x-api-key: <access_key>' \
   --header 'x-timestamp: 1717027200000' \
   --header 'x-signature: <base64_signature>'
@@ -97,6 +103,7 @@ curl --request GET \
 
 | HTTP status | Cause |
 | :--- | :--- |
+| `401` | `x-app-id` is missing, invalid, or does not resolve to a broker |
 | `401` | The request has no token or API Key headers |
 | `401` | The Bearer token is invalid or expired |
 | `401` | The API Key header set is incomplete |

@@ -36,7 +36,7 @@ topblast creates the mapping when necessary and returns the platform user UID:
 
 ```json
 {
-  "uid": 1000000000001
+  "uid": "1000000000001"
 }
 ```
 
@@ -83,7 +83,8 @@ Web and mobile clients use a bearer token to query current spot orders:
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api-test.topblast.trade/v1/private/orders?user_id=broker-user-10001' \
+    --url 'https://api-test.topblast.trade/v1/private/orders?limit=20&offset=0' \
+    --header 'x-app-id: <broker_app_id>' \
     --header 'Authorization: Bearer <user_access_token>' \
     --header 'Content-Type: application/json'
   ```
@@ -93,5 +94,5 @@ Web and mobile clients use a bearer token to query current spot orders:
 
 1. Implement server-side signing with [Broker REST API authentication](/en/broker/guide/authentication).
 2. Use [Create transfer](/en/broker/api-reference/transfer/create) to deposit or withdraw assets.
-3. Explore [Open spot orders](/en/user/api-reference/orders/open) and other Trading REST API operations.
+3. Explore [Open orders](/en/user/api-reference/orders/list) and other Trading REST API operations.
 4. Handle errors consistently with the [common response format](/en/broker/guide/response).

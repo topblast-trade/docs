@@ -12,6 +12,7 @@ OPENAPI_FILES = (
     ROOT / "openapi" / "b" / "openapi.json",
     ROOT / "openapi" / "b" / "openapi.en.json",
     ROOT / "openapi" / "c" / "openapi.json",
+    ROOT / "openapi" / "c" / "openapi.en.json",
 )
 HTTP_METHODS = {"get", "post", "put", "patch", "delete", "options", "head"}
 

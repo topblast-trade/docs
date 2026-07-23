@@ -47,10 +47,14 @@ https://api-test.topblast.trade
   </Tab>
 
   <Tab title="Trading REST API">
-    Trading REST API 支持 Bearer Token 或 API Key 鉴权。Web、App 使用 Bearer Token；量化程序、机器人等可信服务端可以使用 API Key 鉴权。
+    所有 Trading REST API 请求都必须携带 `x-app-id`，用于标识请求所属券商。`/v1/public/*` 接口不需要用户鉴权；`/v1/private/*` 接口支持 Bearer Token 或 API Key 鉴权。Web、App 使用 Bearer Token；量化程序、机器人等可信服务端可以使用 API Key 鉴权。
 
-    <ParamField header="Authorization" type="string" example="Bearer &lt;access_token&gt;" required>
-      Bearer Token。Token 由用户登录流程签发。
+    <ParamField header="x-app-id" type="string" example="ba11_xxxxxxxxxxxxxxxxxxxxxxxx" required>
+      topblast 分配给券商或合作方的 App ID。
+    </ParamField>
+
+    <ParamField header="Authorization" type="string" example="Bearer &lt;access_token&gt;">
+      私有接口使用的 Bearer Token。Token 由用户登录流程签发。
     </ParamField>
 
     不要通过查询参数或请求体传递 Token。API Key 鉴权采用与 Broker REST API 相同的 HMAC-SHA256 签名规则。详细说明请参阅[Trading REST API 鉴权](/cn/user/guide/authentication)。
@@ -78,6 +82,7 @@ https://api-test.topblast.trade
     ```bash
     curl --request GET \
       --url "https://api-test.topblast.trade/v1/private/orders" \
+      --header "x-app-id: <broker_app_id>" \
       --header "Authorization: Bearer <access_token>" \
       --header "Content-Type: application/json"
     ```

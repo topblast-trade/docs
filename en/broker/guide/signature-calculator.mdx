@@ -5,13 +5,13 @@ description: "Calculate a Broker REST API request signature locally in your brow
 
 import { SignatureCalculator } from "/snippets/signature-calculator.jsx";
 
-Enter the AK, SK, and request parameters to calculate `x-signature`. The calculation runs only in your browser; inputs are not sent to a server or saved locally.
+Enter the App ID, App Secret, and request parameters to calculate `x-signature`. The calculation runs only in your browser; inputs are not sent to a server or saved locally.
 
 <Warning>
-Do not use a production SK on a shared device. Close the page after calculation to prevent others from viewing sensitive information.
+Do not use a production App Secret on a shared device. Close the page after calculation to prevent others from viewing sensitive information.
 </Warning>
 
-<SignatureCalculator />
+<SignatureCalculator locale="en" />
 
 ## Calculation rules
 

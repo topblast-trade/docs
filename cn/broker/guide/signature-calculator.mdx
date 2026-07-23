@@ -5,9 +5,10 @@ description: "在浏览器本地计算 Broker REST API 请求签名。"
 
 import { SignatureCalculator } from "/snippets/signature-calculator.jsx";
 
+填写 App ID、App Secret 和请求参数，计算器会生成 `x-signature`。所有计算仅在当前浏览器中完成，输入内容不会发送到服务器，也不会写入本地存储。
 
 <Warning>
-请勿在公共设备上使用生产环境 SK。计算完成后关闭页面，避免敏感信息被他人看到。
+请勿在公共设备上使用生产环境 App Secret。计算完成后关闭页面，避免敏感信息被他人看到。
 </Warning>
 
 <SignatureCalculator />

@@ -1,18 +1,18 @@
 ---
 title: "API 调试器"
-description: "填写 AK、SK 和请求参数，自动签名并发送 Broker REST API 请求。"
+description: "填写 App ID、App Secret 和请求参数，自动签名并发送 Broker REST API 请求。"
 ---
 
 import { BrokerApiDebugger } from "/snippets/broker-api-debugger.jsx";
 
-调试器包含当前 28 个 Broker REST API。选择接口并填写最终 Path、Query 和 Body 后，点击 **Send**，浏览器会实时生成时间戳和 HMAC-SHA256 签名，自动追加鉴权请求头，然后发送请求。
+调试器包含当前 31 个 Broker REST API。选择接口并填写最终 Path、Query 和 Body 后，点击 **发送**，浏览器会实时生成时间戳和 HMAC-SHA256 签名，自动追加鉴权请求头，然后发送请求。
 
 <Warning>
-调试器提供默认测试 AK 和 SK。点击 **保存 AK / SK** 后，当前凭证会写入浏览器本地存储。请勿在公共设备上保存生产环境凭证。
+调试器提供默认测试 App ID 和 App Secret。点击 **保存 App ID / App Secret** 后，当前凭证会写入浏览器本地存储。请勿在公共设备上保存生产环境凭证。
 </Warning>
 
 <BrokerApiDebugger />
 
 <Note>
-请求通过 Mintlify 同源代理发送，浏览器不会直接访问 API 网关，因此不依赖网关的 CORS 配置。SK 仅用于浏览器本地计算签名，不会发送给 Mintlify 或 API 网关。
+请求通过 Mintlify 同源代理发送，浏览器不会直接访问 API 网关，因此不依赖网关的 CORS 配置。App Secret 仅用于浏览器本地计算签名，不会发送给 Mintlify 或 API 网关。
 </Note>

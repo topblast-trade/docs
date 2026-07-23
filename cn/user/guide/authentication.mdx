@@ -1,13 +1,21 @@
 ---
 title: "API 鉴权"
-description: "了解 Trading REST API 的 Bearer Token 与 API Key 鉴权。"
+description: "了解 Trading REST API 的券商应用标识、Bearer Token 与 API Key 鉴权。"
 ---
 
-`/v1/public/*` 接口无需鉴权，`/v1/private/*` 接口支持 Bearer Token 或 API Key 鉴权，但是全部接口都必传`x-app-id`这个header参数。
+所有 Trading REST API 请求都必须携带 `x-app-id`，用于标识请求所属券商。`/v1/public/*` 接口不需要用户鉴权；`/v1/private/*` 接口支持 Bearer Token 或 API Key 鉴权。
+
+## 券商应用标识
+
+```http
+x-app-id: <broker_app_id>
+```
+
+`x-app-id` 是 topblast 分配给券商或合作方的 App ID。它用于租户路由和权限范围识别，不代表当前登录用户。公开接口和私有接口都必须携带该 Header。
 
 ## 鉴权方式的选择顺序
 
-服务端按以下顺序选择鉴权方式：
+对于 `/v1/private/*` 接口，服务端按以下顺序选择用户鉴权方式：
 
 1. 请求 Header 中携带 `Authorization: Bearer <access_token>` 时，执行 Token 鉴权。
 2. 未取得 Bearer Token、但携带 `x-api-key`、`x-timestamp`、`x-signature`，执行 API Key 鉴权。
@@ -28,12 +36,13 @@ Token 由用户登录流程签发。不要将 Token 放入查询参数或请求�
 ```bash
 curl --request GET \
   --url 'https://<api-host>/v1/private/orders' \
+  --header 'x-app-id: <broker_app_id>' \
   --header 'Authorization: Bearer <access_token>'
 ```
 
 ## API Key 鉴权
 
-API Key 鉴权采用 HMAC-SHA256 请求签名，与 Broker REST API 的授权签名规则一致。量化程序、机器人等可信服务端使用 Access Key（AK）标识身份，并使用 Secret Key（SK）在本地生成签名。每个请求必须包含以下 Header：
+API Key 鉴权采用 HMAC-SHA256 请求签名，与 Broker REST API 的授权签名规则一致。量化程序、机器人等可信服务端使用 Access Key（AK）标识用户身份，并使用 Secret Key（SK）在本地生成签名。除通用的 `x-app-id` 外，每个请求还必须包含以下 Header：
 
 | Header | 说明 | 示例 |
 | :--- | :--- | :--- |
@@ -79,11 +88,12 @@ func CalculateSignature(secret, timestamp, method, path, rawQuery, body string) 
 1717027200000GET/v1/private/orders?limit=20
 ```
 
-签名完成后发送三个鉴权 Header：
+签名完成后，发送 `x-app-id` 和三个 API Key 鉴权 Header：
 
 ```bash
 curl --request GET \
   --url 'https://<api-host>/v1/private/orders?limit=20' \
+  --header 'x-app-id: <broker_app_id>' \
   --header 'x-api-key: <access_key>' \
   --header 'x-timestamp: 1717027200000' \
   --header 'x-signature: <base64_signature>'
@@ -93,6 +103,7 @@ curl --request GET \
 
 | HTTP 状态 | 原因 |
 | :--- | :--- |
+| `401` | `x-app-id` 缺失、无效或无法识别对应券商 |
 | `401` | 未携带 Token 或 API Key Header |
 | `401` | Bearer Token 无效或已过期 |
 | `401` | API Key Header 不完整 |

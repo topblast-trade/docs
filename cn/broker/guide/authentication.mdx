@@ -4,9 +4,11 @@ title: "授权签名"
 
 Broker REST API 使用 `App ID` 和 `App Secret` 完成 HMAC-SHA256 请求签名。每个请求必须包含以下 Header：
 
+券商级 App ID/App Secret 与用户级 API Key/API Secret 是两套不同凭证，不可混用。
+
 | Header | 说明 | 示例 |
 | :--- | :--- | :--- |
-| `x-app-id` | 平台分配的App ID | `ba11_xxxxxxxxxxxxxxxxxxxxxxxx` |
+| `x-app-id` | 平台分配的 App ID | `ba11_xxxxxxxxxxxxxxxxxxxxxxxx` |
 | `x-timestamp` | 请求时间戳，单位为秒或毫秒 | `1689584042` |
 | `x-signature` | Base64 编码的 HMAC-SHA256 签名 | `2a8b...` |
 

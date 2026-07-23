@@ -59,10 +59,10 @@ sequenceDiagram
         Note over BrokerClient,Core: 阶段一：登录与用户映射
 
         BrokerClient->>BrokerServer: 用户登录
-        BrokerServer->>BrokerServer: 分配Token
+        BrokerServer->>BrokerServer: 签发用户 Token
         BrokerServer->>Gateway: 同步用户信息和 Token
         activate Gateway
-        Gateway->>Gateway: App ID/App Secret 鉴权
+        Gateway->>Gateway: 验证 App ID 和请求签名
         Gateway->>Core: 建立用户映射关系
         activate Core
         Core-->>Gateway: 返回用户信息
@@ -73,16 +73,16 @@ sequenceDiagram
     end
 
     rect rgb(240, 253, 244)
-        Note over BrokerClient,Core: 阶段二：后续业务请求
+        Note over BrokerClient,Core: 阶段二：后续 API 请求
 
         BrokerClient->>Gateway: 携带用户 Token 发起业务请求
         activate Gateway
         Gateway->>Gateway: Token 鉴权
-        Gateway->>Core: 转发业务请求
+        Gateway->>Core: 转发 API 请求
         activate Core
-        Core-->>Gateway: 返回业务结果
+        Core-->>Gateway: 返回 API 响应
         deactivate Core
-        Gateway-->>BrokerClient: 返回业务结果
+        Gateway-->>BrokerClient: 返回 API 响应
         deactivate Gateway
     end
 ```

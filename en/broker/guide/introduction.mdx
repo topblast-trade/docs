@@ -23,7 +23,7 @@ All endpoints use the `/v1/broker/*` prefix and must be called from the broker s
 Store the App Secret on the broker server only. Never expose it to browsers, mobile clients, or end users.
 </Warning>
 
-## API gateways
+## API gateway
 
 | Environment | Gateway |
 | :--- | :--- |
@@ -58,10 +58,10 @@ sequenceDiagram
         Note over BrokerClient,Core: Phase 1: Sign-in and user mapping
 
         BrokerClient->>BrokerServer: Sign in
-        BrokerServer->>BrokerServer: Issue a token
+        BrokerServer->>BrokerServer: Issue a user token
         BrokerServer->>Gateway: Synchronize user information and token
         activate Gateway
-        Gateway->>Gateway: Authenticate with App ID and App Secret
+        Gateway->>Gateway: Verify the App ID and request signature
         Gateway->>Core: Establish the user mapping
         activate Core
         Core-->>Gateway: Return user information
@@ -72,16 +72,16 @@ sequenceDiagram
     end
 
     rect rgb(240, 253, 244)
-        Note over BrokerClient,Core: Phase 2: Subsequent business requests
+        Note over BrokerClient,Core: Phase 2: Subsequent API requests
 
-        BrokerClient->>Gateway: Send a request with the user token
+        BrokerClient->>Gateway: Send an API request with the user token
         activate Gateway
         Gateway->>Gateway: Authenticate the token
-        Gateway->>Core: Forward the business request
+        Gateway->>Core: Forward the API request
         activate Core
-        Core-->>Gateway: Return the business result
+        Core-->>Gateway: Return the API response
         deactivate Core
-        Gateway-->>BrokerClient: Return the business result
+        Gateway-->>BrokerClient: Return the API response
         deactivate Gateway
     end
 ```

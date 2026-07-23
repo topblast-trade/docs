@@ -159,6 +159,7 @@
                     "pages": [
                       "cn/user/api-reference/events/search",
                       "cn/user/api-reference/events/list",
+                      "cn/user/api-reference/events/list-deprecated",
                       "cn/user/api-reference/events/detail",
                       "cn/user/api-reference/events/tags",
                       "cn/user/api-reference/events/tag-detail",
@@ -268,7 +269,7 @@
                     ]
                   },
                   {
-                    "group": "API Key",
+                    "group": "API keys",
                     "pages": [
                       "en/broker/api-reference/user/api-keys",
                       "en/broker/api-reference/user/create-api-key",
@@ -292,7 +293,7 @@
                     ]
                   },
                   {
-                    "group": "Trading management",
+                    "group": "Trade management",
                     "pages": [
                       "en/broker/api-reference/trade/trades",
                       "en/broker/api-reference/trade/open-orders",
@@ -344,11 +345,11 @@
                     "pages": [
                       "en/user/guide/authentication",
                       "en/user/guide/response",
-                      "en/user/guide/error-codes"
+                      "en/user/guide/errors"
                     ]
                   },
                   {
-                    "group": "Event data",
+                    "group": "Metadata",
                     "pages": [
                       "en/user/api-reference/events/search",
                       "en/user/api-reference/events/list",
@@ -356,45 +357,40 @@
                       "en/user/api-reference/events/detail",
                       "en/user/api-reference/events/tags",
                       "en/user/api-reference/events/tag-detail",
-                      "en/user/api-reference/events/tag-detail-by-slug"
+                      "en/user/api-reference/events/tag-detail-by-slug",
+                      "en/user/api-reference/market/markets"
                     ]
                   },
                   {
                     "group": "Market data",
                     "pages": [
-                      "en/user/api-reference/market/markets",
                       "en/user/api-reference/market/orderbook",
                       "en/user/api-reference/market/ticker",
                       "en/user/api-reference/market/midpoint",
                       "en/user/api-reference/market/spread",
                       "en/user/api-reference/market/prices",
-                      "en/user/api-reference/market/price-history"
-                    ]
-                  },
-                  {
-                    "group": "Trades",
-                    "pages": [
-                      "en/user/api-reference/trades/public",
-                      "en/user/api-reference/trades/account"
+                      "en/user/api-reference/market/price-history",
+                      "en/user/api-reference/trades/public"
                     ]
                   },
                   {
                     "group": "Order management",
                     "pages": [
                       "en/user/api-reference/orders/create",
-                      "en/user/api-reference/orders/detail",
                       "en/user/api-reference/orders/cancel",
-                      "en/user/api-reference/orders/open",
+                      "en/user/api-reference/orders/detail",
+                      "en/user/api-reference/orders/list",
                       "en/user/api-reference/orders/history",
                       "en/user/api-reference/orders/batch-create",
                       "en/user/api-reference/orders/batch-cancel"
                     ]
                   },
                   {
-                    "group": "Accounts and positions",
+                    "group": "Account",
                     "pages": [
                       "en/user/api-reference/account/summary",
-                      "en/user/api-reference/account/positions"
+                      "en/user/api-reference/account/positions",
+                      "en/user/api-reference/trades/account"
                     ]
                   }
                 ]

@@ -1,4 +1,42 @@
-export const SignatureCalculator = () => {
+export const SignatureCalculator = ({ locale = "zh" }) => {
+  const isEnglish = locale === "en";
+  const copy = isEnglish
+    ? {
+        missingFields: "Enter the App ID, App Secret, timestamp, and request path.",
+        invalidPath: "The request path must start with / and must not include a domain.",
+        calculationFailed: "Signature calculation failed",
+        appIdPlaceholder: "Enter x-app-id",
+        secretPlaceholder: "Used only in this browser",
+        timestamp: "Timestamp",
+        timestampPlaceholder: "Unix seconds or milliseconds",
+        useCurrentTime: "Use current time",
+        method: "HTTP method",
+        requestPath: "Request path",
+        query: "Query string (omit the leading ?)",
+        body: "Request body (raw JSON; leave empty when unused)",
+        calculate: "Calculate signature",
+        payload: "Signature payload",
+        copied: "Copied",
+        copyHeaders: "Copy headers",
+      }
+    : {
+        missingFields: "请填写 App ID、App Secret、时间戳和请求路径。",
+        invalidPath: "请求路径必须以 / 开头，且不能包含域名。",
+        calculationFailed: "签名计算失败",
+        appIdPlaceholder: "输入 x-app-id",
+        secretPlaceholder: "仅在当前浏览器中参与计算",
+        timestamp: "时间戳",
+        timestampPlaceholder: "秒或毫秒时间戳",
+        useCurrentTime: "使用当前时间",
+        method: "HTTP 方法",
+        requestPath: "请求路径",
+        query: "Query 参数（原始字符串，可省略开头的 ?）",
+        body: "请求 Body（原始 JSON，无请求体时留空）",
+        calculate: "计算签名",
+        payload: "待签名字符串",
+        copied: "已复制",
+        copyHeaders: "复制请求头",
+      };
   const inputClassName =
     "w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100";
   const labelClassName =
@@ -33,12 +71,12 @@ export const SignatureCalculator = () => {
     setCopied(false);
 
     if (!appId.trim() || !appSecret || !timestamp.trim() || !path.trim()) {
-      setError("请填写 App ID、App Secret、时间戳和请求路径。");
+      setError(copy.missingFields);
       return;
     }
 
     if (!path.startsWith("/")) {
-      setError("请求路径必须以 / 开头，且不能包含域名。");
+      setError(copy.invalidPath);
       return;
     }
 
@@ -63,7 +101,7 @@ export const SignatureCalculator = () => {
       setStringToSign(payload);
       setSignature(toBase64(digest));
     } catch (calculationError) {
-      setError(`签名计算失败：${calculationError.message}`);
+      setError(`${copy.calculationFailed}: ${calculationError.message}`);
     }
   };
 
@@ -84,7 +122,7 @@ export const SignatureCalculator = () => {
             className={inputClassName}
             value={appId}
             onChange={(event) => setAppId(event.target.value)}
-            placeholder="输入 x-app-id"
+            placeholder={copy.appIdPlaceholder}
             autoComplete="off"
           />
         </div>
@@ -95,30 +133,30 @@ export const SignatureCalculator = () => {
             type="password"
             value={appSecret}
             onChange={(event) => setAppSecret(event.target.value)}
-            placeholder="仅在当前浏览器中参与计算"
+            placeholder={copy.secretPlaceholder}
             autoComplete="new-password"
           />
         </div>
         <div>
-          <label className={labelClassName}>时间戳</label>
+          <label className={labelClassName}>{copy.timestamp}</label>
           <div className="flex gap-2">
             <input
               className={inputClassName}
               value={timestamp}
               onChange={(event) => setTimestamp(event.target.value)}
-              placeholder="秒或毫秒时间戳"
+              placeholder={copy.timestampPlaceholder}
             />
             <button
               type="button"
               onClick={refreshTimestamp}
               className="shrink-0 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
             >
-              使用当前时间
+              {copy.useCurrentTime}
             </button>
           </div>
         </div>
         <div>
-          <label className={labelClassName}>HTTP 方法</label>
+          <label className={labelClassName}>{copy.method}</label>
           <select
             className={inputClassName}
             value={method}
@@ -134,7 +172,7 @@ export const SignatureCalculator = () => {
       </div>
 
       <div className="mt-4">
-        <label className={labelClassName}>请求路径</label>
+        <label className={labelClassName}>{copy.requestPath}</label>
         <input
           className={inputClassName}
           value={path}
@@ -144,7 +182,7 @@ export const SignatureCalculator = () => {
       </div>
 
       <div className="mt-4">
-        <label className={labelClassName}>Query 参数（原始字符串，可省略开头的 ?）</label>
+        <label className={labelClassName}>{copy.query}</label>
         <input
           className={inputClassName}
           value={query}
@@ -154,7 +192,7 @@ export const SignatureCalculator = () => {
       </div>
 
       <div className="mt-4">
-        <label className={labelClassName}>请求 Body（原始 JSON，无请求体时留空）</label>
+        <label className={labelClassName}>{copy.body}</label>
         <textarea
           className={`${inputClassName} min-h-32 font-mono`}
           value={body}
@@ -175,13 +213,13 @@ export const SignatureCalculator = () => {
         onClick={calculate}
         className="mt-5 rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700"
       >
-        计算签名
+        {copy.calculate}
       </button>
 
       {signature && (
         <div className="mt-6 space-y-4">
           <div>
-            <div className={labelClassName}>待签名字符串</div>
+            <div className={labelClassName}>{copy.payload}</div>
             <pre className="overflow-x-auto whitespace-pre-wrap break-all rounded-lg bg-gray-900 p-3 text-sm text-gray-100">
               {stringToSign}
             </pre>
@@ -197,7 +235,7 @@ export const SignatureCalculator = () => {
             onClick={copyHeaders}
             className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium dark:border-gray-700 dark:bg-gray-900"
           >
-            {copied ? "已复制" : "复制请求头"}
+            {copied ? copy.copied : copy.copyHeaders}
           </button>
         </div>
       )}

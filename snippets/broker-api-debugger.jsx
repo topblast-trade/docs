@@ -1,4 +1,64 @@
-export const BrokerApiDebugger = () => {
+export const BrokerApiDebugger = ({ locale = "zh" }) => {
+  const isEnglish = locale === "en";
+  const copy = isEnglish
+    ? {
+        restored: "Restored App ID / App Secret from local storage",
+        missingCredentials: "Enter the App ID and App Secret.",
+        invalidPath: "The request path must start with / and must not include a domain.",
+        unresolvedPath: "Replace every path placeholder with an actual value, such as eventSlug.",
+        invalidJson: "The request body is not valid JSON",
+        proxyFailed: "Mintlify proxy request failed",
+        requestFailed: "Request failed",
+        credentialsRequired: "Enter the App ID and App Secret first",
+        credentialsSaved: "Saved App ID / App Secret in this browser",
+        credentialsCleared: "Cleared local values and restored the default App ID / App Secret",
+        environment: "Environment",
+        testEnvironment: "Test environment",
+        operation: "Operation",
+        appIdPlaceholder: "Enter x-app-id",
+        secretPlaceholder: "Enter the App Secret",
+        saveCredentials: "Save App ID / App Secret",
+        clearCredentials: "Clear App ID / App Secret",
+        requestPath: "Request path",
+        query: "Query string (omit the leading ?)",
+        body: "Request body (leave empty when unused)",
+        sending: "Sending...",
+        send: "Send",
+        requestUrl: "Request URL",
+        signaturePayload: "Signature payload",
+        requestSignature: "Request signature",
+        response: "Response",
+        emptyResponse: "(empty response)",
+      }
+    : {
+        restored: "已从本地恢复 App ID / App Secret",
+        missingCredentials: "请填写 App ID 和 App Secret。",
+        invalidPath: "请求路径必须以 / 开头，且不能包含域名。",
+        unresolvedPath: "请将请求路径中的占位符替换为实际值，例如 eventSlug。",
+        invalidJson: "请求 Body 不是有效 JSON",
+        proxyFailed: "Mintlify 代理请求失败",
+        requestFailed: "请求发送失败",
+        credentialsRequired: "请先填写 App ID 和 App Secret",
+        credentialsSaved: "App ID / App Secret 已保存到当前浏览器",
+        credentialsCleared: "已清除本地保存值并恢复默认 App ID / App Secret",
+        environment: "环境",
+        testEnvironment: "测试环境",
+        operation: "接口",
+        appIdPlaceholder: "输入 x-app-id",
+        secretPlaceholder: "输入 App Secret",
+        saveCredentials: "保存 App ID / App Secret",
+        clearCredentials: "清除 App ID / App Secret",
+        requestPath: "请求路径",
+        query: "Query（原始字符串，可省略开头的 ?）",
+        body: "请求 Body（无请求体时留空）",
+        sending: "发送中...",
+        send: "发送",
+        requestUrl: "请求地址",
+        signaturePayload: "待签名字符串",
+        requestSignature: "请求签名",
+        response: "响应结果",
+        emptyResponse: "（空响应）",
+      };
   const inputClassName =
     "w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100";
   const labelClassName =
@@ -10,39 +70,42 @@ export const BrokerApiDebugger = () => {
     "bs11_f154c04553ddd705662184d3728bfb398aa78182d014e8b09a7c2ee7e9c28b57";
   const credentialStorageKey = "topblast-broker-api-debugger-credentials";
   const endpoints = [
-    ["POST", "/v1/broker/tokens", "同步用户 Token"],
-    ["DELETE", "/v1/broker/{userId}/tokens", "删除用户 Token"],
-    ["PATCH", "/v1/broker/users/{userId}", "更新用户"],
-    ["POST", "/v1/broker/special-users", "创建特殊账户"],
-    ["GET", "/v1/broker/users", "查询用户列表"],
-    ["POST", "/v1/broker/transfers", "创建划转"],
-    ["GET", "/v1/broker/transfers", "查询划转列表"],
-    ["GET", "/v1/broker/transfers/{transferId}", "查询划转详情"],
-    ["GET", "/v1/broker/assets", "查询资产"],
-    ["GET", "/v1/broker/trades", "查询成交记录"],
-    ["GET", "/v1/broker/positions", "查询仓位"],
-    ["GET", "/v1/broker/orders", "查询当前委托"],
-    ["DELETE", "/v1/broker/orders/{orderId}", "取消委托"],
-    ["POST", "/v1/broker/positions/closures", "平仓"],
-    ["GET", "/v1/broker/reports/summaries/{period}", "查询汇总报表"],
-    ["GET", "/v1/broker/reports/trends", "查询趋势报表"],
-    ["GET", "/v1/broker/reports/daily-summaries", "查询每日汇总"],
-    ["GET", "/v1/broker/reports/dashboard", "查询仪表盘"],
-    ["GET", "/v1/broker/events", "查询事件"],
-    ["PATCH", "/v1/broker/events/{eventSlug}", "更新事件"],
-    ["GET", "/v1/broker/events/{eventSlug}/markets", "查询事件市场"],
-    ["PATCH", "/v1/broker/events/{eventSlug}/markets/{marketId}", "更新市场"],
-    ["GET", "/v1/broker/risk/policies", "查询风控策略"],
-    ["GET", "/v1/broker/risk/exposures", "查询风险敞口"],
-    ["GET", "/v1/broker/risk/config", "查询风控配置"],
-    ["PATCH", "/v1/broker/risk/config", "保存风控配置"],
-    ["GET", "/v1/broker/settings", "查询券商设置"],
-    ["PATCH", "/v1/broker/settings", "更新券商设置"],
-  ].map(([method, path, summary]) => ({
+    ["POST", "/v1/broker/tokens", "同步用户 Token", "Synchronize user token"],
+    ["DELETE", "/v1/broker/{userId}/tokens", "删除用户 Token", "Delete user token"],
+    ["GET", "/v1/broker/users", "查询用户列表", "List users"],
+    ["PATCH", "/v1/broker/users/{userId}", "更新用户", "Update user"],
+    ["POST", "/v1/broker/special-users", "创建特殊账户", "Create special account"],
+    ["GET", "/v1/broker/users/{userId}/api-keys", "查询用户 API Key", "List user API keys"],
+    ["POST", "/v1/broker/users/{userId}/api-keys", "创建用户 API Key", "Create user API key"],
+    ["DELETE", "/v1/broker/users/{userId}/api-keys/{apiKey}", "删除用户 API Key", "Delete user API key"],
+    ["GET", "/v1/broker/settings", "查询券商设置", "Get broker settings"],
+    ["PATCH", "/v1/broker/settings", "更新券商设置", "Update broker settings"],
+    ["POST", "/v1/broker/transfers", "创建划转", "Create transfer"],
+    ["GET", "/v1/broker/transfers", "查询划转列表", "List transfers"],
+    ["GET", "/v1/broker/transfers/{transferId}", "查询划转详情", "Get transfer"],
+    ["GET", "/v1/broker/assets", "查询资产", "List assets"],
+    ["GET", "/v1/broker/trades", "查询成交记录", "List trades"],
+    ["GET", "/v1/broker/orders", "查询当前委托", "List open orders"],
+    ["DELETE", "/v1/broker/orders/{orderId}", "取消委托", "Cancel order"],
+    ["GET", "/v1/broker/positions", "查询仓位", "List positions"],
+    ["POST", "/v1/broker/positions/closures", "平仓", "Close position"],
+    ["GET", "/v1/broker/reports/summaries/{period}", "查询汇总报表", "Get summary report"],
+    ["GET", "/v1/broker/reports/daily-summaries", "查询每日汇总", "List daily summaries"],
+    ["GET", "/v1/broker/reports/trends", "查询趋势报表", "List report trends"],
+    ["GET", "/v1/broker/reports/dashboard", "查询仪表盘", "Get dashboard"],
+    ["GET", "/v1/broker/events", "查询事件", "List events"],
+    ["PATCH", "/v1/broker/events/{eventSlug}", "更新事件", "Update event"],
+    ["GET", "/v1/broker/events/{eventSlug}/markets", "查询事件市场", "List event markets"],
+    ["PATCH", "/v1/broker/events/{eventSlug}/markets/{marketId}", "更新市场", "Update market"],
+    ["GET", "/v1/broker/risk/policies", "查询风控策略", "List risk policies"],
+    ["GET", "/v1/broker/risk/exposures", "查询风险敞口", "List risk exposures"],
+    ["GET", "/v1/broker/risk/config", "查询风控配置", "Get risk configuration"],
+    ["PATCH", "/v1/broker/risk/config", "保存风控配置", "Save risk configuration"],
+  ].map(([method, path, zhSummary, enSummary]) => ({
     id: `${method} ${path}`,
     method,
     path,
-    summary,
+    summary: isEnglish ? enSummary : zhSummary,
   }));
 
   const [selectedID, setSelectedID] = useState(endpoints[0].id);
@@ -67,7 +130,7 @@ export const BrokerApiDebugger = () => {
       if (savedCredentials?.appId && savedCredentials?.appSecret) {
         setAppId(savedCredentials.appId);
         setAppSecret(savedCredentials.appSecret);
-        setCredentialStatus("已从本地恢复 App ID / App Secret");
+        setCredentialStatus(copy.restored);
       }
     } catch (_) {
       localStorage.removeItem(credentialStorageKey);
@@ -117,22 +180,22 @@ export const BrokerApiDebugger = () => {
     setResult(null);
 
     if (!appId.trim() || !appSecret) {
-      setError("请填写 App ID 和 App Secret。");
+      setError(copy.missingCredentials);
       return;
     }
     if (!requestPath.startsWith("/")) {
-      setError("请求路径必须以 / 开头，且不能包含域名。");
+      setError(copy.invalidPath);
       return;
     }
     if (requestPath.includes("{") || requestPath.includes("}")) {
-      setError("请将请求路径中的占位符替换为实际值，例如 eventSlug。");
+      setError(copy.unresolvedPath);
       return;
     }
     if (requestBody.trim()) {
       try {
         JSON.parse(requestBody);
       } catch (jsonError) {
-        setError(`请求 Body 不是有效 JSON：${jsonError.message}`);
+        setError(`${copy.invalidJson}: ${jsonError.message}`);
         return;
       }
     }
@@ -173,7 +236,7 @@ export const BrokerApiDebugger = () => {
       const proxyResult = await response.json();
       if (!response.ok || proxyResult.error || !proxyResult.response) {
         throw new Error(
-          proxyResult.errorMessage || `Mintlify 代理请求失败（HTTP ${response.status}）`,
+          proxyResult.errorMessage || `${copy.proxyFailed} (HTTP ${response.status})`,
         );
       }
 
@@ -210,7 +273,7 @@ export const BrokerApiDebugger = () => {
         responseBody,
       });
     } catch (requestError) {
-      setError(`请求发送失败：${requestError.message}`);
+      setError(`${copy.requestFailed}: ${requestError.message}`);
     } finally {
       setSending(false);
     }
@@ -218,7 +281,7 @@ export const BrokerApiDebugger = () => {
 
   const saveCredentials = () => {
     if (!appId.trim() || !appSecret) {
-      setCredentialStatus("请先填写 App ID 和 App Secret");
+      setCredentialStatus(copy.credentialsRequired);
       return;
     }
     localStorage.setItem(
@@ -226,14 +289,14 @@ export const BrokerApiDebugger = () => {
       JSON.stringify({ appId: appId.trim(), appSecret }),
     );
     setAppId(appId.trim());
-    setCredentialStatus("App ID / App Secret 已保存到当前浏览器");
+    setCredentialStatus(copy.credentialsSaved);
   };
 
   const clearCredentials = () => {
     localStorage.removeItem(credentialStorageKey);
     setAppId(defaultAppId);
     setAppSecret(defaultAppSecret);
-    setCredentialStatus("已清除本地保存值并恢复默认 App ID / App Secret");
+    setCredentialStatus(copy.credentialsCleared);
     setResult(null);
   };
 
@@ -242,17 +305,17 @@ export const BrokerApiDebugger = () => {
       <div className={panelClassName}>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className={labelClassName}>环境</label>
+            <label className={labelClassName}>{copy.environment}</label>
             <select
               className={inputClassName}
               value={environment}
               onChange={(event) => setEnvironment(event.target.value)}
             >
-              <option value="https://api-test.topblast.trade">测试环境</option>
+              <option value="https://api-test.topblast.trade">{copy.testEnvironment}</option>
             </select>
           </div>
           <div>
-            <label className={labelClassName}>接口</label>
+            <label className={labelClassName}>{copy.operation}</label>
             <select
               className={inputClassName}
               value={selectedID}
@@ -274,7 +337,7 @@ export const BrokerApiDebugger = () => {
                 setAppId(event.target.value);
                 setCredentialStatus("");
               }}
-              placeholder="输入 x-app-id"
+              placeholder={copy.appIdPlaceholder}
               autoComplete="off"
             />
           </div>
@@ -288,7 +351,7 @@ export const BrokerApiDebugger = () => {
                 setAppSecret(event.target.value);
                 setCredentialStatus("");
               }}
-              placeholder="输入 x-app-secret"
+              placeholder={copy.secretPlaceholder}
               autoComplete="new-password"
             />
           </div>
@@ -299,14 +362,14 @@ export const BrokerApiDebugger = () => {
             onClick={saveCredentials}
             className="rounded-md bg-orange-600 px-2 py-1 text-xs font-medium text-white hover:bg-orange-700"
           >
-            保存 App ID / App Secret
+            {copy.saveCredentials}
           </button>
           <button
             type="button"
             onClick={clearCredentials}
             className="text-sm text-gray-500 underline dark:text-gray-400"
           >
-            清除 App ID / App Secret
+            {copy.clearCredentials}
           </button>
           {credentialStatus && (
             <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -318,7 +381,7 @@ export const BrokerApiDebugger = () => {
 
       <div className={panelClassName}>
         <div>
-          <label className={labelClassName}>请求路径</label>
+          <label className={labelClassName}>{copy.requestPath}</label>
           <input
             className={inputClassName}
             value={requestPath}
@@ -327,7 +390,7 @@ export const BrokerApiDebugger = () => {
           />
         </div>
         <div className="mt-4">
-          <label className={labelClassName}>Query（原始字符串，可省略开头的 ?）</label>
+          <label className={labelClassName}>{copy.query}</label>
           <input
             className={inputClassName}
             value={rawQuery}
@@ -336,7 +399,7 @@ export const BrokerApiDebugger = () => {
           />
         </div>
         <div className="mt-4">
-          <label className={labelClassName}>请求 Body（无请求体时留空）</label>
+          <label className={labelClassName}>{copy.body}</label>
           <textarea
             className={`${inputClassName} min-h-56 font-mono`}
             value={requestBody}
@@ -359,7 +422,7 @@ export const BrokerApiDebugger = () => {
         disabled={sending}
         className="rounded-lg bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {sending ? "发送中..." : "Send"}
+        {sending ? copy.sending : copy.send}
       </button>
 
       {result && (
@@ -376,21 +439,21 @@ export const BrokerApiDebugger = () => {
             </span>
             <span className="text-xs text-gray-500">{result.duration} ms</span>
           </div>
-          <div className={labelClassName}>请求地址</div>
+          <div className={labelClassName}>{copy.requestUrl}</div>
           <pre className="mb-4 overflow-x-auto whitespace-pre-wrap break-all rounded-lg bg-gray-900 p-3 text-sm text-gray-100">
             {result.requestURL}
           </pre>
-          <div className={labelClassName}>待签名字符串</div>
+          <div className={labelClassName}>{copy.signaturePayload}</div>
           <pre className="mb-4 overflow-x-auto whitespace-pre-wrap break-all rounded-lg bg-gray-900 p-3 text-sm text-gray-100">
             {result.stringToSign}
           </pre>
-          <div className={labelClassName}>请求签名</div>
+          <div className={labelClassName}>{copy.requestSignature}</div>
           <pre className="mb-4 overflow-x-auto whitespace-pre-wrap break-all rounded-lg bg-gray-900 p-3 text-sm text-gray-100">
             {result.signature}
           </pre>
-          <div className={labelClassName}>响应结果</div>
+          <div className={labelClassName}>{copy.response}</div>
           <pre className="max-h-96 overflow-auto whitespace-pre-wrap break-all rounded-lg bg-gray-900 p-3 text-sm text-gray-100">
-            {result.responseBody || "（空响应）"}
+            {result.responseBody || copy.emptyResponse}
           </pre>
         </div>
       )}
