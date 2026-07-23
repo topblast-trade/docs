@@ -138,6 +138,7 @@ _PAIRS = r"""
 价格不存在|||Price not found
 价格点|||Price point
 价格精度类型|||Price precision type
+最小价格步长，十进制字符串；创建委托时价格必须是其整数倍|||Minimum tick size as a decimal string. Order prices must be an integer multiple of this value.
 价格历史|||Price history
 价格历史不存在|||Price history not found
 交易集群不可用|||Trading cluster unavailable

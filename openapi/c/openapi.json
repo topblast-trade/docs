@@ -2367,7 +2367,7 @@
           },
           "tokenId": {
             "description": "结果 Token ID",
-            "type": "integer"
+            "type": "string"
           }
         }
       },
@@ -2460,7 +2460,7 @@
         "properties": {
           "price": {
             "description": "价格",
-            "type": "number"
+            "type": "string"
           },
           "timestamp": {
             "description": "时间戳（Unix 毫秒）",
@@ -2695,8 +2695,8 @@
             "type": "integer"
           },
           "orderMinTickSize": {
-            "description": "最小价格步长；创建委托时价格必须是其整数倍",
-            "type": "number"
+            "description": "最小价格步长，十进制字符串；创建委托时价格必须是其整数倍",
+            "type": "string"
           },
           "pricePrecision": {
             "description": "价格精度类型",

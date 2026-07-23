@@ -2367,7 +2367,7 @@
           },
           "tokenId": {
             "description": "Outcome token ID",
-            "type": "integer"
+            "type": "string"
           }
         }
       },
@@ -2460,7 +2460,7 @@
         "properties": {
           "price": {
             "description": "Price",
-            "type": "number"
+            "type": "string"
           },
           "timestamp": {
             "description": "Timestamp in Unix milliseconds",
@@ -2695,8 +2695,8 @@
             "type": "integer"
           },
           "orderMinTickSize": {
-            "description": "Minimum tick size. Order prices must be an integer multiple of this value.",
-            "type": "number"
+            "description": "Minimum tick size as a decimal string. Order prices must be an integer multiple of this value.",
+            "type": "string"
           },
           "pricePrecision": {
             "description": "Price precision type",

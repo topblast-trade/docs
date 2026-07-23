@@ -15,29 +15,34 @@ topblast Trading REST API 使用 HTTP 状态码表示请求处理结果。成功
 
 ```json
 {
-  "data": [
+  "items": [
     {
-      "id": "8001",
+      "orderId": "8001",
       "status": "OPEN",
       "market": "7001",
-      "assetId": "101",
+      "tokenId": "101",
       "side": "BUY",
       "originalSize": "10",
       "sizeMatched": "0",
       "price": "0.41",
       "outcome": "YES",
-      "orderType": "GTC",
+      "orderType": "LIMIT",
+      "timeInForce": "GTC",
       "expiration": "0",
       "createdAt": 1710000000000,
       "reasonCode": 0
     }
   ],
-  "count": 1
+  "total": 1
 }
 ```
 
 <Note>
-请以每个接口页面中的响应 Schema 为准。批量异步下单受理成功时返回 HTTP `202`，其他成功请求通常返回 HTTP `200`。
+请以每个接口页面中的响应 Schema 为准。成功请求通常返回 HTTP `200`；已废弃接口可能返回其他状态码。
+</Note>
+
+<Note>
+价格、中间价、价差、最小价格步长、数量和金额等十进制值统一使用 JSON `string`，例如 `"0.41"`。客户端应使用十进制定点或任意精度类型解析，不要先转换为二进制浮点数。
 </Note>
 
 ### 失败响应
