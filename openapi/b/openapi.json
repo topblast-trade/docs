@@ -1071,7 +1071,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.brokerUIDData"
+                  "$ref": "#/components/schemas/v2.brokerSpecialUserData"
                 }
               }
             }
@@ -2849,6 +2849,19 @@
           },
           "webhookUrl": {
             "description": "Webhook 地址",
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerSpecialUserData": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "description": "平台用户 UID",
+            "type": "string"
+          },
+          "userId": {
+            "description": "券商侧用户 ID",
             "type": "string"
           }
         }
