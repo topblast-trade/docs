@@ -17,7 +17,7 @@ OPENAPI_RE = re.compile(
 )
 HTTP_METHODS = {"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
 USER_ID_FIELDS = {"uid", "userId", "brokerUserId"}
-MILLISECOND_FIELD_RE = re.compile(r"(?:timestamp|At|Time)$")
+MILLISECOND_FIELD_RE = re.compile(r"timestamp$", re.IGNORECASE)
 
 
 def fail(errors: list[str], message: str) -> None:

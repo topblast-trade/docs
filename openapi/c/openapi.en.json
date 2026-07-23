@@ -20,23 +20,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_position.AckAccountSummary"
+                  "$ref": "#/components/schemas/dto.AccountSummary"
                 }
               }
             }
           },
           "401": {
             "description": "Token is invalid or missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Account summary cache is not ready or could not be refreshed",
             "content": {
               "application/json": {
                 "schema": {
@@ -247,7 +237,7 @@
         ]
       },
       "post": {
-        "description": "Create an order for the authenticated account. Set `timestamp` to the current Unix time in milliseconds for every request. `expiration` is required for `GTD` and accepts Unix seconds or milliseconds; the service converts seconds to milliseconds. For non-`MARKET` orders, `price` must be between 0 and 1, exclusive, and align with the market tick size.",
+        "description": "Create an order for the authenticated account. Set `timestamp` to the current Unix time in milliseconds for every request. `expiration` is required for `GTD` and must use Unix milliseconds. For non-`MARKET` orders, `price` must be between 0 and 1, exclusive, and align with the market tick size.",
         "tags": [
           "Orders"
         ],
@@ -256,7 +246,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/http_order.ReqOrder"
+                "$ref": "#/components/schemas/http_order.ReqPlaceOrder"
               }
             }
           },
@@ -269,7 +259,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOrder"
+                  "$ref": "#/components/schemas/http_order.AckPlaceOrder"
                 }
               }
             }
@@ -759,7 +749,7 @@
     },
     "/v1/private/position": {
       "get": {
-        "description": "List positions for the authenticated account, including current value and unrealized PnL. `eventId` and `event` are aliases; prefer `eventId`.",
+        "description": "List positions for the authenticated account, including current value and unrealized PnL. Use `eventId` to filter by event.",
         "tags": [
           "Accounts"
         ],
@@ -777,14 +767,6 @@
           {
             "description": "Event ID",
             "name": "eventId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Compatibility alias for `eventId`; used only when `eventId` is omitted",
-            "name": "event",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1915,13 +1897,112 @@
   ],
   "components": {
     "schemas": {
-      "http_account.AccountTrade": {
+      "dto.AccountBalance": {
         "type": "object",
         "properties": {
-          "assetId": {
+          "available": {
+            "description": "Available balance",
+            "type": "string"
+          },
+          "locked": {
+            "description": "Locked balance",
+            "type": "string"
+          }
+        }
+      },
+      "dto.AccountSummary": {
+        "type": "object",
+        "properties": {
+          "tokens": {
+            "description": "Balances for each outcome token",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dto.AccountTokenBalance"
+            }
+          },
+          "usdc": {
+            "description": "USDC balance",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/dto.AccountBalance"
+              }
+            ]
+          }
+        }
+      },
+      "dto.AccountTokenBalance": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "Available balance",
+            "type": "string"
+          },
+          "locked": {
+            "description": "Locked balance",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "Outcome token ID",
+            "type": "string"
+          }
+        }
+      },
+      "dto.Position": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "Available position quantity",
+            "type": "string"
+          },
+          "averagePrice": {
+            "description": "Average execution price of the position",
+            "type": "string"
+          },
+          "conditionId": {
+            "description": "Condition ID",
+            "type": "string"
+          },
+          "currentPrice": {
+            "description": "Current market price",
+            "type": "string"
+          },
+          "currentValue": {
+            "description": "Position value at the current price",
+            "type": "string"
+          },
+          "locked": {
+            "description": "Locked position quantity",
+            "type": "string"
+          },
+          "size": {
+            "description": "Total position quantity",
+            "type": "string"
+          },
+          "toWin": {
+            "description": "Maximum payout if the outcome resolves true",
+            "type": "string"
+          },
+          "tokenId": {
             "description": "Outcome token ID",
             "type": "string"
           },
+          "tradedValue": {
+            "description": "Position cost at the average execution price",
+            "type": "string"
+          },
+          "unrealizedPnl": {
+            "description": "Unrealized PnL",
+            "type": "string"
+          },
+          "unrealizedPnlPercent": {
+            "description": "Unrealized PnL percentage",
+            "type": "string"
+          }
+        }
+      },
+      "http_account.AccountTrade": {
+        "type": "object",
+        "properties": {
           "avgCostPrice": {
             "description": "Average cost after the trade. Empty when unavailable.",
             "type": "string"
@@ -1947,11 +2028,11 @@
             "type": "string"
           },
           "price": {
-            "description": "Execution price as a decimal string",
+            "description": "Execution price",
             "type": "string"
           },
           "realizedPnl": {
-            "description": "Realized PnL for this trade, as a decimal string",
+            "description": "Realized PnL for this trade",
             "type": "string"
           },
           "role": {
@@ -1963,13 +2044,17 @@
             "type": "string"
           },
           "size": {
-            "description": "Executed quantity as a decimal string",
+            "description": "Executed quantity",
             "type": "string"
           },
           "timestamp": {
             "description": "Trade timestamp in Unix milliseconds",
             "type": "integer",
             "format": "int64"
+          },
+          "tokenId": {
+            "description": "Outcome token ID",
+            "type": "string"
           },
           "tradeKind": {
             "description": "Trade type. Defaults to `MATCH`.",
@@ -2074,6 +2159,9 @@
           6001,
           6002,
           6003,
+          6004,
+          6005,
+          6006,
           7001,
           7002,
           7003,
@@ -2143,6 +2231,9 @@
           "ErrorCodeAccountNotFound",
           "ErrorCodeAccountSummaryNotReady",
           "ErrorCodeAccountSummaryUnavailable",
+          "ErrorCodeAccountPositionsNotReady",
+          "ErrorCodeAccountPositionsUnavailable",
+          "ErrorCodePositionPricesNotReady",
           "ErrorCodeInvalidAmount",
           "ErrorCodeInvalidAccountType",
           "ErrorCodeAssetDepositFailed",
@@ -2450,9 +2541,8 @@
             "type": "boolean"
           },
           "createdAt": {
-            "description": "Creation time in Unix milliseconds",
-            "type": "integer",
-            "format": "int64"
+            "description": "Created at",
+            "type": "string"
           },
           "description": {
             "description": "Event description",
@@ -2502,9 +2592,8 @@
             "type": "string"
           },
           "updatedAt": {
-            "description": "Update time in Unix milliseconds",
-            "type": "integer",
-            "format": "int64"
+            "description": "Updated at",
+            "type": "string"
           },
           "volume": {
             "description": "Sum of cumulative trading volume across all markets in the event",
@@ -2601,9 +2690,8 @@
         "type": "object",
         "properties": {
           "createdAt": {
-            "description": "Creation time in Unix milliseconds",
-            "type": "integer",
-            "format": "int64"
+            "description": "Created at",
+            "type": "string"
           },
           "forceHide": {
             "description": "Whether the event is force-hidden",
@@ -2630,9 +2718,8 @@
             "type": "string"
           },
           "updatedAt": {
-            "description": "Update time in Unix milliseconds",
-            "type": "integer",
-            "format": "int64"
+            "description": "Updated at",
+            "type": "string"
           }
         }
       },
@@ -2737,12 +2824,90 @@
             "description": "Open order",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/http_order.Order"
+              "$ref": "#/components/schemas/http_order.OrderDetail"
             }
           }
         }
       },
-      "http_order.AckOrder": {
+      "http_order.AckOrderDetail": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "description": "Creation time in Unix milliseconds",
+            "type": "integer",
+            "format": "int64"
+          },
+          "expiration": {
+            "description": "Expiration time as a Unix-millisecond string. `0` means no expiration.",
+            "type": "string"
+          },
+          "id": {
+            "description": "Order ID",
+            "type": "string"
+          },
+          "market": {
+            "description": "Market ID",
+            "type": "string"
+          },
+          "orderType": {
+            "description": "Order type",
+            "type": "string"
+          },
+          "originalSize": {
+            "description": "Original order quantity",
+            "type": "string"
+          },
+          "outcome": {
+            "description": "Outcome name",
+            "type": "string"
+          },
+          "price": {
+            "description": "Order price",
+            "type": "string"
+          },
+          "reasonCode": {
+            "description": "Rejection or failure reason code",
+            "type": "integer"
+          },
+          "side": {
+            "description": "Order side: `BUY` or `SELL`",
+            "type": "string"
+          },
+          "sizeMatched": {
+            "description": "Filled quantity",
+            "type": "string"
+          },
+          "status": {
+            "description": "Order status",
+            "type": "string"
+          },
+          "timeInForce": {
+            "description": "Time in force: `GTC`, `FOK`, `GTD`, or `IOC`.",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "Outcome token ID",
+            "type": "string"
+          }
+        }
+      },
+      "http_order.AckOrderHistory": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "description": "Number of records returned",
+            "type": "integer"
+          },
+          "data": {
+            "description": "Historical order",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_order.OrderDetail"
+            }
+          }
+        }
+      },
+      "http_order.AckPlaceOrder": {
         "type": "object",
         "properties": {
           "createdAt": {
@@ -2776,80 +2941,6 @@
           }
         }
       },
-      "http_order.AckOrderDetail": {
-        "type": "object",
-        "properties": {
-          "assetId": {
-            "description": "Outcome token ID",
-            "type": "string"
-          },
-          "createdAt": {
-            "description": "Creation time in Unix milliseconds",
-            "type": "integer",
-            "format": "int64"
-          },
-          "expiration": {
-            "description": "Expiration time as a Unix-millisecond string. `0` means no expiration.",
-            "type": "string"
-          },
-          "id": {
-            "description": "Order ID",
-            "type": "string"
-          },
-          "market": {
-            "description": "Market ID",
-            "type": "string"
-          },
-          "orderType": {
-            "description": "Order type",
-            "type": "string"
-          },
-          "originalSize": {
-            "description": "Original order quantity",
-            "type": "string"
-          },
-          "outcome": {
-            "description": "Outcome name",
-            "type": "string"
-          },
-          "price": {
-            "description": "Order price",
-            "type": "string"
-          },
-          "reasonCode": {
-            "description": "Rejection or failure reason code",
-            "type": "integer"
-          },
-          "side": {
-            "description": "Order side: `BUY` or `SELL`",
-            "type": "string"
-          },
-          "sizeMatched": {
-            "description": "Filled quantity",
-            "type": "string"
-          },
-          "status": {
-            "description": "Order status",
-            "type": "string"
-          }
-        }
-      },
-      "http_order.AckOrderHistory": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "description": "Number of records returned",
-            "type": "integer"
-          },
-          "data": {
-            "description": "Historical order",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_order.Order"
-            }
-          }
-        }
-      },
       "http_order.BatchCancelItem": {
         "type": "object",
         "required": [
@@ -2866,64 +2957,9 @@
           }
         }
       },
-      "http_order.BatchOrderItem": {
-        "type": "object",
-        "required": [
-          "side",
-          "size",
-          "timestamp",
-          "tokenId"
-        ],
-        "properties": {
-          "expiration": {
-            "description": "Expiration time in Unix seconds or milliseconds. Use `0` when unspecified.",
-            "type": "integer"
-          },
-          "orderType": {
-            "description": "Order type: `GTC`, `FOK`, `GTD`, `FAK`, or `MARKET`. Defaults to `GTC`.",
-            "type": "string",
-            "enum": [
-              "GTC",
-              "FOK",
-              "GTD",
-              "FAK",
-              "MARKET"
-            ]
-          },
-          "price": {
-            "description": "Order price. Optional for `MARKET`; otherwise must be between 0 and 1, exclusive.",
-            "type": "string"
-          },
-          "side": {
-            "description": "Order side: `BUY` or `SELL`",
-            "type": "string",
-            "enum": [
-              "BUY",
-              "SELL"
-            ]
-          },
-          "size": {
-            "description": "Order quantity as a positive decimal integer string",
-            "type": "string"
-          },
-          "timestamp": {
-            "description": "Request time in Unix milliseconds. Use the current time for every submission.",
-            "type": "integer",
-            "format": "int64"
-          },
-          "tokenId": {
-            "description": "Outcome token ID as a positive decimal integer",
-            "type": "string"
-          }
-        }
-      },
-      "http_order.Order": {
+      "http_order.OrderDetail": {
         "type": "object",
         "properties": {
-          "assetId": {
-            "description": "Outcome token ID",
-            "type": "string"
-          },
           "createdAt": {
             "description": "Creation time in Unix milliseconds",
             "type": "integer",
@@ -2971,6 +3007,14 @@
           },
           "status": {
             "description": "Order status",
+            "type": "string"
+          },
+          "timeInForce": {
+            "description": "Time in force: `GTC`, `FOK`, `GTD`, or `IOC`.",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "Outcome token ID",
             "type": "string"
           }
         }
@@ -3004,12 +3048,12 @@
             "maxItems": 50,
             "minItems": 1,
             "items": {
-              "$ref": "#/components/schemas/http_order.BatchOrderItem"
+              "$ref": "#/components/schemas/http_order.ReqPlaceOrder"
             }
           }
         }
       },
-      "http_order.ReqOrder": {
+      "http_order.ReqPlaceOrder": {
         "type": "object",
         "required": [
           "side",
@@ -3019,17 +3063,14 @@
         ],
         "properties": {
           "expiration": {
-            "description": "`GTD` expiration time in Unix seconds or milliseconds. Use `0` for other order types.",
+            "description": "`GTD` expiration time in Unix milliseconds. Must be `0` for other order types.",
             "type": "integer"
           },
           "orderType": {
-            "description": "Order type: `GTC`, `FOK`, `GTD`, `FAK`, or `MARKET`. Defaults to `GTC`.",
+            "description": "Order type: `LIMIT` or `MARKET`. Defaults to `LIMIT`.",
             "type": "string",
             "enum": [
-              "GTC",
-              "FOK",
-              "GTD",
-              "FAK",
+              "LIMIT",
               "MARKET"
             ]
           },
@@ -3046,8 +3087,18 @@
             ]
           },
           "size": {
-            "description": "Order quantity as a positive decimal integer string",
+            "description": "Order quantity in whole shares as a positive integer",
             "type": "string"
+          },
+          "timeInForce": {
+            "description": "Time in force. `LIMIT` orders default to `GTC`; `MARKET` orders support only `IOC`.",
+            "type": "string",
+            "enum": [
+              "GTC",
+              "FOK",
+              "GTD",
+              "IOC"
+            ]
           },
           "timestamp": {
             "description": "Request time in Unix milliseconds. Use the current time for every submission.",
@@ -3056,43 +3107,6 @@
           },
           "tokenId": {
             "description": "Outcome token ID as a positive decimal integer",
-            "type": "string"
-          }
-        }
-      },
-      "http_position.AckAccountSummary": {
-        "type": "object",
-        "properties": {
-          "accountId": {
-            "description": "Account ID",
-            "type": "string"
-          },
-          "tokens": {
-            "description": "Balances for each outcome token",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_position.AckTokenBalance"
-            }
-          },
-          "usdc": {
-            "description": "USDC balance",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/http_position.AckBalance"
-              }
-            ]
-          }
-        }
-      },
-      "http_position.AckBalance": {
-        "type": "object",
-        "properties": {
-          "available": {
-            "description": "Available balance",
-            "type": "string"
-          },
-          "locked": {
-            "description": "Locked balance",
             "type": "string"
           }
         }
@@ -3108,82 +3122,8 @@
             "description": "Position",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/http_position.Position"
+              "$ref": "#/components/schemas/dto.Position"
             }
-          }
-        }
-      },
-      "http_position.AckTokenBalance": {
-        "type": "object",
-        "properties": {
-          "available": {
-            "description": "Available quantity",
-            "type": "string"
-          },
-          "locked": {
-            "description": "Locked quantity",
-            "type": "string"
-          },
-          "tokenId": {
-            "description": "Outcome token ID",
-            "type": "string"
-          }
-        }
-      },
-      "http_position.Position": {
-        "type": "object",
-        "properties": {
-          "accountId": {
-            "description": "Account ID",
-            "type": "string"
-          },
-          "assetId": {
-            "description": "Outcome token ID",
-            "type": "string"
-          },
-          "available": {
-            "description": "Available quantity",
-            "type": "string"
-          },
-          "averagePrice": {
-            "description": "Average cost",
-            "type": "string"
-          },
-          "conditionId": {
-            "description": "Market condition ID",
-            "type": "string"
-          },
-          "currentPrice": {
-            "description": "Current price",
-            "type": "string"
-          },
-          "currentValue": {
-            "description": "Current valuation",
-            "type": "string"
-          },
-          "locked": {
-            "description": "Quantity locked by open orders",
-            "type": "string"
-          },
-          "size": {
-            "description": "Total position quantity",
-            "type": "string"
-          },
-          "toWin": {
-            "description": "Payout if the outcome resolves true",
-            "type": "string"
-          },
-          "tradedValue": {
-            "description": "Initial execution value",
-            "type": "string"
-          },
-          "unrealizedPnl": {
-            "description": "Unrealized PnL",
-            "type": "string"
-          },
-          "unrealizedPnlPercent": {
-            "description": "Unrealized PnL percentage",
-            "type": "string"
           }
         }
       }
