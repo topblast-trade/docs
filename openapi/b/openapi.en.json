@@ -3172,8 +3172,8 @@
   },
   "servers": [
     {
-      "url": "https://api.topblast.trade",
-      "description": "Production environment"
+      "url": "https://api-test.topblast.trade",
+      "description": "Test environment"
     }
   ],
   "security": [
