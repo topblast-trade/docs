@@ -22,26 +22,28 @@
         "summary": "List assets",
         "parameters": [
           {
-            "description": "Page number, starting from 1.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted.",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "Number of records to return, up to 100.",
+            "description": "Number of records to return, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "Platform user ID.",
+            "description": "Platform user ID. Omit it to return assets for all users of the current broker.",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -78,7 +80,7 @@
         "summary": "List events",
         "parameters": [
           {
-            "description": "Start time in Unix milliseconds, inclusive.",
+            "description": "Start time in Unix milliseconds, inclusive. Omit it to apply no lower time bound.",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -87,7 +89,7 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Whether the event is enabled for the broker. Omit it to return both enabled and disabled events.",
             "name": "enabled",
             "in": "query",
             "schema": {
@@ -95,7 +97,7 @@
             }
           },
           {
-            "description": "End time in Unix milliseconds, exclusive.",
+            "description": "End time in Unix milliseconds, exclusive. Omit it to apply no upper time bound.",
             "name": "end",
             "in": "query",
             "schema": {
@@ -104,7 +106,7 @@
             }
           },
           {
-            "description": "Event slug.",
+            "description": "Event slug. Omit it to disable the event filter.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -112,16 +114,17 @@
             }
           },
           {
-            "description": "Page number.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted. Do not combine it with begin or end.",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "Search keyword.",
+            "description": "Search keyword. Omit it to disable keyword filtering.",
             "name": "q",
             "in": "query",
             "schema": {
@@ -129,17 +132,18 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Number of items per page, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Event status. Omit it to return all statuses.",
             "name": "status",
             "in": "query",
             "schema": {
@@ -321,7 +325,7 @@
         "summary": "List open orders",
         "parameters": [
           {
-            "description": "User email address.",
+            "description": "User email address. Omit it to disable the email filter.",
             "name": "email",
             "in": "query",
             "schema": {
@@ -329,7 +333,7 @@
             }
           },
           {
-            "description": "Event slug.",
+            "description": "Event slug. Omit it to disable the event filter.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -337,7 +341,7 @@
             }
           },
           {
-            "description": "Market ID.",
+            "description": "Market ID. Omit it to disable the market filter.",
             "name": "marketId",
             "in": "query",
             "schema": {
@@ -345,26 +349,28 @@
             }
           },
           {
-            "description": "Page number, starting from 1.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted.",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "Number of records to return, up to 100.",
+            "description": "Number of records to return, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "Outcome token ID.",
+            "description": "Outcome token ID. Omit it to disable the outcome-token filter.",
             "name": "tokenId",
             "in": "query",
             "schema": {
@@ -372,7 +378,7 @@
             }
           },
           {
-            "description": "Platform user ID.",
+            "description": "Platform user ID. Omit it to return records for all platform users.",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -418,7 +424,7 @@
             }
           },
           {
-            "description": "Platform user ID.",
+            "description": "Platform user ID. Required.",
             "name": "userId",
             "in": "query",
             "required": true,
@@ -456,7 +462,7 @@
         "summary": "List positions",
         "parameters": [
           {
-            "description": "User email address.",
+            "description": "User email address. Omit it to disable the email filter.",
             "name": "email",
             "in": "query",
             "schema": {
@@ -464,7 +470,7 @@
             }
           },
           {
-            "description": "Event slug.",
+            "description": "Event slug. Omit it to disable the event filter.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -472,7 +478,7 @@
             }
           },
           {
-            "description": "Market ID.",
+            "description": "Market ID. Omit it to disable the market filter.",
             "name": "marketId",
             "in": "query",
             "schema": {
@@ -480,26 +486,28 @@
             }
           },
           {
-            "description": "Page number, starting from 1.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted.",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "Number of records to return, up to 100.",
+            "description": "Number of records to return, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "Platform user ID.",
+            "description": "Platform user ID. Omit it to return records for all platform users.",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -574,7 +582,7 @@
         "summary": "List daily summaries",
         "parameters": [
           {
-            "description": "Parameters.",
+            "description": "Summary-time range start in Unix milliseconds, inclusive. Omit it to apply no lower time bound.",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -583,7 +591,7 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Summary-time range end in Unix milliseconds, exclusive. Omit it to apply no upper time bound.",
             "name": "end",
             "in": "query",
             "schema": {
@@ -592,22 +600,24 @@
             }
           },
           {
-            "description": "Page number, starting from 1.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted. Do not combine it with begin or end.",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "Number of records to return, up to 100.",
+            "description": "Number of records to return, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           }
         ],
@@ -640,7 +650,7 @@
         "summary": "Get dashboard",
         "parameters": [
           {
-            "description": "Aggregation period.",
+            "description": "Aggregation period. Defaults to 1d when omitted.",
             "name": "period",
             "in": "query",
             "schema": {
@@ -697,7 +707,7 @@
             }
           },
           {
-            "description": "End time in Unix milliseconds.",
+            "description": "End time in Unix milliseconds. Defaults to the current time when omitted.",
             "name": "end",
             "in": "query",
             "schema": {
@@ -734,7 +744,7 @@
         "summary": "List report trends",
         "parameters": [
           {
-            "description": "Parameters.",
+            "description": "Summary-time range start in Unix milliseconds, inclusive. Omit it to apply no lower time bound.",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -743,7 +753,7 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Summary-time range end in Unix milliseconds, exclusive. Omit it to apply no upper time bound.",
             "name": "end",
             "in": "query",
             "schema": {
@@ -752,22 +762,24 @@
             }
           },
           {
-            "description": "Page number, starting from 1.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted. Do not combine it with begin or end.",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "Number of records to return, up to 100.",
+            "description": "Number of records to return, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           }
         ],
@@ -800,7 +812,7 @@
         "summary": "Get risk configuration",
         "parameters": [
           {
-            "description": "Parameters.",
+            "description": "Event slug. Omit it to return only the broker's global configuration.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -873,16 +885,17 @@
         "summary": "List risk exposures",
         "parameters": [
           {
-            "description": "Page number.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted.",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "Search keyword.",
+            "description": "Search keyword. Omit it to disable keyword filtering.",
             "name": "q",
             "in": "query",
             "schema": {
@@ -890,17 +903,18 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Number of items per page, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Risk exposure status. Omit it to return all statuses.",
             "name": "status",
             "in": "query",
             "schema": {
@@ -937,16 +951,17 @@
         "summary": "List risk policies",
         "parameters": [
           {
-            "description": "Page number.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted.",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Rule scope. Omit it to return all scopes.",
             "name": "ruleScope",
             "in": "query",
             "schema": {
@@ -954,13 +969,14 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Number of items per page, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           }
         ],
@@ -1132,7 +1148,7 @@
         "summary": "List trades",
         "parameters": [
           {
-            "description": "Parameters.",
+            "description": "Trade-time range start in Unix milliseconds, inclusive. Omit it to apply no lower time bound.",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -1141,7 +1157,7 @@
             }
           },
           {
-            "description": "User email address.",
+            "description": "User email address. Omit it to disable the email filter.",
             "name": "email",
             "in": "query",
             "schema": {
@@ -1149,7 +1165,7 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Trade-time range end in Unix milliseconds, exclusive. Omit it to apply no upper time bound.",
             "name": "end",
             "in": "query",
             "schema": {
@@ -1158,7 +1174,7 @@
             }
           },
           {
-            "description": "Event slug.",
+            "description": "Event slug. Omit it to disable the event filter.",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -1166,7 +1182,7 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Starting trade record ID, exclusive. Omit it to apply no lower record boundary.",
             "name": "from",
             "in": "query",
             "schema": {
@@ -1174,17 +1190,18 @@
             }
           },
           {
-            "description": "Number of records to return, up to 100.",
+            "description": "Number of records to return, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Ending trade record ID, exclusive. Omit it to apply no upper record boundary.",
             "name": "to",
             "in": "query",
             "schema": {
@@ -1192,7 +1209,7 @@
             }
           },
           {
-            "description": "Platform user ID.",
+            "description": "Platform user ID. Omit it to return records for all platform users.",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -1232,7 +1249,7 @@
         "summary": "List transfers",
         "parameters": [
           {
-            "description": "User ID in the broker system. Omit it to return users across the current broker.",
+            "description": "User ID in the broker system. Omit it to return transfers for all users of the current broker.",
             "name": "brokerUserId",
             "in": "query",
             "schema": {
@@ -1240,7 +1257,7 @@
             }
           },
           {
-            "description": "Currency.",
+            "description": "Currency. Omit it to disable the currency filter.",
             "name": "currency",
             "in": "query",
             "schema": {
@@ -1248,7 +1265,7 @@
             }
           },
           {
-            "description": "Transfer direction: 1 for deposit, 2 for withdrawal.",
+            "description": "Transfer direction: 1 for deposit, 2 for withdrawal. Omit it to return both directions.",
             "name": "direction",
             "in": "query",
             "schema": {
@@ -1256,7 +1273,7 @@
             }
           },
           {
-            "description": "Transfer state.",
+            "description": "Transfer state. Omit it to return all states.",
             "name": "state",
             "in": "query",
             "schema": {
@@ -1264,7 +1281,7 @@
             }
           },
           {
-            "description": "Start time in Unix milliseconds, inclusive.",
+            "description": "Start time in Unix milliseconds, inclusive. Omit it to apply no lower time bound.",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -1272,7 +1289,7 @@
             }
           },
           {
-            "description": "End time in Unix milliseconds, exclusive.",
+            "description": "End time in Unix milliseconds, exclusive. Omit it to apply no upper time bound.",
             "name": "end",
             "in": "query",
             "schema": {
@@ -1280,15 +1297,16 @@
             }
           },
           {
-            "description": "Page number, starting from 1.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted. Do not combine it with begin or end.",
             "name": "page",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "default": 1
             }
           },
           {
-            "description": "Number of records to return, up to 100.",
+            "description": "Number of records to return, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
@@ -1410,7 +1428,7 @@
         "summary": "List users",
         "parameters": [
           {
-            "description": "Parameters.",
+            "description": "Creation-time range start in Unix milliseconds, inclusive. Omit it to apply no lower time bound.",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -1419,7 +1437,7 @@
             }
           },
           {
-            "description": "User ID in the broker system.",
+            "description": "User ID in the broker system. Omit it to return records for all broker users.",
             "name": "brokerUserId",
             "in": "query",
             "schema": {
@@ -1427,7 +1445,7 @@
             }
           },
           {
-            "description": "User email address.",
+            "description": "User email address. Omit it to disable the email filter.",
             "name": "email",
             "in": "query",
             "schema": {
@@ -1435,7 +1453,7 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Creation-time range end in Unix milliseconds, exclusive. Omit it to apply no upper time bound.",
             "name": "end",
             "in": "query",
             "schema": {
@@ -1444,26 +1462,28 @@
             }
           },
           {
-            "description": "Page number, starting from 1.",
+            "description": "Page number, starting from 1. Defaults to 1 when omitted. Do not combine it with begin or end.",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Number of items per page, up to 100. Defaults to 20 when omitted.",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "Platform user ID.",
+            "description": "Platform user ID. Omit it to return records for all platform users.",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -1471,7 +1491,7 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "User type. Omit it to return all user types.",
             "name": "userType",
             "in": "query",
             "schema": {
@@ -1799,15 +1819,16 @@
         ],
         "properties": {
           "cancelOpenOrders": {
-            "description": "Cancel Open Orders.",
-            "type": "boolean"
+            "description": "Whether to cancel open orders. Defaults to false when omitted. The current version does not cancel orders automatically.",
+            "type": "boolean",
+            "default": false
           },
           "enabled": {
             "description": "Enabled.",
             "type": "boolean"
           },
           "reason": {
-            "description": "Reason for the operation.",
+            "description": "Reason for the operation. Defaults to an empty string when omitted.",
             "type": "string"
           }
         }
@@ -1816,23 +1837,23 @@
         "type": "object",
         "properties": {
           "eventEnabled": {
-            "description": "Event Enabled.",
+            "description": "Whether event-level risk control is enabled. Omit it to leave the current value unchanged.",
             "type": "boolean"
           },
           "eventSlug": {
-            "description": "Event Slug.",
+            "description": "Event slug. Omit it to update only the broker's global configuration.",
             "type": "string"
           },
           "globalEnabled": {
-            "description": "Global Enabled.",
+            "description": "Whether global broker risk control is enabled. Omit it to leave the current value unchanged.",
             "type": "boolean"
           },
           "maxEventWorstCasePayout": {
-            "description": "Max Event Worst Case Payout.",
+            "description": "Maximum worst-case payout for one event. Omit it to leave the current value unchanged.",
             "type": "number"
           },
           "maxGlobalWorstCasePayout": {
-            "description": "Max Global Worst Case Payout.",
+            "description": "Maximum global worst-case payout for the broker. Omit it to leave the current value unchanged.",
             "type": "number"
           }
         }
@@ -1849,11 +1870,11 @@
             "type": "string"
           },
           "desc": {
-            "description": "User description.",
+            "description": "User description. When omitted, it is empty for a new user.",
             "type": "string"
           },
           "email": {
-            "description": "User email address.",
+            "description": "User email address. When omitted, it is empty for a new user and unchanged for an existing user.",
             "type": "string"
           },
           "token": {
@@ -1861,7 +1882,7 @@
             "type": "string"
           },
           "userName": {
-            "description": "User name.",
+            "description": "User name. When omitted, it is empty for a new user and unchanged for an existing user.",
             "type": "string"
           }
         }
@@ -1870,14 +1891,17 @@
         "type": "object",
         "properties": {
           "domain": {
+            "description": "Broker domain. Omit it to leave the current value unchanged.",
             "type": "string",
             "maxLength": 512
           },
           "name": {
+            "description": "Broker name. Omit it to leave the current value unchanged.",
             "type": "string",
             "maxLength": 64
           },
           "webhookUrl": {
+            "description": "Webhook URL. Omit it to leave the current value unchanged, or send an empty string to clear it.",
             "type": "string",
             "maxLength": 512
           }
@@ -1887,11 +1911,11 @@
         "type": "object",
         "properties": {
           "desc": {
-            "description": "Desc.",
+            "description": "New user description. Omit it or send an empty string to leave the current value unchanged.",
             "type": "string"
           },
           "userName": {
-            "description": "User Name.",
+            "description": "New user name. Omit it or send an empty string to leave the current value unchanged.",
             "type": "string"
           }
         }
@@ -2197,7 +2221,7 @@
             ]
           },
           "remark": {
-            "description": "Remark.",
+            "description": "Remark. Defaults to an empty string when omitted.",
             "type": "string"
           },
           "txnId": {
@@ -2340,15 +2364,18 @@
         "type": "object",
         "properties": {
           "authorities": {
+            "description": "Permission list. Defaults to READ and TRADE when omitted or empty.",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "ipWhiteList": {
+            "description": "IP allowlist. Defaults to an empty string when omitted.",
             "type": "string"
           },
           "remark": {
+            "description": "Remark. Defaults to an empty string when omitted.",
             "type": "string",
             "maxLength": 255
           }
