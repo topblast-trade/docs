@@ -1329,11 +1329,11 @@
     },
     "/v1/public/price": {
       "get": {
-        "description": "返回指定结果 Token 的最新价格。",
+        "description": "返回指定结果 Token 的最新市场价格。",
         "tags": [
           "用户接口-市场"
         ],
-        "summary": "查询最新价格",
+        "summary": "查询最新市场价格",
         "parameters": [
           {
             "name": "x-app-id",
@@ -1356,7 +1356,7 @@
         ],
         "responses": {
           "200": {
-            "description": "最新价格",
+            "description": "最新市场价格",
             "content": {
               "application/json": {
                 "schema": {
@@ -2514,7 +2514,7 @@
       "http_meta.AckEvents": {
         "type": "object",
         "properties": {
-          "events": {
+          "items": {
             "description": "当前页事件",
             "type": "array",
             "items": {
@@ -2530,7 +2530,7 @@
       "http_meta.AckMarkets": {
         "type": "object",
         "properties": {
-          "markets": {
+          "items": {
             "description": "当前页市场列表；与 events.markets 使用同一字段契约",
             "type": "array",
             "items": {
@@ -2562,7 +2562,7 @@
       "http_meta.AckTags": {
         "type": "object",
         "properties": {
-          "tags": {
+          "items": {
             "description": "当前页标签",
             "type": "array",
             "items": {
@@ -2887,12 +2887,12 @@
             "description": "到期时间（Unix 毫秒字符串）；0 表示无指定到期",
             "type": "string"
           },
-          "id": {
-            "description": "订单 ID",
-            "type": "string"
-          },
           "market": {
             "description": "市场 ID",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "订单 ID",
             "type": "string"
           },
           "orderType": {
@@ -2999,12 +2999,12 @@
             "description": "到期时间（Unix 毫秒字符串）；0 表示无指定到期",
             "type": "string"
           },
-          "id": {
-            "description": "订单 ID",
-            "type": "string"
-          },
           "market": {
             "description": "市场 ID",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "订单 ID",
             "type": "string"
           },
           "orderType": {

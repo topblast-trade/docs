@@ -1329,11 +1329,11 @@
     },
     "/v1/public/price": {
       "get": {
-        "description": "Return the latest price for an outcome token.",
+        "description": "Return the latest market price for an outcome token.",
         "tags": [
           "Market data"
         ],
-        "summary": "Get latest price",
+        "summary": "Get latest market price",
         "parameters": [
           {
             "name": "x-app-id",
@@ -1356,7 +1356,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Latest price",
+            "description": "Latest market price",
             "content": {
               "application/json": {
                 "schema": {
@@ -2530,7 +2530,7 @@
       "http_meta.AckEvents": {
         "type": "object",
         "properties": {
-          "events": {
+          "items": {
             "description": "Events on the current page",
             "type": "array",
             "items": {
@@ -2546,7 +2546,7 @@
       "http_meta.AckMarkets": {
         "type": "object",
         "properties": {
-          "markets": {
+          "items": {
             "description": "Markets on the current page. Uses the same field contract as `events.markets`.",
             "type": "array",
             "items": {
@@ -2578,7 +2578,7 @@
       "http_meta.AckTags": {
         "type": "object",
         "properties": {
-          "tags": {
+          "items": {
             "description": "Tags on the current page",
             "type": "array",
             "items": {
@@ -2903,12 +2903,12 @@
             "description": "Expiration time as a Unix-millisecond string. `0` means no expiration.",
             "type": "string"
           },
-          "id": {
-            "description": "Order ID",
-            "type": "string"
-          },
           "market": {
             "description": "Market ID",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "Order ID",
             "type": "string"
           },
           "orderType": {
@@ -3031,12 +3031,12 @@
             "description": "Expiration time as a Unix-millisecond string. `0` means no expiration.",
             "type": "string"
           },
-          "id": {
-            "description": "Order ID",
-            "type": "string"
-          },
           "market": {
             "description": "Market ID",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "Order ID",
             "type": "string"
           },
           "orderType": {
