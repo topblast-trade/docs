@@ -22,26 +22,28 @@
         "summary": "查询资产",
         "parameters": [
           {
-            "description": "页码，从 1 开始",
+            "description": "页码，从 1 开始；不传时默认为 1",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "返回数量，最大 100",
+            "description": "返回数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "平台用户 ID",
+            "description": "平台用户 ID；不传时返回当前券商全部用户的资产",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -78,7 +80,7 @@
         "summary": "查询事件",
         "parameters": [
           {
-            "description": "开始时间（Unix 毫秒，包含）",
+            "description": "开始时间（Unix 毫秒，包含）；不传时不限制起始时间",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -87,7 +89,7 @@
             }
           },
           {
-            "description": "是否已为券商启用",
+            "description": "是否已为券商启用；不传时返回启用和未启用事件",
             "name": "enabled",
             "in": "query",
             "schema": {
@@ -95,7 +97,7 @@
             }
           },
           {
-            "description": "结束时间（Unix 毫秒，不包含）",
+            "description": "结束时间（Unix 毫秒，不包含）；不传时不限制结束时间",
             "name": "end",
             "in": "query",
             "schema": {
@@ -104,7 +106,7 @@
             }
           },
           {
-            "description": "事件标识",
+            "description": "事件标识；不传时不按事件标识筛选",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -112,16 +114,17 @@
             }
           },
           {
-            "description": "页码",
+            "description": "页码，从 1 开始；不传时默认为 1；不能与 begin 或 end 同时使用",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "模糊搜索关键词",
+            "description": "模糊搜索关键词；不传时不进行关键词筛选",
             "name": "q",
             "in": "query",
             "schema": {
@@ -129,17 +132,18 @@
             }
           },
           {
-            "description": "每页数量，最大 100",
+            "description": "每页数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "事件状态",
+            "description": "事件状态；不传时返回全部状态",
             "name": "status",
             "in": "query",
             "schema": {
@@ -321,7 +325,7 @@
         "summary": "查询当前委托",
         "parameters": [
           {
-            "description": "用户邮箱",
+            "description": "用户邮箱；不传时不按邮箱筛选",
             "name": "email",
             "in": "query",
             "schema": {
@@ -329,7 +333,7 @@
             }
           },
           {
-            "description": "事件标识",
+            "description": "事件标识；不传时不按事件标识筛选",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -337,7 +341,7 @@
             }
           },
           {
-            "description": "市场 ID",
+            "description": "市场 ID；不传时不按市场筛选",
             "name": "marketId",
             "in": "query",
             "schema": {
@@ -345,26 +349,28 @@
             }
           },
           {
-            "description": "页码，从 1 开始",
+            "description": "页码，从 1 开始；不传时默认为 1",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "返回数量，最大 100",
+            "description": "返回数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "结果 Token ID",
+            "description": "结果 Token ID；不传时不按结果 Token 筛选",
             "name": "tokenId",
             "in": "query",
             "schema": {
@@ -372,7 +378,7 @@
             }
           },
           {
-            "description": "平台用户 ID",
+            "description": "平台用户 ID；不传时不按平台用户筛选",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -418,7 +424,7 @@
             }
           },
           {
-            "description": "平台用户 ID",
+            "description": "平台用户 ID（必填）",
             "name": "userId",
             "in": "query",
             "required": true,
@@ -456,7 +462,7 @@
         "summary": "查询仓位",
         "parameters": [
           {
-            "description": "用户邮箱",
+            "description": "用户邮箱；不传时不按邮箱筛选",
             "name": "email",
             "in": "query",
             "schema": {
@@ -464,7 +470,7 @@
             }
           },
           {
-            "description": "事件标识",
+            "description": "事件标识；不传时不按事件标识筛选",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -472,7 +478,7 @@
             }
           },
           {
-            "description": "市场 ID",
+            "description": "市场 ID；不传时不按市场筛选",
             "name": "marketId",
             "in": "query",
             "schema": {
@@ -480,26 +486,28 @@
             }
           },
           {
-            "description": "页码，从 1 开始",
+            "description": "页码，从 1 开始；不传时默认为 1",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "返回数量，最大 100",
+            "description": "返回数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "平台用户 ID",
+            "description": "平台用户 ID；不传时不按平台用户筛选",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -574,7 +582,7 @@
         "summary": "查询每日汇总",
         "parameters": [
           {
-            "description": "汇总日期范围起点（Unix 毫秒，包含）",
+            "description": "汇总日期范围起点（Unix 毫秒，包含）；不传时不限制起始时间",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -583,7 +591,7 @@
             }
           },
           {
-            "description": "汇总日期范围终点（Unix 毫秒，不包含）",
+            "description": "汇总日期范围终点（Unix 毫秒，不包含）；不传时不限制结束时间",
             "name": "end",
             "in": "query",
             "schema": {
@@ -592,22 +600,24 @@
             }
           },
           {
-            "description": "页码，从 1 开始",
+            "description": "页码，从 1 开始；不传时默认为 1；不能与 begin 或 end 同时使用",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "返回数量，最大 100",
+            "description": "返回数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           }
         ],
@@ -640,7 +650,7 @@
         "summary": "查询仪表盘",
         "parameters": [
           {
-            "description": "统计周期",
+            "description": "统计周期；不传时默认为 1d",
             "name": "period",
             "in": "query",
             "schema": {
@@ -697,7 +707,7 @@
             }
           },
           {
-            "description": "结束时间（Unix 毫秒）",
+            "description": "结束时间（Unix 毫秒）；不传时默认为当前时间",
             "name": "end",
             "in": "query",
             "schema": {
@@ -734,7 +744,7 @@
         "summary": "查询趋势报表",
         "parameters": [
           {
-            "description": "汇总日期范围起点（Unix 毫秒，包含）",
+            "description": "汇总日期范围起点（Unix 毫秒，包含）；不传时不限制起始时间",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -743,7 +753,7 @@
             }
           },
           {
-            "description": "汇总日期范围终点（Unix 毫秒，不包含）",
+            "description": "汇总日期范围终点（Unix 毫秒，不包含）；不传时不限制结束时间",
             "name": "end",
             "in": "query",
             "schema": {
@@ -752,22 +762,24 @@
             }
           },
           {
-            "description": "页码，从 1 开始",
+            "description": "页码，从 1 开始；不传时默认为 1；不能与 begin 或 end 同时使用",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "返回数量，最大 100",
+            "description": "返回数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           }
         ],
@@ -800,7 +812,7 @@
         "summary": "查询风控配置",
         "parameters": [
           {
-            "description": "事件标识；为空时仅查询券商全局配置",
+            "description": "事件标识；不传时仅查询券商全局配置",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -873,16 +885,17 @@
         "summary": "查询风险敞口",
         "parameters": [
           {
-            "description": "页码",
+            "description": "页码，从 1 开始；不传时默认为 1",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "模糊搜索关键词",
+            "description": "模糊搜索关键词；不传时不进行关键词筛选",
             "name": "q",
             "in": "query",
             "schema": {
@@ -890,17 +903,18 @@
             }
           },
           {
-            "description": "每页数量，最大 100",
+            "description": "每页数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "风险敞口状态",
+            "description": "风险敞口状态；不传时返回全部状态",
             "name": "status",
             "in": "query",
             "schema": {
@@ -937,16 +951,17 @@
         "summary": "查询风控策略",
         "parameters": [
           {
-            "description": "页码",
+            "description": "页码，从 1 开始；不传时默认为 1",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "规则作用域",
+            "description": "规则作用域；不传时返回全部作用域",
             "name": "ruleScope",
             "in": "query",
             "schema": {
@@ -954,13 +969,14 @@
             }
           },
           {
-            "description": "每页数量，最大 100",
+            "description": "每页数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           }
         ],
@@ -1132,7 +1148,7 @@
         "summary": "查询成交记录",
         "parameters": [
           {
-            "description": "成交时间范围起点（Unix 毫秒，包含）",
+            "description": "成交时间范围起点（Unix 毫秒，包含）；不传时不限制起始时间",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -1141,7 +1157,7 @@
             }
           },
           {
-            "description": "用户邮箱",
+            "description": "用户邮箱；不传时不按邮箱筛选",
             "name": "email",
             "in": "query",
             "schema": {
@@ -1149,7 +1165,7 @@
             }
           },
           {
-            "description": "成交时间范围终点（Unix 毫秒，不包含）",
+            "description": "成交时间范围终点（Unix 毫秒，不包含）；不传时不限制结束时间",
             "name": "end",
             "in": "query",
             "schema": {
@@ -1158,7 +1174,7 @@
             }
           },
           {
-            "description": "事件标识",
+            "description": "事件标识；不传时不按事件标识筛选",
             "name": "eventSlug",
             "in": "query",
             "schema": {
@@ -1166,7 +1182,7 @@
             }
           },
           {
-            "description": "起始成交记录 ID（不包含）",
+            "description": "起始成交记录 ID（不包含）；不传时不限制起始记录",
             "name": "from",
             "in": "query",
             "schema": {
@@ -1174,17 +1190,18 @@
             }
           },
           {
-            "description": "返回数量，最大 100",
+            "description": "返回数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "结束成交记录 ID（不包含）",
+            "description": "结束成交记录 ID（不包含）；不传时不限制结束记录",
             "name": "to",
             "in": "query",
             "schema": {
@@ -1192,7 +1209,7 @@
             }
           },
           {
-            "description": "平台用户 ID",
+            "description": "平台用户 ID；不传时不按平台用户筛选",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -1232,7 +1249,7 @@
         "summary": "查询划转列表",
         "parameters": [
           {
-            "description": "券商系统中的用户 ID；不传表示当前券商全部用户",
+            "description": "券商系统中的用户 ID；不传时返回当前券商全部用户的划转",
             "name": "brokerUserId",
             "in": "query",
             "schema": {
@@ -1240,7 +1257,7 @@
             }
           },
           {
-            "description": "币种",
+            "description": "币种；不传时不按币种筛选",
             "name": "currency",
             "in": "query",
             "schema": {
@@ -1248,7 +1265,7 @@
             }
           },
           {
-            "description": "划转方向：1 入金，2 出金",
+            "description": "划转方向：1 入金，2 出金；不传时返回全部方向",
             "name": "direction",
             "in": "query",
             "schema": {
@@ -1256,7 +1273,7 @@
             }
           },
           {
-            "description": "划转状态",
+            "description": "划转状态；不传时返回全部状态",
             "name": "state",
             "in": "query",
             "schema": {
@@ -1264,7 +1281,7 @@
             }
           },
           {
-            "description": "开始时间（Unix 毫秒，包含）",
+            "description": "开始时间（Unix 毫秒，包含）；不传时不限制起始时间",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -1272,7 +1289,7 @@
             }
           },
           {
-            "description": "结束时间（Unix 毫秒，不包含）",
+            "description": "结束时间（Unix 毫秒，不包含）；不传时不限制结束时间",
             "name": "end",
             "in": "query",
             "schema": {
@@ -1280,15 +1297,16 @@
             }
           },
           {
-            "description": "页码，从 1 开始",
+            "description": "页码，从 1 开始；不传时默认为 1；不能与 begin 或 end 同时使用",
             "name": "page",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "default": 1
             }
           },
           {
-            "description": "返回数量，最大 100",
+            "description": "返回数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
@@ -1410,7 +1428,7 @@
         "summary": "查询用户列表",
         "parameters": [
           {
-            "description": "创建时间范围起点（Unix 毫秒，包含）",
+            "description": "创建时间范围起点（Unix 毫秒，包含）；不传时不限制起始时间",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -1419,7 +1437,7 @@
             }
           },
           {
-            "description": "券商系统中的用户 ID",
+            "description": "券商系统中的用户 ID；不传时不按券商用户筛选",
             "name": "brokerUserId",
             "in": "query",
             "schema": {
@@ -1427,7 +1445,7 @@
             }
           },
           {
-            "description": "用户邮箱",
+            "description": "用户邮箱；不传时不按邮箱筛选",
             "name": "email",
             "in": "query",
             "schema": {
@@ -1435,7 +1453,7 @@
             }
           },
           {
-            "description": "创建时间范围终点（Unix 毫秒，不包含）",
+            "description": "创建时间范围终点（Unix 毫秒，不包含）；不传时不限制结束时间",
             "name": "end",
             "in": "query",
             "schema": {
@@ -1444,26 +1462,28 @@
             }
           },
           {
-            "description": "页码，从 1 开始",
+            "description": "页码，从 1 开始；不传时默认为 1；不能与 begin 或 end 同时使用",
             "name": "page",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "default": 1
             }
           },
           {
-            "description": "每页数量，最大 100",
+            "description": "每页数量，最大 100；不传时默认为 20",
             "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 100
+              "maximum": 100,
+              "default": 20
             }
           },
           {
-            "description": "平台用户 ID",
+            "description": "平台用户 ID；不传时不按平台用户筛选",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -1471,7 +1491,7 @@
             }
           },
           {
-            "description": "用户类型",
+            "description": "用户类型；不传时返回全部用户类型",
             "name": "userType",
             "in": "query",
             "schema": {
@@ -1799,15 +1819,16 @@
         ],
         "properties": {
           "cancelOpenOrders": {
-            "description": "预留；当前版本不自动撤单",
-            "type": "boolean"
+            "description": "是否取消未成交订单；不传时默认为 false；当前版本不自动撤单",
+            "type": "boolean",
+            "default": false
           },
           "enabled": {
             "description": "是否启用市场",
             "type": "boolean"
           },
           "reason": {
-            "description": "操作原因",
+            "description": "操作原因；不传时为空字符串",
             "type": "string"
           }
         }
@@ -1816,23 +1837,23 @@
         "type": "object",
         "properties": {
           "eventEnabled": {
-            "description": "是否启用事件级风控",
+            "description": "是否启用事件级风控；不传时保持现有值",
             "type": "boolean"
           },
           "eventSlug": {
-            "description": "事件标识；设置事件级配置时必填",
+            "description": "事件标识；不传时仅处理券商全局配置",
             "type": "string"
           },
           "globalEnabled": {
-            "description": "是否启用券商全局风控",
+            "description": "是否启用券商全局风控；不传时保持现有值",
             "type": "boolean"
           },
           "maxEventWorstCasePayout": {
-            "description": "单个事件最大最坏情况赔付额",
+            "description": "单个事件最大最坏情况赔付额；不传时保持现有值",
             "type": "number"
           },
           "maxGlobalWorstCasePayout": {
-            "description": "券商全局最大最坏情况赔付额",
+            "description": "券商全局最大最坏情况赔付额；不传时保持现有值",
             "type": "number"
           }
         }
@@ -1849,11 +1870,11 @@
             "type": "string"
           },
           "desc": {
-            "description": "用户备注",
+            "description": "用户备注；不传时新用户保存为空",
             "type": "string"
           },
           "email": {
-            "description": "用户邮箱",
+            "description": "用户邮箱；不传时新用户保存为空，已有用户保持不变",
             "type": "string"
           },
           "token": {
@@ -1861,7 +1882,7 @@
             "type": "string"
           },
           "userName": {
-            "description": "用户名称",
+            "description": "用户名称；不传时新用户保存为空，已有用户保持不变",
             "type": "string"
           }
         }
@@ -1870,14 +1891,17 @@
         "type": "object",
         "properties": {
           "domain": {
+            "description": "券商域名；不传时保持不变",
             "type": "string",
             "maxLength": 512
           },
           "name": {
+            "description": "券商名称；不传时保持不变",
             "type": "string",
             "maxLength": 64
           },
           "webhookUrl": {
+            "description": "Webhook URL；不传时保持不变，传空字符串时清空",
             "type": "string",
             "maxLength": 512
           }
@@ -1887,11 +1911,11 @@
         "type": "object",
         "properties": {
           "desc": {
-            "description": "新的用户备注",
+            "description": "新的用户备注；不传或传空字符串时保持不变",
             "type": "string"
           },
           "userName": {
-            "description": "新的用户名称",
+            "description": "新的用户名称；不传或传空字符串时保持不变",
             "type": "string"
           }
         }
@@ -2197,7 +2221,7 @@
             ]
           },
           "remark": {
-            "description": "备注",
+            "description": "备注；不传时为空字符串",
             "type": "string"
           },
           "txnId": {
@@ -2340,25 +2364,77 @@
         "type": "object",
         "properties": {
           "authorities": {
+            "description": "权限列表；不传或传空数组时默认为 READ 和 TRADE",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "ipWhiteList": {
+            "description": "IP 白名单；不传时为空字符串",
             "type": "string"
           },
           "remark": {
+            "description": "备注；不传时为空字符串",
             "type": "string",
             "maxLength": 255
+          }
+        }
+      },
+      "v2.brokerDailySummaryItem": {
+        "type": "object",
+        "properties": {
+          "activeUsers": {
+            "description": "当日活跃用户数",
+            "type": "integer"
+          },
+          "day": {
+            "description": "汇总日期",
+            "type": "string"
+          },
+          "dayStartTime": {
+            "description": "日期开始时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
+          },
+          "newUsers": {
+            "description": "当日新增用户数",
+            "type": "integer"
+          },
+          "totalDeposit": {
+            "description": "当日入金总额",
+            "type": "string"
+          },
+          "totalTradePnl": {
+            "description": "当日成交盈亏",
+            "type": "string"
+          },
+          "totalTradeQty": {
+            "description": "当日成交数量",
+            "type": "string"
+          },
+          "totalTradeVolume": {
+            "description": "当日成交总额",
+            "type": "string"
+          },
+          "totalWithdraw": {
+            "description": "当日出金总额",
+            "type": "string"
           }
         }
       },
       "v2.brokerDailySummaryListData": {
         "type": "object",
         "properties": {
-          "items": {},
+          "items": {
+            "description": "每日汇总列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerDailySummaryItem"
+            }
+          },
           "total": {
+            "description": "记录总数",
             "type": "integer"
           }
         }
@@ -3172,8 +3248,8 @@
   },
   "servers": [
     {
-      "url": "https://api.topblast.trade",
-      "description": "生产环境"
+      "url": "https://api-test.topblast.trade",
+      "description": "测试环境"
     }
   ],
   "security": [
