@@ -2592,9 +2592,25 @@
       "http_meta.Tag": {
         "type": "object",
         "properties": {
+          "createdAt": {
+            "description": "创建时间",
+            "type": "string"
+          },
+          "forceHide": {
+            "description": "是否强制隐藏",
+            "type": "boolean"
+          },
+          "forceShow": {
+            "description": "是否强制展示",
+            "type": "boolean"
+          },
           "id": {
             "description": "标签 ID",
             "type": "string"
+          },
+          "isCarousel": {
+            "description": "是否为轮播标签",
+            "type": "boolean"
           },
           "label": {
             "description": "标签显示名称",
@@ -2602,6 +2618,10 @@
           },
           "slug": {
             "description": "标签 slug",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "更新时间",
             "type": "string"
           }
         }
