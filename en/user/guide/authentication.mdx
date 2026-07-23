@@ -82,17 +82,17 @@ func CalculateSignature(secret, timestamp, method, path, rawQuery, body string) 
 }
 ```
 
-For `GET /v1/private/orders?limit=20`, the signature payload is:
+For `GET /v1/private/orders?page=1&size=20`, the signature payload is:
 
 ```text
-1717027200000GET/v1/private/orders?limit=20
+1717027200000GET/v1/private/orders?page=1&size=20
 ```
 
 Send `x-app-id` together with the three API Key authentication headers:
 
 ```bash
 curl --request GET \
-  --url 'https://<api-host>/v1/private/orders?limit=20' \
+  --url 'https://<api-host>/v1/private/orders?page=1&size=20' \
   --header 'x-app-id: <broker_app_id>' \
   --header 'x-api-key: <access_key>' \
   --header 'x-timestamp: 1717027200000' \

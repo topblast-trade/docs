@@ -61,7 +61,7 @@
     },
     "/v1/private/account/trades": {
       "get": {
-        "description": "List trades for the authenticated account. `eventId` and `event` are aliases; prefer `eventId`.",
+        "description": "List trades for the authenticated account, ordered by time and trade ID descending. `eventId` and `event` are aliases; prefer `eventId`.",
         "tags": [
           "Trades"
         ],
@@ -77,8 +77,40 @@
             }
           },
           {
+            "description": "Start time in Unix milliseconds",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "End time in Unix milliseconds",
+            "name": "end",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Starting trade-ID cursor",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Ending trade-ID cursor",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
             "description": "Number of records to return. Defaults to 20; maximum 100.",
-            "name": "limit",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -110,7 +142,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_account.AckAccountTrades"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/http_account.AccountTrade"
+                  }
                 }
               }
             }
@@ -166,24 +201,24 @@
             }
           },
           {
+            "description": "Page number, starting at 1.",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
             "description": "Items per page. Defaults to 20; maximum 100.",
-            "name": "limit",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
               "maximum": 100,
               "default": 20
-            }
-          },
-          {
-            "description": "Offset. Defaults to 0.",
-            "name": "offset",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "default": 0
             }
           },
           {
@@ -494,7 +529,7 @@
     },
     "/v1/private/orders/history": {
       "get": {
-        "description": "List historical orders for the authenticated account. Set `afterCursor` to the last order ID from the previous page to continue forward.",
+        "description": "List historical orders for the authenticated account, ordered by time and order ID descending.",
         "tags": [
           "Orders"
         ],
@@ -510,22 +545,46 @@
             }
           },
           {
-            "description": "Items per page. Defaults to 20; maximum 100.",
-            "name": "limit",
+            "description": "Start time in Unix milliseconds",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "End time in Unix milliseconds",
+            "name": "end",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Starting order-ID cursor",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Ending order-ID cursor",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Number of records to return. Defaults to 20; maximum 100.",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
               "maximum": 100,
               "default": 20
-            }
-          },
-          {
-            "description": "Last order ID from the previous page. Omit on the first request.",
-            "name": "afterCursor",
-            "in": "query",
-            "schema": {
-              "type": "string"
             }
           },
           {
@@ -551,7 +610,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOrderHistory"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/http_order.OrderDetail"
+                  }
                 }
               }
             }
@@ -2816,16 +2878,16 @@
       "http_order.AckOpenOrders": {
         "type": "object",
         "properties": {
-          "count": {
-            "description": "Number of records returned",
-            "type": "integer"
-          },
-          "data": {
+          "items": {
             "description": "Open order",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/http_order.OrderDetail"
             }
+          },
+          "total": {
+            "description": "Total number of matching open orders",
+            "type": "integer"
           }
         }
       },

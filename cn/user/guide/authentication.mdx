@@ -82,17 +82,17 @@ func CalculateSignature(secret, timestamp, method, path, rawQuery, body string) 
 }
 ```
 
-例如，请求 `GET /v1/private/orders?limit=20` 时，参与签名的字符串为：
+例如，请求 `GET /v1/private/orders?page=1&size=20` 时，参与签名的字符串为：
 
 ```text
-1717027200000GET/v1/private/orders?limit=20
+1717027200000GET/v1/private/orders?page=1&size=20
 ```
 
 签名完成后，发送 `x-app-id` 和三个 API Key 鉴权 Header：
 
 ```bash
 curl --request GET \
-  --url 'https://<api-host>/v1/private/orders?limit=20' \
+  --url 'https://<api-host>/v1/private/orders?page=1&size=20' \
   --header 'x-app-id: <broker_app_id>' \
   --header 'x-api-key: <access_key>' \
   --header 'x-timestamp: 1717027200000' \

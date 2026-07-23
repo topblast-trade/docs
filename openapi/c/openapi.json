@@ -61,7 +61,7 @@
     },
     "/v1/private/account/trades": {
       "get": {
-        "description": "查询当前登录账户的成交记录。eventId/event 为同义参数，优先使用 eventId。",
+        "description": "查询当前登录账户的成交记录，结果按时间和成交 ID 倒序返回。eventId/event 为同义参数，优先使用 eventId。",
         "tags": [
           "用户接口-成交"
         ],
@@ -77,8 +77,40 @@
             }
           },
           {
+            "description": "起始时间（Unix 毫秒）",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "结束时间（Unix 毫秒）",
+            "name": "end",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "起始成交 ID 游标",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "结束成交 ID 游标",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
             "description": "返回数量，默认 20，最大 100",
-            "name": "limit",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -110,7 +142,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_account.AckAccountTrades"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/http_account.AccountTrade"
+                  }
                 }
               }
             }
@@ -166,24 +201,24 @@
             }
           },
           {
+            "description": "页码，从 1 开始",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
             "description": "每页数量，默认 20，最大 100",
-            "name": "limit",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
               "maximum": 100,
               "default": 20
-            }
-          },
-          {
-            "description": "偏移量，默认 0",
-            "name": "offset",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "default": 0
             }
           },
           {
@@ -494,7 +529,7 @@
     },
     "/v1/private/orders/history": {
       "get": {
-        "description": "查询当前登录账户的历史委托。afterCursor 是上一页最后一条订单的 ID，仅用于继续向后翻页。",
+        "description": "查询当前登录账户的历史委托，结果按时间和订单 ID 倒序返回。",
         "tags": [
           "用户接口-委托"
         ],
@@ -510,22 +545,46 @@
             }
           },
           {
-            "description": "每页数量，默认 20，最大 100",
-            "name": "limit",
+            "description": "起始时间（Unix 毫秒）",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "结束时间（Unix 毫秒）",
+            "name": "end",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "起始订单 ID 游标",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "结束订单 ID 游标",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "返回数量，默认 20，最大 100",
+            "name": "size",
             "in": "query",
             "schema": {
               "type": "integer",
               "minimum": 1,
               "maximum": 100,
               "default": 20
-            }
-          },
-          {
-            "description": "上一页末尾订单 ID；首次请求不传",
-            "name": "afterCursor",
-            "in": "query",
-            "schema": {
-              "type": "string"
             }
           },
           {
@@ -551,7 +610,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOrderHistory"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/http_order.OrderDetail"
+                  }
                 }
               }
             }
@@ -2062,22 +2124,6 @@
           }
         }
       },
-      "http_account.AckAccountTrades": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "description": "本次返回数量",
-            "type": "integer"
-          },
-          "data": {
-            "description": "成交记录",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_account.AccountTrade"
-            }
-          }
-        }
-      },
       "http_common.AckError": {
         "type": "object",
         "properties": {
@@ -2816,16 +2862,16 @@
       "http_order.AckOpenOrders": {
         "type": "object",
         "properties": {
-          "count": {
-            "description": "本次返回数量",
-            "type": "integer"
-          },
-          "data": {
+          "items": {
             "description": "当前委托",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/http_order.OrderDetail"
             }
+          },
+          "total": {
+            "description": "符合条件的委托总数",
+            "type": "integer"
           }
         }
       },
@@ -2888,22 +2934,6 @@
           "tokenId": {
             "description": "结果 Token ID",
             "type": "string"
-          }
-        }
-      },
-      "http_order.AckOrderHistory": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "description": "本次返回数量",
-            "type": "integer"
-          },
-          "data": {
-            "description": "历史委托",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_order.OrderDetail"
-            }
           }
         }
       },
