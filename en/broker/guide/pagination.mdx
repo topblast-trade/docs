@@ -33,8 +33,8 @@ curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
 {
   "items": [
     {
-      "uid": "10001",
-      "userId": "broker-user-10001",
+      "userId": "10001",
+      "brokerUserId": "broker-user-10001",
       "email": "user@example.com",
       "username": "example-user",
       "userType": "NORMAL",
@@ -48,7 +48,7 @@ curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
 
 `items` contains the current page. `total` is the total number of records matching the query.
 
-Response `uid` and `userId` values are always JSON strings to avoid JavaScript
+Response `userId` and `brokerUserId` values are always JSON strings to avoid JavaScript
 safe-integer precision loss. Timestamp fields such as `createdAt` and
 `updatedAt` are always Unix milliseconds and are declared as `int64` in
 OpenAPI.

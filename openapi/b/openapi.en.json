@@ -41,8 +41,8 @@
             }
           },
           {
-            "description": "Platform user UID.",
-            "name": "uid",
+            "description": "Platform user ID.",
+            "name": "userId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -372,8 +372,8 @@
             }
           },
           {
-            "description": "Platform user UID.",
-            "name": "uid",
+            "description": "Platform user ID.",
+            "name": "userId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -418,8 +418,8 @@
             }
           },
           {
-            "description": "Platform user UID.",
-            "name": "uid",
+            "description": "Platform user ID.",
+            "name": "userId",
             "in": "query",
             "required": true,
             "schema": {
@@ -499,8 +499,8 @@
             }
           },
           {
-            "description": "Platform user UID.",
-            "name": "uid",
+            "description": "Platform user ID.",
+            "name": "userId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1109,7 +1109,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.brokerUIDData"
+                  "$ref": "#/components/schemas/v2.brokerUserIDData"
                 }
               }
             }
@@ -1192,8 +1192,8 @@
             }
           },
           {
-            "description": "Platform user UID.",
-            "name": "uid",
+            "description": "Platform user ID.",
+            "name": "userId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1232,8 +1232,8 @@
         "summary": "List transfers",
         "parameters": [
           {
-            "description": "Parameters.",
-            "name": "userId",
+            "description": "User ID in the broker system. Omit it to return users across the current broker.",
+            "name": "brokerUserId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1419,6 +1419,14 @@
             }
           },
           {
+            "description": "User ID in the broker system.",
+            "name": "brokerUserId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "User email address.",
             "name": "email",
             "in": "query",
@@ -1455,15 +1463,7 @@
             }
           },
           {
-            "description": "Platform user UID.",
-            "name": "uid",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Broker-side user ID.",
+            "description": "Platform user ID.",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -1497,7 +1497,7 @@
         }
       }
     },
-    "/v1/broker/users/{userId}": {
+    "/v1/broker/users/{brokerUserId}": {
       "patch": {
         "security": [
           {
@@ -1512,8 +1512,8 @@
         "summary": "Update a user",
         "parameters": [
           {
-            "description": "Broker-side user ID.",
-            "name": "userId",
+            "description": "User ID in the broker system.",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1546,7 +1546,7 @@
         }
       }
     },
-    "/v1/broker/users/{userId}/api-keys": {
+    "/v1/broker/users/{brokerUserId}/api-keys": {
       "get": {
         "security": [
           {
@@ -1561,8 +1561,8 @@
         "summary": "List user API keys",
         "parameters": [
           {
-            "description": "Broker-side user ID or platform UID.",
-            "name": "userId",
+            "description": "User ID in the broker system.",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1600,8 +1600,8 @@
         "summary": "Create a user API key",
         "parameters": [
           {
-            "description": "Broker-side user ID or platform UID.",
-            "name": "userId",
+            "description": "User ID in the broker system.",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1634,7 +1634,7 @@
         }
       }
     },
-    "/v1/broker/users/{userId}/api-keys/{apiKey}": {
+    "/v1/broker/users/{brokerUserId}/api-keys/{apiKey}": {
       "delete": {
         "security": [
           {
@@ -1649,8 +1649,8 @@
         "summary": "Delete a user API key",
         "parameters": [
           {
-            "description": "Broker-side user ID or platform UID.",
-            "name": "userId",
+            "description": "User ID in the broker system.",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1681,7 +1681,7 @@
         }
       }
     },
-    "/v1/broker/{userId}/tokens": {
+    "/v1/broker/{brokerUserId}/tokens": {
       "delete": {
         "security": [
           {
@@ -1696,8 +1696,8 @@
         "summary": "Delete user tokens",
         "parameters": [
           {
-            "description": "Broker-side user ID.",
-            "name": "userId",
+            "description": "User ID in the broker system.",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1747,7 +1747,7 @@
         "required": [
           "quantity",
           "tokenId",
-          "uid"
+          "userId"
         ],
         "properties": {
           "quantity": {
@@ -1758,8 +1758,8 @@
             "description": "Token Id.",
             "type": "string"
           },
-          "uid": {
-            "description": "Platform user UID.",
+          "userId": {
+            "description": "Platform user ID.",
             "type": "string"
           }
         }
@@ -1840,10 +1840,14 @@
       "req.BrokerTokenSyncRequest": {
         "type": "object",
         "required": [
-          "token",
-          "userId"
+          "brokerUserId",
+          "token"
         ],
         "properties": {
+          "brokerUserId": {
+            "description": "User ID in the broker system.",
+            "type": "string"
+          },
           "desc": {
             "description": "User description.",
             "type": "string"
@@ -1854,10 +1858,6 @@
           },
           "token": {
             "description": "Broker user login token.",
-            "type": "string"
-          },
-          "userId": {
-            "description": "Broker-side user ID.",
             "type": "string"
           },
           "userName": {
@@ -2161,7 +2161,7 @@
             "format": "int64"
           },
           "userId": {
-            "description": "Platform user UID.",
+            "description": "Platform user ID.",
             "type": "string"
           }
         }
@@ -2170,14 +2170,18 @@
         "type": "object",
         "required": [
           "amount",
+          "brokerUserId",
           "currency",
           "direction",
-          "txnId",
-          "userId"
+          "txnId"
         ],
         "properties": {
           "amount": {
             "description": "Transfer amount; must be greater than zero.",
+            "type": "string"
+          },
+          "brokerUserId": {
+            "description": "User ID in the broker system.",
             "type": "string"
           },
           "currency": {
@@ -2198,10 +2202,6 @@
           },
           "txnId": {
             "description": "Unique broker transaction ID.",
-            "type": "string"
-          },
-          "userId": {
-            "description": "Broker-side user ID.",
             "type": "string"
           }
         }
@@ -2299,8 +2299,8 @@
             "description": "Outcome token ID.",
             "type": "string"
           },
-          "uid": {
-            "description": "Platform user UID.",
+          "userId": {
+            "description": "Platform user ID.",
             "type": "string"
           }
         }
@@ -2856,12 +2856,12 @@
       "v2.brokerSpecialUserData": {
         "type": "object",
         "properties": {
-          "uid": {
-            "description": "Platform user UID.",
+          "brokerUserId": {
+            "description": "User ID in the broker system.",
             "type": "string"
           },
           "userId": {
-            "description": "Broker-side user ID.",
+            "description": "Platform user ID.",
             "type": "string"
           }
         }
@@ -3006,15 +3006,6 @@
           }
         }
       },
-      "v2.brokerUIDData": {
-        "type": "object",
-        "properties": {
-          "uid": {
-            "description": "Platform user UID.",
-            "type": "string"
-          }
-        }
-      },
       "v2.brokerUSDCBalance": {
         "type": "object",
         "properties": {
@@ -3031,6 +3022,10 @@
       "v2.brokerUpdatedUserData": {
         "type": "object",
         "properties": {
+          "brokerUserId": {
+            "description": "User ID in the broker system.",
+            "type": "string"
+          },
           "createdAt": {
             "description": "Created At.",
             "type": "integer",
@@ -3050,17 +3045,13 @@
             "format": "int64",
             "nullable": true
           },
-          "uid": {
-            "description": "Platform user UID.",
-            "type": "string"
-          },
           "updatedAt": {
             "description": "Updated At.",
             "type": "integer",
             "format": "int64"
           },
           "userId": {
-            "description": "Broker-side user ID.",
+            "description": "Platform user ID.",
             "type": "string"
           },
           "userName": {
@@ -3073,9 +3064,22 @@
           }
         }
       },
+      "v2.brokerUserIDData": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "description": "Platform user ID.",
+            "type": "string"
+          }
+        }
+      },
       "v2.brokerUserItem": {
         "type": "object",
         "properties": {
+          "brokerUserId": {
+            "description": "User ID in the broker system.",
+            "type": "string"
+          },
           "createdAt": {
             "description": "Created At.",
             "type": "integer",
@@ -3091,12 +3095,8 @@
             "format": "int64",
             "nullable": true
           },
-          "uid": {
-            "description": "Platform user UID.",
-            "type": "string"
-          },
           "userId": {
-            "description": "Broker-side user ID.",
+            "description": "Platform user ID.",
             "type": "string"
           },
           "userType": {

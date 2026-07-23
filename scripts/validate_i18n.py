@@ -16,7 +16,7 @@ OPENAPI_RE = re.compile(
     re.MULTILINE,
 )
 HTTP_METHODS = {"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
-USER_ID_FIELDS = {"uid", "userId"}
+USER_ID_FIELDS = {"uid", "userId", "brokerUserId"}
 MILLISECOND_FIELD_RE = re.compile(r"(?:timestamp|At|Time)$")
 
 
@@ -218,8 +218,16 @@ def validate() -> list[str]:
         ("openapi/b/webhooks.json", "openapi/b/webhooks.en.json"),
         ("openapi/c/openapi.json", "openapi/c/openapi.en.json"),
     ):
-        chinese_spec = json.loads((ROOT / chinese_path).read_text(encoding="utf-8"))
+        chinese_content = (ROOT / chinese_path).read_text(encoding="utf-8")
+        chinese_spec = json.loads(chinese_content)
         english_content = (ROOT / english_path).read_text(encoding="utf-8")
+        if chinese_path.startswith("openapi/b/"):
+            for spec_path, content in (
+                (chinese_path, chinese_content),
+                (english_path, english_content),
+            ):
+                if re.search(r'"uid"|平台用户 UID|platform user UID', content, re.IGNORECASE):
+                    fail(errors, f"Broker OpenAPI exposes legacy UID terminology: {spec_path}")
         if CJK_RE.search(english_content):
             fail(errors, f"English OpenAPI contains Chinese text: {english_path}")
         english_spec = json.loads(english_content)

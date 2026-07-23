@@ -29,7 +29,7 @@
                 "data": {
                   "txnId": "broker-txn-1001",
                   "orderId": "2035768923456789",
-                  "userId": "broker-user-001",
+                  "brokerUserId": "broker-user-001",
                   "amount": "100.25",
                   "currency": "USDC",
                   "direction": 1,
@@ -63,11 +63,11 @@
       },
       "TransferWebhookData": {
         "type": "object",
-        "required": ["txnId", "orderId", "userId", "amount", "currency", "direction", "state", "completedAt"],
+        "required": ["txnId", "orderId", "brokerUserId", "amount", "currency", "direction", "state", "completedAt"],
         "properties": {
           "txnId": { "type": "string", "description": "Broker idempotency key." },
           "orderId": { "type": "string", "description": "Platform transfer order ID." },
-          "userId": { "type": "string", "description": "Broker-side user ID." },
+          "brokerUserId": { "type": "string", "description": "User ID in the broker system." },
           "amount": { "type": "string", "description": "Transfer amount." },
           "currency": { "type": "string", "const": "USDC" },
           "direction": { "type": "integer", "enum": [1, 2], "description": "1 is deposit and 2 is withdrawal." },

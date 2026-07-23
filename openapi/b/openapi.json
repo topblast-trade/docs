@@ -41,8 +41,8 @@
             }
           },
           {
-            "description": "平台用户 UID",
-            "name": "uid",
+            "description": "平台用户 ID",
+            "name": "userId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -372,8 +372,8 @@
             }
           },
           {
-            "description": "平台用户 UID",
-            "name": "uid",
+            "description": "平台用户 ID",
+            "name": "userId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -418,8 +418,8 @@
             }
           },
           {
-            "description": "平台用户 UID",
-            "name": "uid",
+            "description": "平台用户 ID",
+            "name": "userId",
             "in": "query",
             "required": true,
             "schema": {
@@ -499,8 +499,8 @@
             }
           },
           {
-            "description": "平台用户 UID",
-            "name": "uid",
+            "description": "平台用户 ID",
+            "name": "userId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1109,7 +1109,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.brokerUIDData"
+                  "$ref": "#/components/schemas/v2.brokerUserIDData"
                 }
               }
             }
@@ -1192,8 +1192,8 @@
             }
           },
           {
-            "description": "平台用户 UID",
-            "name": "uid",
+            "description": "平台用户 ID",
+            "name": "userId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1232,8 +1232,8 @@
         "summary": "查询划转列表",
         "parameters": [
           {
-            "description": "券商侧用户 ID；不传表示当前券商全部用户",
-            "name": "userId",
+            "description": "券商系统中的用户 ID；不传表示当前券商全部用户",
+            "name": "brokerUserId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1419,6 +1419,14 @@
             }
           },
           {
+            "description": "券商系统中的用户 ID",
+            "name": "brokerUserId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "用户邮箱",
             "name": "email",
             "in": "query",
@@ -1455,15 +1463,7 @@
             }
           },
           {
-            "description": "平台用户 UID",
-            "name": "uid",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "券商侧用户 ID",
+            "description": "平台用户 ID",
             "name": "userId",
             "in": "query",
             "schema": {
@@ -1497,7 +1497,7 @@
         }
       }
     },
-    "/v1/broker/users/{userId}": {
+    "/v1/broker/users/{brokerUserId}": {
       "patch": {
         "security": [
           {
@@ -1512,8 +1512,8 @@
         "summary": "更新用户",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "userId",
+            "description": "券商系统中的用户 ID",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1546,7 +1546,7 @@
         }
       }
     },
-    "/v1/broker/users/{userId}/api-keys": {
+    "/v1/broker/users/{brokerUserId}/api-keys": {
       "get": {
         "security": [
           {
@@ -1561,8 +1561,8 @@
         "summary": "查询用户 API Key",
         "parameters": [
           {
-            "description": "券商侧用户 ID 或平台 UID",
-            "name": "userId",
+            "description": "券商系统中的用户 ID",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1600,8 +1600,8 @@
         "summary": "创建用户 API Key",
         "parameters": [
           {
-            "description": "券商侧用户 ID 或平台 UID",
-            "name": "userId",
+            "description": "券商系统中的用户 ID",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1634,7 +1634,7 @@
         }
       }
     },
-    "/v1/broker/users/{userId}/api-keys/{apiKey}": {
+    "/v1/broker/users/{brokerUserId}/api-keys/{apiKey}": {
       "delete": {
         "security": [
           {
@@ -1649,8 +1649,8 @@
         "summary": "删除用户 API Key",
         "parameters": [
           {
-            "description": "券商侧用户 ID 或平台 UID",
-            "name": "userId",
+            "description": "券商系统中的用户 ID",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1681,7 +1681,7 @@
         }
       }
     },
-    "/v1/broker/{userId}/tokens": {
+    "/v1/broker/{brokerUserId}/tokens": {
       "delete": {
         "security": [
           {
@@ -1696,8 +1696,8 @@
         "summary": "用户登出",
         "parameters": [
           {
-            "description": "券商侧用户 ID",
-            "name": "userId",
+            "description": "券商系统中的用户 ID",
+            "name": "brokerUserId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1747,7 +1747,7 @@
         "required": [
           "quantity",
           "tokenId",
-          "uid"
+          "userId"
         ],
         "properties": {
           "quantity": {
@@ -1758,8 +1758,8 @@
             "description": "待平仓的结果 Token ID",
             "type": "string"
           },
-          "uid": {
-            "description": "平台用户 UID",
+          "userId": {
+            "description": "平台用户 ID",
             "type": "string"
           }
         }
@@ -1840,10 +1840,14 @@
       "req.BrokerTokenSyncRequest": {
         "type": "object",
         "required": [
-          "token",
-          "userId"
+          "brokerUserId",
+          "token"
         ],
         "properties": {
+          "brokerUserId": {
+            "description": "券商系统中的用户 ID",
+            "type": "string"
+          },
           "desc": {
             "description": "用户备注",
             "type": "string"
@@ -1854,10 +1858,6 @@
           },
           "token": {
             "description": "券商用户登录令牌",
-            "type": "string"
-          },
-          "userId": {
-            "description": "券商侧用户 ID",
             "type": "string"
           },
           "userName": {
@@ -2161,7 +2161,7 @@
             "format": "int64"
           },
           "userId": {
-            "description": "平台用户 UID",
+            "description": "平台用户 ID",
             "type": "string"
           }
         }
@@ -2170,14 +2170,18 @@
         "type": "object",
         "required": [
           "amount",
+          "brokerUserId",
           "currency",
           "direction",
-          "txnId",
-          "userId"
+          "txnId"
         ],
         "properties": {
           "amount": {
             "description": "划转金额，必须大于 0",
+            "type": "string"
+          },
+          "brokerUserId": {
+            "description": "券商系统中的用户 ID",
             "type": "string"
           },
           "currency": {
@@ -2198,10 +2202,6 @@
           },
           "txnId": {
             "description": "券商侧唯一交易流水号",
-            "type": "string"
-          },
-          "userId": {
-            "description": "券商侧用户 ID",
             "type": "string"
           }
         }
@@ -2299,8 +2299,8 @@
             "description": "结果 Token ID",
             "type": "string"
           },
-          "uid": {
-            "description": "平台用户 UID",
+          "userId": {
+            "description": "平台用户 ID",
             "type": "string"
           }
         }
@@ -2856,12 +2856,12 @@
       "v2.brokerSpecialUserData": {
         "type": "object",
         "properties": {
-          "uid": {
-            "description": "平台用户 UID",
+          "brokerUserId": {
+            "description": "券商系统中的用户 ID",
             "type": "string"
           },
           "userId": {
-            "description": "券商侧用户 ID",
+            "description": "平台用户 ID",
             "type": "string"
           }
         }
@@ -3006,15 +3006,6 @@
           }
         }
       },
-      "v2.brokerUIDData": {
-        "type": "object",
-        "properties": {
-          "uid": {
-            "description": "平台用户 UID",
-            "type": "string"
-          }
-        }
-      },
       "v2.brokerUSDCBalance": {
         "type": "object",
         "properties": {
@@ -3031,6 +3022,10 @@
       "v2.brokerUpdatedUserData": {
         "type": "object",
         "properties": {
+          "brokerUserId": {
+            "description": "券商系统中的用户 ID",
+            "type": "string"
+          },
           "createdAt": {
             "description": "用户创建时间（Unix 毫秒）",
             "type": "integer",
@@ -3050,17 +3045,13 @@
             "format": "int64",
             "nullable": true
           },
-          "uid": {
-            "description": "平台用户 UID",
-            "type": "string"
-          },
           "updatedAt": {
             "description": "用户更新时间（Unix 毫秒）",
             "type": "integer",
             "format": "int64"
           },
           "userId": {
-            "description": "券商侧用户 ID",
+            "description": "平台用户 ID",
             "type": "string"
           },
           "userName": {
@@ -3073,9 +3064,22 @@
           }
         }
       },
+      "v2.brokerUserIDData": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "description": "平台用户 ID",
+            "type": "string"
+          }
+        }
+      },
       "v2.brokerUserItem": {
         "type": "object",
         "properties": {
+          "brokerUserId": {
+            "description": "券商系统中的用户 ID",
+            "type": "string"
+          },
           "createdAt": {
             "description": "用户创建时间（Unix 毫秒）",
             "type": "integer",
@@ -3091,12 +3095,8 @@
             "format": "int64",
             "nullable": true
           },
-          "uid": {
-            "description": "平台用户 UID",
-            "type": "string"
-          },
           "userId": {
-            "description": "券商侧用户 ID",
+            "description": "平台用户 ID",
             "type": "string"
           },
           "userType": {
