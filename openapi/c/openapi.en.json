@@ -219,7 +219,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOrder"
+                  "$ref": "#/components/schemas/http_order.AckPlaceOrder"
                 }
               }
             }
@@ -352,6 +352,57 @@
         ]
       }
     },
+    "/v1/private/orders/detail": {
+      "get": {
+        "description": "Get an order owned by the authenticated account.",
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get order details",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Order ID as a positive decimal integer",
+            "name": "orderId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckOrderDetail"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      }
+    },
     "/v1/private/orders/history": {
       "get": {
         "description": "List historical orders for the authenticated account. Set `afterCursor` to the last order ID from the previous page to continue forward.",
@@ -430,55 +481,6 @@
       }
     },
     "/v1/private/orders/{orderID}": {
-      "get": {
-        "description": "Get an order owned by the authenticated account.",
-        "tags": [
-          "Orders"
-        ],
-        "summary": "Get order details",
-        "parameters": [
-          {
-            "name": "x-app-id",
-            "in": "header",
-            "required": true,
-            "description": "Broker application ID used to route the request.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Order ID as a positive decimal integer",
-            "name": "orderID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Order details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOrderDetail"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          },
-          {
-            "ApiKeyAuth": [],
-            "TimestampAuth": [],
-            "SignatureAuth": []
-          }
-        ]
-      },
       "delete": {
         "description": "Cancel an order owned by the authenticated account. `tokenId` is optional; when omitted, the service resolves it from the order details.",
         "tags": [
@@ -1444,11 +1446,11 @@
         "type": "object",
         "properties": {
           "available": {
-            "description": "Available quantity",
+            "description": "Available balance",
             "type": "string"
           },
           "locked": {
-            "description": "Locked quantity",
+            "description": "Locked balance",
             "type": "string"
           },
           "tokenId": {
@@ -2334,42 +2336,8 @@
             "description": "Open order",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/http_order.Order"
+              "$ref": "#/components/schemas/http_order.OrderDetail"
             }
-          }
-        }
-      },
-      "http_order.AckOrder": {
-        "type": "object",
-        "properties": {
-          "createdAt": {
-            "description": "Creation time in Unix milliseconds",
-            "type": "integer",
-            "format": "int64"
-          },
-          "message": {
-            "description": "Additional notes",
-            "type": "string"
-          },
-          "orderId": {
-            "description": "Order ID",
-            "type": "string"
-          },
-          "reason": {
-            "description": "Rejection or failure reason",
-            "type": "string"
-          },
-          "reasonCode": {
-            "description": "Rejection reason code. Usually `0` on success.",
-            "type": "integer"
-          },
-          "status": {
-            "description": "Order acceptance status",
-            "type": "string"
-          },
-          "success": {
-            "description": "Whether the request was accepted",
-            "type": "boolean"
           }
         }
       },
@@ -2425,6 +2393,10 @@
             "description": "Order status",
             "type": "string"
           },
+          "timeInForce": {
+            "description": "Time in force: `GTC`, `FOK`, `GTD`, or `IOC`.",
+            "type": "string"
+          },
           "tokenId": {
             "description": "Outcome token ID",
             "type": "string"
@@ -2442,8 +2414,42 @@
             "description": "Historical order",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/http_order.Order"
+              "$ref": "#/components/schemas/http_order.OrderDetail"
             }
+          }
+        }
+      },
+      "http_order.AckPlaceOrder": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "description": "Creation time in Unix milliseconds",
+            "type": "integer",
+            "format": "int64"
+          },
+          "message": {
+            "description": "Additional notes",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "Order ID",
+            "type": "string"
+          },
+          "reason": {
+            "description": "Rejection or failure reason",
+            "type": "string"
+          },
+          "reasonCode": {
+            "description": "Rejection reason code. Usually `0` on success.",
+            "type": "integer"
+          },
+          "status": {
+            "description": "Order acceptance status",
+            "type": "string"
+          },
+          "success": {
+            "description": "Whether the request was accepted",
+            "type": "boolean"
           }
         }
       },
@@ -2463,7 +2469,7 @@
           }
         }
       },
-      "http_order.Order": {
+      "http_order.OrderDetail": {
         "type": "object",
         "properties": {
           "createdAt": {
@@ -2513,6 +2519,10 @@
           },
           "status": {
             "description": "Order status",
+            "type": "string"
+          },
+          "timeInForce": {
+            "description": "Time in force: `GTC`, `FOK`, `GTD`, or `IOC`.",
             "type": "string"
           },
           "tokenId": {

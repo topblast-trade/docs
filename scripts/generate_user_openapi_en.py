@@ -270,6 +270,7 @@ _PAIRS = r"""
 未实现盈亏|||Unrealized PnL
 未实现盈亏百分比|||Unrealized PnL percentage
 有效方式；LIMIT 默认 GTC，MARKET 仅支持 IOC|||Time in force. `LIMIT` orders default to `GTC`; `MARKET` orders support only `IOC`.
+有效方式：GTC、FOK、GTD 或 IOC|||Time in force: `GTC`, `FOK`, `GTD`, or `IOC`.
 稳定业务错误码|||Stable business error code
 行情时间戳（Unix 毫秒）|||Ticker timestamp in Unix milliseconds
 页码，默认 1|||Page number. Defaults to 1.

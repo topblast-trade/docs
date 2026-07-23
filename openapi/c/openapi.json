@@ -219,7 +219,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOrder"
+                  "$ref": "#/components/schemas/http_order.AckPlaceOrder"
                 }
               }
             }
@@ -352,6 +352,57 @@
         ]
       }
     },
+    "/v1/private/orders/detail": {
+      "get": {
+        "description": "查询当前登录账户下的指定委托。",
+        "tags": [
+          "用户接口-委托"
+        ],
+        "summary": "查询委托详情",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "订单 ID，十进制正整数",
+            "name": "orderId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "委托详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckOrderDetail"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      }
+    },
     "/v1/private/orders/history": {
       "get": {
         "description": "查询当前登录账户的历史委托。afterCursor 是上一页最后一条订单的 ID，仅用于继续向后翻页。",
@@ -430,55 +481,6 @@
       }
     },
     "/v1/private/orders/{orderID}": {
-      "get": {
-        "description": "查询当前登录账户下的指定委托。",
-        "tags": [
-          "用户接口-委托"
-        ],
-        "summary": "查询委托详情",
-        "parameters": [
-          {
-            "name": "x-app-id",
-            "in": "header",
-            "required": true,
-            "description": "券商应用 ID，用于识别请求所属券商。",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "订单 ID，十进制正整数",
-            "name": "orderID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "委托详情",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOrderDetail"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "BearerAuth": []
-          },
-          {
-            "ApiKeyAuth": [],
-            "TimestampAuth": [],
-            "SignatureAuth": []
-          }
-        ]
-      },
       "delete": {
         "description": "取消当前登录账户下的指定委托。tokenId 可省略，服务端会先从订单详情解析。",
         "tags": [
@@ -1444,11 +1446,11 @@
         "type": "object",
         "properties": {
           "available": {
-            "description": "可用数量",
+            "description": "可用余额",
             "type": "string"
           },
           "locked": {
-            "description": "锁定数量",
+            "description": "锁定余额",
             "type": "string"
           },
           "tokenId": {
@@ -2334,42 +2336,8 @@
             "description": "当前委托",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/http_order.Order"
+              "$ref": "#/components/schemas/http_order.OrderDetail"
             }
-          }
-        }
-      },
-      "http_order.AckOrder": {
-        "type": "object",
-        "properties": {
-          "createdAt": {
-            "description": "创建时间（Unix 毫秒）",
-            "type": "integer",
-            "format": "int64"
-          },
-          "message": {
-            "description": "补充说明",
-            "type": "string"
-          },
-          "orderId": {
-            "description": "订单 ID",
-            "type": "string"
-          },
-          "reason": {
-            "description": "拒绝或失败原因",
-            "type": "string"
-          },
-          "reasonCode": {
-            "description": "拒绝原因码；成功时通常为 0",
-            "type": "integer"
-          },
-          "status": {
-            "description": "订单受理状态",
-            "type": "string"
-          },
-          "success": {
-            "description": "是否受理成功",
-            "type": "boolean"
           }
         }
       },
@@ -2425,6 +2393,10 @@
             "description": "订单状态",
             "type": "string"
           },
+          "timeInForce": {
+            "description": "有效方式：GTC、FOK、GTD 或 IOC",
+            "type": "string"
+          },
           "tokenId": {
             "description": "结果 Token ID",
             "type": "string"
@@ -2442,8 +2414,42 @@
             "description": "历史委托",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/http_order.Order"
+              "$ref": "#/components/schemas/http_order.OrderDetail"
             }
+          }
+        }
+      },
+      "http_order.AckPlaceOrder": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "description": "创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
+          },
+          "message": {
+            "description": "补充说明",
+            "type": "string"
+          },
+          "orderId": {
+            "description": "订单 ID",
+            "type": "string"
+          },
+          "reason": {
+            "description": "拒绝或失败原因",
+            "type": "string"
+          },
+          "reasonCode": {
+            "description": "拒绝原因码；成功时通常为 0",
+            "type": "integer"
+          },
+          "status": {
+            "description": "订单受理状态",
+            "type": "string"
+          },
+          "success": {
+            "description": "是否受理成功",
+            "type": "boolean"
           }
         }
       },
@@ -2463,7 +2469,7 @@
           }
         }
       },
-      "http_order.Order": {
+      "http_order.OrderDetail": {
         "type": "object",
         "properties": {
           "createdAt": {
@@ -2513,6 +2519,10 @@
           },
           "status": {
             "description": "订单状态",
+            "type": "string"
+          },
+          "timeInForce": {
+            "description": "有效方式：GTC、FOK、GTD 或 IOC",
             "type": "string"
           },
           "tokenId": {
