@@ -150,7 +150,8 @@
                     "group": "Trading REST API",
                     "pages": [
                       "cn/user/guide/authentication",
-                      "cn/user/guide/response"
+                      "cn/user/guide/response",
+                      "cn/user/guide/errors"
                     ]
                   },
                   {
@@ -342,7 +343,8 @@
                     "group": "Trading REST API",
                     "pages": [
                       "en/user/guide/authentication",
-                      "en/user/guide/response"
+                      "en/user/guide/response",
+                      "en/user/guide/error-codes"
                     ]
                   },
                   {
@@ -427,7 +429,6 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/phx-de"
     }
   }
 }

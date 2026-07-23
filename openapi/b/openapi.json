@@ -431,7 +431,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerSuccessData"
                 }
@@ -1671,7 +1671,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerSuccessData"
                 }
@@ -1912,8 +1912,9 @@
             "type": "boolean"
           },
           "endAt": {
-            "description": "事件结束时间",
-            "type": "string"
+            "description": "事件结束时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "eventId": {
             "description": "事件 ID",
@@ -1940,16 +1941,19 @@
             "type": "string"
           },
           "sourceUpdatedAt": {
-            "description": "来源数据更新时间",
-            "type": "string"
+            "description": "来源数据更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "startAt": {
-            "description": "事件开始时间",
-            "type": "string"
+            "description": "事件开始时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "updatedAt": {
-            "description": "券商配置更新时间",
-            "type": "string"
+            "description": "券商配置更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2004,7 +2008,9 @@
             "type": "string"
           },
           "updatedAt": {
-            "type": "string"
+            "description": "Unix 毫秒",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2097,8 +2103,9 @@
             "type": "string"
           },
           "updatedAt": {
-            "description": "最近更新时间",
-            "type": "string"
+            "description": "最近更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "version": {
             "description": "策略版本",
@@ -2114,8 +2121,9 @@
             "type": "number"
           },
           "createdAt": {
-            "description": "创建时间",
-            "type": "string"
+            "description": "创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "currency": {
             "description": "币种",
@@ -2148,12 +2156,13 @@
             "type": "string"
           },
           "updatedAt": {
-            "description": "更新时间",
-            "type": "string"
+            "description": "更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "userId": {
             "description": "平台用户 UID",
-            "type": "integer"
+            "type": "string"
           }
         }
       },
@@ -2210,7 +2219,9 @@
             }
           },
           "createdAt": {
-            "type": "string"
+            "description": "创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "ipWhiteList": {
             "type": "string"
@@ -2310,7 +2321,9 @@
             }
           },
           "createdAt": {
-            "type": "string"
+            "description": "创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "ipWhiteList": {
             "type": "string"
@@ -2378,8 +2391,9 @@
             ]
           },
           "endTime": {
-            "description": "当前统计周期结束时间（Unix 秒）",
-            "type": "integer"
+            "description": "当前统计周期结束时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "period": {
             "description": "统计周期",
@@ -2394,8 +2408,9 @@
             ]
           },
           "startTime": {
-            "description": "当前统计周期开始时间（Unix 秒）",
-            "type": "integer"
+            "description": "当前统计周期开始时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "totalUsers": {
             "description": "券商用户总数",
@@ -2427,8 +2442,9 @@
             "type": "string"
           },
           "lastUpdated": {
-            "description": "最近更新时间",
-            "type": "string"
+            "description": "最近更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "limit": {
             "description": "风险敞口上限",
@@ -2476,8 +2492,9 @@
             "type": "boolean"
           },
           "endAt": {
-            "description": "事件结束时间",
-            "type": "string"
+            "description": "事件结束时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "eventId": {
             "description": "事件 ID",
@@ -2500,12 +2517,14 @@
             "type": "integer"
           },
           "startAt": {
-            "description": "事件开始时间",
-            "type": "string"
+            "description": "事件开始时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "updatedAt": {
-            "description": "最近更新时间",
-            "type": "string"
+            "description": "最近更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2550,8 +2569,9 @@
             "type": "string"
           },
           "createdAt": {
-            "description": "创建时间",
-            "type": "integer"
+            "description": "创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "filledQty": {
             "description": "已成交数量",
@@ -2598,8 +2618,9 @@
             "type": "string"
           },
           "updatedAt": {
-            "description": "更新时间",
-            "type": "integer"
+            "description": "更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2750,8 +2771,9 @@
             ]
           },
           "endTime": {
-            "description": "当前统计周期结束时间（Unix 秒）",
-            "type": "integer"
+            "description": "当前统计周期结束时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "period": {
             "description": "统计周期",
@@ -2766,8 +2788,9 @@
             ]
           },
           "startTime": {
-            "description": "当前统计周期开始时间（Unix 秒）",
-            "type": "integer"
+            "description": "当前统计周期开始时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2803,8 +2826,9 @@
             "type": "integer"
           },
           "createdAt": {
-            "description": "创建时间",
-            "type": "string"
+            "description": "创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "domain": {
             "description": "券商域名",
@@ -2819,8 +2843,9 @@
             "type": "integer"
           },
           "updatedAt": {
-            "description": "更新时间",
-            "type": "string"
+            "description": "更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "webhookUrl": {
             "description": "Webhook 地址",
@@ -2874,8 +2899,9 @@
             "type": "string"
           },
           "eventTime": {
-            "description": "成交时间",
-            "type": "integer"
+            "description": "成交时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "id": {
             "description": "唯一成交记录 ID，用于 from/to 流式分页",
@@ -2972,7 +2998,7 @@
         "properties": {
           "uid": {
             "description": "平台用户 UID",
-            "type": "integer"
+            "type": "string"
           }
         }
       },
@@ -2993,8 +3019,9 @@
         "type": "object",
         "properties": {
           "createdAt": {
-            "description": "用户创建时间",
-            "type": "string"
+            "description": "用户创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "desc": {
             "description": "用户备注",
@@ -3005,16 +3032,19 @@
             "type": "string"
           },
           "lastLoginAt": {
-            "description": "最近登录时间，未登录时为空",
-            "type": "string"
+            "description": "最近登录时间（Unix 毫秒），未登录时为空",
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
           },
           "uid": {
             "description": "平台用户 UID",
-            "type": "integer"
+            "type": "string"
           },
           "updatedAt": {
-            "description": "用户更新时间",
-            "type": "string"
+            "description": "用户更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "userId": {
             "description": "券商侧用户 ID",
@@ -3034,20 +3064,23 @@
         "type": "object",
         "properties": {
           "createdAt": {
-            "description": "用户创建时间",
-            "type": "string"
+            "description": "用户创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "email": {
             "description": "用户邮箱",
             "type": "string"
           },
           "lastLoginAt": {
-            "description": "最近登录时间，未登录时为空",
-            "type": "string"
+            "description": "最近登录时间（Unix 毫秒），未登录时为空",
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
           },
           "uid": {
             "description": "平台用户 UID",
-            "type": "integer"
+            "type": "string"
           },
           "userId": {
             "description": "券商侧用户 ID",

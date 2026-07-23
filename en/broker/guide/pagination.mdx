@@ -33,13 +33,13 @@ curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
 {
   "items": [
     {
-      "uid": 10001,
+      "uid": "10001",
       "userId": "broker-user-10001",
       "email": "user@example.com",
       "username": "example-user",
       "userType": "NORMAL",
-      "createdAt": "2026-07-22T04:00:00Z",
-      "lastLoginAt": "2026-07-22T06:30:00Z"
+      "createdAt": 1784692800000,
+      "lastLoginAt": 1784701800000
     }
   ],
   "total": 45
@@ -47,6 +47,11 @@ curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
 ```
 
 `items` contains the current page. `total` is the total number of records matching the query.
+
+Response `uid` and `userId` values are always JSON strings to avoid JavaScript
+safe-integer precision loss. Timestamp fields such as `createdAt` and
+`updatedAt` are always Unix milliseconds and are declared as `int64` in
+OpenAPI.
 
 ## Stream pagination
 

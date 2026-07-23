@@ -1,6 +1,6 @@
 ---
-title: "Common response format"
-description: "Understand Trading REST API success responses, error responses, HTTP status codes, and business error codes."
+title: "Response format"
+description: "Understand Trading REST API success and error response formats."
 ---
 
 The topblast Trading REST API uses HTTP status codes to indicate request results. Successful responses return the data defined by each operation. Failed responses use a consistent JSON structure so clients can handle errors centrally.
@@ -62,79 +62,6 @@ For example, a private operation without a valid token returns:
 Check both the HTTP status and the response `code`. Do not use the `error` text for stable business decisions because its details may change between server versions.
 </Warning>
 
-## Common HTTP status codes
-
-| HTTP status | Meaning | Recommended handling |
-| :--- | :--- | :--- |
-| `200 OK` | Request completed successfully | Parse the response using the current operation schema. |
-| `202 Accepted` | Asynchronous request accepted | Store the returned order information and track final state through a query or WebSocket. |
-| `400 Bad Request` | Invalid parameters, cursor, order, or batch data | Correct the request before resubmitting; do not retry the same payload unchanged. |
-| `401 Unauthorized` | Missing or invalid token, or unavailable user identity | Sign in again or refresh the token before retrying. |
-| `403 Forbidden` | The broker cannot access the event or market | Stop retrying and verify broker event or market permissions. |
-| `404 Not Found` | Route, order, event, tag, market data, or account not found | Verify the resource ID; it may have been deleted or may not belong to the current account. |
-| `405 Method Not Allowed` | HTTP method does not match the operation | Use the method documented for the operation. |
-| `409 Conflict` | Market not tradable, risk rejection, or invalid current state | Use the business error code and market state to decide whether to retry later. |
-| `410 Gone` | Operation deprecated | Migrate to the replacement operation identified by `error`. |
-| `500 Internal Server Error` | Internal service error | Record request context, retry with backoff, and contact support if needed. |
-| `503 Service Unavailable` | Trading cluster unavailable, backpressured, or queue full | Retry with exponential backoff and avoid immediate high-frequency replay. |
-| `504 Gateway Timeout` | Timed out waiting for the trading command | Query order state before deciding whether to retry. |
-
-## Common business error codes
-
-### General and authentication
-
-| `code` | Error type | Description |
-| :--- | :--- | :--- |
-| `1001` | `INTERNAL_ERROR` | Internal service error. |
-| `1002` | `INVALID_PAYLOAD` | Invalid request parameters or body. |
-| `1103` | `REJECT_ANONYMOUS` | Token is missing, invalid, or cannot resolve a user identity. |
-| `1104` | `BROKER_DOMAIN_NOT_FOUND` | The broker domain cannot be identified. |
-| `1105` | `BROKER_EVENT_NOT_ALLOWED` | The broker cannot access the specified event. |
-| `1106` | `ROUTE_NOT_FOUND` | Request path does not exist. |
-| `1107` | `METHOD_NOT_ALLOWED` | Request path does not support the HTTP method. |
-| `1108` | `BROKER_MARKET_NOT_ALLOWED` | The broker cannot access the specified market. |
-
-### Trading cluster
-
-| `code` | Error type | Description |
-| :--- | :--- | :--- |
-| `1201` | `CLUSTER_UNAVAILABLE` | Trading cluster is unavailable. |
-| `1202` | `CLUSTER_BACKPRESSURED` | Trading cluster is backpressured. |
-| `1203` | `INGRESS_TIMEOUT` | Timed out waiting for a trading command response. |
-| `1204` | `INGRESS_QUEUE_FULL` | Trading command queue is full. |
-| `1205` | `INGRESS_OFFER_FAILED` | Failed to submit the trading command. |
-
-### Orders and risk
-
-| `code` | Error type | Description |
-| :--- | :--- | :--- |
-| `2001` | `INVALID_ORDER_ID` | Invalid order ID. |
-| `2002` | `INVALID_ORDER_PAYLOAD` | Invalid order parameters. |
-| `2003` | `ORDER_NOT_FOUND` | Order does not exist or does not belong to the current account. |
-| `2004` | `MARKET_NOT_TRADABLE` | Market does not currently accept orders or cancellations. |
-| `2005` | `RISK_REJECTED` | Request rejected by risk controls. |
-| `2006` | `INVALID_CANCEL` | Invalid cancellation request. |
-| `2007` | `INVALID_BATCH` | Invalid batch request. |
-| `2008` | `BATCH_EMPTY` | Batch request is empty. |
-| `2009` | `BATCH_SIZE_EXCEEDED` | Batch request exceeds the operation limit. |
-| `2010` | `ORDER_RESPONSE_TIMEOUT` | Timed out waiting for the order result. |
-
-### Market data, events, and accounts
-
-| `code` | Error type | Description |
-| :--- | :--- | :--- |
-| `3001` | `INVALID_TOKEN_ID` | Invalid token ID. |
-| `3002` | `INVALID_TOKEN_IDS` | Token ID list is empty or invalid. |
-| `3003` | `INVALID_MARKET_ID` | Invalid market ID. |
-| `3004` | `INVALID_INTERVAL` | Invalid candlestick or price-history interval. |
-| `3005` | `INVALID_KLINE_TIME` | Invalid candlestick time range. |
-| `4001` | `EVENT_NOT_FOUND` | Event does not exist. |
-| `4010` | `TAG_NOT_FOUND` | Tag does not exist. |
-| `4014` | `INVALID_CURSOR` | Pagination cursor is invalid or expired. |
-| `5001` | `TRADES_NOT_FOUND` | Public trades do not exist or could not be queried. |
-| `5002` | `ACCOUNT_TRADES_NOT_FOUND` | Account trades query failed. |
-| `6001` | `ACCOUNT_NOT_FOUND` | Current account does not exist. |
-
 <Note>
-Error types explain the error-code categories. Clients should use `code` as the stable decision field. Each operation may return only a subset of these errors; also consult its declared HTTP responses.
+For HTTP status codes and business error codes, see [Error codes](/en/user/guide/error-codes).
 </Note>
