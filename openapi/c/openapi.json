@@ -46,6 +46,17 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "BearerAuth": []
@@ -66,6 +77,15 @@
         ],
         "summary": "查询账户成交",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "返回数量，默认 20，最大 100",
             "name": "limit",
@@ -146,6 +166,15 @@
         ],
         "summary": "查询当前委托",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "每页数量，默认 20，最大 100",
             "name": "limit",
@@ -286,6 +315,17 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "BearerAuth": []
@@ -358,6 +398,17 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "BearerAuth": []
@@ -428,6 +479,17 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "BearerAuth": []
@@ -448,6 +510,15 @@
         ],
         "summary": "查询历史委托",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "每页数量，默认 20，最大 100",
             "name": "limit",
@@ -527,6 +598,15 @@
         "summary": "查询委托详情",
         "parameters": [
           {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "订单 ID，十进制正整数",
             "name": "orderID",
             "in": "path",
@@ -596,6 +676,15 @@
         ],
         "summary": "取消委托",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "订单 ID，十进制正整数",
             "name": "orderID",
@@ -677,6 +766,15 @@
         "summary": "查询持仓",
         "parameters": [
           {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "事件 ID",
             "name": "eventId",
             "in": "query",
@@ -735,6 +833,15 @@
         ],
         "summary": "分页查询事件",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "页码，默认 1",
             "name": "page",
@@ -854,7 +961,18 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
       }
     },
     "/v1/public/events/slug/{slug}": {
@@ -865,6 +983,15 @@
         ],
         "summary": "按标识查询事件",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "事件 slug，例如 world-cup-2026",
             "name": "slug",
@@ -917,6 +1044,15 @@
         ],
         "summary": "查询市场列表",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "页码，默认 1",
             "name": "page",
@@ -1044,6 +1180,15 @@
         "summary": "查询中间价",
         "parameters": [
           {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "结果 Token ID，十进制正整数",
             "name": "tokenId",
             "in": "query",
@@ -1096,6 +1241,15 @@
         "summary": "查询订单簿",
         "parameters": [
           {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "结果 Token ID，十进制正整数",
             "name": "tokenId",
             "in": "query",
@@ -1137,6 +1291,15 @@
         ],
         "summary": "查询最新价格",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "结果 Token ID，十进制正整数",
             "name": "tokenId",
@@ -1189,6 +1352,15 @@
         ],
         "summary": "查询价格历史",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "结果 Token ID，十进制正整数",
             "name": "tokenId",
@@ -1258,6 +1430,15 @@
         "summary": "搜索事件",
         "parameters": [
           {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "搜索关键词；去除首尾空格后不能为空",
             "name": "q",
             "in": "query",
@@ -1299,6 +1480,15 @@
         ],
         "summary": "查询买卖价差",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "结果 Token ID，十进制正整数",
             "name": "tokenId",
@@ -1351,6 +1541,15 @@
         ],
         "summary": "查询标签列表",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "页码，默认 1",
             "name": "page",
@@ -1454,6 +1653,15 @@
         "summary": "按标识查询标签",
         "parameters": [
           {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "标签 slug，例如 sports",
             "name": "slug",
             "in": "path",
@@ -1505,6 +1713,15 @@
         ],
         "summary": "按 ID 查询标签",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "标签 ID",
             "name": "id",
@@ -1558,6 +1775,15 @@
         "summary": "查询市场行情",
         "parameters": [
           {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "结果 Token ID，十进制正整数",
             "name": "tokenId",
             "in": "query",
@@ -1609,6 +1835,15 @@
         ],
         "summary": "查询公开成交",
         "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "返回数量，默认 20，最大 100",
             "name": "limit",

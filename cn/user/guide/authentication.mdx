@@ -3,7 +3,7 @@ title: "API 鉴权"
 description: "了解 Trading REST API 的 Bearer Token 与 API Key 鉴权。"
 ---
 
-`/v1/public/*` 接口无需鉴权，`/v1/private/*` 接口支持 Bearer Token 或 API Key 鉴权。
+`/v1/public/*` 接口无需鉴权，`/v1/private/*` 接口支持 Bearer Token 或 API Key 鉴权，但是全部接口都必传`x-app-id`这个header参数。
 
 ## 鉴权方式的选择顺序
 
@@ -37,7 +37,7 @@ API Key 鉴权采用 HMAC-SHA256 请求签名，与 Broker REST API 的授权签
 
 | Header | 说明 | 示例 |
 | :--- | :--- | :--- |
-| `x-api-key` | 平台分配的 Access Key（AK） | `7007b96cf748fdd0` |
+| `x-api-key` | 为用户创建的 Access Key（AK） | `7007b96cf748fdd0` |
 | `x-timestamp` | Unix 毫秒时间戳 | `1717027200000` |
 | `x-signature` | Base64 编码的 HMAC-SHA256 签名 | `o7iQ...=` |
 
