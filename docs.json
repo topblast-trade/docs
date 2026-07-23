@@ -159,7 +159,6 @@
                     "pages": [
                       "cn/user/api-reference/events/search",
                       "cn/user/api-reference/events/list",
-                      "cn/user/api-reference/events/list-deprecated",
                       "cn/user/api-reference/events/detail",
                       "cn/user/api-reference/events/tags",
                       "cn/user/api-reference/events/tag-detail",
@@ -353,7 +352,6 @@
                     "pages": [
                       "en/user/api-reference/events/search",
                       "en/user/api-reference/events/list",
-                      "en/user/api-reference/events/list-deprecated",
                       "en/user/api-reference/events/detail",
                       "en/user/api-reference/events/tags",
                       "en/user/api-reference/events/tag-detail",

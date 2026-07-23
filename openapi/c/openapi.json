@@ -746,39 +746,6 @@
         }
       }
     },
-    "/v1/public/events/keyset": {
-      "get": {
-        "description": "该游标分页接口已废弃并固定返回 HTTP 410；请改用 GET /v1/public/events。",
-        "tags": [
-          "用户接口-事件"
-        ],
-        "summary": "游标分页查询事件（已废弃）",
-        "deprecated": true,
-        "responses": {
-          "410": {
-            "description": "接口已废弃",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "x-app-id",
-            "in": "header",
-            "required": true,
-            "description": "券商应用 ID，用于识别请求所属券商。",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
-      }
-    },
     "/v1/public/events/slug/{slug}": {
       "get": {
         "description": "返回指定 slug 的事件及其市场信息。",

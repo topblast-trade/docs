@@ -746,39 +746,6 @@
         }
       }
     },
-    "/v1/public/events/keyset": {
-      "get": {
-        "description": "This cursor-based operation is deprecated and always returns HTTP `410`. Use `GET /v1/public/events` instead.",
-        "tags": [
-          "Events"
-        ],
-        "summary": "List events with cursor pagination (deprecated)",
-        "deprecated": true,
-        "responses": {
-          "410": {
-            "description": "Operation deprecated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/http_common.AckError"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "x-app-id",
-            "in": "header",
-            "required": true,
-            "description": "Broker application ID used to route the request.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
-      }
-    },
     "/v1/public/events/slug/{slug}": {
       "get": {
         "description": "Return the event identified by `slug`, including its markets.",
