@@ -2381,11 +2381,60 @@
           }
         }
       },
+      "v2.brokerDailySummaryItem": {
+        "type": "object",
+        "properties": {
+          "activeUsers": {
+            "description": "当日活跃用户数",
+            "type": "integer"
+          },
+          "day": {
+            "description": "汇总日期",
+            "type": "string"
+          },
+          "dayStartTime": {
+            "description": "日期开始时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
+          },
+          "newUsers": {
+            "description": "当日新增用户数",
+            "type": "integer"
+          },
+          "totalDeposit": {
+            "description": "当日入金总额",
+            "type": "string"
+          },
+          "totalTradePnl": {
+            "description": "当日成交盈亏",
+            "type": "string"
+          },
+          "totalTradeQty": {
+            "description": "当日成交数量",
+            "type": "string"
+          },
+          "totalTradeVolume": {
+            "description": "当日成交总额",
+            "type": "string"
+          },
+          "totalWithdraw": {
+            "description": "当日出金总额",
+            "type": "string"
+          }
+        }
+      },
       "v2.brokerDailySummaryListData": {
         "type": "object",
         "properties": {
-          "items": {},
+          "items": {
+            "description": "每日汇总列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerDailySummaryItem"
+            }
+          },
           "total": {
+            "description": "记录总数",
             "type": "integer"
           }
         }

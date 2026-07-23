@@ -2381,11 +2381,60 @@
           }
         }
       },
+      "v2.brokerDailySummaryItem": {
+        "type": "object",
+        "properties": {
+          "activeUsers": {
+            "description": "Active Users.",
+            "type": "integer"
+          },
+          "day": {
+            "description": "Day.",
+            "type": "string"
+          },
+          "dayStartTime": {
+            "description": "Day Start Time.",
+            "type": "integer",
+            "format": "int64"
+          },
+          "newUsers": {
+            "description": "New Users.",
+            "type": "integer"
+          },
+          "totalDeposit": {
+            "description": "Total Deposit.",
+            "type": "string"
+          },
+          "totalTradePnl": {
+            "description": "Total Trade Pnl.",
+            "type": "string"
+          },
+          "totalTradeQty": {
+            "description": "Total Trade Qty.",
+            "type": "string"
+          },
+          "totalTradeVolume": {
+            "description": "Total Trade Volume.",
+            "type": "string"
+          },
+          "totalWithdraw": {
+            "description": "Total Withdraw.",
+            "type": "string"
+          }
+        }
+      },
       "v2.brokerDailySummaryListData": {
         "type": "object",
         "properties": {
-          "items": {},
+          "items": {
+            "description": "Items.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v2.brokerDailySummaryItem"
+            }
+          },
           "total": {
+            "description": "Total.",
             "type": "integer"
           }
         }
