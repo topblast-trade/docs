@@ -1329,11 +1329,11 @@
     },
     "/v1/public/price": {
       "get": {
-        "description": "返回指定结果 Token 的最新市场价格。",
+        "description": "返回指定结果 Token 的市场价格。",
         "tags": [
           "用户接口-市场"
         ],
-        "summary": "查询最新市场价格",
+        "summary": "查询市场价格",
         "parameters": [
           {
             "name": "x-app-id",
@@ -1356,7 +1356,7 @@
         ],
         "responses": {
           "200": {
-            "description": "最新市场价格",
+            "description": "市场价格",
             "content": {
               "application/json": {
                 "schema": {
@@ -2346,7 +2346,7 @@
         "type": "object",
         "properties": {
           "price": {
-            "description": "最新价格",
+            "description": "市场价格",
             "type": "string"
           }
         }
@@ -2446,7 +2446,7 @@
             "description": "本次返回数量",
             "type": "integer"
           },
-          "data": {
+          "items": {
             "description": "公开成交",
             "type": "array",
             "items": {
@@ -2550,7 +2550,7 @@
             "description": "匹配数量",
             "type": "integer"
           },
-          "data": {
+          "items": {
             "description": "匹配事件",
             "type": "array",
             "items": {

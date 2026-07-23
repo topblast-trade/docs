@@ -1329,11 +1329,11 @@
     },
     "/v1/public/price": {
       "get": {
-        "description": "Return the latest market price for an outcome token.",
+        "description": "Return the market price for an outcome token.",
         "tags": [
           "Market data"
         ],
-        "summary": "Get latest market price",
+        "summary": "Get market price",
         "parameters": [
           {
             "name": "x-app-id",
@@ -1356,7 +1356,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Latest market price",
+            "description": "Market price",
             "content": {
               "application/json": {
                 "schema": {
@@ -2124,22 +2124,6 @@
           }
         }
       },
-      "http_account.AckAccountTrades": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "description": "Number of records returned",
-            "type": "integer"
-          },
-          "data": {
-            "description": "Trade",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_account.AccountTrade"
-            }
-          }
-        }
-      },
       "http_common.AckError": {
         "type": "object",
         "properties": {
@@ -2362,7 +2346,7 @@
         "type": "object",
         "properties": {
           "price": {
-            "description": "Latest price",
+            "description": "Market price",
             "type": "string"
           }
         }
@@ -2462,7 +2446,7 @@
             "description": "Number of records returned",
             "type": "integer"
           },
-          "data": {
+          "items": {
             "description": "Public trade",
             "type": "array",
             "items": {
@@ -2566,7 +2550,7 @@
             "description": "Number of matches",
             "type": "integer"
           },
-          "data": {
+          "items": {
             "description": "Matching events",
             "type": "array",
             "items": {
@@ -2950,22 +2934,6 @@
           "tokenId": {
             "description": "Outcome token ID",
             "type": "string"
-          }
-        }
-      },
-      "http_order.AckOrderHistory": {
-        "type": "object",
-        "properties": {
-          "count": {
-            "description": "Number of records returned",
-            "type": "integer"
-          },
-          "data": {
-            "description": "Historical order",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/http_order.OrderDetail"
-            }
           }
         }
       },

@@ -44,9 +44,11 @@ _PAIRS = r"""
 查询标签列表|||List tags
 查询持仓|||List positions
 查询当前登录账户的成交记录。eventId/event 为同义参数，优先使用 eventId。|||List trades for the authenticated account. `eventId` and `event` are aliases; prefer `eventId`.
+查询当前登录账户的成交记录，结果按时间和成交 ID 倒序返回。eventId/event 为同义参数，优先使用 eventId。|||List trades for the authenticated account, ordered by time and trade ID descending. `eventId` and `event` are aliases; prefer `eventId`.
 查询当前登录账户的持仓，并计算当前价值和未实现盈亏。eventId/event 为同义参数，优先使用 eventId。|||List positions for the authenticated account, including current value and unrealized PnL. `eventId` and `event` are aliases; prefer `eventId`.
 查询当前登录账户的持仓，并计算当前价值和未实现盈亏。可用 eventId 按事件过滤。|||List positions for the authenticated account, including current value and unrealized PnL. Use `eventId` to filter by event.
 查询当前登录账户的历史委托。afterCursor 是上一页最后一条订单的 ID，仅用于继续向后翻页。|||List historical orders for the authenticated account. Set `afterCursor` to the last order ID from the previous page to continue forward.
+查询当前登录账户的历史委托，结果按时间和订单 ID 倒序返回。|||List historical orders for the authenticated account, ordered by time and order ID descending.
 查询当前登录账户的未完成委托。|||List open orders for the authenticated account.
 查询当前登录账户下的指定委托。|||Get an order owned by the authenticated account.
 查询当前委托|||List open orders
@@ -61,7 +63,7 @@ _PAIRS = r"""
 查询账户成交|||List account trades
 查询账户汇总|||Get account summary
 查询中间价|||Get midpoint price
-查询最新价格|||Get latest price
+查询市场价格|||Get market price
 撤单处理状态|||Cancellation processing status
 撤单结果|||Cancellation result
 成交 ID|||Trade ID
@@ -110,7 +112,7 @@ _PAIRS = r"""
 返回指定 slug 的标签。|||Return the tag identified by `slug`.
 返回指定 slug 的事件及其市场信息。|||Return the event identified by `slug`, including its markets.
 返回指定结果 Token 的买卖盘快照；缓存未命中时触发 orderbook rebroadcast 并等待本地缓存更新，超时仍无数据时返回结构完整的空订单簿。|||Return the bid and ask snapshot for an outcome token. On a cache miss, the service requests an order-book rebroadcast and waits for the local cache. If the wait times out, it returns a structurally valid empty order book.
-返回指定结果 Token 的最新价格。|||Return the latest price for an outcome token.
+返回指定结果 Token 的市场价格。|||Return the market price for an outcome token.
 返回指定结果 Token 的最优买价与最优卖价之差。|||Return the difference between the best ask and best bid for an outcome token.
 返回指定结果 Token 的最优买价与最优卖价中间值。|||Return the midpoint between the best bid and best ask for an outcome token.
 返回指定字符串 ID 的标签。|||Return the tag identified by its string ID.
@@ -149,11 +151,17 @@ _PAIRS = r"""
 结果名称|||Outcome name
 结果数量|||Outcome count
 结束时间|||End time
+结束时间（Unix 毫秒）|||End time in Unix milliseconds
+结束成交 ID 游标|||Ending trade-ID cursor
+结束订单 ID 游标|||Ending order-ID cursor
 结算来源|||Resolution source
 拒绝或失败原因|||Rejection or failure reason
 拒绝或失败原因码|||Rejection or failure reason code
 拒绝原因码；成功时通常为 0|||Rejection reason code. Usually `0` on success.
 开始时间|||Start time
+起始时间（Unix 毫秒）|||Start time in Unix milliseconds
+起始成交 ID 游标|||Starting trade-ID cursor
+起始订单 ID 游标|||Starting order-ID cursor
 可读错误信息，通常包含稳定错误标识|||Human-readable error message, usually containing a stable error identifier
 可用持仓数量|||Available position quantity
 可用数量|||Available quantity
@@ -170,6 +178,8 @@ _PAIRS = r"""
 卖盘，按价格排序|||Asks sorted by price
 卖一价减买一价|||Best ask minus best bid
 每页数量，默认 20，最大 100|||Items per page. Defaults to 20; maximum 100.
+页码，从 1 开始|||Page number, starting at 1.
+符合条件的委托总数|||Total number of matching open orders
 排序方向，默认 desc|||Sort direction. Defaults to `desc`.
 排序字段，默认 volume|||Sort field. Defaults to `volume`.
 排序字段；为空时使用服务默认顺序|||Sort field. Omit to use the service default.
@@ -295,7 +305,7 @@ _PAIRS = r"""
 最小价格步长；创建委托时价格必须是其整数倍|||Minimum tick size. Order prices must be an integer multiple of this value.
 最小委托数量|||Minimum order quantity
 最新成交价|||Latest execution price
-最新价格|||Latest price
+市场价格|||Market price
 最优买价|||Best bid
 最优买卖价中间值|||Midpoint of the best bid and best ask
 最优卖价|||Best ask
