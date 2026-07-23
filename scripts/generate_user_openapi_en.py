@@ -23,6 +23,8 @@ _PAIRS = r"""
 按事件、状态和排序条件分页查询当前券商可见的市场，返回当前页市场和筛选后的总数。|||List markets visible to the current broker by event, status, and sort order. The response includes the current page and the filtered total.
 按事件标题、描述、标识或代码进行不区分大小写的模糊搜索。|||Run a case-insensitive fuzzy search across event titles, descriptions, slugs, and codes.
 按事件或市场筛选最近成交；eventId 与 marketId 必须且只能传一个。|||List recent trades for an event or market. Provide exactly one of `eventId` and `marketId`.
+按平均成交价计算的持仓成本|||Position cost at the average execution price
+按当前价格计算的持仓价值|||Position value at the current price
 本次成交实现盈亏，十进制字符串|||Realized PnL for this trade, as a decimal string
 本次返回数量|||Number of records returned
 标签 ID|||Tag ID
@@ -43,6 +45,7 @@ _PAIRS = r"""
 查询持仓|||List positions
 查询当前登录账户的成交记录。eventId/event 为同义参数，优先使用 eventId。|||List trades for the authenticated account. `eventId` and `event` are aliases; prefer `eventId`.
 查询当前登录账户的持仓，并计算当前价值和未实现盈亏。eventId/event 为同义参数，优先使用 eventId。|||List positions for the authenticated account, including current value and unrealized PnL. `eventId` and `event` are aliases; prefer `eventId`.
+查询当前登录账户的持仓，并计算当前价值和未实现盈亏。可用 eventId 按事件过滤。|||List positions for the authenticated account, including current value and unrealized PnL. Use `eventId` to filter by event.
 查询当前登录账户的历史委托。afterCursor 是上一页最后一条订单的 ID，仅用于继续向后翻页。|||List historical orders for the authenticated account. Set `afterCursor` to the last order ID from the previous page to continue forward.
 查询当前登录账户的未完成委托。|||List open orders for the authenticated account.
 查询当前登录账户下的指定委托。|||Get an order owned by the authenticated account.
@@ -71,8 +74,11 @@ _PAIRS = r"""
 成交时间戳（Unix 毫秒）|||Trade timestamp in Unix milliseconds
 成交数量|||Executed quantity
 成交数量，十进制字符串|||Executed quantity as a decimal string
+本次成交实现盈亏|||Realized PnL for this trade
 持仓记录|||Position
 持仓列表|||Position list
+持仓平均成交价|||Average execution price of the position
+持仓总数量|||Total position quantity
 初始成交价值|||Initial execution value
 处理状态|||Processing status
 创建时间|||Created at
@@ -84,6 +90,7 @@ _PAIRS = r"""
 待取消订单，1 至 100 项|||Orders to cancel, from 1 to 100 items
 当前估值|||Current valuation
 当前价格|||Current price
+当前市场价格|||Current market price
 当前委托|||Open order
 当前委托列表|||Open-order list
 当前页标签|||Tags on the current page
@@ -116,6 +123,7 @@ _PAIRS = r"""
 各订单处理结果|||Per-order processing results
 各结果 Token 行情|||Market data for each outcome token
 各结果 Token 余额|||Balances for each outcome token
+各结果 Token 的余额|||Balances for each outcome token
 根据结果 Token 定位所属市场，返回市场级行情和市场内各结果 Token 的最优买卖价、最新价及更新时间。|||Resolve the market from an outcome token and return market-level data plus the best bid, best ask, latest price, and update time for every outcome token in that market.
 更新时间|||Updated at
 更新时间（Unix 毫秒）|||Update time in Unix milliseconds
@@ -137,6 +145,7 @@ _PAIRS = r"""
 结果 Token ID；可省略，但建议传入|||Outcome token ID. Optional, but recommended.
 结果 Token ID；已知时传入可减少一次订单查询|||Outcome token ID. Provide it when known to avoid an additional order lookup.
 结果成立时可兑付金额|||Payout if the outcome resolves true
+结果命中时的最大兑付金额|||Maximum payout if the outcome resolves true
 结果名称|||Outcome name
 结果数量|||Outcome count
 结束时间|||End time
@@ -146,6 +155,7 @@ _PAIRS = r"""
 拒绝原因码；成功时通常为 0|||Rejection reason code. Usually `0` on success.
 开始时间|||Start time
 可读错误信息，通常包含稳定错误标识|||Human-readable error message, usually containing a stable error identifier
+可用持仓数量|||Available position quantity
 可用数量|||Available quantity
 可用余额|||Available balance
 快照时间戳（Unix 毫秒）|||Snapshot timestamp in Unix milliseconds
@@ -233,6 +243,7 @@ _PAIRS = r"""
 搜索结果|||Search results
 搜索事件|||Search events
 锁定数量|||Locked quantity
+锁定持仓数量|||Locked position quantity
 锁定余额|||Locked balance
 条件 ID|||Condition ID
 同步创建 1 至 50 笔委托并返回每笔处理结果。每项 timestamp 使用 Unix 毫秒且每次请求都应取当前时间；expiration 支持 Unix 秒或毫秒，传秒时服务端自动转换。|||Synchronously submit 1 to 50 orders and return the result for each item. Set each `timestamp` to the current Unix time in milliseconds. `expiration` accepts Unix seconds or milliseconds; the service converts seconds to milliseconds.
@@ -248,13 +259,17 @@ _PAIRS = r"""
 委托价；MARKET 可为空，其他类型取值 (0,1) 且须符合价格步长|||Order price. Optional for `MARKET`; otherwise must be between 0 and 1, exclusive, and align with the tick size.
 委托类型|||Order type
 委托类型：GTC、FOK、GTD、FAK、MARKET；默认 GTC|||Order type: `GTC`, `FOK`, `GTD`, `FAK`, or `MARKET`. Defaults to `GTC`.
+委托类型：LIMIT 或 MARKET；默认 LIMIT|||Order type: `LIMIT` or `MARKET`. Defaults to `LIMIT`.
 委托受理结果|||Order acceptance result
+委托数量，正整数份数|||Order quantity in whole shares as a positive integer
 委托数量，十进制正整数字符串|||Order quantity as a positive decimal integer string
 委托锁定数量|||Quantity locked by open orders
 委托详情|||Order details
 为当前登录账户创建委托。timestamp 使用 Unix 毫秒且每次请求都应取当前时间；GTD 的 expiration 必填，支持 Unix 秒或毫秒，服务端会将秒转换为毫秒。非 MARKET 委托的 price 必须在 0 到 1 之间并符合市场最小价格步长。|||Create an order for the authenticated account. Set `timestamp` to the current Unix time in milliseconds for every request. `expiration` is required for `GTD` and accepts Unix seconds or milliseconds; the service converts seconds to milliseconds. For non-`MARKET` orders, `price` must be between 0 and 1, exclusive, and align with the market tick size.
+为当前登录账户创建委托。timestamp 使用 Unix 毫秒且每次请求都应取当前时间；GTD 的 expiration 必填且使用 Unix 毫秒。非 MARKET 委托的 price 必须在 0 到 1 之间并符合市场最小价格步长。|||Create an order for the authenticated account. Set `timestamp` to the current Unix time in milliseconds for every request. `expiration` is required for `GTD` and must use Unix milliseconds. For non-`MARKET` orders, `price` must be between 0 and 1, exclusive, and align with the market tick size.
 未实现盈亏|||Unrealized PnL
 未实现盈亏百分比|||Unrealized PnL percentage
+有效方式；LIMIT 默认 GTC，MARKET 仅支持 IOC|||Time in force. `LIMIT` orders default to `GTC`; `MARKET` orders support only `IOC`.
 稳定业务错误码|||Stable business error code
 行情时间戳（Unix 毫秒）|||Ticker timestamp in Unix milliseconds
 页码，默认 1|||Page number. Defaults to 1.
@@ -285,6 +300,7 @@ _PAIRS = r"""
 最优卖价|||Best ask
 catalog 或 ticker 全量快照尚未就绪|||The full `catalog` or `ticker` snapshot is not ready
 GTD 到期时间，Unix 秒或毫秒；其他类型可为 0|||`GTD` expiration time in Unix seconds or milliseconds. Use `0` for other order types.
+GTD 到期时间（Unix 毫秒）；其他类型必须为 0|||`GTD` expiration time in Unix milliseconds. Must be `0` for other order types.
 NO 结果 Token ID|||NO outcome token ID
 NO 结果展示名|||NO outcome display name
 read-service 不可用|||The read service is unavailable

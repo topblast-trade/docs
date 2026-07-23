@@ -26,6 +26,11 @@ def keep_success_responses(spec: dict) -> int:
             responses = operation.get("responses")
             if not isinstance(responses, dict):
                 continue
+            successful_statuses = [
+                status for status in responses if str(status).startswith("2")
+            ]
+            if not successful_statuses:
+                continue
             for status in list(responses):
                 if not str(status).startswith("2"):
                     del responses[status]
