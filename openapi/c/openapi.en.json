@@ -24,6 +24,16 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -101,6 +111,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_account.AckAccountTrades"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to query trades",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -183,6 +213,16 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -220,6 +260,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_order.AckPlaceOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid order parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Market is not tradable or the request was rejected by risk controls",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Trading cluster unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -276,6 +356,36 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "The list is empty, exceeds 50 items, or contains invalid order parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Market is not tradable or the request was rejected by risk controls",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -327,70 +437,49 @@
                 }
               }
             }
-          }
-        },
-        "parameters": [
-          {
-            "name": "x-app-id",
-            "in": "header",
-            "required": true,
-            "description": "Broker application ID used to route the request.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "security": [
-          {
-            "BearerAuth": []
           },
-          {
-            "ApiKeyAuth": [],
-            "TimestampAuth": [],
-            "SignatureAuth": []
-          }
-        ]
-      }
-    },
-    "/v1/private/orders/detail": {
-      "get": {
-        "description": "Get an order owned by the authenticated account.",
-        "tags": [
-          "Orders"
-        ],
-        "summary": "Get order details",
-        "parameters": [
-          {
-            "name": "x-app-id",
-            "in": "header",
-            "required": true,
-            "description": "Broker application ID used to route the request.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Order ID as a positive decimal integer",
-            "name": "orderId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Order details",
+          "400": {
+            "description": "The list is empty, exceeds 100 items, or contains invalid order parameters",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/http_order.AckOrderDetail"
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The market does not currently allow cancellations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
           }
         },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "BearerAuth": []
@@ -466,6 +555,16 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -481,6 +580,85 @@
       }
     },
     "/v1/private/orders/{orderID}": {
+      "get": {
+        "description": "Get an order owned by the authenticated account.",
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get order details",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Order ID as a positive decimal integer",
+            "name": "orderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_order.AckOrderDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid order ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      },
       "delete": {
         "description": "Cancel an order owned by the authenticated account. `tokenId` is optional; when omitted, the service resolves it from the order details.",
         "tags": [
@@ -522,6 +700,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_order.AckCancelOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid order ID or request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The market does not currently allow cancellations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -572,6 +780,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_position.AckPositions"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is invalid or missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -682,6 +900,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The full `catalog` or `ticker` snapshot is not ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -753,6 +991,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_meta.Event"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid event slug",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -861,6 +1119,36 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Broker domain not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The full `catalog` or `ticker` snapshot is not ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -899,6 +1187,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckMidpoint"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Midpoint price not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -943,6 +1251,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid token ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -981,6 +1299,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckPrice"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Price not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1041,6 +1379,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid token or time window",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Price history not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -1082,6 +1440,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -1120,6 +1488,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckSpread"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Spread data not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1214,6 +1602,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to query tags",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -1252,6 +1660,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_meta.Tag"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag slug",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tag not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1296,6 +1724,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid tag ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tag not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
           }
         }
       }
@@ -1334,6 +1782,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckTicker"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Market data not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
@@ -1393,6 +1861,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_market.AckTrades"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The read service is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_common.AckError"
                 }
               }
             }
