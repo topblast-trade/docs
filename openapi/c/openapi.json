@@ -198,14 +198,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "description": "事件 ID 的兼容参数；eventId 为空时生效",
-            "name": "event",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -232,7 +224,7 @@
         ]
       },
       "post": {
-        "description": "为当前登录账户创建委托。timestamp 使用 Unix 毫秒且每次请求都应取当前时间；GTD 的 expiration 必填且使用 Unix 毫秒。非 MARKET 委托的 price 必须在 0 到 1 之间并符合市场最小价格步长。",
+        "description": "为当前登录账户创建委托。",
         "tags": [
           "用户接口-委托"
         ],
@@ -285,7 +277,7 @@
     },
     "/v1/private/orders/batch": {
       "post": {
-        "description": "同步创建 1 至 50 笔委托并返回每笔处理结果。每项 timestamp 使用 Unix 毫秒且每次请求都应取当前时间；expiration 支持 Unix 秒或毫秒，传秒时服务端自动转换。",
+        "description": "批量创建委托",
         "tags": [
           "用户接口-委托"
         ],
@@ -336,7 +328,7 @@
         ]
       },
       "delete": {
-        "description": "同步取消 1 至 100 笔委托。每项 tokenId 可省略，但建议传入以完成事件权限和市场生命周期校验。",
+        "description": "批量取消委托",
         "tags": [
           "用户接口-委托"
         ],
@@ -542,7 +534,7 @@
         ]
       },
       "delete": {
-        "description": "取消当前登录账户下的指定委托。tokenId 可省略，服务端会先从订单详情解析。",
+        "description": "取消当前登录账户下的指定委托。",
         "tags": [
           "用户接口-委托"
         ],
@@ -935,7 +927,7 @@
     },
     "/v1/public/orderbook": {
       "get": {
-        "description": "返回指定结果 Token 的买卖盘快照；缓存未命中时触发 orderbook rebroadcast 并等待本地缓存更新，超时仍无数据时返回结构完整的空订单簿。",
+        "description": "返回指定结果 Token 的买卖盘订单簿。",
         "tags": [
           "用户接口-市场"
         ],
@@ -2351,7 +2343,7 @@
             }
           },
           "total": {
-            "description": "符合条件的委托总数",
+            "description": "符合条件的当前委托总数",
             "type": "integer"
           }
         }
@@ -2415,6 +2407,11 @@
           "tokenId": {
             "description": "结果 Token ID",
             "type": "string"
+          },
+          "updatedAt": {
+            "description": "更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2527,6 +2524,11 @@
           "tokenId": {
             "description": "结果 Token ID",
             "type": "string"
+          },
+          "updatedAt": {
+            "description": "更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2569,7 +2571,6 @@
         "required": [
           "side",
           "size",
-          "timestamp",
           "tokenId"
         ],
         "properties": {
@@ -2610,11 +2611,6 @@
               "GTD",
               "IOC"
             ]
-          },
-          "timestamp": {
-            "description": "请求时间（Unix 毫秒）；每次提交取当前时间",
-            "type": "integer",
-            "format": "int64"
           },
           "tokenId": {
             "description": "结果 Token ID",

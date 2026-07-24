@@ -198,14 +198,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "description": "Compatibility alias for `eventId`; used only when `eventId` is omitted",
-            "name": "event",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -232,7 +224,7 @@
         ]
       },
       "post": {
-        "description": "Create an order for the authenticated account. Set `timestamp` to the current Unix time in milliseconds for every request. `expiration` is required for `GTD` and must use Unix milliseconds. For non-`MARKET` orders, `price` must be between 0 and 1, exclusive, and align with the market tick size.",
+        "description": "Create an order for the authenticated account.",
         "tags": [
           "Orders"
         ],
@@ -285,7 +277,7 @@
     },
     "/v1/private/orders/batch": {
       "post": {
-        "description": "Synchronously submit 1 to 50 orders and return the result for each item. Set each `timestamp` to the current Unix time in milliseconds. `expiration` accepts Unix seconds or milliseconds; the service converts seconds to milliseconds.",
+        "description": "Create orders in batch",
         "tags": [
           "Orders"
         ],
@@ -336,7 +328,7 @@
         ]
       },
       "delete": {
-        "description": "Synchronously cancel 1 to 100 orders. `tokenId` is optional, but providing it enables event-permission and market-lifecycle validation.",
+        "description": "Cancel orders in batch",
         "tags": [
           "Orders"
         ],
@@ -542,7 +534,7 @@
         ]
       },
       "delete": {
-        "description": "Cancel an order owned by the authenticated account. `tokenId` is optional; when omitted, the service resolves it from the order details.",
+        "description": "Cancel the specified order owned by the authenticated account.",
         "tags": [
           "Orders"
         ],
@@ -2415,6 +2407,11 @@
           "tokenId": {
             "description": "Outcome token ID",
             "type": "string"
+          },
+          "updatedAt": {
+            "description": "Update time in Unix milliseconds",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2527,6 +2524,11 @@
           "tokenId": {
             "description": "Outcome token ID",
             "type": "string"
+          },
+          "updatedAt": {
+            "description": "Update time in Unix milliseconds",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2569,7 +2571,6 @@
         "required": [
           "side",
           "size",
-          "timestamp",
           "tokenId"
         ],
         "properties": {
@@ -2610,11 +2611,6 @@
               "GTD",
               "IOC"
             ]
-          },
-          "timestamp": {
-            "description": "Request time in Unix milliseconds. Use the current time for every submission.",
-            "type": "integer",
-            "format": "int64"
           },
           "tokenId": {
             "description": "Outcome token ID",
