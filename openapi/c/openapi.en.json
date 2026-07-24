@@ -509,7 +509,7 @@
             }
           },
           {
-            "description": "Order ID as a positive decimal integer",
+            "description": "Order ID",
             "name": "orderID",
             "in": "path",
             "required": true,
@@ -558,7 +558,7 @@
             }
           },
           {
-            "description": "Order ID as a positive decimal integer",
+            "description": "Order ID",
             "name": "orderID",
             "in": "path",
             "required": true,
@@ -910,7 +910,7 @@
             }
           },
           {
-            "description": "Outcome token ID as a positive decimal integer",
+            "description": "Outcome token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -935,7 +935,7 @@
     },
     "/v1/public/orderbook": {
       "get": {
-        "description": "Return the bid and ask snapshot for an outcome token. On a cache miss, the service requests an order-book rebroadcast and waits for the local cache. If the wait times out, it returns a structurally valid empty order book.",
+        "description": "Return the bid and ask order book for an outcome token.",
         "tags": [
           "Market data"
         ],
@@ -951,7 +951,7 @@
             }
           },
           {
-            "description": "Outcome token ID as a positive decimal integer",
+            "description": "Outcome token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -992,7 +992,7 @@
             }
           },
           {
-            "description": "Outcome token ID as a positive decimal integer",
+            "description": "Outcome token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -1033,7 +1033,7 @@
             }
           },
           {
-            "description": "Outcome token ID as a positive decimal integer",
+            "description": "Outcome token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -1131,7 +1131,7 @@
             }
           },
           {
-            "description": "Outcome token ID as a positive decimal integer",
+            "description": "Outcome token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -1345,7 +1345,7 @@
             }
           },
           {
-            "description": "Outcome token ID as a positive decimal integer",
+            "description": "Outcome token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -2139,6 +2139,10 @@
             "description": "Condition ID",
             "type": "string"
           },
+          "description": {
+            "description": "Market description",
+            "type": "string"
+          },
           "disputeFlag": {
             "description": "Whether the event is disputed",
             "type": "boolean"
@@ -2455,7 +2459,7 @@
         ],
         "properties": {
           "orderId": {
-            "description": "Order ID as a positive decimal integer",
+            "description": "Order ID",
             "type": "string"
           },
           "tokenId": {
@@ -2613,7 +2617,7 @@
             "format": "int64"
           },
           "tokenId": {
-            "description": "Outcome token ID as a positive decimal integer",
+            "description": "Outcome token ID",
             "type": "string"
           }
         }

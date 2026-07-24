@@ -103,7 +103,6 @@ _PAIRS = r"""
 订单 ID|||Order ID
 订单 ID 或请求参数无效|||Invalid order ID or request parameters
 订单 ID 无效|||Invalid order ID
-订单 ID|||Order ID as a positive decimal integer
 订单簿快照|||Order-book snapshot
 订单受理状态|||Order acceptance status
 订单状态|||Order status
@@ -144,7 +143,6 @@ _PAIRS = r"""
 交易集群不可用|||Trading cluster unavailable
 接口已废弃|||Operation deprecated
 结果 Token ID|||Outcome token ID
-结果 Token ID|||Outcome token ID as a positive decimal integer
 结果 Token ID；可省略，但建议传入|||Outcome token ID. Optional, but recommended.
 结果 Token ID；已知时传入可减少一次订单查询|||Outcome token ID. Provide it when known to avoid an additional order lookup.
 结果成立时可兑付金额|||Payout if the outcome resolves true
@@ -218,6 +216,7 @@ _PAIRS = r"""
 市场当前不允许撤单|||The market does not currently allow cancellations
 市场累计成交量|||Cumulative market trading volume
 市场列表|||Market list
+市场描述|||Market description
 市场条件 ID|||Market condition ID
 市场问题|||Market question
 市场行情|||Market ticker
