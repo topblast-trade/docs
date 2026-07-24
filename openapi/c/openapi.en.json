@@ -51,7 +51,7 @@
     },
     "/v1/private/account/trades": {
       "get": {
-        "description": "List trades for the authenticated account, ordered by time and trade ID descending. `eventId` and `event` are aliases; prefer `eventId`.",
+        "description": "List trades for the authenticated account, ordered by time and trade ID descending. Use `eventId` to filter by event.",
         "tags": [
           "Trades"
         ],
@@ -112,14 +112,6 @@
           {
             "description": "Event ID",
             "name": "eventId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Compatibility alias for `eventId`; used only when `eventId` is omitted",
-            "name": "event",
             "in": "query",
             "schema": {
               "type": "string"

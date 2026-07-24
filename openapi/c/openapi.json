@@ -51,7 +51,7 @@
     },
     "/v1/private/account/trades": {
       "get": {
-        "description": "查询当前登录账户的成交记录，结果按时间和成交 ID 倒序返回。eventId/event 为同义参数，优先使用 eventId。",
+        "description": "查询当前登录账户的成交记录，结果按时间和成交 ID 倒序返回。可用 eventId 按事件过滤。",
         "tags": [
           "用户接口-成交"
         ],
@@ -112,14 +112,6 @@
           {
             "description": "事件 ID",
             "name": "eventId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "事件 ID 的兼容参数；eventId 为空时生效",
-            "name": "event",
             "in": "query",
             "schema": {
               "type": "string"

@@ -44,7 +44,7 @@ _PAIRS = r"""
 查询标签列表|||List tags
 查询持仓|||List positions
 查询当前登录账户的成交记录。eventId/event 为同义参数，优先使用 eventId。|||List trades for the authenticated account. `eventId` and `event` are aliases; prefer `eventId`.
-查询当前登录账户的成交记录，结果按时间和成交 ID 倒序返回。eventId/event 为同义参数，优先使用 eventId。|||List trades for the authenticated account, ordered by time and trade ID descending. `eventId` and `event` are aliases; prefer `eventId`.
+查询当前登录账户的成交记录，结果按时间和成交 ID 倒序返回。可用 eventId 按事件过滤。|||List trades for the authenticated account, ordered by time and trade ID descending. Use `eventId` to filter by event.
 查询当前登录账户的持仓，并计算当前价值和未实现盈亏。eventId/event 为同义参数，优先使用 eventId。|||List positions for the authenticated account, including current value and unrealized PnL. `eventId` and `event` are aliases; prefer `eventId`.
 查询当前登录账户的持仓，并计算当前价值和未实现盈亏。可用 eventId 按事件过滤。|||List positions for the authenticated account, including current value and unrealized PnL. Use `eventId` to filter by event.
 查询当前登录账户的历史委托。afterCursor 是上一页最后一条订单的 ID，仅用于继续向后翻页。|||List historical orders for the authenticated account. Set `afterCursor` to the last order ID from the previous page to continue forward.
