@@ -509,7 +509,7 @@
             }
           },
           {
-            "description": "订单 ID，十进制正整数",
+            "description": "订单 ID",
             "name": "orderID",
             "in": "path",
             "required": true,
@@ -558,7 +558,7 @@
             }
           },
           {
-            "description": "订单 ID，十进制正整数",
+            "description": "订单 ID",
             "name": "orderID",
             "in": "path",
             "required": true,
@@ -910,7 +910,7 @@
             }
           },
           {
-            "description": "结果 Token ID，十进制正整数",
+            "description": "结果 Token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -951,7 +951,7 @@
             }
           },
           {
-            "description": "结果 Token ID，十进制正整数",
+            "description": "结果 Token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -992,7 +992,7 @@
             }
           },
           {
-            "description": "结果 Token ID，十进制正整数",
+            "description": "结果 Token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -1033,7 +1033,7 @@
             }
           },
           {
-            "description": "结果 Token ID，十进制正整数",
+            "description": "结果 Token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -1131,7 +1131,7 @@
             }
           },
           {
-            "description": "结果 Token ID，十进制正整数",
+            "description": "结果 Token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -1345,7 +1345,7 @@
             }
           },
           {
-            "description": "结果 Token ID，十进制正整数",
+            "description": "结果 Token ID",
             "name": "tokenId",
             "in": "query",
             "required": true,
@@ -2459,7 +2459,7 @@
         ],
         "properties": {
           "orderId": {
-            "description": "订单 ID，十进制正整数",
+            "description": "订单 ID",
             "type": "string"
           },
           "tokenId": {
@@ -2617,7 +2617,7 @@
             "format": "int64"
           },
           "tokenId": {
-            "description": "结果 Token ID，十进制正整数",
+            "description": "结果 Token ID",
             "type": "string"
           }
         }

@@ -103,7 +103,7 @@ _PAIRS = r"""
 订单 ID|||Order ID
 订单 ID 或请求参数无效|||Invalid order ID or request parameters
 订单 ID 无效|||Invalid order ID
-订单 ID，十进制正整数|||Order ID as a positive decimal integer
+订单 ID|||Order ID as a positive decimal integer
 订单簿快照|||Order-book snapshot
 订单受理状态|||Order acceptance status
 订单状态|||Order status
@@ -144,7 +144,7 @@ _PAIRS = r"""
 交易集群不可用|||Trading cluster unavailable
 接口已废弃|||Operation deprecated
 结果 Token ID|||Outcome token ID
-结果 Token ID，十进制正整数|||Outcome token ID as a positive decimal integer
+结果 Token ID|||Outcome token ID as a positive decimal integer
 结果 Token ID；可省略，但建议传入|||Outcome token ID. Optional, but recommended.
 结果 Token ID；已知时传入可减少一次订单查询|||Outcome token ID. Provide it when known to avoid an additional order lookup.
 结果成立时可兑付金额|||Payout if the outcome resolves true
@@ -273,7 +273,7 @@ _PAIRS = r"""
 委托类型：LIMIT 或 MARKET；默认 LIMIT|||Order type: `LIMIT` or `MARKET`. Defaults to `LIMIT`.
 委托受理结果|||Order acceptance result
 委托数量，正整数份数|||Order quantity in whole shares as a positive integer
-委托数量，十进制正整数字符串|||Order quantity as a positive decimal integer string
+委托数量|||Order quantity as a positive decimal integer string
 委托锁定数量|||Quantity locked by open orders
 委托详情|||Order details
 为当前登录账户创建委托。timestamp 使用 Unix 毫秒且每次请求都应取当前时间；GTD 的 expiration 必填，支持 Unix 秒或毫秒，服务端会将秒转换为毫秒。非 MARKET 委托的 price 必须在 0 到 1 之间并符合市场最小价格步长。|||Create an order for the authenticated account. Set `timestamp` to the current Unix time in milliseconds for every request. `expiration` is required for `GTD` and accepts Unix seconds or milliseconds; the service converts seconds to milliseconds. For non-`MARKET` orders, `price` must be between 0 and 1, exclusive, and align with the market tick size.
