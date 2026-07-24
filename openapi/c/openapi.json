@@ -2139,6 +2139,10 @@
             "description": "条件 ID",
             "type": "string"
           },
+          "description": {
+            "description": "市场描述",
+            "type": "string"
+          },
           "disputeFlag": {
             "description": "是否处于争议状态",
             "type": "boolean"
