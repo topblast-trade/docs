@@ -1285,7 +1285,8 @@
             "name": "begin",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int64"
             }
           },
           {
@@ -1293,7 +1294,8 @@
             "name": "end",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int64"
             }
           },
           {
