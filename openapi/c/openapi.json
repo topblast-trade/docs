@@ -2159,7 +2159,7 @@
             "description": "最小委托数量",
             "type": "integer"
           },
-          "orderMinTickSize": {
+          "orderPriceMinTickSize": {
             "description": "最小价格步长；创建委托时价格必须是其整数倍",
             "type": "string"
           },

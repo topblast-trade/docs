@@ -2159,7 +2159,7 @@
             "description": "Minimum order quantity",
             "type": "integer"
           },
-          "orderMinTickSize": {
+          "orderPriceMinTickSize": {
             "description": "Minimum tick size. Order prices must be an integer multiple of this value.",
             "type": "string"
           },
