@@ -2160,7 +2160,7 @@
             "type": "integer"
           },
           "orderMinTickSize": {
-            "description": "Minimum tick size as a decimal string. Order prices must be an integer multiple of this value.",
+            "description": "Minimum tick size. Order prices must be an integer multiple of this value.",
             "type": "string"
           },
           "pricePrecision": {

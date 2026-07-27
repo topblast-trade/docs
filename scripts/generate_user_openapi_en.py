@@ -25,7 +25,6 @@ _PAIRS = r"""
 按事件或市场筛选最近成交；eventId 与 marketId 必须且只能传一个。|||List recent trades for an event or market. Provide exactly one of `eventId` and `marketId`.
 按平均成交价计算的持仓成本|||Position cost at the average execution price
 按当前价格计算的持仓价值|||Position value at the current price
-本次成交实现盈亏，十进制字符串|||Realized PnL for this trade, as a decimal string
 本次返回数量|||Number of records returned
 标签 ID|||Tag ID
 标签 ID 无效|||Invalid tag ID
@@ -71,11 +70,9 @@ _PAIRS = r"""
 成交记录|||Trade
 成交记录查询失败|||Failed to query trades
 成交价|||Execution price
-成交价，十进制字符串|||Execution price as a decimal string
 成交类型；默认 MATCH|||Trade type. Defaults to `MATCH`.
 成交时间戳（Unix 毫秒）|||Trade timestamp in Unix milliseconds
 成交数量|||Executed quantity
-成交数量，十进制字符串|||Executed quantity as a decimal string
 本次成交实现盈亏|||Realized PnL for this trade
 持仓记录|||Position
 持仓列表|||Position list
@@ -138,7 +135,6 @@ _PAIRS = r"""
 价格不存在|||Price not found
 价格点|||Price point
 价格精度类型|||Price precision type
-最小价格步长，十进制字符串；创建委托时价格必须是其整数倍|||Minimum tick size as a decimal string. Order prices must be an integer multiple of this value.
 价格历史|||Price history
 价格历史不存在|||Price history not found
 交易集群不可用|||Trading cluster unavailable

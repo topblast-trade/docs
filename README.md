@@ -39,7 +39,7 @@ is located at `~/code/srv/zpm/go-uc`. For another layout, pass the destination
 explicitly with `--docs-project /path/to/docs`.
 
 `openapi/c/openapi.json` is the Chinese source of truth for Trading REST API
-reference content. Running `go-edge/scripts/generate_edge_openapi.py` publishes
+reference content. Running `go-edge/scripts/generate_user_openapi.py` publishes
 the Chinese specification and automatically invokes the strict English
 generator. You can still regenerate only the English variant with:
 
