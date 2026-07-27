@@ -1852,6 +1852,10 @@
             "description": "Event ID",
             "type": "string"
           },
+          "liquidity": {
+            "description": "Market liquidity",
+            "type": "string"
+          },
           "marketId": {
             "description": "Market ID",
             "type": "string"
@@ -2071,6 +2075,10 @@
             "description": "Image URL",
             "type": "string"
           },
+          "liquidity": {
+            "description": "Event liquidity (sum of market liquidity)",
+            "type": "string"
+          },
           "markets": {
             "description": "Markets in the event",
             "type": "array",
@@ -2141,6 +2149,10 @@
           },
           "lastPrice": {
             "description": "Latest execution price",
+            "type": "string"
+          },
+          "liquidity": {
+            "description": "Market liquidity",
             "type": "string"
           },
           "marketId": {

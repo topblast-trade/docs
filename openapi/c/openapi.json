@@ -1852,6 +1852,10 @@
             "description": "事件 ID",
             "type": "string"
           },
+          "liquidity": {
+            "description": "市场流动性",
+            "type": "string"
+          },
           "marketId": {
             "description": "市场 ID",
             "type": "string"
@@ -2071,6 +2075,10 @@
             "description": "图片 URL",
             "type": "string"
           },
+          "liquidity": {
+            "description": "事件流动性（所有市场流动性之和）",
+            "type": "string"
+          },
           "markets": {
             "description": "事件下的市场",
             "type": "array",
@@ -2141,6 +2149,10 @@
           },
           "lastPrice": {
             "description": "最新成交价",
+            "type": "string"
+          },
+          "liquidity": {
+            "description": "市场流动性",
             "type": "string"
           },
           "marketId": {

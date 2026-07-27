@@ -214,6 +214,7 @@ _PAIRS = r"""
 市场不可交易或风控拒绝|||Market is not tradable or the request was rejected by risk controls
 市场当前不允许撤单|||The market does not currently allow cancellations
 市场累计成交量|||Cumulative market trading volume
+市场流动性|||Market liquidity
 市场列表|||Market list
 市场描述|||Market description
 市场条件 ID|||Market condition ID
@@ -235,6 +236,7 @@ _PAIRS = r"""
 事件描述|||Event description
 事件下的市场|||Markets in the event
 事件下所有市场的累计成交量之和|||Sum of cumulative trading volume across all markets in the event
+事件流动性（所有市场流动性之和）|||Event liquidity (sum of market liquidity)
 事件详情|||Event details
 事件状态|||Event status
 是否包含模板标签，默认 false|||Whether to include template tags. Defaults to `false`.
