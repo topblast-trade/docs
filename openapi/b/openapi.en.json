@@ -2806,7 +2806,7 @@
             "type": "string"
           },
           "tokenName": {
-            "description": "Outcome token name.",
+            "description": "Token Name.",
             "type": "string"
           },
           "unrealizedPnL": {
