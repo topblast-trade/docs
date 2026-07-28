@@ -2805,6 +2805,10 @@
             "description": "结果 Token ID",
             "type": "string"
           },
+          "tokenName": {
+            "description": "结果 Token 名称",
+            "type": "string"
+          },
           "unrealizedPnL": {
             "description": "未实现盈亏",
             "type": "string"

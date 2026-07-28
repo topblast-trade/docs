@@ -2805,6 +2805,10 @@
             "description": "Outcome token ID.",
             "type": "string"
           },
+          "tokenName": {
+            "description": "Outcome token name.",
+            "type": "string"
+          },
           "unrealizedPnL": {
             "description": "Unrealized Pn L.",
             "type": "string"
