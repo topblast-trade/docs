@@ -151,7 +151,7 @@
             }
           },
           {
-            "description": "标签 ID 或 slug；不传时不按标签筛选",
+            "description": "标签 ID、slug 或 label；不传时不按标签筛选",
             "name": "tag",
             "in": "query",
             "schema": {
@@ -2004,6 +2004,20 @@
           }
         }
       },
+      "service.BrokerEventTag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
       "service.BrokerEventView": {
         "type": "object",
         "properties": {
@@ -2057,6 +2071,13 @@
             "description": "事件开始时间（Unix 毫秒）",
             "type": "integer",
             "format": "int64"
+          },
+          "tags": {
+            "description": "事件标签",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/service.BrokerEventTag"
+            }
           },
           "updatedAt": {
             "description": "券商配置更新时间（Unix 毫秒）",

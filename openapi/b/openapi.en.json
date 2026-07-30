@@ -151,7 +151,7 @@
             }
           },
           {
-            "description": "Tag ID or slug. Omit it to disable tag filtering.",
+            "description": "Tag ID, slug, or label. Omit it to disable tag filtering.",
             "name": "tag",
             "in": "query",
             "schema": {
@@ -183,7 +183,7 @@
         "tags": [
           "Events"
         ],
-        "summary": "Batch enable/disable events",
+        "summary": "Batch update events",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2004,6 +2004,20 @@
           }
         }
       },
+      "service.BrokerEventTag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
       "service.BrokerEventView": {
         "type": "object",
         "properties": {
@@ -2057,6 +2071,13 @@
             "description": "Start At.",
             "type": "integer",
             "format": "int64"
+          },
+          "tags": {
+            "description": "Tags.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/service.BrokerEventTag"
+            }
           },
           "updatedAt": {
             "description": "Updated At.",
