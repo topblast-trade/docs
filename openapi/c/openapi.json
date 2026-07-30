@@ -1534,10 +1534,6 @@
             "description": "费率（基点）",
             "type": "string"
           },
-          "id": {
-            "description": "成交 ID",
-            "type": "string"
-          },
           "isImplied": {
             "description": "是否为组合/隐含成交",
             "type": "boolean"
@@ -1577,6 +1573,10 @@
           },
           "tokenId": {
             "description": "结果 Token ID",
+            "type": "string"
+          },
+          "tradeId": {
+            "description": "成交 ID",
             "type": "string"
           },
           "tradeKind": {
@@ -1945,10 +1945,6 @@
             "description": "事件 ID",
             "type": "string"
           },
-          "id": {
-            "description": "成交 ID",
-            "type": "string"
-          },
           "marketId": {
             "description": "市场 ID",
             "type": "string"
@@ -1972,6 +1968,10 @@
           },
           "tokenId": {
             "description": "结果 Token ID",
+            "type": "string"
+          },
+          "tradeId": {
+            "description": "成交 ID",
             "type": "string"
           }
         }

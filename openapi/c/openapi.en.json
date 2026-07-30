@@ -1534,10 +1534,6 @@
             "description": "Fee rate in basis points",
             "type": "string"
           },
-          "id": {
-            "description": "Trade ID",
-            "type": "string"
-          },
           "isImplied": {
             "description": "Whether this is a combined or implied trade",
             "type": "boolean"
@@ -1577,6 +1573,10 @@
           },
           "tokenId": {
             "description": "Outcome token ID",
+            "type": "string"
+          },
+          "tradeId": {
+            "description": "Trade ID",
             "type": "string"
           },
           "tradeKind": {
@@ -1945,10 +1945,6 @@
             "description": "Event ID",
             "type": "string"
           },
-          "id": {
-            "description": "Trade ID",
-            "type": "string"
-          },
           "marketId": {
             "description": "Market ID",
             "type": "string"
@@ -1972,6 +1968,10 @@
           },
           "tokenId": {
             "description": "Outcome token ID",
+            "type": "string"
+          },
+          "tradeId": {
+            "description": "Trade ID",
             "type": "string"
           }
         }
