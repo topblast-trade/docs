@@ -183,7 +183,7 @@
         "tags": [
           "券商接口-事件"
         ],
-        "summary": "批量更新事件",
+        "summary": "批量启动/停用事件",
         "requestBody": {
           "content": {
             "application/json": {

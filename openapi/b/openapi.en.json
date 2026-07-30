@@ -183,7 +183,7 @@
         "tags": [
           "Events"
         ],
-        "summary": "Batch update events",
+        "summary": "Batch enable/disable events",
         "requestBody": {
           "content": {
             "application/json": {
