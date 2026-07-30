@@ -1,0 +1,575 @@
+asyncapi: 3.0.0
+
+info:
+  title: Market channel WebSocket API
+  version: 1.0.0
+  description: Subscribe to order book, ticker, trade, and price-change messages over one WebSocket connection.
+
+defaultContentType: application/json
+
+servers:
+  test:
+    host: ws-test.topblast.trade
+    protocol: wss
+    description: Test environment
+
+channels:
+  publicMarket:
+    address: /v1/public
+    title: Market channel
+    description: Subscribe with `market:<marketId>`.
+    messages:
+      subscribe:
+        $ref: "#/components/messages/Subscribe"
+      unsubscribe:
+        $ref: "#/components/messages/Unsubscribe"
+      ping:
+        $ref: "#/components/messages/Ping"
+      pong:
+        $ref: "#/components/messages/Pong"
+      book:
+        $ref: "#/components/messages/Book"
+      ticker:
+        $ref: "#/components/messages/Ticker"
+      trade:
+        $ref: "#/components/messages/Trade"
+      priceChange:
+        $ref: "#/components/messages/PriceChange"
+
+operations:
+  receiveMarketCommands:
+    action: receive
+    title: Receive client messages
+    summary: Receive subscription, unsubscription, and heartbeat messages.
+    channel:
+      $ref: "#/channels/publicMarket"
+    messages:
+      - $ref: "#/channels/publicMarket/messages/subscribe"
+      - $ref: "#/channels/publicMarket/messages/unsubscribe"
+      - $ref: "#/channels/publicMarket/messages/ping"
+  sendMarketData:
+    action: send
+    title: Send public market data
+    summary: Send heartbeat responses and public market data.
+    channel:
+      $ref: "#/channels/publicMarket"
+    messages:
+      - $ref: "#/channels/publicMarket/messages/pong"
+      - $ref: "#/channels/publicMarket/messages/book"
+      - $ref: "#/channels/publicMarket/messages/ticker"
+      - $ref: "#/channels/publicMarket/messages/trade"
+      - $ref: "#/channels/publicMarket/messages/priceChange"
+
+components:
+  messages:
+    Subscribe:
+      name: subscribe
+      title: Subscription request
+      summary: Subscribe to public market data for a market.
+      payload:
+        $ref: "#/components/schemas/SubscribeRequest"
+      examples:
+        - name: Subscribe to a market
+          payload:
+            action: subscribe
+            channel: "market:1782787459278349659"
+    Unsubscribe:
+      name: unsubscribe
+      title: Unsubscription request
+      summary: Unsubscribe from public market data for a market.
+      payload:
+        $ref: "#/components/schemas/UnsubscribeRequest"
+      examples:
+        - name: Unsubscribe from a market
+          payload:
+            action: unsubscribe
+            channel: "market:1782787459278349659"
+    Ping:
+      name: ping
+      title: Ping
+      summary: Send a connection heartbeat.
+      payload:
+        $ref: "#/components/schemas/Ping"
+      examples:
+        - name: Ping
+          payload:
+            type: PING
+    Pong:
+      name: pong
+      title: Pong
+      summary: Heartbeat response.
+      payload:
+        $ref: "#/components/schemas/Pong"
+      examples:
+        - name: Pong
+          payload:
+            type: PONG
+    Book:
+      name: book
+      title: Order book
+      summary: Complete order book snapshot.
+      payload:
+        $ref: "#/components/schemas/BookMessage"
+      examples:
+        - name: Order book snapshot
+          payload:
+            eventType: book
+            marketId: "1782787459278349659"
+            data:
+              tokenId: "1516616443"
+              timestamp: 1782787459276
+              bids:
+                - price: "0.21"
+                  size: "5"
+              asks:
+                - price: "0.3"
+                  size: "5"
+            timestamp: 1782787459276
+    Ticker:
+      name: ticker
+      title: Ticker
+      summary: Complete market ticker snapshot.
+      payload:
+        $ref: "#/components/schemas/TickerMessage"
+      examples:
+        - name: Ticker snapshot
+          payload:
+            eventType: ticker
+            marketId: "1782787459278349659"
+            data:
+              marketId: "1782787459278349659"
+              conditionId: "1515616443"
+              eventId: "2c07d61d-75d1-4bfc-a1ff-f9df6c606d58"
+              volume: "13.27"
+              liquidity: "3.53"
+              timestamp: 1782787459276
+              points:
+                - tokenId: "1516616443"
+                  bestBid: "0.21"
+                  bestAsk: "0.3"
+                  lastPrice: "0.22"
+                  timestamp: 1782787459276
+            timestamp: 1782787459276
+    Trade:
+      name: trade
+      title: Trade
+      summary: Public trade.
+      payload:
+        $ref: "#/components/schemas/TradeMessage"
+      examples:
+        - name: Trade
+          payload:
+            eventType: trade
+            marketId: "1782787459278349659"
+            data:
+              tradeId: "57655698359586817"
+              tokenId: "1516616443"
+              marketId: "1782787459278349659"
+              eventId: "2c07d61d-75d1-4bfc-a1ff-f9df6c606d58"
+              conditionId: "1515616443"
+              size: "5"
+              side: BUY
+              price: "0.22"
+              timestamp: 1782787459276
+            timestamp: 1782787459276
+    PriceChange:
+      name: priceChange
+      title: Price change
+      summary: Market price update.
+      payload:
+        $ref: "#/components/schemas/PriceChangeMessage"
+      examples:
+        - name: Price change
+          payload:
+            eventType: priceChange
+            marketId: "1782787459278349659"
+            data:
+              marketId: "1782787459278349659"
+              conditionId: "1515616443"
+              eventId: "2c07d61d-75d1-4bfc-a1ff-f9df6c606d58"
+              timestamp: 1782787459276
+              points:
+                - tokenId: "1516616443"
+                  timestamp: 1782787459276
+                  price: "0.22"
+                  bestBid: "0.21"
+                  bestAsk: "0.3"
+                  lastTradePrice: "0.22"
+                  source: trade
+            timestamp: 1782787459276
+
+  schemas:
+    SubscribeRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - action
+        - channel
+      properties:
+        action:
+          type: string
+          enum:
+            - subscribe
+          description: Operation type.
+        channel:
+          type: string
+          pattern: "^market:[1-9][0-9]*$"
+          description: Market subscription channel in the format `market:<marketId>`.
+          examples:
+            - "market:1782787459278349659"
+
+    UnsubscribeRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - action
+        - channel
+      properties:
+        action:
+          type: string
+          enum:
+            - unsubscribe
+          description: Operation type.
+        channel:
+          type: string
+          pattern: "^market:[1-9][0-9]*$"
+          description: Market subscription channel in the format `market:<marketId>`.
+          examples:
+            - "market:1782787459278349659"
+
+    Ping:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - PING
+          description: Heartbeat message type.
+
+    Pong:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - PONG
+          description: Heartbeat response type.
+
+    PriceLevel:
+      type: object
+      additionalProperties: false
+      required:
+        - price
+        - size
+      properties:
+        price:
+          type: string
+          description: Price.
+          examples:
+            - "0.21"
+        size:
+          type: string
+          description: Quantity.
+          examples:
+            - "3"
+
+    BookData:
+      type: object
+      additionalProperties: false
+      required:
+        - tokenId
+        - timestamp
+        - bids
+        - asks
+      properties:
+        tokenId:
+          type: string
+          description: Outcome token ID.
+          examples:
+            - "1516616443"
+        timestamp:
+          type: integer
+          format: int64
+          description: Snapshot time in Unix milliseconds.
+        bids:
+          type: array
+          description: Bids sorted from highest to lowest price.
+          items:
+            $ref: "#/components/schemas/PriceLevel"
+        asks:
+          type: array
+          description: Asks sorted from lowest to highest price.
+          items:
+            $ref: "#/components/schemas/PriceLevel"
+
+    BookMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - eventType
+        - marketId
+        - data
+      properties:
+        eventType:
+          type: string
+          enum:
+            - book
+          description: Market data type. Always `book`.
+        marketId:
+          type: string
+          description: Market ID.
+        data:
+          $ref: "#/components/schemas/BookData"
+        timestamp:
+          type: integer
+          format: int64
+          description: Market data time in Unix milliseconds.
+
+    TickerPoint:
+      type: object
+      additionalProperties: false
+      required:
+        - tokenId
+        - bestBid
+        - bestAsk
+        - lastPrice
+        - timestamp
+      properties:
+        tokenId:
+          type: string
+          description: Outcome token ID.
+        bestBid:
+          type: string
+          description: Best bid.
+        bestAsk:
+          type: string
+          description: Best ask.
+        lastPrice:
+          type: string
+          description: Latest trade price.
+        timestamp:
+          type: integer
+          format: int64
+          description: Token data time in Unix milliseconds.
+
+    TickerData:
+      type: object
+      additionalProperties: false
+      required:
+        - marketId
+        - conditionId
+        - eventId
+        - volume
+        - liquidity
+        - timestamp
+        - points
+      properties:
+        marketId:
+          type: string
+          description: Market ID.
+        conditionId:
+          type: string
+          description: Condition ID.
+        eventId:
+          type: string
+          description: Event ID.
+        volume:
+          type: string
+          description: Cumulative market volume.
+        liquidity:
+          type: string
+          description: Market liquidity.
+        timestamp:
+          type: integer
+          format: int64
+          description: Market data time in Unix milliseconds.
+        points:
+          type: array
+          description: Per-token market data.
+          items:
+            $ref: "#/components/schemas/TickerPoint"
+
+    TickerMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - eventType
+        - marketId
+        - data
+      properties:
+        eventType:
+          type: string
+          enum:
+            - ticker
+          description: Market data type. Always `ticker`.
+        marketId:
+          type: string
+          description: Market ID.
+        data:
+          $ref: "#/components/schemas/TickerData"
+        timestamp:
+          type: integer
+          format: int64
+          description: Market data time in Unix milliseconds.
+
+    TradeData:
+      type: object
+      additionalProperties: false
+      required:
+        - tradeId
+        - tokenId
+        - marketId
+        - eventId
+        - conditionId
+        - size
+        - side
+        - price
+        - timestamp
+      properties:
+        tradeId:
+          type: string
+          description: Trade ID.
+        tokenId:
+          type: string
+          description: Traded outcome token ID.
+        marketId:
+          type: string
+          description: Market ID.
+        eventId:
+          type: string
+          description: Event ID.
+        conditionId:
+          type: string
+          description: Condition ID.
+        size:
+          type: string
+          description: Trade quantity.
+        side:
+          type: string
+          enum:
+            - BUY
+            - SELL
+          description: Taker side.
+        price:
+          type: string
+          description: Trade price.
+        timestamp:
+          type: integer
+          format: int64
+          description: Trade time in Unix milliseconds.
+
+    TradeMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - eventType
+        - marketId
+        - data
+      properties:
+        eventType:
+          type: string
+          enum:
+            - trade
+          description: Market data type. Always `trade`.
+        marketId:
+          type: string
+          description: Market ID.
+        data:
+          $ref: "#/components/schemas/TradeData"
+        timestamp:
+          type: integer
+          format: int64
+          description: Market data time in Unix milliseconds.
+
+    PriceChangePoint:
+      type: object
+      additionalProperties: false
+      required:
+        - tokenId
+        - timestamp
+        - price
+        - bestBid
+        - bestAsk
+        - lastTradePrice
+        - source
+      properties:
+        tokenId:
+          type: string
+          description: Outcome token ID.
+        timestamp:
+          type: integer
+          format: int64
+          description: Token update time in Unix milliseconds.
+        price:
+          type: string
+          description: Current price.
+        bestBid:
+          type: string
+          description: Best bid.
+        bestAsk:
+          type: string
+          description: Best ask.
+        lastTradePrice:
+          type: string
+          description: Latest trade price.
+        source:
+          type: string
+          description: Source of the price change.
+
+    PriceChangeData:
+      type: object
+      additionalProperties: false
+      required:
+        - marketId
+        - conditionId
+        - eventId
+        - timestamp
+        - points
+      properties:
+        marketId:
+          type: string
+          description: Market ID.
+        conditionId:
+          type: string
+          description: Condition ID.
+        eventId:
+          type: string
+          description: Event ID.
+        timestamp:
+          type: integer
+          format: int64
+          description: Market price update time in Unix milliseconds.
+        points:
+          type: array
+          description: Token price points.
+          items:
+            $ref: "#/components/schemas/PriceChangePoint"
+
+    PriceChangeMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - eventType
+        - marketId
+        - data
+      properties:
+        eventType:
+          type: string
+          enum:
+            - priceChange
+          description: Market data type. Always `priceChange`.
+        marketId:
+          type: string
+          description: Market ID.
+        data:
+          $ref: "#/components/schemas/PriceChangeData"
+        timestamp:
+          type: integer
+          format: int64
+          description: Market data time in Unix milliseconds.

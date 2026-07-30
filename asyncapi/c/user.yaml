@@ -1,0 +1,862 @@
+asyncapi: 3.0.0
+
+info:
+  title: 用户频道 WebSocket API
+  version: 1.0.0
+  description: 认证后接收当前用户的账户、持仓、成交和委托更新。
+
+defaultContentType: application/json
+
+servers:
+  test:
+    host: ws-test.topblast.trade
+    protocol: wss
+    description: 测试环境
+
+channels:
+  userChannel:
+    address: /v1/private
+    title: 用户频道
+    description: 连接后发送认证消息，认证成功后自动接收当前用户的数据。
+    messages:
+      auth:
+        $ref: "#/components/messages/Auth"
+      ping:
+        $ref: "#/components/messages/Ping"
+      authSuccess:
+        $ref: "#/components/messages/AuthSuccess"
+      authFailure:
+        $ref: "#/components/messages/AuthFailure"
+      pong:
+        $ref: "#/components/messages/Pong"
+      accountSummary:
+        $ref: "#/components/messages/AccountSummary"
+      accountSummaryError:
+        $ref: "#/components/messages/AccountSummaryError"
+      positionsSnapshot:
+        $ref: "#/components/messages/PositionsSnapshot"
+      positionsSnapshotError:
+        $ref: "#/components/messages/PositionsSnapshotError"
+      balanceUpdate:
+        $ref: "#/components/messages/BalanceUpdate"
+      positionUpdate:
+        $ref: "#/components/messages/PositionUpdate"
+      accountTrade:
+        $ref: "#/components/messages/AccountTrade"
+      portfolioValuation:
+        $ref: "#/components/messages/PortfolioValuation"
+      orderUpdate:
+        $ref: "#/components/messages/OrderUpdate"
+
+operations:
+  receiveUserCommands:
+    action: receive
+    title: 接收客户端消息
+    summary: 接收认证和心跳消息。
+    channel:
+      $ref: "#/channels/userChannel"
+    messages:
+      - $ref: "#/channels/userChannel/messages/auth"
+      - $ref: "#/channels/userChannel/messages/ping"
+  sendUserMessages:
+    action: send
+    title: 推送用户数据
+    summary: 推送认证结果、心跳响应和当前用户的数据。
+    channel:
+      $ref: "#/channels/userChannel"
+    messages:
+      - $ref: "#/channels/userChannel/messages/authSuccess"
+      - $ref: "#/channels/userChannel/messages/authFailure"
+      - $ref: "#/channels/userChannel/messages/pong"
+      - $ref: "#/channels/userChannel/messages/accountSummary"
+      - $ref: "#/channels/userChannel/messages/accountSummaryError"
+      - $ref: "#/channels/userChannel/messages/positionsSnapshot"
+      - $ref: "#/channels/userChannel/messages/positionsSnapshotError"
+      - $ref: "#/channels/userChannel/messages/balanceUpdate"
+      - $ref: "#/channels/userChannel/messages/positionUpdate"
+      - $ref: "#/channels/userChannel/messages/accountTrade"
+      - $ref: "#/channels/userChannel/messages/portfolioValuation"
+      - $ref: "#/channels/userChannel/messages/orderUpdate"
+
+components:
+  messages:
+    Auth:
+      name: auth
+      title: 认证
+      summary: 使用用户访问 Token 认证连接。
+      payload:
+        $ref: "#/components/schemas/AuthRequest"
+      examples:
+        - name: 认证连接
+          payload:
+            op: auth
+            args:
+              - token: "<access_token>"
+                deviceType: "1"
+                deviceId: "<device_id>"
+    Ping:
+      name: ping
+      title: Ping
+      summary: 发送连接心跳。
+      payload:
+        $ref: "#/components/schemas/Ping"
+      examples:
+        - name: Ping
+          payload:
+            type: PING
+    AuthSuccess:
+      name: authSuccess
+      title: 认证成功
+      summary: 连接认证成功。
+      payload:
+        $ref: "#/components/schemas/AuthSuccess"
+      examples:
+        - name: 认证成功
+          payload:
+            op: auth
+            success: true
+    AuthFailure:
+      name: authFailure
+      title: 认证失败
+      summary: 连接认证失败。
+      payload:
+        $ref: "#/components/schemas/AuthFailure"
+      examples:
+        - name: 认证失败
+          payload:
+            op: auth
+            success: false
+            error: unauthorized
+    Pong:
+      name: pong
+      title: Pong
+      summary: 心跳响应。
+      payload:
+        $ref: "#/components/schemas/Pong"
+      examples:
+        - name: Pong
+          payload:
+            type: PONG
+    AccountSummary:
+      name: accountSummary
+      title: 账户汇总
+      summary: 认证成功后推送的账户余额快照。
+      payload:
+        $ref: "#/components/schemas/AccountSummaryMessage"
+      examples:
+        - name: 账户汇总
+          payload:
+            type: account_summary
+            data:
+              usdc:
+                available: "90.49"
+                locked: "7.53"
+              tokens:
+                - tokenId: "1516616443"
+                  available: "5"
+                  locked: "0"
+    AccountSummaryError:
+      name: accountSummaryError
+      title: 账户汇总不可用
+      summary: 账户汇总暂时不可用。
+      payload:
+        $ref: "#/components/schemas/AccountSummaryErrorMessage"
+      examples:
+        - name: 账户汇总不可用
+          payload:
+            type: account_summary
+            ready: false
+            error:
+              code: READ_MODEL_NOT_READY
+    PositionsSnapshot:
+      name: positionsSnapshot
+      title: 持仓快照
+      summary: 认证成功后推送的当前持仓快照。
+      payload:
+        $ref: "#/components/schemas/PositionsSnapshotMessage"
+      examples:
+        - name: 持仓快照
+          payload:
+            type: positions_snapshot
+            data:
+              data:
+                - conditionId: "1515616443"
+                  tokenId: "1516616443"
+                  size: "5"
+                  available: "5"
+                  locked: "0"
+                  averagePrice: "0.236"
+                  currentPrice: "0.255"
+                  tradedValue: "1.18"
+                  toWin: "5"
+                  currentValue: "1.275"
+                  unrealizedPnl: "0.095"
+                  unrealizedPnlPercent: "8.05084745762712"
+              count: 1
+    PositionsSnapshotError:
+      name: positionsSnapshotError
+      title: 持仓快照不可用
+      summary: 持仓快照暂时不可用。
+      payload:
+        $ref: "#/components/schemas/PositionsSnapshotErrorMessage"
+      examples:
+        - name: 持仓快照不可用
+          payload:
+            type: positions_snapshot
+            ready: false
+            error:
+              code: READ_MODEL_NOT_READY
+    BalanceUpdate:
+      name: balanceUpdate
+      title: 余额更新
+      summary: USDC 或结果 Token 余额更新。
+      payload:
+        $ref: "#/components/schemas/BalanceUpdateMessage"
+      examples:
+        - name: 结果 Token 余额更新
+          payload:
+            type: balance_update
+            tokenId: "1516616443"
+            available: "5"
+            locked: "0"
+    PositionUpdate:
+      name: positionUpdate
+      title: 持仓更新
+      summary: 当前用户的一条持仓更新。
+      payload:
+        $ref: "#/components/schemas/PositionUpdateMessage"
+      examples:
+        - name: 持仓更新
+          payload:
+            type: position_update
+            conditionId: "1515616443"
+            tokenId: "1516616443"
+            size: "5"
+            available: "5"
+            locked: "0"
+            averagePrice: "0.236"
+            currentPrice: "0.255"
+            tradedValue: "1.18"
+            toWin: "5"
+            currentValue: "1.275"
+            unrealizedPnl: "0.095"
+            unrealizedPnlPercent: "8.05084745762712"
+    AccountTrade:
+      name: accountTrade
+      title: 成交
+      summary: 当前用户的一笔成交。
+      payload:
+        $ref: "#/components/schemas/AccountTradeMessage"
+      examples:
+        - name: 成交
+          payload:
+            type: account_trade
+            tradeId: "57655698359586817"
+            orderId: "57655698359586816"
+            market: "1782787459278349659"
+            tokenId: "1516616443"
+            side: BUY
+            role: TAKER
+            price: "0.22"
+            size: "5"
+            timestamp: 1782787459276
+            avgCostPrice: "0.22"
+            realizedPnl: "0"
+            isImplied: false
+            tradeKind: MATCH
+            feeRateBps: "0"
+    PortfolioValuation:
+      name: portfolioValuation
+      title: 账户估值
+      summary: 当前用户的账户估值更新。
+      payload:
+        $ref: "#/components/schemas/PortfolioValuationMessage"
+      examples:
+        - name: 账户估值
+          payload:
+            type: portfolio_valuation
+            portfolioValue: "100.04"
+            timestamp: 1782787459276
+    OrderUpdate:
+      name: orderUpdate
+      title: 委托更新
+      summary: 当前用户的一条委托状态更新。
+      payload:
+        $ref: "#/components/schemas/OrderUpdateMessage"
+      examples:
+        - name: 委托更新
+          payload:
+            type: order_update
+            orderId: "57655698359586816"
+            status: FILLED
+            market: "1782787459278349659"
+            tokenId: "1516616443"
+            side: BUY
+            originalSize: "5"
+            sizeMatched: "5"
+            price: "0.22"
+            outcome: Yes
+            orderType: LIMIT
+            timeInForce: GTC
+            expiration: "1798675200000"
+            createdAt: 1782787459276
+            updatedAt: 1782787459276
+            reasonCode: 0
+
+  schemas:
+    AuthRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - op
+        - args
+      properties:
+        op:
+          type: string
+          enum:
+            - auth
+          description: 操作类型，固定为 `auth`。
+        args:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: 认证参数。
+          items:
+            $ref: "#/components/schemas/AuthArgument"
+
+    AuthArgument:
+      type: object
+      additionalProperties: false
+      required:
+        - token
+        - deviceType
+        - deviceId
+      properties:
+        token:
+          type: string
+          description: 用户登录流程签发的访问 Token。
+        deviceType:
+          type: string
+          description: 客户端设备类型。
+        deviceId:
+          type: string
+          description: 客户端设备唯一标识。
+
+    Ping:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - PING
+          description: 心跳消息类型。
+
+    AuthSuccess:
+      type: object
+      additionalProperties: false
+      required:
+        - op
+        - success
+      properties:
+        op:
+          type: string
+          enum:
+            - auth
+          description: 操作类型，固定为 `auth`。
+        success:
+          type: boolean
+          enum:
+            - true
+          description: 是否认证成功。
+
+    AuthFailure:
+      type: object
+      additionalProperties: false
+      required:
+        - op
+        - success
+        - error
+      properties:
+        op:
+          type: string
+          enum:
+            - auth
+          description: 操作类型，固定为 `auth`。
+        success:
+          type: boolean
+          enum:
+            - false
+          description: 是否认证成功。
+        error:
+          type: string
+          description: 认证失败原因。
+
+    Pong:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - PONG
+          description: 心跳响应类型。
+
+    BalanceAmounts:
+      type: object
+      additionalProperties: false
+      required:
+        - available
+        - locked
+      properties:
+        available:
+          type: string
+          description: 可用余额。
+        locked:
+          type: string
+          description: 锁定余额。
+
+    TokenBalance:
+      type: object
+      additionalProperties: false
+      required:
+        - tokenId
+        - available
+        - locked
+      properties:
+        tokenId:
+          type: string
+          description: 结果 Token ID。
+        available:
+          type: string
+          description: 可用余额。
+        locked:
+          type: string
+          description: 锁定余额。
+
+    AccountSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - usdc
+        - tokens
+      properties:
+        usdc:
+          $ref: "#/components/schemas/BalanceAmounts"
+        tokens:
+          type: array
+          description: 各结果 Token 的余额。
+          items:
+            $ref: "#/components/schemas/TokenBalance"
+
+    AccountSummaryMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum:
+            - account_summary
+          description: 消息类型，固定为 `account_summary`。
+        data:
+          $ref: "#/components/schemas/AccountSummary"
+
+    MessageError:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: 错误码。
+
+    AccountSummaryErrorMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - ready
+        - error
+      properties:
+        type:
+          type: string
+          enum:
+            - account_summary
+          description: 消息类型，固定为 `account_summary`。
+        ready:
+          type: boolean
+          enum:
+            - false
+          description: 数据是否可用。
+        error:
+          $ref: "#/components/schemas/MessageError"
+
+    Position:
+      type: object
+      additionalProperties: false
+      required:
+        - conditionId
+        - tokenId
+        - size
+        - available
+        - locked
+        - averagePrice
+        - currentPrice
+        - tradedValue
+        - toWin
+        - currentValue
+        - unrealizedPnl
+        - unrealizedPnlPercent
+      properties:
+        conditionId:
+          type: string
+          description: 条件 ID。
+        tokenId:
+          type: string
+          description: 结果 Token ID。
+        size:
+          type: string
+          description: 持仓总数量。
+        available:
+          type: string
+          description: 可用持仓数量。
+        locked:
+          type: string
+          description: 锁定持仓数量。
+        averagePrice:
+          type: string
+          description: 持仓平均成交价。
+        currentPrice:
+          type: string
+          description: 当前市场价格。
+        tradedValue:
+          type: string
+          description: 按平均成交价计算的持仓成本。
+        toWin:
+          type: string
+          description: 结果命中时的最大兑付金额。
+        currentValue:
+          type: string
+          description: 按当前价格计算的持仓价值。
+        unrealizedPnl:
+          type: string
+          description: 未实现盈亏。
+        unrealizedPnlPercent:
+          type: string
+          description: 未实现盈亏百分比。
+
+    PositionsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - data
+        - count
+      properties:
+        data:
+          type: array
+          description: 持仓列表。
+          items:
+            $ref: "#/components/schemas/Position"
+        count:
+          type: integer
+          description: 持仓数量。
+
+    PositionsSnapshotMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum:
+            - positions_snapshot
+          description: 消息类型，固定为 `positions_snapshot`。
+        data:
+          $ref: "#/components/schemas/PositionsResponse"
+
+    PositionsSnapshotErrorMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - ready
+        - error
+      properties:
+        type:
+          type: string
+          enum:
+            - positions_snapshot
+          description: 消息类型，固定为 `positions_snapshot`。
+        ready:
+          type: boolean
+          enum:
+            - false
+          description: 数据是否可用。
+        error:
+          $ref: "#/components/schemas/MessageError"
+
+    BalanceUpdateMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - tokenId
+        - available
+        - locked
+      properties:
+        type:
+          type: string
+          enum:
+            - balance_update
+          description: 消息类型，固定为 `balance_update`。
+        tokenId:
+          type: string
+          description: Token ID；`0` 表示 USDC。
+        available:
+          type: string
+          description: 可用余额。
+        locked:
+          type: string
+          description: 锁定余额。
+
+    PositionUpdateMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - conditionId
+        - tokenId
+        - size
+        - available
+        - locked
+        - averagePrice
+        - currentPrice
+        - tradedValue
+        - toWin
+        - currentValue
+        - unrealizedPnl
+        - unrealizedPnlPercent
+      properties:
+        type:
+          type: string
+          enum:
+            - position_update
+          description: 消息类型，固定为 `position_update`。
+        conditionId:
+          type: string
+          description: 条件 ID。
+        tokenId:
+          type: string
+          description: 结果 Token ID。
+        size:
+          type: string
+          description: 持仓总数量。
+        available:
+          type: string
+          description: 可用持仓数量。
+        locked:
+          type: string
+          description: 锁定持仓数量。
+        averagePrice:
+          type: string
+          description: 持仓平均成交价。
+        currentPrice:
+          type: string
+          description: 当前市场价格。
+        tradedValue:
+          type: string
+          description: 按平均成交价计算的持仓成本。
+        toWin:
+          type: string
+          description: 结果命中时的最大兑付金额。
+        currentValue:
+          type: string
+          description: 按当前价格计算的持仓价值。
+        unrealizedPnl:
+          type: string
+          description: 未实现盈亏。
+        unrealizedPnlPercent:
+          type: string
+          description: 未实现盈亏百分比。
+
+    AccountTradeMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - tradeId
+        - orderId
+        - market
+        - tokenId
+        - side
+        - role
+        - price
+        - size
+        - timestamp
+        - avgCostPrice
+        - realizedPnl
+        - isImplied
+        - tradeKind
+      properties:
+        type:
+          type: string
+          enum:
+            - account_trade
+          description: 消息类型，固定为 `account_trade`。
+        tradeId:
+          type: string
+          description: 成交 ID。
+        orderId:
+          type: string
+          description: 关联订单 ID。
+        market:
+          type: string
+          description: 市场 ID。
+        tokenId:
+          type: string
+          description: 结果 Token ID。
+        side:
+          type: string
+          enum:
+            - BUY
+            - SELL
+          description: 成交方向。
+        role:
+          type: string
+          enum:
+            - MAKER
+            - TAKER
+          description: 撮合角色。
+        price:
+          type: string
+          description: 成交价。
+        size:
+          type: string
+          description: 成交数量。
+        timestamp:
+          type: integer
+          format: int64
+          description: 成交时间，Unix 毫秒。
+        avgCostPrice:
+          type: string
+          description: 成交后的平均成本价；无数据时为空。
+        realizedPnl:
+          type: string
+          description: 本次成交实现盈亏。
+        isImplied:
+          type: boolean
+          description: 是否为组合或隐含成交。
+        tradeKind:
+          type: string
+          description: 成交类型。
+        feeRateBps:
+          type: string
+          description: 费率，单位为基点。
+
+    PortfolioValuationMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - portfolioValue
+        - timestamp
+      properties:
+        type:
+          type: string
+          enum:
+            - portfolio_valuation
+          description: 消息类型，固定为 `portfolio_valuation`。
+        portfolioValue:
+          type: string
+          description: 当前账户估值。
+        timestamp:
+          type: integer
+          format: int64
+          description: 估值时间，Unix 毫秒。
+
+    OrderUpdateMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - orderId
+        - status
+        - market
+        - tokenId
+        - side
+        - originalSize
+        - sizeMatched
+        - price
+        - outcome
+        - orderType
+        - timeInForce
+        - expiration
+        - createdAt
+        - updatedAt
+        - reasonCode
+      properties:
+        type:
+          type: string
+          enum:
+            - order_update
+          description: 消息类型，固定为 `order_update`。
+        orderId:
+          type: string
+          description: 委托 ID。
+        status:
+          type: string
+          description: 委托状态。
+        market:
+          type: string
+          description: 市场 ID。
+        tokenId:
+          type: string
+          description: 结果 Token ID。
+        side:
+          type: string
+          enum:
+            - BUY
+            - SELL
+          description: 委托方向。
+        originalSize:
+          type: string
+          description: 原始委托数量。
+        sizeMatched:
+          type: string
+          description: 已成交数量。
+        price:
+          type: string
+          description: 委托价。
+        outcome:
+          type: string
+          description: 结果名称。
+        orderType:
+          type: string
+          description: 委托类型。
+        timeInForce:
+          type: string
+          description: 有效方式。
+        expiration:
+          type: string
+          description: 到期时间，Unix 毫秒字符串；`0` 表示无指定到期时间。
+        createdAt:
+          type: integer
+          format: int64
+          description: 创建时间，Unix 毫秒。
+        updatedAt:
+          type: integer
+          format: int64
+          description: 更新时间，Unix 毫秒。
+        reasonCode:
+          type: integer
+          description: 拒绝或失败原因码。

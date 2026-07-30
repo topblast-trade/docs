@@ -1,6 +1,6 @@
 ---
 title: "配置"
-description: "配置直接调用 topblast REST API 所需的环境、鉴权方式和访问凭证。"
+description: "配置调用 topblast API 所需的环境、鉴权方式和访问凭证。"
 ---
 
 ## 前置条件
@@ -15,15 +15,25 @@ description: "配置直接调用 topblast REST API 所需的环境、鉴权方�
 App Secret 和用户 API Secret 只能保存在可信服务端。不要将它们写入 Web、App 或其他面向终端用户的客户端。
 </Warning>
 
-## Trading REST API 端点
+## REST API 端点
 
-Trading REST API 仅提供以下端点：
+REST API 提供以下端点：
 
 ```text
 https://api-test.topblast.trade
 ```
 
-所有请求必须使用 HTTPS。将 Trading API Reference 中的接口 Path 拼接到该端点后，即可得到完整请求地址。
+所有请求必须使用 HTTPS。将 API Reference 中的接口 Path 拼接到该端点后，即可得到完整请求地址。
+
+## WebSocket 端点
+
+WebSocket 提供以下端点：
+
+```text
+wss://ws-test.topblast.trade
+```
+
+使用 WebSocket 业务时，将 API Reference 中对应接口的 Path 拼接到该端点后，即可得到完整连接地址。
 
 ## 鉴权
 

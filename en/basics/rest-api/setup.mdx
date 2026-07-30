@@ -1,6 +1,6 @@
 ---
 title: "Setup"
-description: "Configure environments, authentication, and credentials for direct topblast REST API requests."
+description: "Configure environments, authentication, and credentials for topblast API requests."
 ---
 
 ## Prerequisites
@@ -15,15 +15,25 @@ Choose the caller type and obtain the corresponding credentials:
 Store the App Secret and user API Secret only on a trusted server. Never embed either secret in a Web, mobile, or other end-user client.
 </Warning>
 
-## Trading REST API endpoint
+## REST API endpoint
 
-The Trading REST API provides one endpoint:
+The REST API provides the following endpoint:
 
 ```text
 https://api-test.topblast.trade
 ```
 
-All requests must use HTTPS. Append a path from the Trading API Reference to this endpoint to form the complete request URL.
+All requests must use HTTPS. Append a path from the API Reference to this endpoint to form the complete request URL.
+
+## WebSocket endpoint
+
+WebSocket provides the following endpoint:
+
+```text
+wss://ws-test.topblast.trade
+```
+
+When using a WebSocket API, append the corresponding path from the API Reference to this endpoint to form the complete connection URL.
 
 ## Authentication
 

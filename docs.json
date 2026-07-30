@@ -198,6 +198,13 @@
                       "cn/user/api-reference/account/positions",
                       "cn/user/api-reference/trades/account"
                     ]
+                  },
+                  {
+                    "group": "WebSocket",
+                    "pages": [
+                      "cn/user/guide/market-channel",
+                      "cn/user/guide/user-channel"
+                    ]
                   }
                 ]
               }
@@ -391,6 +398,13 @@
                       "en/user/api-reference/account/summary",
                       "en/user/api-reference/account/positions",
                       "en/user/api-reference/trades/account"
+                    ]
+                  },
+                  {
+                    "group": "WebSocket",
+                    "pages": [
+                      "en/user/guide/market-channel",
+                      "en/user/guide/user-channel"
                     ]
                   }
                 ]

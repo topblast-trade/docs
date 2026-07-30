@@ -1,0 +1,7 @@
+---
+title: "用户频道"
+description: "认证后接收当前用户的账户、持仓、成交和委托更新。"
+asyncapi: "/asyncapi/c/user.yaml userChannel"
+---
+
+连接后发送认证消息。认证成功后，用户频道会自动推送当前用户的账户和持仓快照，并持续推送后续更新。

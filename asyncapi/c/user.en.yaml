@@ -1,0 +1,862 @@
+asyncapi: 3.0.0
+
+info:
+  title: User channel WebSocket API
+  version: 1.0.0
+  description: Receive account, position, trade, and order updates for the authenticated user.
+
+defaultContentType: application/json
+
+servers:
+  test:
+    host: ws-test.topblast.trade
+    protocol: wss
+    description: Test environment
+
+channels:
+  userChannel:
+    address: /v1/private
+    title: User channel
+    description: Send an authentication message after connecting to automatically receive data for the authenticated user.
+    messages:
+      auth:
+        $ref: "#/components/messages/Auth"
+      ping:
+        $ref: "#/components/messages/Ping"
+      authSuccess:
+        $ref: "#/components/messages/AuthSuccess"
+      authFailure:
+        $ref: "#/components/messages/AuthFailure"
+      pong:
+        $ref: "#/components/messages/Pong"
+      accountSummary:
+        $ref: "#/components/messages/AccountSummary"
+      accountSummaryError:
+        $ref: "#/components/messages/AccountSummaryError"
+      positionsSnapshot:
+        $ref: "#/components/messages/PositionsSnapshot"
+      positionsSnapshotError:
+        $ref: "#/components/messages/PositionsSnapshotError"
+      balanceUpdate:
+        $ref: "#/components/messages/BalanceUpdate"
+      positionUpdate:
+        $ref: "#/components/messages/PositionUpdate"
+      accountTrade:
+        $ref: "#/components/messages/AccountTrade"
+      portfolioValuation:
+        $ref: "#/components/messages/PortfolioValuation"
+      orderUpdate:
+        $ref: "#/components/messages/OrderUpdate"
+
+operations:
+  receiveUserCommands:
+    action: receive
+    title: Receive client messages
+    summary: Receive authentication and heartbeat messages.
+    channel:
+      $ref: "#/channels/userChannel"
+    messages:
+      - $ref: "#/channels/userChannel/messages/auth"
+      - $ref: "#/channels/userChannel/messages/ping"
+  sendUserMessages:
+    action: send
+    title: Send user data
+    summary: Send authentication results, heartbeat responses, and data for the authenticated user.
+    channel:
+      $ref: "#/channels/userChannel"
+    messages:
+      - $ref: "#/channels/userChannel/messages/authSuccess"
+      - $ref: "#/channels/userChannel/messages/authFailure"
+      - $ref: "#/channels/userChannel/messages/pong"
+      - $ref: "#/channels/userChannel/messages/accountSummary"
+      - $ref: "#/channels/userChannel/messages/accountSummaryError"
+      - $ref: "#/channels/userChannel/messages/positionsSnapshot"
+      - $ref: "#/channels/userChannel/messages/positionsSnapshotError"
+      - $ref: "#/channels/userChannel/messages/balanceUpdate"
+      - $ref: "#/channels/userChannel/messages/positionUpdate"
+      - $ref: "#/channels/userChannel/messages/accountTrade"
+      - $ref: "#/channels/userChannel/messages/portfolioValuation"
+      - $ref: "#/channels/userChannel/messages/orderUpdate"
+
+components:
+  messages:
+    Auth:
+      name: auth
+      title: Authenticate
+      summary: Authenticate the connection with a user access token.
+      payload:
+        $ref: "#/components/schemas/AuthRequest"
+      examples:
+        - name: Authenticate the connection
+          payload:
+            op: auth
+            args:
+              - token: "<access_token>"
+                deviceType: "1"
+                deviceId: "<device_id>"
+    Ping:
+      name: ping
+      title: Ping
+      summary: Send a connection heartbeat.
+      payload:
+        $ref: "#/components/schemas/Ping"
+      examples:
+        - name: Ping
+          payload:
+            type: PING
+    AuthSuccess:
+      name: authSuccess
+      title: Authentication succeeded
+      summary: The connection was authenticated.
+      payload:
+        $ref: "#/components/schemas/AuthSuccess"
+      examples:
+        - name: Authentication succeeded
+          payload:
+            op: auth
+            success: true
+    AuthFailure:
+      name: authFailure
+      title: Authentication failed
+      summary: The connection could not be authenticated.
+      payload:
+        $ref: "#/components/schemas/AuthFailure"
+      examples:
+        - name: Authentication failed
+          payload:
+            op: auth
+            success: false
+            error: unauthorized
+    Pong:
+      name: pong
+      title: Pong
+      summary: Heartbeat response.
+      payload:
+        $ref: "#/components/schemas/Pong"
+      examples:
+        - name: Pong
+          payload:
+            type: PONG
+    AccountSummary:
+      name: accountSummary
+      title: Account summary
+      summary: Account balance snapshot sent after authentication.
+      payload:
+        $ref: "#/components/schemas/AccountSummaryMessage"
+      examples:
+        - name: Account summary
+          payload:
+            type: account_summary
+            data:
+              usdc:
+                available: "90.49"
+                locked: "7.53"
+              tokens:
+                - tokenId: "1516616443"
+                  available: "5"
+                  locked: "0"
+    AccountSummaryError:
+      name: accountSummaryError
+      title: Account summary unavailable
+      summary: The account summary is temporarily unavailable.
+      payload:
+        $ref: "#/components/schemas/AccountSummaryErrorMessage"
+      examples:
+        - name: Account summary unavailable
+          payload:
+            type: account_summary
+            ready: false
+            error:
+              code: READ_MODEL_NOT_READY
+    PositionsSnapshot:
+      name: positionsSnapshot
+      title: Positions snapshot
+      summary: Current positions snapshot sent after authentication.
+      payload:
+        $ref: "#/components/schemas/PositionsSnapshotMessage"
+      examples:
+        - name: Positions snapshot
+          payload:
+            type: positions_snapshot
+            data:
+              data:
+                - conditionId: "1515616443"
+                  tokenId: "1516616443"
+                  size: "5"
+                  available: "5"
+                  locked: "0"
+                  averagePrice: "0.236"
+                  currentPrice: "0.255"
+                  tradedValue: "1.18"
+                  toWin: "5"
+                  currentValue: "1.275"
+                  unrealizedPnl: "0.095"
+                  unrealizedPnlPercent: "8.05084745762712"
+              count: 1
+    PositionsSnapshotError:
+      name: positionsSnapshotError
+      title: Positions snapshot unavailable
+      summary: The positions snapshot is temporarily unavailable.
+      payload:
+        $ref: "#/components/schemas/PositionsSnapshotErrorMessage"
+      examples:
+        - name: Positions snapshot unavailable
+          payload:
+            type: positions_snapshot
+            ready: false
+            error:
+              code: READ_MODEL_NOT_READY
+    BalanceUpdate:
+      name: balanceUpdate
+      title: Balance update
+      summary: USDC or outcome-token balance update.
+      payload:
+        $ref: "#/components/schemas/BalanceUpdateMessage"
+      examples:
+        - name: Outcome-token balance update
+          payload:
+            type: balance_update
+            tokenId: "1516616443"
+            available: "5"
+            locked: "0"
+    PositionUpdate:
+      name: positionUpdate
+      title: Position update
+      summary: One position update for the authenticated user.
+      payload:
+        $ref: "#/components/schemas/PositionUpdateMessage"
+      examples:
+        - name: Position update
+          payload:
+            type: position_update
+            conditionId: "1515616443"
+            tokenId: "1516616443"
+            size: "5"
+            available: "5"
+            locked: "0"
+            averagePrice: "0.236"
+            currentPrice: "0.255"
+            tradedValue: "1.18"
+            toWin: "5"
+            currentValue: "1.275"
+            unrealizedPnl: "0.095"
+            unrealizedPnlPercent: "8.05084745762712"
+    AccountTrade:
+      name: accountTrade
+      title: Trade
+      summary: One trade for the authenticated user.
+      payload:
+        $ref: "#/components/schemas/AccountTradeMessage"
+      examples:
+        - name: Trade
+          payload:
+            type: account_trade
+            tradeId: "57655698359586817"
+            orderId: "57655698359586816"
+            market: "1782787459278349659"
+            tokenId: "1516616443"
+            side: BUY
+            role: TAKER
+            price: "0.22"
+            size: "5"
+            timestamp: 1782787459276
+            avgCostPrice: "0.22"
+            realizedPnl: "0"
+            isImplied: false
+            tradeKind: MATCH
+            feeRateBps: "0"
+    PortfolioValuation:
+      name: portfolioValuation
+      title: Portfolio valuation
+      summary: Portfolio valuation update for the authenticated user.
+      payload:
+        $ref: "#/components/schemas/PortfolioValuationMessage"
+      examples:
+        - name: Portfolio valuation
+          payload:
+            type: portfolio_valuation
+            portfolioValue: "100.04"
+            timestamp: 1782787459276
+    OrderUpdate:
+      name: orderUpdate
+      title: Order update
+      summary: One order-status update for the authenticated user.
+      payload:
+        $ref: "#/components/schemas/OrderUpdateMessage"
+      examples:
+        - name: Order update
+          payload:
+            type: order_update
+            orderId: "57655698359586816"
+            status: FILLED
+            market: "1782787459278349659"
+            tokenId: "1516616443"
+            side: BUY
+            originalSize: "5"
+            sizeMatched: "5"
+            price: "0.22"
+            outcome: Yes
+            orderType: LIMIT
+            timeInForce: GTC
+            expiration: "1798675200000"
+            createdAt: 1782787459276
+            updatedAt: 1782787459276
+            reasonCode: 0
+
+  schemas:
+    AuthRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - op
+        - args
+      properties:
+        op:
+          type: string
+          enum:
+            - auth
+          description: Operation type. Always `auth`.
+        args:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: Authentication arguments.
+          items:
+            $ref: "#/components/schemas/AuthArgument"
+
+    AuthArgument:
+      type: object
+      additionalProperties: false
+      required:
+        - token
+        - deviceType
+        - deviceId
+      properties:
+        token:
+          type: string
+          description: Access token issued by the user login flow.
+        deviceType:
+          type: string
+          description: Client device type.
+        deviceId:
+          type: string
+          description: Unique client device identifier.
+
+    Ping:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - PING
+          description: Heartbeat message type.
+
+    AuthSuccess:
+      type: object
+      additionalProperties: false
+      required:
+        - op
+        - success
+      properties:
+        op:
+          type: string
+          enum:
+            - auth
+          description: Operation type. Always `auth`.
+        success:
+          type: boolean
+          enum:
+            - true
+          description: Whether authentication succeeded.
+
+    AuthFailure:
+      type: object
+      additionalProperties: false
+      required:
+        - op
+        - success
+        - error
+      properties:
+        op:
+          type: string
+          enum:
+            - auth
+          description: Operation type. Always `auth`.
+        success:
+          type: boolean
+          enum:
+            - false
+          description: Whether authentication succeeded.
+        error:
+          type: string
+          description: Authentication failure reason.
+
+    Pong:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - PONG
+          description: Heartbeat response type.
+
+    BalanceAmounts:
+      type: object
+      additionalProperties: false
+      required:
+        - available
+        - locked
+      properties:
+        available:
+          type: string
+          description: Available balance.
+        locked:
+          type: string
+          description: Locked balance.
+
+    TokenBalance:
+      type: object
+      additionalProperties: false
+      required:
+        - tokenId
+        - available
+        - locked
+      properties:
+        tokenId:
+          type: string
+          description: Outcome token ID.
+        available:
+          type: string
+          description: Available balance.
+        locked:
+          type: string
+          description: Locked balance.
+
+    AccountSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - usdc
+        - tokens
+      properties:
+        usdc:
+          $ref: "#/components/schemas/BalanceAmounts"
+        tokens:
+          type: array
+          description: Balances for each outcome token.
+          items:
+            $ref: "#/components/schemas/TokenBalance"
+
+    AccountSummaryMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum:
+            - account_summary
+          description: Message type. Always `account_summary`.
+        data:
+          $ref: "#/components/schemas/AccountSummary"
+
+    MessageError:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: Error code.
+
+    AccountSummaryErrorMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - ready
+        - error
+      properties:
+        type:
+          type: string
+          enum:
+            - account_summary
+          description: Message type. Always `account_summary`.
+        ready:
+          type: boolean
+          enum:
+            - false
+          description: Whether the data is available.
+        error:
+          $ref: "#/components/schemas/MessageError"
+
+    Position:
+      type: object
+      additionalProperties: false
+      required:
+        - conditionId
+        - tokenId
+        - size
+        - available
+        - locked
+        - averagePrice
+        - currentPrice
+        - tradedValue
+        - toWin
+        - currentValue
+        - unrealizedPnl
+        - unrealizedPnlPercent
+      properties:
+        conditionId:
+          type: string
+          description: Condition ID.
+        tokenId:
+          type: string
+          description: Outcome token ID.
+        size:
+          type: string
+          description: Total position quantity.
+        available:
+          type: string
+          description: Available position quantity.
+        locked:
+          type: string
+          description: Locked position quantity.
+        averagePrice:
+          type: string
+          description: Average position price.
+        currentPrice:
+          type: string
+          description: Current market price.
+        tradedValue:
+          type: string
+          description: Position cost at the average price.
+        toWin:
+          type: string
+          description: Maximum payout if the outcome wins.
+        currentValue:
+          type: string
+          description: Position value at the current price.
+        unrealizedPnl:
+          type: string
+          description: Unrealized profit or loss.
+        unrealizedPnlPercent:
+          type: string
+          description: Unrealized profit or loss percentage.
+
+    PositionsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - data
+        - count
+      properties:
+        data:
+          type: array
+          description: Positions.
+          items:
+            $ref: "#/components/schemas/Position"
+        count:
+          type: integer
+          description: Number of positions.
+
+    PositionsSnapshotMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum:
+            - positions_snapshot
+          description: Message type. Always `positions_snapshot`.
+        data:
+          $ref: "#/components/schemas/PositionsResponse"
+
+    PositionsSnapshotErrorMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - ready
+        - error
+      properties:
+        type:
+          type: string
+          enum:
+            - positions_snapshot
+          description: Message type. Always `positions_snapshot`.
+        ready:
+          type: boolean
+          enum:
+            - false
+          description: Whether the data is available.
+        error:
+          $ref: "#/components/schemas/MessageError"
+
+    BalanceUpdateMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - tokenId
+        - available
+        - locked
+      properties:
+        type:
+          type: string
+          enum:
+            - balance_update
+          description: Message type. Always `balance_update`.
+        tokenId:
+          type: string
+          description: Token ID. `0` identifies USDC.
+        available:
+          type: string
+          description: Available balance.
+        locked:
+          type: string
+          description: Locked balance.
+
+    PositionUpdateMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - conditionId
+        - tokenId
+        - size
+        - available
+        - locked
+        - averagePrice
+        - currentPrice
+        - tradedValue
+        - toWin
+        - currentValue
+        - unrealizedPnl
+        - unrealizedPnlPercent
+      properties:
+        type:
+          type: string
+          enum:
+            - position_update
+          description: Message type. Always `position_update`.
+        conditionId:
+          type: string
+          description: Condition ID.
+        tokenId:
+          type: string
+          description: Outcome token ID.
+        size:
+          type: string
+          description: Total position quantity.
+        available:
+          type: string
+          description: Available position quantity.
+        locked:
+          type: string
+          description: Locked position quantity.
+        averagePrice:
+          type: string
+          description: Average position price.
+        currentPrice:
+          type: string
+          description: Current market price.
+        tradedValue:
+          type: string
+          description: Position cost at the average price.
+        toWin:
+          type: string
+          description: Maximum payout if the outcome wins.
+        currentValue:
+          type: string
+          description: Position value at the current price.
+        unrealizedPnl:
+          type: string
+          description: Unrealized profit or loss.
+        unrealizedPnlPercent:
+          type: string
+          description: Unrealized profit or loss percentage.
+
+    AccountTradeMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - tradeId
+        - orderId
+        - market
+        - tokenId
+        - side
+        - role
+        - price
+        - size
+        - timestamp
+        - avgCostPrice
+        - realizedPnl
+        - isImplied
+        - tradeKind
+      properties:
+        type:
+          type: string
+          enum:
+            - account_trade
+          description: Message type. Always `account_trade`.
+        tradeId:
+          type: string
+          description: Trade ID.
+        orderId:
+          type: string
+          description: Related order ID.
+        market:
+          type: string
+          description: Market ID.
+        tokenId:
+          type: string
+          description: Outcome token ID.
+        side:
+          type: string
+          enum:
+            - BUY
+            - SELL
+          description: Trade side.
+        role:
+          type: string
+          enum:
+            - MAKER
+            - TAKER
+          description: Matching role.
+        price:
+          type: string
+          description: Trade price.
+        size:
+          type: string
+          description: Trade quantity.
+        timestamp:
+          type: integer
+          format: int64
+          description: Trade time in Unix milliseconds.
+        avgCostPrice:
+          type: string
+          description: Average cost after the trade. Empty when unavailable.
+        realizedPnl:
+          type: string
+          description: Realized profit or loss from this trade.
+        isImplied:
+          type: boolean
+          description: Whether this is a combo or implied trade.
+        tradeKind:
+          type: string
+          description: Trade type.
+        feeRateBps:
+          type: string
+          description: Fee rate in basis points.
+
+    PortfolioValuationMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - portfolioValue
+        - timestamp
+      properties:
+        type:
+          type: string
+          enum:
+            - portfolio_valuation
+          description: Message type. Always `portfolio_valuation`.
+        portfolioValue:
+          type: string
+          description: Current portfolio value.
+        timestamp:
+          type: integer
+          format: int64
+          description: Valuation time in Unix milliseconds.
+
+    OrderUpdateMessage:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - orderId
+        - status
+        - market
+        - tokenId
+        - side
+        - originalSize
+        - sizeMatched
+        - price
+        - outcome
+        - orderType
+        - timeInForce
+        - expiration
+        - createdAt
+        - updatedAt
+        - reasonCode
+      properties:
+        type:
+          type: string
+          enum:
+            - order_update
+          description: Message type. Always `order_update`.
+        orderId:
+          type: string
+          description: Order ID.
+        status:
+          type: string
+          description: Order status.
+        market:
+          type: string
+          description: Market ID.
+        tokenId:
+          type: string
+          description: Outcome token ID.
+        side:
+          type: string
+          enum:
+            - BUY
+            - SELL
+          description: Order side.
+        originalSize:
+          type: string
+          description: Original order quantity.
+        sizeMatched:
+          type: string
+          description: Matched quantity.
+        price:
+          type: string
+          description: Order price.
+        outcome:
+          type: string
+          description: Outcome name.
+        orderType:
+          type: string
+          description: Order type.
+        timeInForce:
+          type: string
+          description: Time-in-force instruction.
+        expiration:
+          type: string
+          description: Expiration time as a Unix-millisecond string. `0` means no specified expiration.
+        createdAt:
+          type: integer
+          format: int64
+          description: Creation time in Unix milliseconds.
+        updatedAt:
+          type: integer
+          format: int64
+          description: Update time in Unix milliseconds.
+        reasonCode:
+          type: integer
+          description: Rejection or failure reason code.
