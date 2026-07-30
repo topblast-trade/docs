@@ -149,6 +149,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Tag ID or slug. Omit it to disable tag filtering.",
+            "name": "tag",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -158,6 +166,42 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerEventListData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Events"
+        ],
+        "summary": "Batch update events",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerEventBatchSwitchRequest"
+              }
+            }
+          },
+          "description": "Request Body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service.BrokerEventBatchSwitchResult"
                 }
               }
             }
@@ -1802,6 +1846,28 @@
           }
         }
       },
+      "req.BrokerEventBatchSwitchRequest": {
+        "type": "object",
+        "required": [
+          "enabled",
+          "eventSlugs"
+        ],
+        "properties": {
+          "enabled": {
+            "description": "Enabled.",
+            "type": "boolean"
+          },
+          "eventSlugs": {
+            "description": "Event Slugs.",
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "req.BrokerEventSwitchRequest": {
         "type": "object",
         "required": [
@@ -1919,6 +1985,22 @@
           "userName": {
             "description": "New user name. Omit it or send an empty string to leave the current value unchanged.",
             "type": "string"
+          }
+        }
+      },
+      "service.BrokerEventBatchSwitchResult": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "Items.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/service.BrokerEventView"
+            }
+          },
+          "total": {
+            "description": "Total.",
+            "type": "integer"
           }
         }
       },

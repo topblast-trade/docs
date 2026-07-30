@@ -149,6 +149,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "标签 ID 或 slug；不传时不按标签筛选",
+            "name": "tag",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -158,6 +166,42 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerEventListData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-事件"
+        ],
+        "summary": "批量更新事件",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerEventBatchSwitchRequest"
+              }
+            }
+          },
+          "description": "批量事件配置",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service.BrokerEventBatchSwitchResult"
                 }
               }
             }
@@ -1802,6 +1846,28 @@
           }
         }
       },
+      "req.BrokerEventBatchSwitchRequest": {
+        "type": "object",
+        "required": [
+          "enabled",
+          "eventSlugs"
+        ],
+        "properties": {
+          "enabled": {
+            "description": "是否启用事件",
+            "type": "boolean"
+          },
+          "eventSlugs": {
+            "description": "事件标识列表，一次最多 100 个",
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "req.BrokerEventSwitchRequest": {
         "type": "object",
         "required": [
@@ -1919,6 +1985,22 @@
           "userName": {
             "description": "新的用户名称；不传或传空字符串时保持不变",
             "type": "string"
+          }
+        }
+      },
+      "service.BrokerEventBatchSwitchResult": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "更新后的事件",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/service.BrokerEventView"
+            }
+          },
+          "total": {
+            "description": "更新事件数",
+            "type": "integer"
           }
         }
       },

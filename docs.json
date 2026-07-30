@@ -121,6 +121,7 @@
                     "group": "事件管理",
                     "pages": [
                       "cn/broker/api-reference/events/list",
+                      "cn/broker/api-reference/events/batch-enable",
                       "cn/broker/api-reference/events/enable",
                       "cn/broker/api-reference/events/markets",
                       "cn/broker/api-reference/events/market-enable"
@@ -314,6 +315,7 @@
                     "group": "Event management",
                     "pages": [
                       "en/broker/api-reference/events/list",
+                      "en/broker/api-reference/events/batch-enable",
                       "en/broker/api-reference/events/enable",
                       "en/broker/api-reference/events/markets",
                       "en/broker/api-reference/events/market-enable"
