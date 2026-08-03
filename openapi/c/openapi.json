@@ -2543,9 +2543,9 @@
         ],
         "properties": {
           "orderIds": {
-            "description": "待取消订单，1 至 100 项",
+            "description": "待取消订单，1 至 10 项",
             "type": "array",
-            "maxItems": 100,
+            "maxItems": 10,
             "minItems": 1,
             "items": {
               "$ref": "#/components/schemas/http_order.BatchCancelItem"
@@ -2560,9 +2560,9 @@
         ],
         "properties": {
           "orders": {
-            "description": "待创建委托，1 至 50 项",
+            "description": "待创建委托，1 至 5 项",
             "type": "array",
-            "maxItems": 50,
+            "maxItems": 5,
             "minItems": 1,
             "items": {
               "$ref": "#/components/schemas/http_order.ReqPlaceOrder"
