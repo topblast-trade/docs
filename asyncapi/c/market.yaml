@@ -114,8 +114,8 @@ components:
         - name: 订单簿快照
           payload:
             eventType: book
-            marketId: "1782787459278349659"
             data:
+              marketId: "1782787459278349659"
               tokenId: "1516616443"
               timestamp: 1782787459276
               bids:
@@ -135,7 +135,6 @@ components:
         - name: Ticker 快照
           payload:
             eventType: ticker
-            marketId: "1782787459278349659"
             data:
               marketId: "1782787459278349659"
               conditionId: "1515616443"
@@ -160,7 +159,6 @@ components:
         - name: 成交
           payload:
             eventType: trade
-            marketId: "1782787459278349659"
             data:
               tradeId: "57655698359586817"
               tokenId: "1516616443"
@@ -182,7 +180,6 @@ components:
         - name: 价格变动
           payload:
             eventType: priceChange
-            marketId: "1782787459278349659"
             data:
               marketId: "1782787459278349659"
               conditionId: "1515616443"
@@ -283,11 +280,15 @@ components:
       type: object
       additionalProperties: false
       required:
+        - marketId
         - tokenId
         - timestamp
         - bids
         - asks
       properties:
+        marketId:
+          type: string
+          description: 市场 ID。
         tokenId:
           type: string
           description: 结果 Token ID。
@@ -313,7 +314,6 @@ components:
       additionalProperties: false
       required:
         - eventType
-        - marketId
         - data
       properties:
         eventType:
@@ -321,9 +321,6 @@ components:
           enum:
             - book
           description: 行情类型，固定为 `book`。
-        marketId:
-          type: string
-          description: 市场 ID。
         data:
           $ref: "#/components/schemas/BookData"
         timestamp:
@@ -400,7 +397,6 @@ components:
       additionalProperties: false
       required:
         - eventType
-        - marketId
         - data
       properties:
         eventType:
@@ -408,9 +404,6 @@ components:
           enum:
             - ticker
           description: 行情类型，固定为 `ticker`。
-        marketId:
-          type: string
-          description: 市场 ID。
         data:
           $ref: "#/components/schemas/TickerData"
         timestamp:
@@ -469,7 +462,6 @@ components:
       additionalProperties: false
       required:
         - eventType
-        - marketId
         - data
       properties:
         eventType:
@@ -477,9 +469,6 @@ components:
           enum:
             - trade
           description: 行情类型，固定为 `trade`。
-        marketId:
-          type: string
-          description: 市场 ID。
         data:
           $ref: "#/components/schemas/TradeData"
         timestamp:
@@ -556,7 +545,6 @@ components:
       additionalProperties: false
       required:
         - eventType
-        - marketId
         - data
       properties:
         eventType:
@@ -564,9 +552,6 @@ components:
           enum:
             - priceChange
           description: 行情类型，固定为 `priceChange`。
-        marketId:
-          type: string
-          description: 市场 ID。
         data:
           $ref: "#/components/schemas/PriceChangeData"
         timestamp:

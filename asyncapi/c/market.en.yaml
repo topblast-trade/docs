@@ -114,8 +114,8 @@ components:
         - name: Order book snapshot
           payload:
             eventType: book
-            marketId: "1782787459278349659"
             data:
+              marketId: "1782787459278349659"
               tokenId: "1516616443"
               timestamp: 1782787459276
               bids:
@@ -135,7 +135,6 @@ components:
         - name: Ticker snapshot
           payload:
             eventType: ticker
-            marketId: "1782787459278349659"
             data:
               marketId: "1782787459278349659"
               conditionId: "1515616443"
@@ -160,7 +159,6 @@ components:
         - name: Trade
           payload:
             eventType: trade
-            marketId: "1782787459278349659"
             data:
               tradeId: "57655698359586817"
               tokenId: "1516616443"
@@ -182,7 +180,6 @@ components:
         - name: Price change
           payload:
             eventType: priceChange
-            marketId: "1782787459278349659"
             data:
               marketId: "1782787459278349659"
               conditionId: "1515616443"
@@ -283,11 +280,15 @@ components:
       type: object
       additionalProperties: false
       required:
+        - marketId
         - tokenId
         - timestamp
         - bids
         - asks
       properties:
+        marketId:
+          type: string
+          description: Market ID.
         tokenId:
           type: string
           description: Outcome token ID.
@@ -313,7 +314,6 @@ components:
       additionalProperties: false
       required:
         - eventType
-        - marketId
         - data
       properties:
         eventType:
@@ -321,9 +321,6 @@ components:
           enum:
             - book
           description: Market data type. Always `book`.
-        marketId:
-          type: string
-          description: Market ID.
         data:
           $ref: "#/components/schemas/BookData"
         timestamp:
@@ -400,7 +397,6 @@ components:
       additionalProperties: false
       required:
         - eventType
-        - marketId
         - data
       properties:
         eventType:
@@ -408,9 +404,6 @@ components:
           enum:
             - ticker
           description: Market data type. Always `ticker`.
-        marketId:
-          type: string
-          description: Market ID.
         data:
           $ref: "#/components/schemas/TickerData"
         timestamp:
@@ -469,7 +462,6 @@ components:
       additionalProperties: false
       required:
         - eventType
-        - marketId
         - data
       properties:
         eventType:
@@ -477,9 +469,6 @@ components:
           enum:
             - trade
           description: Market data type. Always `trade`.
-        marketId:
-          type: string
-          description: Market ID.
         data:
           $ref: "#/components/schemas/TradeData"
         timestamp:
@@ -556,7 +545,6 @@ components:
       additionalProperties: false
       required:
         - eventType
-        - marketId
         - data
       properties:
         eventType:
@@ -564,9 +552,6 @@ components:
           enum:
             - priceChange
           description: Market data type. Always `priceChange`.
-        marketId:
-          type: string
-          description: Market ID.
         data:
           $ref: "#/components/schemas/PriceChangeData"
         timestamp:
