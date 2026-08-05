@@ -2306,8 +2306,9 @@
         ],
         "properties": {
           "amount": {
-            "description": "划转金额，必须大于 0",
-            "type": "string"
+            "description": "划转金额，必须大于 0，最多 4 位小数；超过 4 位小数将拒绝请求",
+            "type": "string",
+            "example": "12.3456"
           },
           "brokerUserId": {
             "description": "券商系统中的用户 ID",

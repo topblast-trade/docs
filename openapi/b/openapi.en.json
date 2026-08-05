@@ -2306,8 +2306,9 @@
         ],
         "properties": {
           "amount": {
-            "description": "Transfer amount; must be greater than zero.",
-            "type": "string"
+            "description": "Transfer amount; must be greater than zero and have at most four decimal places. Amounts with more than four decimal places are rejected.",
+            "type": "string",
+            "example": "12.3456"
           },
           "brokerUserId": {
             "description": "User ID in the broker system.",
