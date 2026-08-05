@@ -3004,8 +3004,9 @@
             "type": "string"
           },
           "appSecret": {
-            "description": "Broker REST App Secret",
-            "type": "string"
+            "description": "脱敏后的 Broker REST App Secret；不可用于请求签名",
+            "type": "string",
+            "example": "sec_****1234"
           },
           "brokerId": {
             "description": "券商 ID",
