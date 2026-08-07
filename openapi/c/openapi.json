@@ -549,14 +549,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "description": "结果 Token ID；已知时传入可减少一次订单查询",
-            "name": "tokenId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -1493,6 +1485,14 @@
             "description": "按当前价格计算的持仓价值",
             "type": "string"
           },
+          "eventSlug": {
+            "description": "事件 Slug",
+            "type": "string"
+          },
+          "icon": {
+            "description": "事件图标 URL",
+            "type": "string"
+          },
           "locked": {
             "description": "锁定持仓数量",
             "type": "string"
@@ -1501,12 +1501,20 @@
             "description": "持仓总数量",
             "type": "string"
           },
+          "title": {
+            "description": "市场标题",
+            "type": "string"
+          },
           "toWin": {
             "description": "结果命中时的最大兑付金额",
             "type": "string"
           },
           "tokenId": {
             "description": "结果 Token ID",
+            "type": "string"
+          },
+          "tokenName": {
+            "description": "结果 Token 展示名",
             "type": "string"
           },
           "tradedValue": {
@@ -1530,8 +1538,16 @@
             "description": "成交后的平均成本价；无数据时为空",
             "type": "string"
           },
+          "eventSlug": {
+            "description": "事件 Slug",
+            "type": "string"
+          },
           "feeRateBps": {
             "description": "费率（基点）",
+            "type": "string"
+          },
+          "icon": {
+            "description": "事件图标 URL",
             "type": "string"
           },
           "isImplied": {
@@ -1571,8 +1587,16 @@
             "type": "integer",
             "format": "int64"
           },
+          "title": {
+            "description": "市场标题",
+            "type": "string"
+          },
           "tokenId": {
             "description": "结果 Token ID",
+            "type": "string"
+          },
+          "tokenName": {
+            "description": "结果 Token 展示名",
             "type": "string"
           },
           "tradeId": {
@@ -1635,6 +1659,7 @@
           2008,
           2009,
           2010,
+          2011,
           3001,
           3002,
           3003,
@@ -1707,6 +1732,7 @@
           "ErrorCodeBatchEmpty",
           "ErrorCodeBatchSizeExceeded",
           "ErrorCodeOrderResponseTimeout",
+          "ErrorCodeExecutionUnknown",
           "ErrorCodeInvalidTokenID",
           "ErrorCodeInvalidTokenIDs",
           "ErrorCodeInvalidMarketID",
@@ -2188,23 +2214,43 @@
             "type": "string"
           },
           "tokenIdNo": {
-            "description": "NO 结果 Token ID",
+            "description": "兼容字段：第二结果 Token ID",
             "type": "string"
           },
           "tokenIdYes": {
-            "description": "YES 结果 Token ID",
+            "description": "兼容字段：第一结果 Token ID",
             "type": "string"
           },
           "tokenNameNo": {
-            "description": "NO 结果展示名",
+            "description": "兼容字段：第二结果展示名",
             "type": "string"
           },
           "tokenNameYes": {
-            "description": "YES 结果展示名",
+            "description": "兼容字段：第一结果展示名",
             "type": "string"
+          },
+          "tokens": {
+            "description": "按结果顺序排列的 Token",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.EventMarketToken"
+            }
           },
           "volume": {
             "description": "累计成交量",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.EventMarketToken": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "结果 Token ID",
+            "type": "string"
+          },
+          "name": {
+            "description": "结果 Token 展示名",
             "type": "string"
           }
         }
@@ -2360,8 +2406,16 @@
             "type": "integer",
             "format": "int64"
           },
+          "eventSlug": {
+            "description": "事件 Slug",
+            "type": "string"
+          },
           "expiration": {
             "description": "到期时间（Unix 毫秒字符串）；0 表示无指定到期",
+            "type": "string"
+          },
+          "icon": {
+            "description": "事件图标 URL",
             "type": "string"
           },
           "market": {
@@ -2408,8 +2462,16 @@
             "description": "有效方式：GTC、FOK、GTD 或 IOC",
             "type": "string"
           },
+          "title": {
+            "description": "市场标题",
+            "type": "string"
+          },
           "tokenId": {
             "description": "结果 Token ID",
+            "type": "string"
+          },
+          "tokenName": {
+            "description": "结果 Token 展示名",
             "type": "string"
           },
           "updatedAt": {
@@ -2462,10 +2524,6 @@
           "orderId": {
             "description": "订单 ID",
             "type": "string"
-          },
-          "tokenId": {
-            "description": "结果 Token ID；可省略，但建议传入",
-            "type": "string"
           }
         }
       },
@@ -2477,8 +2535,16 @@
             "type": "integer",
             "format": "int64"
           },
+          "eventSlug": {
+            "description": "事件 Slug",
+            "type": "string"
+          },
           "expiration": {
             "description": "到期时间（Unix 毫秒字符串）；0 表示无指定到期",
+            "type": "string"
+          },
+          "icon": {
+            "description": "事件图标 URL",
             "type": "string"
           },
           "market": {
@@ -2525,8 +2591,16 @@
             "description": "有效方式：GTC、FOK、GTD 或 IOC",
             "type": "string"
           },
+          "title": {
+            "description": "市场标题",
+            "type": "string"
+          },
           "tokenId": {
             "description": "结果 Token ID",
+            "type": "string"
+          },
+          "tokenName": {
+            "description": "结果 Token 展示名",
             "type": "string"
           },
           "updatedAt": {
@@ -2589,6 +2663,10 @@
               "LIMIT",
               "MARKET"
             ]
+          },
+          "postOnly": {
+            "description": "仅做 maker；若会立即成交则整单取消",
+            "type": "boolean"
           },
           "price": {
             "description": "委托价；MARKET 可为空，其他类型取值 (0,1) 且须符合价格步长",

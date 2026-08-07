@@ -15,6 +15,16 @@ CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 _PAIRS = r"""
 `/v1/public` 提供公开事件与行情数据；`/v1/private` 提供交易和账户接口，支持用户 Token 或 API Key 鉴权。|||`/v1/public` exposes public event and market data. `/v1/private` provides trading and account operations authenticated with a user token or API key.
+事件 Slug|||Event slug
+事件图标 URL|||Event icon URL
+仅做 maker；若会立即成交则整单取消|||Maker-only order. The order is canceled if it would execute immediately.
+兼容字段：第一结果 Token ID|||Compatibility field: first outcome token ID
+兼容字段：第一结果展示名|||Compatibility field: first outcome display name
+兼容字段：第二结果 Token ID|||Compatibility field: second outcome token ID
+兼容字段：第二结果展示名|||Compatibility field: second outcome display name
+市场标题|||Market title
+按结果顺序排列的 Token|||Outcome tokens in outcome order
+结果 Token 展示名|||Outcome token display name
 按 ID 查询标签|||Get tag by ID
 按标签、关闭状态和排序条件分页查询事件，返回当前页事件和筛选后的总数。若按 slug 查询，请使用 GET /v1/public/events/slug/{slug}。|||List events by tag, closed state, and sort order. The response includes the current page and the filtered total. To look up an event by slug, use `GET /v1/public/events/slug/{slug}`.
 按标识查询标签|||Get tag by slug

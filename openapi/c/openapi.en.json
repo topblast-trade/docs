@@ -549,14 +549,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "description": "Outcome token ID. Provide it when known to avoid an additional order lookup.",
-            "name": "tokenId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -1493,6 +1485,14 @@
             "description": "Position value at the current price",
             "type": "string"
           },
+          "eventSlug": {
+            "description": "Event slug",
+            "type": "string"
+          },
+          "icon": {
+            "description": "Event icon URL",
+            "type": "string"
+          },
           "locked": {
             "description": "Locked position quantity",
             "type": "string"
@@ -1501,12 +1501,20 @@
             "description": "Total position quantity",
             "type": "string"
           },
+          "title": {
+            "description": "Market title",
+            "type": "string"
+          },
           "toWin": {
             "description": "Maximum payout if the outcome resolves true",
             "type": "string"
           },
           "tokenId": {
             "description": "Outcome token ID",
+            "type": "string"
+          },
+          "tokenName": {
+            "description": "Outcome token display name",
             "type": "string"
           },
           "tradedValue": {
@@ -1530,8 +1538,16 @@
             "description": "Average cost after the trade. Empty when unavailable.",
             "type": "string"
           },
+          "eventSlug": {
+            "description": "Event slug",
+            "type": "string"
+          },
           "feeRateBps": {
             "description": "Fee rate in basis points",
+            "type": "string"
+          },
+          "icon": {
+            "description": "Event icon URL",
             "type": "string"
           },
           "isImplied": {
@@ -1571,8 +1587,16 @@
             "type": "integer",
             "format": "int64"
           },
+          "title": {
+            "description": "Market title",
+            "type": "string"
+          },
           "tokenId": {
             "description": "Outcome token ID",
+            "type": "string"
+          },
+          "tokenName": {
+            "description": "Outcome token display name",
             "type": "string"
           },
           "tradeId": {
@@ -1635,6 +1659,7 @@
           2008,
           2009,
           2010,
+          2011,
           3001,
           3002,
           3003,
@@ -1707,6 +1732,7 @@
           "ErrorCodeBatchEmpty",
           "ErrorCodeBatchSizeExceeded",
           "ErrorCodeOrderResponseTimeout",
+          "ErrorCodeExecutionUnknown",
           "ErrorCodeInvalidTokenID",
           "ErrorCodeInvalidTokenIDs",
           "ErrorCodeInvalidMarketID",
@@ -2188,23 +2214,43 @@
             "type": "string"
           },
           "tokenIdNo": {
-            "description": "NO outcome token ID",
+            "description": "Compatibility field: second outcome token ID",
             "type": "string"
           },
           "tokenIdYes": {
-            "description": "YES outcome token ID",
+            "description": "Compatibility field: first outcome token ID",
             "type": "string"
           },
           "tokenNameNo": {
-            "description": "NO outcome display name",
+            "description": "Compatibility field: second outcome display name",
             "type": "string"
           },
           "tokenNameYes": {
-            "description": "YES outcome display name",
+            "description": "Compatibility field: first outcome display name",
             "type": "string"
+          },
+          "tokens": {
+            "description": "Outcome tokens in outcome order",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.EventMarketToken"
+            }
           },
           "volume": {
             "description": "Cumulative trading volume",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.EventMarketToken": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Outcome token ID",
+            "type": "string"
+          },
+          "name": {
+            "description": "Outcome token display name",
             "type": "string"
           }
         }
@@ -2360,8 +2406,16 @@
             "type": "integer",
             "format": "int64"
           },
+          "eventSlug": {
+            "description": "Event slug",
+            "type": "string"
+          },
           "expiration": {
             "description": "Expiration time as a Unix-millisecond string. `0` means no expiration.",
+            "type": "string"
+          },
+          "icon": {
+            "description": "Event icon URL",
             "type": "string"
           },
           "market": {
@@ -2408,8 +2462,16 @@
             "description": "Time in force: `GTC`, `FOK`, `GTD`, or `IOC`.",
             "type": "string"
           },
+          "title": {
+            "description": "Market title",
+            "type": "string"
+          },
           "tokenId": {
             "description": "Outcome token ID",
+            "type": "string"
+          },
+          "tokenName": {
+            "description": "Outcome token display name",
             "type": "string"
           },
           "updatedAt": {
@@ -2462,10 +2524,6 @@
           "orderId": {
             "description": "Order ID",
             "type": "string"
-          },
-          "tokenId": {
-            "description": "Outcome token ID. Optional, but recommended.",
-            "type": "string"
           }
         }
       },
@@ -2477,8 +2535,16 @@
             "type": "integer",
             "format": "int64"
           },
+          "eventSlug": {
+            "description": "Event slug",
+            "type": "string"
+          },
           "expiration": {
             "description": "Expiration time as a Unix-millisecond string. `0` means no expiration.",
+            "type": "string"
+          },
+          "icon": {
+            "description": "Event icon URL",
             "type": "string"
           },
           "market": {
@@ -2525,8 +2591,16 @@
             "description": "Time in force: `GTC`, `FOK`, `GTD`, or `IOC`.",
             "type": "string"
           },
+          "title": {
+            "description": "Market title",
+            "type": "string"
+          },
           "tokenId": {
             "description": "Outcome token ID",
+            "type": "string"
+          },
+          "tokenName": {
+            "description": "Outcome token display name",
             "type": "string"
           },
           "updatedAt": {
@@ -2589,6 +2663,10 @@
               "LIMIT",
               "MARKET"
             ]
+          },
+          "postOnly": {
+            "description": "Maker-only order. The order is canceled if it would execute immediately.",
+            "type": "boolean"
           },
           "price": {
             "description": "Order price. Optional for `MARKET`; otherwise must be between 0 and 1, exclusive, and align with the tick size.",
