@@ -2755,6 +2755,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "email": {
+            "description": "用户邮箱",
+            "type": "string"
+          },
           "filledQty": {
             "description": "已成交数量",
             "type": "integer"
@@ -2895,6 +2899,10 @@
           },
           "conditionId": {
             "description": "条件 ID",
+            "type": "string"
+          },
+          "email": {
+            "description": "用户邮箱",
             "type": "string"
           },
           "lockedQty": {
@@ -3096,6 +3104,10 @@
           },
           "conditionId": {
             "description": "条件 ID",
+            "type": "string"
+          },
+          "email": {
+            "description": "用户邮箱",
             "type": "string"
           },
           "eventTime": {

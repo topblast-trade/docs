@@ -2755,6 +2755,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "email": {
+            "description": "User email address.",
+            "type": "string"
+          },
           "filledQty": {
             "description": "Filled Qty.",
             "type": "integer"
@@ -2895,6 +2899,10 @@
           },
           "conditionId": {
             "description": "Condition Id.",
+            "type": "string"
+          },
+          "email": {
+            "description": "User email address.",
             "type": "string"
           },
           "lockedQty": {
@@ -3096,6 +3104,10 @@
           },
           "conditionId": {
             "description": "Condition Id.",
+            "type": "string"
+          },
+          "email": {
+            "description": "User email address.",
             "type": "string"
           },
           "eventTime": {
