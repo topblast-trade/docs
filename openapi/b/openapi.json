@@ -43,8 +43,8 @@
             }
           },
           {
-            "description": "平台用户 ID；不传时返回当前券商全部用户的资产",
-            "name": "userId",
+            "description": "用户精确搜索；支持平台用户 ID、券商用户 ID 或邮箱；不传时不按用户筛选",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -369,14 +369,6 @@
         "summary": "查询当前委托",
         "parameters": [
           {
-            "description": "用户邮箱；不传时不按邮箱筛选",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "事件标识；不传时不按事件标识筛选",
             "name": "eventSlug",
             "in": "query",
@@ -422,8 +414,8 @@
             }
           },
           {
-            "description": "平台用户 ID；不传时不按平台用户筛选",
-            "name": "userId",
+            "description": "用户精确搜索；支持平台用户 ID、券商用户 ID 或邮箱；不传时不按用户筛选",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -506,14 +498,6 @@
         "summary": "查询仓位",
         "parameters": [
           {
-            "description": "用户邮箱；不传时不按邮箱筛选",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "事件标识；不传时不按事件标识筛选",
             "name": "eventSlug",
             "in": "query",
@@ -551,8 +535,8 @@
             }
           },
           {
-            "description": "平台用户 ID；不传时不按平台用户筛选",
-            "name": "userId",
+            "description": "用户精确搜索；支持平台用户 ID、券商用户 ID 或邮箱；不传时不按用户筛选",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1201,14 +1185,6 @@
             }
           },
           {
-            "description": "用户邮箱；不传时不按邮箱筛选",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "成交时间范围终点（Unix 毫秒，不包含）；不传时不限制结束时间",
             "name": "end",
             "in": "query",
@@ -1253,8 +1229,16 @@
             }
           },
           {
-            "description": "平台用户 ID；不传时不按平台用户筛选",
-            "name": "userId",
+            "description": "结果 Token ID；不传时不按结果 Token 筛选",
+            "name": "tokenId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "用户精确搜索；支持平台用户 ID、券商用户 ID 或邮箱；不传时不按用户筛选",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1483,22 +1467,6 @@
             }
           },
           {
-            "description": "券商系统中的用户 ID；不传时不按券商用户筛选",
-            "name": "brokerUserId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "用户邮箱；不传时不按邮箱筛选",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "创建时间范围终点（Unix 毫秒，不包含）；不传时不限制结束时间",
             "name": "end",
             "in": "query",
@@ -1529,8 +1497,8 @@
             }
           },
           {
-            "description": "平台用户 ID；不传时不按平台用户筛选",
-            "name": "userId",
+            "description": "用户精确搜索；支持平台用户 ID、券商用户 ID 或邮箱；不传时不按用户筛选",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -2759,6 +2727,10 @@
             "description": "用户邮箱",
             "type": "string"
           },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
           "filledQty": {
             "description": "已成交数量",
             "type": "integer"
@@ -2903,6 +2875,10 @@
           },
           "email": {
             "description": "用户邮箱",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
             "type": "string"
           },
           "lockedQty": {
@@ -3108,6 +3084,10 @@
           },
           "email": {
             "description": "用户邮箱",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
             "type": "string"
           },
           "eventTime": {

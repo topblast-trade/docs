@@ -43,8 +43,8 @@
             }
           },
           {
-            "description": "Platform user ID. Omit it to return assets for all users of the current broker.",
-            "name": "userId",
+            "description": "Parameters.",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -369,14 +369,6 @@
         "summary": "List open orders",
         "parameters": [
           {
-            "description": "User email address. Omit it to disable the email filter.",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "Event slug. Omit it to disable the event filter.",
             "name": "eventSlug",
             "in": "query",
@@ -422,8 +414,8 @@
             }
           },
           {
-            "description": "Platform user ID. Omit it to return records for all platform users.",
-            "name": "userId",
+            "description": "Parameters.",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -506,14 +498,6 @@
         "summary": "List positions",
         "parameters": [
           {
-            "description": "User email address. Omit it to disable the email filter.",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "Event slug. Omit it to disable the event filter.",
             "name": "eventSlug",
             "in": "query",
@@ -551,8 +535,8 @@
             }
           },
           {
-            "description": "Platform user ID. Omit it to return records for all platform users.",
-            "name": "userId",
+            "description": "Parameters.",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1201,14 +1185,6 @@
             }
           },
           {
-            "description": "User email address. Omit it to disable the email filter.",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "Trade-time range end in Unix milliseconds, exclusive. Omit it to apply no upper time bound.",
             "name": "end",
             "in": "query",
@@ -1253,8 +1229,16 @@
             }
           },
           {
-            "description": "Platform user ID. Omit it to return records for all platform users.",
-            "name": "userId",
+            "description": "Outcome token ID. Omit it to disable the outcome-token filter.",
+            "name": "tokenId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Parameters.",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -1483,22 +1467,6 @@
             }
           },
           {
-            "description": "User ID in the broker system. Omit it to return records for all broker users.",
-            "name": "brokerUserId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "User email address. Omit it to disable the email filter.",
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "Creation-time range end in Unix milliseconds, exclusive. Omit it to apply no upper time bound.",
             "name": "end",
             "in": "query",
@@ -1529,8 +1497,8 @@
             }
           },
           {
-            "description": "Platform user ID. Omit it to return records for all platform users.",
-            "name": "userId",
+            "description": "Parameters.",
+            "name": "user",
             "in": "query",
             "schema": {
               "type": "string"
@@ -2759,6 +2727,10 @@
             "description": "User email address.",
             "type": "string"
           },
+          "eventId": {
+            "description": "Event Id.",
+            "type": "string"
+          },
           "filledQty": {
             "description": "Filled Qty.",
             "type": "integer"
@@ -2903,6 +2875,10 @@
           },
           "email": {
             "description": "User email address.",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "Event Id.",
             "type": "string"
           },
           "lockedQty": {
@@ -3108,6 +3084,10 @@
           },
           "email": {
             "description": "User email address.",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "Event Id.",
             "type": "string"
           },
           "eventTime": {
