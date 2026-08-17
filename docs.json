@@ -33,6 +33,7 @@
               {
                 "group": "SDKs",
                 "pages": [
+                  "cn/basics/sdks/react-native",
                   "cn/basics/sdks/flutter",
                   "cn/basics/sdks/android",
                   "cn/basics/sdks/swift"
@@ -234,6 +235,7 @@
               {
                 "group": "SDKs",
                 "pages": [
+                  "en/basics/sdks/react-native",
                   "en/basics/sdks/flutter",
                   "en/basics/sdks/android",
                   "en/basics/sdks/swift"
