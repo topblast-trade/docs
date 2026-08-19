@@ -2112,6 +2112,10 @@
               "$ref": "#/components/schemas/http_meta.EventMarket"
             }
           },
+          "negRisk": {
+            "description": "是否为 NegRisk 事件",
+            "type": "boolean"
+          },
           "resolutionSource": {
             "description": "结算来源",
             "type": "string"

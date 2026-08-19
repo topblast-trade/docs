@@ -260,6 +260,7 @@ _PAIRS = r"""
 是否为轮播标签|||Whether this is a carousel tag
 是否为组合/隐含成交|||Whether this is a combined or implied trade
 是否已关闭|||Whether the event is closed
+是否为 NegRisk 事件|||Whether this is a NegRisk event
 搜索关键词；去除首尾空格后不能为空|||Search term. Must not be empty after trimming whitespace.
 搜索结果|||Search results
 搜索事件|||Search events

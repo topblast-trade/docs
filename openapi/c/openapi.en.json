@@ -2112,6 +2112,10 @@
               "$ref": "#/components/schemas/http_meta.EventMarket"
             }
           },
+          "negRisk": {
+            "description": "Whether this is a NegRisk event",
+            "type": "boolean"
+          },
           "resolutionSource": {
             "description": "Resolution source",
             "type": "string"
