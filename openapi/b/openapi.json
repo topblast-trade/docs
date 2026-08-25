@@ -2521,7 +2521,7 @@
         "type": "object",
         "properties": {
           "activeEvents": {
-            "description": "活跃事件数",
+            "description": "实时活跃事件数",
             "type": "integer"
           },
           "activeMarkets": {
@@ -2685,6 +2685,10 @@
       "v2.brokerMetricChanges": {
         "type": "object",
         "properties": {
+          "activeEvents": {
+            "description": "活跃事件数环比变化百分比；无上期数据时为空",
+            "type": "number"
+          },
           "activeUsers": {
             "description": "活跃用户数环比变化百分比；无上期数据时为空",
             "type": "number"
@@ -2832,6 +2836,10 @@
       "v2.brokerPeriodMetrics": {
         "type": "object",
         "properties": {
+          "activeEvents": {
+            "description": "活跃事件数",
+            "type": "integer"
+          },
           "activeUsers": {
             "description": "活跃用户数",
             "type": "integer"

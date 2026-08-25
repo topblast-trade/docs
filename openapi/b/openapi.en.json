@@ -2521,7 +2521,7 @@
         "type": "object",
         "properties": {
           "activeEvents": {
-            "description": "Active Events.",
+            "description": "Realtime Active Events.",
             "type": "integer"
           },
           "activeMarkets": {
@@ -2685,6 +2685,10 @@
       "v2.brokerMetricChanges": {
         "type": "object",
         "properties": {
+          "activeEvents": {
+            "description": "Active Events.",
+            "type": "number"
+          },
           "activeUsers": {
             "description": "Active Users.",
             "type": "number"
@@ -2832,6 +2836,10 @@
       "v2.brokerPeriodMetrics": {
         "type": "object",
         "properties": {
+          "activeEvents": {
+            "description": "Active Events.",
+            "type": "integer"
+          },
           "activeUsers": {
             "description": "Active Users.",
             "type": "integer"
