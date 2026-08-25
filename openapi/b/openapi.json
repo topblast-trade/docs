@@ -2458,6 +2458,10 @@
       "v2.brokerDailySummaryItem": {
         "type": "object",
         "properties": {
+          "activeEvents": {
+            "description": "当日活跃事件数",
+            "type": "integer"
+          },
           "activeUsers": {
             "description": "当日活跃用户数",
             "type": "integer"
