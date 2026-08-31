@@ -258,6 +258,94 @@
         }
       }
     },
+    "/v1/broker/events/{eventSlug}/maker-config": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "查询事件铺单配置",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "更新事件铺单配置",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "description": "事件铺单配置",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/broker/events/{eventSlug}/markets": {
       "get": {
         "security": [
@@ -347,6 +435,753 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/service.BrokerMarketView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/events/{eventSlug}/markets/{marketId}/maker-config": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "查询市场铺单配置",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "市场 ID",
+            "name": "marketId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "更新市场铺单配置",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "市场 ID",
+            "name": "marketId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "description": "市场铺单配置",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/accounts": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "查询铺单账户",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "创建铺单账户",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/accounts/{itemId}": {
+      "delete": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "删除铺单账户",
+        "parameters": [
+          {
+            "description": "账户 ID",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "更新铺单账户",
+        "parameters": [
+          {
+            "description": "账户 ID",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/accounts/{itemId}/switch": {
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "启停铺单账户",
+        "parameters": [
+          {
+            "description": "账户 ID",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body2"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/config": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "查询全局铺单配置",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "更新全局铺单配置",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "description": "铺单配置",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/events": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "查询铺单事件",
+        "parameters": [
+          {
+            "description": "页码，从 1 开始；不传时默认为 1",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "description": "每页数量，最大 100；不传时默认为 20",
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "description": "事件状态；不传时返回全部状态",
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/events/{eventSlug}/markets": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "查询铺单事件下的市场",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/events/{eventSlug}/markets/{marketId}/strategy/resume": {
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "恢复因市场异常停止的铺单",
+        "parameters": [
+          {
+            "description": "事件标识",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "市场 ID",
+            "name": "marketId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "description": "空请求体"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/markets": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "查询铺单市场",
+        "parameters": [
+          {
+            "description": "页码，从 1 开始；不传时默认为 1",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "description": "每页数量，最大 200；不传时默认为 50",
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "description": "Market 状态；不传或传 ALL 时不筛选",
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/strategies": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "查询铺单策略",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "创建铺单策略",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body3"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/strategies/{itemId}": {
+      "delete": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "删除铺单策略",
+        "parameters": [
+          {
+            "description": "策略 ID",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "更新铺单策略",
+        "parameters": [
+          {
+            "description": "策略 ID",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body3"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/strategies/{itemId}/switch": {
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-铺单"
+        ],
+        "summary": "启停铺单策略",
+        "parameters": [
+          {
+            "description": "策略 ID",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body2"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
                 }
               }
             }
@@ -964,6 +1799,33 @@
         }
       }
     },
+    "/v1/broker/risk/exposures/dashboard": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-风控"
+        ],
+        "summary": "查询风险敞口顶部统计",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerRiskExposureDashboardData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/broker/risk/policies": {
       "get": {
         "security": [
@@ -1351,7 +2213,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.transferListData"
+                  "$ref": "#/components/schemas/v1.transferListData"
                 }
               }
             }
@@ -1374,7 +2236,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/v2.BrokerTransferReq"
+                "$ref": "#/components/schemas/v1.BrokerTransferReq"
               }
             }
           },
@@ -1397,7 +2259,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.transferAcceptedData"
+                  "$ref": "#/components/schemas/v1.transferAcceptedData"
                 }
               }
             }
@@ -1713,6 +2575,62 @@
             }
           }
         }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "更新用户 API Key",
+        "parameters": [
+          {
+            "description": "券商系统中的用户 ID",
+            "name": "brokerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "API Key",
+            "name": "apiKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v2.brokerUpdateAPIKeyRequest"
+              }
+            }
+          },
+          "description": "API Key 配置",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerSuccessData"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/broker/{brokerUserId}/tokens": {
@@ -1755,6 +2673,44 @@
     }
   },
   "components": {
+    "requestBodies": {
+      "Body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "description": "铺单账户",
+        "required": true
+      },
+      "Body2": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "description": "启停配置",
+        "required": true
+      },
+      "Body3": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "description": "铺单策略",
+        "required": true
+      }
+    },
     "securitySchemes": {
       "BrokerAppID": {
         "type": "apiKey",
@@ -1931,10 +2887,27 @@
             "type": "string",
             "maxLength": 512
           },
+          "executionMode": {
+            "description": "成交模式：撮合或对冲；不传时保持不变",
+            "type": "string",
+            "enum": [
+              "MATCHING",
+              "HEDGING"
+            ]
+          },
           "name": {
             "description": "券商名称；不传时保持不变",
             "type": "string",
             "maxLength": 64
+          },
+          "quoteCurrency": {
+            "description": "计价货币：CNY、MYR 或 USDC；不传时保持不变",
+            "type": "string",
+            "enum": [
+              "CNY",
+              "MYR",
+              "USDC"
+            ]
           },
           "webhookUrl": {
             "description": "Webhook URL；不传时保持不变，传空字符串时清空",
@@ -2167,12 +3140,20 @@
             "description": "券商 ID",
             "type": "integer"
           },
+          "currentExposure": {
+            "description": "当前风险敞口；策略列表接口返回",
+            "type": "number"
+          },
           "enabled": {
             "description": "是否启用策略",
             "type": "boolean"
           },
           "eventSlug": {
             "description": "事件标识",
+            "type": "string"
+          },
+          "eventTitle": {
+            "description": "事件名称",
             "type": "string"
           },
           "maxEventWorstCasePayout": {
@@ -2195,6 +3176,10 @@
             "description": "规则类型",
             "type": "string"
           },
+          "status": {
+            "description": "风险状态；策略列表接口返回",
+            "type": "string"
+          },
           "targetId": {
             "description": "规则目标 ID",
             "type": "string"
@@ -2203,6 +3188,10 @@
             "description": "最近更新时间（Unix 毫秒）",
             "type": "integer",
             "format": "int64"
+          },
+          "utilizationPercent": {
+            "description": "风险上限使用率；策略列表接口返回",
+            "type": "number"
           },
           "version": {
             "description": "策略版本",
@@ -2263,7 +3252,7 @@
           }
         }
       },
-      "v2.BrokerTransferReq": {
+      "v1.BrokerTransferReq": {
         "type": "object",
         "required": [
           "amount",
@@ -2572,6 +3561,43 @@
           }
         }
       },
+      "v2.brokerEventBasedExposureSummary": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "剩余可用额度",
+            "type": "number"
+          },
+          "eventsBreached": {
+            "description": "已突破上限的 Event 数量",
+            "type": "integer"
+          },
+          "eventsTotal": {
+            "description": "已配置风险上限的 Event 总数",
+            "type": "integer"
+          },
+          "eventsUnderLimit": {
+            "description": "未突破上限的 Event 数量",
+            "type": "integer"
+          },
+          "status": {
+            "description": "风险状态",
+            "type": "string"
+          },
+          "totalCurrentExposure": {
+            "description": "Event 当前风险敞口合计",
+            "type": "number"
+          },
+          "totalLimit": {
+            "description": "Event 风险敞口上限合计",
+            "type": "number"
+          },
+          "utilizationPercent": {
+            "description": "上限使用率",
+            "type": "number"
+          }
+        }
+      },
       "v2.brokerEventExposureItem": {
         "type": "object",
         "properties": {
@@ -2699,15 +3725,15 @@
           },
           "totalDeposit": {
             "description": "入金总额环比变化百分比；无上期数据时为空",
-            "type": "number"
+            "type": "string"
           },
           "totalTradeVolume": {
             "description": "成交总额环比变化百分比；无上期数据时为空",
-            "type": "number"
+            "type": "string"
           },
           "totalWithdraw": {
             "description": "出金总额环比变化百分比；无上期数据时为空",
-            "type": "number"
+            "type": "string"
           }
         }
       },
@@ -2850,15 +3876,40 @@
           },
           "totalDeposit": {
             "description": "入金总额",
-            "type": "integer"
+            "type": "string"
           },
           "totalTradeVolume": {
             "description": "成交总额",
-            "type": "integer"
+            "type": "string"
           },
           "totalWithdraw": {
             "description": "出金总额",
-            "type": "integer"
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerPlatformExposureSummary": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "剩余可用额度",
+            "type": "number"
+          },
+          "currentExposure": {
+            "description": "当前平台风险敞口",
+            "type": "number"
+          },
+          "limit": {
+            "description": "平台风险敞口上限",
+            "type": "number"
+          },
+          "status": {
+            "description": "风险状态",
+            "type": "string"
+          },
+          "utilizationPercent": {
+            "description": "上限使用率",
+            "type": "number"
           }
         }
       },
@@ -2976,6 +4027,32 @@
           }
         }
       },
+      "v2.brokerRiskExposureDashboardData": {
+        "type": "object",
+        "properties": {
+          "eventBasedExposure": {
+            "description": "Event 风险敞口统计",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerEventBasedExposureSummary"
+              }
+            ]
+          },
+          "lastUpdated": {
+            "description": "最近更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
+          },
+          "platformExposure": {
+            "description": "平台风险敞口统计",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPlatformExposureSummary"
+              }
+            ]
+          }
+        }
+      },
       "v2.brokerRiskExposureListData": {
         "type": "object",
         "properties": {
@@ -3017,8 +4094,16 @@
             "description": "券商域名",
             "type": "string"
           },
+          "executionMode": {
+            "description": "成交模式：MATCHING 或 HEDGING",
+            "type": "string"
+          },
           "name": {
             "description": "券商名称",
+            "type": "string"
+          },
+          "quoteCurrency": {
+            "description": "计价货币：CNY、MYR 或 USDC",
             "type": "string"
           },
           "status": {
@@ -3210,6 +4295,28 @@
           }
         }
       },
+      "v2.brokerUpdateAPIKeyRequest": {
+        "type": "object",
+        "properties": {
+          "ipWhiteList": {
+            "description": "IP 白名单；不传时保持不变",
+            "type": "string"
+          },
+          "remark": {
+            "description": "备注；不传时保持不变",
+            "type": "string",
+            "maxLength": 255
+          },
+          "status": {
+            "description": "状态：1 正常，2 禁用；不传时保持不变",
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ]
+          }
+        }
+      },
       "v2.brokerUpdatedUserData": {
         "type": "object",
         "properties": {
@@ -3316,7 +4423,7 @@
           }
         }
       },
-      "v2.transferAcceptedData": {
+      "v1.transferAcceptedData": {
         "type": "object",
         "properties": {
           "order": {
@@ -3330,7 +4437,7 @@
           }
         }
       },
-      "v2.transferListData": {
+      "v1.transferListData": {
         "type": "object",
         "properties": {
           "items": {
@@ -3380,6 +4487,9 @@
     },
     {
       "name": "券商接口-事件"
+    },
+    {
+      "name": "券商接口-铺单"
     },
     {
       "name": "券商接口-风控"

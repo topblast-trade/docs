@@ -258,6 +258,94 @@
         }
       }
     },
+    "/v1/broker/events/{eventSlug}/maker-config": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Get event market-making configuration",
+        "parameters": [
+          {
+            "description": "Event slug.",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Update event market-making configuration",
+        "parameters": [
+          {
+            "description": "Event slug.",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "description": "Request Body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/broker/events/{eventSlug}/markets": {
       "get": {
         "security": [
@@ -347,6 +435,753 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/service.BrokerMarketView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/events/{eventSlug}/markets/{marketId}/maker-config": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Get market configuration",
+        "parameters": [
+          {
+            "description": "Event slug.",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Market ID.",
+            "name": "marketId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Update market configuration",
+        "parameters": [
+          {
+            "description": "Event slug.",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Market ID.",
+            "name": "marketId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "description": "Request Body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/accounts": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "List market-making accounts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Create a market-making account",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/accounts/{itemId}": {
+      "delete": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Delete a market-making account",
+        "parameters": [
+          {
+            "description": "Parameters.",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Update a market-making account",
+        "parameters": [
+          {
+            "description": "Parameters.",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/accounts/{itemId}/switch": {
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Switch a market-making account",
+        "parameters": [
+          {
+            "description": "Parameters.",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body2"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/config": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Get market-making configuration",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Update market-making configuration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "description": "Request Body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/events": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "List market-making events",
+        "parameters": [
+          {
+            "description": "Page number, starting from 1. Defaults to 1 when omitted.",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "description": "Number of items per page, up to 100. Defaults to 20 when omitted.",
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "description": "Event status. Omit it to return all statuses.",
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/events/{eventSlug}/markets": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "List markets for a market-making event",
+        "parameters": [
+          {
+            "description": "Event slug.",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/events/{eventSlug}/markets/{marketId}/strategy/resume": {
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Resume market making after a market halt",
+        "parameters": [
+          {
+            "description": "Event slug.",
+            "name": "eventSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Market ID.",
+            "name": "marketId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "description": "Request Body."
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/markets": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "List market-making markets",
+        "parameters": [
+          {
+            "description": "Page number, starting from 1. Defaults to 1 when omitted.",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "description": "Parameters.",
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "description": "Parameters.",
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/strategies": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "List market-making strategies",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Create a market-making strategy",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body3"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/strategies/{itemId}": {
+      "delete": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Delete a market-making strategy",
+        "parameters": [
+          {
+            "description": "Parameters.",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Update a market-making strategy",
+        "parameters": [
+          {
+            "description": "Parameters.",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body3"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/maker/strategies/{itemId}/switch": {
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Market making"
+        ],
+        "summary": "Switch a market-making strategy",
+        "parameters": [
+          {
+            "description": "Parameters.",
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Body2"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
                 }
               }
             }
@@ -964,6 +1799,33 @@
         }
       }
     },
+    "/v1/broker/risk/exposures/dashboard": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Risk management"
+        ],
+        "summary": "Get risk exposure dashboard",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerRiskExposureDashboardData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/broker/risk/policies": {
       "get": {
         "security": [
@@ -1351,7 +2213,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.transferListData"
+                  "$ref": "#/components/schemas/v1.transferListData"
                 }
               }
             }
@@ -1374,7 +2236,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/v2.BrokerTransferReq"
+                "$ref": "#/components/schemas/v1.BrokerTransferReq"
               }
             }
           },
@@ -1397,7 +2259,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v2.transferAcceptedData"
+                  "$ref": "#/components/schemas/v1.transferAcceptedData"
                 }
               }
             }
@@ -1713,6 +2575,62 @@
             }
           }
         }
+      },
+      "patch": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update a user API key",
+        "parameters": [
+          {
+            "description": "User ID in the broker system.",
+            "name": "brokerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "API Key",
+            "name": "apiKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v2.brokerUpdateAPIKeyRequest"
+              }
+            }
+          },
+          "description": "API key configuration.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerSuccessData"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/broker/{brokerUserId}/tokens": {
@@ -1755,6 +2673,44 @@
     }
   },
   "components": {
+    "requestBodies": {
+      "Body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "description": "Body.",
+        "required": true
+      },
+      "Body2": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "description": "Body2.",
+        "required": true
+      },
+      "Body3": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "description": "Body3.",
+        "required": true
+      }
+    },
     "securitySchemes": {
       "BrokerAppID": {
         "type": "apiKey",
@@ -1931,10 +2887,27 @@
             "type": "string",
             "maxLength": 512
           },
+          "executionMode": {
+            "description": "Execution mode: matching or hedging. Omit it to leave the current value unchanged.",
+            "type": "string",
+            "enum": [
+              "MATCHING",
+              "HEDGING"
+            ]
+          },
           "name": {
             "description": "Broker name. Omit it to leave the current value unchanged.",
             "type": "string",
             "maxLength": 64
+          },
+          "quoteCurrency": {
+            "description": "Quote currency: CNY, MYR, or USDC. Omit it to leave the current value unchanged.",
+            "type": "string",
+            "enum": [
+              "CNY",
+              "MYR",
+              "USDC"
+            ]
           },
           "webhookUrl": {
             "description": "Webhook URL. Omit it to leave the current value unchanged, or send an empty string to clear it.",
@@ -2167,12 +3140,20 @@
             "description": "Broker Id.",
             "type": "integer"
           },
+          "currentExposure": {
+            "description": "Current Exposure.",
+            "type": "number"
+          },
           "enabled": {
             "description": "Enabled.",
             "type": "boolean"
           },
           "eventSlug": {
             "description": "Event slug.",
+            "type": "string"
+          },
+          "eventTitle": {
+            "description": "Event Title.",
             "type": "string"
           },
           "maxEventWorstCasePayout": {
@@ -2195,6 +3176,10 @@
             "description": "Rule Type.",
             "type": "string"
           },
+          "status": {
+            "description": "Status.",
+            "type": "string"
+          },
           "targetId": {
             "description": "Target Id.",
             "type": "string"
@@ -2203,6 +3188,10 @@
             "description": "Updated At.",
             "type": "integer",
             "format": "int64"
+          },
+          "utilizationPercent": {
+            "description": "Utilization Percent.",
+            "type": "number"
           },
           "version": {
             "description": "Version.",
@@ -2263,7 +3252,7 @@
           }
         }
       },
-      "v2.BrokerTransferReq": {
+      "v1.BrokerTransferReq": {
         "type": "object",
         "required": [
           "amount",
@@ -2521,7 +3510,7 @@
         "type": "object",
         "properties": {
           "activeEvents": {
-            "description": "Realtime Active Events.",
+            "description": "Active Events.",
             "type": "integer"
           },
           "activeMarkets": {
@@ -2569,6 +3558,43 @@
           "totalUsers": {
             "description": "Total Users.",
             "type": "integer"
+          }
+        }
+      },
+      "v2.brokerEventBasedExposureSummary": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "Available.",
+            "type": "number"
+          },
+          "eventsBreached": {
+            "description": "Events Breached.",
+            "type": "integer"
+          },
+          "eventsTotal": {
+            "description": "Events Total.",
+            "type": "integer"
+          },
+          "eventsUnderLimit": {
+            "description": "Events Under Limit.",
+            "type": "integer"
+          },
+          "status": {
+            "description": "Status.",
+            "type": "string"
+          },
+          "totalCurrentExposure": {
+            "description": "Total Current Exposure.",
+            "type": "number"
+          },
+          "totalLimit": {
+            "description": "Total Limit.",
+            "type": "number"
+          },
+          "utilizationPercent": {
+            "description": "Utilization Percent.",
+            "type": "number"
           }
         }
       },
@@ -2699,15 +3725,15 @@
           },
           "totalDeposit": {
             "description": "Total Deposit.",
-            "type": "number"
+            "type": "string"
           },
           "totalTradeVolume": {
             "description": "Total Trade Volume.",
-            "type": "number"
+            "type": "string"
           },
           "totalWithdraw": {
             "description": "Total Withdraw.",
-            "type": "number"
+            "type": "string"
           }
         }
       },
@@ -2850,15 +3876,40 @@
           },
           "totalDeposit": {
             "description": "Total Deposit.",
-            "type": "integer"
+            "type": "string"
           },
           "totalTradeVolume": {
             "description": "Total Trade Volume.",
-            "type": "integer"
+            "type": "string"
           },
           "totalWithdraw": {
             "description": "Total Withdraw.",
-            "type": "integer"
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerPlatformExposureSummary": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "description": "Available.",
+            "type": "number"
+          },
+          "currentExposure": {
+            "description": "Current Exposure.",
+            "type": "number"
+          },
+          "limit": {
+            "description": "Limit.",
+            "type": "number"
+          },
+          "status": {
+            "description": "Status.",
+            "type": "string"
+          },
+          "utilizationPercent": {
+            "description": "Utilization Percent.",
+            "type": "number"
           }
         }
       },
@@ -2976,6 +4027,32 @@
           }
         }
       },
+      "v2.brokerRiskExposureDashboardData": {
+        "type": "object",
+        "properties": {
+          "eventBasedExposure": {
+            "description": "Event Based Exposure.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerEventBasedExposureSummary"
+              }
+            ]
+          },
+          "lastUpdated": {
+            "description": "Last Updated.",
+            "type": "integer",
+            "format": "int64"
+          },
+          "platformExposure": {
+            "description": "Platform Exposure.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/v2.brokerPlatformExposureSummary"
+              }
+            ]
+          }
+        }
+      },
       "v2.brokerRiskExposureListData": {
         "type": "object",
         "properties": {
@@ -3017,8 +4094,16 @@
             "description": "Domain.",
             "type": "string"
           },
+          "executionMode": {
+            "description": "Execution Mode.",
+            "type": "string"
+          },
           "name": {
             "description": "Name.",
+            "type": "string"
+          },
+          "quoteCurrency": {
+            "description": "Quote Currency.",
             "type": "string"
           },
           "status": {
@@ -3210,6 +4295,28 @@
           }
         }
       },
+      "v2.brokerUpdateAPIKeyRequest": {
+        "type": "object",
+        "properties": {
+          "ipWhiteList": {
+            "description": "Ip White List.",
+            "type": "string"
+          },
+          "remark": {
+            "description": "Remark.",
+            "type": "string",
+            "maxLength": 255
+          },
+          "status": {
+            "description": "Status.",
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ]
+          }
+        }
+      },
       "v2.brokerUpdatedUserData": {
         "type": "object",
         "properties": {
@@ -3316,7 +4423,7 @@
           }
         }
       },
-      "v2.transferAcceptedData": {
+      "v1.transferAcceptedData": {
         "type": "object",
         "properties": {
           "order": {
@@ -3330,7 +4437,7 @@
           }
         }
       },
-      "v2.transferListData": {
+      "v1.transferListData": {
         "type": "object",
         "properties": {
           "items": {
@@ -3380,6 +4487,9 @@
     },
     {
       "name": "Events"
+    },
+    {
+      "name": "Market making"
     },
     {
       "name": "Risk management"

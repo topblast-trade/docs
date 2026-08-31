@@ -80,6 +80,7 @@
                     "pages": [
                       "cn/broker/api-reference/user/api-keys",
                       "cn/broker/api-reference/user/create-api-key",
+                      "cn/broker/api-reference/user/update-api-key",
                       "cn/broker/api-reference/user/delete-api-key"
                     ]
                   },
@@ -129,10 +130,36 @@
                     ]
                   },
                   {
+                    "group": "铺单管理",
+                    "pages": [
+                      "cn/broker/api-reference/maker/get-config",
+                      "cn/broker/api-reference/maker/update-config",
+                      "cn/broker/api-reference/maker/get-event-config",
+                      "cn/broker/api-reference/maker/update-event-config",
+                      "cn/broker/api-reference/maker/get-market-config",
+                      "cn/broker/api-reference/maker/update-market-config",
+                      "cn/broker/api-reference/maker/events",
+                      "cn/broker/api-reference/maker/event-markets",
+                      "cn/broker/api-reference/maker/resume-market",
+                      "cn/broker/api-reference/maker/markets",
+                      "cn/broker/api-reference/maker/accounts",
+                      "cn/broker/api-reference/maker/create-account",
+                      "cn/broker/api-reference/maker/update-account",
+                      "cn/broker/api-reference/maker/switch-account",
+                      "cn/broker/api-reference/maker/delete-account",
+                      "cn/broker/api-reference/maker/strategies",
+                      "cn/broker/api-reference/maker/create-strategy",
+                      "cn/broker/api-reference/maker/update-strategy",
+                      "cn/broker/api-reference/maker/switch-strategy",
+                      "cn/broker/api-reference/maker/delete-strategy"
+                    ]
+                  },
+                  {
                     "group": "风控管理",
                     "pages": [
                       "cn/broker/api-reference/risk/policies",
                       "cn/broker/api-reference/risk/exposures",
+                      "cn/broker/api-reference/risk/exposure-dashboard",
                       "cn/broker/api-reference/risk/get-config",
                       "cn/broker/api-reference/risk/save-config"
                     ]
@@ -282,6 +309,7 @@
                     "pages": [
                       "en/broker/api-reference/user/api-keys",
                       "en/broker/api-reference/user/create-api-key",
+                      "en/broker/api-reference/user/update-api-key",
                       "en/broker/api-reference/user/delete-api-key"
                     ]
                   },
@@ -331,10 +359,36 @@
                     ]
                   },
                   {
+                    "group": "Market making",
+                    "pages": [
+                      "en/broker/api-reference/maker/get-config",
+                      "en/broker/api-reference/maker/update-config",
+                      "en/broker/api-reference/maker/get-event-config",
+                      "en/broker/api-reference/maker/update-event-config",
+                      "en/broker/api-reference/maker/get-market-config",
+                      "en/broker/api-reference/maker/update-market-config",
+                      "en/broker/api-reference/maker/events",
+                      "en/broker/api-reference/maker/event-markets",
+                      "en/broker/api-reference/maker/resume-market",
+                      "en/broker/api-reference/maker/markets",
+                      "en/broker/api-reference/maker/accounts",
+                      "en/broker/api-reference/maker/create-account",
+                      "en/broker/api-reference/maker/update-account",
+                      "en/broker/api-reference/maker/switch-account",
+                      "en/broker/api-reference/maker/delete-account",
+                      "en/broker/api-reference/maker/strategies",
+                      "en/broker/api-reference/maker/create-strategy",
+                      "en/broker/api-reference/maker/update-strategy",
+                      "en/broker/api-reference/maker/switch-strategy",
+                      "en/broker/api-reference/maker/delete-strategy"
+                    ]
+                  },
+                  {
                     "group": "Risk management",
                     "pages": [
                       "en/broker/api-reference/risk/policies",
                       "en/broker/api-reference/risk/exposures",
+                      "en/broker/api-reference/risk/exposure-dashboard",
                       "en/broker/api-reference/risk/get-config",
                       "en/broker/api-reference/risk/save-config"
                     ]
@@ -440,7 +494,6 @@
     ]
   },
   "footer": {
-    "socials": {
-    }
+    "socials": {}
   }
 }
