@@ -2827,26 +2827,29 @@
       },
       "req.BrokerRiskConfigUpsertRequest": {
         "type": "object",
+        "required": [
+          "ruleScope"
+        ],
         "properties": {
-          "eventEnabled": {
-            "description": "是否启用事件级风控；不传时保持现有值",
+          "enable": {
+            "description": "是否启用；不传时保持现有值",
             "type": "boolean"
           },
           "eventSlug": {
-            "description": "事件标识；不传时仅处理券商全局配置",
+            "description": "Event 标识；BROKER_EVENT 时必填；BROKER_GLOBAL 时不传",
             "type": "string"
           },
-          "globalEnabled": {
-            "description": "是否启用券商全局风控；不传时保持现有值",
-            "type": "boolean"
-          },
-          "maxEventWorstCasePayout": {
-            "description": "单个事件最大最坏情况赔付额；不传时保持现有值",
+          "maxExposure": {
+            "description": "最大风险敞口；不传时保持现有值",
             "type": "number"
           },
-          "maxGlobalWorstCasePayout": {
-            "description": "券商全局最大最坏情况赔付额；不传时保持现有值",
-            "type": "number"
+          "ruleScope": {
+            "description": "规则作用域",
+            "type": "string",
+            "enum": [
+              "BROKER_EVENT",
+              "BROKER_GLOBAL"
+            ]
           }
         }
       },
@@ -3156,12 +3159,8 @@
             "description": "事件名称",
             "type": "string"
           },
-          "maxEventWorstCasePayout": {
-            "description": "单个事件最大最坏情况赔付额",
-            "type": "number"
-          },
-          "maxGlobalWorstCasePayout": {
-            "description": "券商全局最大最坏情况赔付额",
+          "maxExposure": {
+            "description": "最大风险敞口",
             "type": "number"
           },
           "policyId": {
@@ -3588,8 +3587,8 @@
             "description": "Event 当前风险敞口合计",
             "type": "number"
           },
-          "totalLimit": {
-            "description": "Event 风险敞口上限合计",
+          "totalMaxExposure": {
+            "description": "Event 最大风险敞口合计",
             "type": "number"
           },
           "utilizationPercent": {
@@ -3626,8 +3625,8 @@
             "type": "integer",
             "format": "int64"
           },
-          "limit": {
-            "description": "风险敞口上限",
+          "maxExposure": {
+            "description": "最大风险敞口",
             "type": "number"
           },
           "status": {
@@ -3899,8 +3898,8 @@
             "description": "当前平台风险敞口",
             "type": "number"
           },
-          "limit": {
-            "description": "平台风险敞口上限",
+          "maxExposure": {
+            "description": "平台最大风险敞口",
             "type": "number"
           },
           "status": {

@@ -2827,26 +2827,29 @@
       },
       "req.BrokerRiskConfigUpsertRequest": {
         "type": "object",
+        "required": [
+          "ruleScope"
+        ],
         "properties": {
-          "eventEnabled": {
-            "description": "Whether event-level risk control is enabled. Omit it to leave the current value unchanged.",
+          "enable": {
+            "description": "Whether the selected rule scope is enabled. Omit it to leave the current value unchanged.",
             "type": "boolean"
           },
           "eventSlug": {
-            "description": "Event slug. Omit it to update only the broker's global configuration.",
+            "description": "Event slug. Required when ruleScope is BROKER_EVENT; omit it for BROKER_GLOBAL.",
             "type": "string"
           },
-          "globalEnabled": {
-            "description": "Whether global broker risk control is enabled. Omit it to leave the current value unchanged.",
-            "type": "boolean"
-          },
-          "maxEventWorstCasePayout": {
-            "description": "Maximum worst-case payout for one event. Omit it to leave the current value unchanged.",
+          "maxExposure": {
+            "description": "Maximum exposure. Omit it to leave the current value unchanged.",
             "type": "number"
           },
-          "maxGlobalWorstCasePayout": {
-            "description": "Maximum global worst-case payout for the broker. Omit it to leave the current value unchanged.",
-            "type": "number"
+          "ruleScope": {
+            "description": "Rule scope: BROKER_EVENT or BROKER_GLOBAL.",
+            "type": "string",
+            "enum": [
+              "BROKER_EVENT",
+              "BROKER_GLOBAL"
+            ]
           }
         }
       },
@@ -3156,12 +3159,8 @@
             "description": "Event Title.",
             "type": "string"
           },
-          "maxEventWorstCasePayout": {
-            "description": "Max Event Worst Case Payout.",
-            "type": "number"
-          },
-          "maxGlobalWorstCasePayout": {
-            "description": "Max Global Worst Case Payout.",
+          "maxExposure": {
+            "description": "Max Exposure.",
             "type": "number"
           },
           "policyId": {
@@ -3169,7 +3168,7 @@
             "type": "string"
           },
           "ruleScope": {
-            "description": "Rule Scope.",
+            "description": "Rule scope: BROKER_EVENT or BROKER_GLOBAL.",
             "type": "string"
           },
           "ruleType": {
@@ -3588,8 +3587,8 @@
             "description": "Total Current Exposure.",
             "type": "number"
           },
-          "totalLimit": {
-            "description": "Total Limit.",
+          "totalMaxExposure": {
+            "description": "Total Max Exposure.",
             "type": "number"
           },
           "utilizationPercent": {
@@ -3626,8 +3625,8 @@
             "type": "integer",
             "format": "int64"
           },
-          "limit": {
-            "description": "Limit.",
+          "maxExposure": {
+            "description": "Max Exposure.",
             "type": "number"
           },
           "status": {
@@ -3899,8 +3898,8 @@
             "description": "Current Exposure.",
             "type": "number"
           },
-          "limit": {
-            "description": "Limit.",
+          "maxExposure": {
+            "description": "Max Exposure.",
             "type": "number"
           },
           "status": {
