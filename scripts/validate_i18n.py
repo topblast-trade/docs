@@ -120,14 +120,15 @@ def validate_scalar_contracts(spec: dict, spec_path: str, errors: list[str]) -> 
                         errors,
                         f"{spec_path}: {field_location} must use type string",
                     )
-                if MILLISECOND_FIELD_RE.search(name) and (
-                    schema.get("type"),
-                    schema.get("format"),
-                ) != ("integer", "int64"):
+                timestamp_contract = (schema.get("type"), schema.get("format"))
+                if MILLISECOND_FIELD_RE.search(name) and timestamp_contract not in {
+                    ("integer", "int64"),
+                    ("string", "date-time"),
+                }:
                     fail(
                         errors,
                         f"{spec_path}: {field_location} must use integer/int64 "
-                        "Unix milliseconds",
+                        "Unix milliseconds or string/date-time RFC3339",
                     )
 
         parameter_name = value.get("name")

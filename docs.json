@@ -203,6 +203,7 @@
                       "cn/user/api-reference/market/midpoint",
                       "cn/user/api-reference/market/spread",
                       "cn/user/api-reference/market/prices",
+                      "cn/user/api-reference/market/rates",
                       "cn/user/api-reference/market/price-history",
                       "cn/user/api-reference/trades/public"
                     ]
@@ -432,6 +433,7 @@
                       "en/user/api-reference/market/midpoint",
                       "en/user/api-reference/market/spread",
                       "en/user/api-reference/market/prices",
+                      "en/user/api-reference/market/rates",
                       "en/user/api-reference/market/price-history",
                       "en/user/api-reference/trades/public"
                     ]

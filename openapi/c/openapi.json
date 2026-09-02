@@ -1048,6 +1048,38 @@
         }
       }
     },
+    "/v1/public/rates": {
+      "get": {
+        "description": "返回 go-edge 最近一次从 go-quote 成功同步的全部汇率，并包含上游快照时间和 Edge 本地同步时间；首次同步完成前接口不可用。",
+        "tags": [
+          "用户接口-汇率"
+        ],
+        "summary": "查询全部法币汇率",
+        "responses": {
+          "200": {
+            "description": "全部汇率",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_rates.AckRates"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
     "/v1/public/search": {
       "get": {
         "description": "按事件标题、描述、标识或代码进行不区分大小写的模糊搜索。",
@@ -1542,8 +1574,32 @@
             "description": "事件 Slug",
             "type": "string"
           },
+          "feeAmount": {
+            "description": "本次实际收取的基础资产费用",
+            "type": "string"
+          },
+          "feeCurrency": {
+            "description": "当前基础资产 ID 0 显示为 USDC",
+            "type": "string"
+          },
+          "feeCurrencyAssetId": {
+            "description": "收费资产 ID",
+            "type": "string"
+          },
           "feeRateBps": {
-            "description": "费率（基点）",
+            "description": "仅 NOTIONAL_BPS 的兼容费率",
+            "type": "string"
+          },
+          "feeType": {
+            "description": "费用类型原始 wire 值；未知类型原样透传",
+            "type": "integer"
+          },
+          "feeTypeName": {
+            "description": "NONE、NOTIONAL_BPS 或 UNKNOWN",
+            "type": "string"
+          },
+          "feeValue": {
+            "description": "费用配置原始整数值",
             "type": "string"
           },
           "icon": {
@@ -1552,6 +1608,10 @@
           },
           "isImplied": {
             "description": "是否为组合/隐含成交",
+            "type": "boolean"
+          },
+          "isSelfTrade": {
+            "description": "是否为同账户自成交；自成交手续费为零",
             "type": "boolean"
           },
           "market": {
@@ -1699,7 +1759,8 @@
           7003,
           7004,
           7005,
-          7006
+          7006,
+          8001
         ],
         "x-enum-varnames": [
           "ErrorCodeInternalError",
@@ -1772,7 +1833,8 @@
           "ErrorCodeAssetDepositFailed",
           "ErrorCodeAssetWithdrawFailed",
           "ErrorCodeAssetTransferFailed",
-          "ErrorCodeAssetServiceNotConfigured"
+          "ErrorCodeAssetServiceNotConfigured",
+          "ErrorCodeRatesUnavailable"
         ]
       },
       "http_market.AckMidpoint": {
@@ -2173,6 +2235,22 @@
             "description": "结束时间",
             "type": "string"
           },
+          "feeConfigVersion": {
+            "description": "生效配置版本",
+            "type": "string"
+          },
+          "feeCurrencyAssetId": {
+            "description": "收费资产 ID",
+            "type": "string"
+          },
+          "feeType": {
+            "description": "兼容字段：maker 费用类型原始 wire 值",
+            "type": "integer"
+          },
+          "feeValue": {
+            "description": "兼容字段：maker 费用配置值",
+            "type": "string"
+          },
           "groupItemTitle": {
             "description": "分组展示标题",
             "type": "string"
@@ -2183,6 +2261,14 @@
           },
           "liquidity": {
             "description": "市场流动性",
+            "type": "string"
+          },
+          "makerFeeType": {
+            "description": "maker 费用类型原始 wire 值",
+            "type": "integer"
+          },
+          "makerFeeValue": {
+            "description": "maker 费用配置值",
             "type": "string"
           },
           "marketId": {
@@ -2215,6 +2301,14 @@
           },
           "status": {
             "description": "市场状态",
+            "type": "string"
+          },
+          "takerFeeType": {
+            "description": "taker 费用类型原始 wire 值",
+            "type": "integer"
+          },
+          "takerFeeValue": {
+            "description": "taker 费用配置值",
             "type": "string"
           },
           "tokenIdNo": {
@@ -2256,6 +2350,10 @@
           "name": {
             "description": "结果 Token 展示名",
             "type": "string"
+          },
+          "winner": {
+            "description": "是否为最终胜出 Token；未裁决市场均为 false",
+            "type": "boolean"
           }
         }
       },
@@ -2719,6 +2817,67 @@
             }
           }
         }
+      },
+      "http_rates.AckRates": {
+        "type": "object",
+        "properties": {
+          "capturedAt": {
+            "description": "go-quote 生成响应快照的时间",
+            "type": "string",
+            "format": "date-time"
+          },
+          "rates": {
+            "description": "当前缓存的全部基础货币与计价货币汇率",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_rates.Rate"
+            }
+          },
+          "synchronizedAt": {
+            "description": "go-edge 最近一次成功同步的时间",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "http_rates.Rate": {
+        "type": "object",
+        "properties": {
+          "baseCurrency": {
+            "description": "基础货币，例如 USDC",
+            "type": "string"
+          },
+          "quoteCurrency": {
+            "description": "计价货币，例如 USD、CNY 或 MYR",
+            "type": "string"
+          },
+          "rate": {
+            "description": "一个单位基础货币可兑换的计价货币数量",
+            "type": "string"
+          },
+          "receivedAt": {
+            "description": "go-quote 接收汇率的时间",
+            "type": "string",
+            "format": "date-time"
+          },
+          "source": {
+            "description": "汇率数据源",
+            "type": "string"
+          },
+          "sourceTimestamp": {
+            "description": "数据源生成汇率的时间",
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "description": "上游汇率状态：READY、STALE 或 UNAVAILABLE",
+            "type": "string"
+          },
+          "version": {
+            "description": "go-quote 汇率快照版本",
+            "type": "integer"
+          }
+        }
       }
     },
     "securitySchemes": {
@@ -2765,6 +2924,9 @@
     },
     {
       "name": "用户接口-市场"
+    },
+    {
+      "name": "用户接口-汇率"
     }
   ],
   "x-api-side": "C"

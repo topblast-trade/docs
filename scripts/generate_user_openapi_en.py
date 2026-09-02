@@ -15,6 +15,37 @@ CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 _PAIRS = r"""
 `/v1/public` 提供公开事件与行情数据；`/v1/private` 提供交易和账户接口，支持用户 Token 或 API Key 鉴权。|||`/v1/public` exposes public event and market data. `/v1/private` provides trading and account operations authenticated with a user token or API key.
+一个单位基础货币可兑换的计价货币数量|||Amount of quote currency equivalent to one unit of the base currency
+NONE、NOTIONAL_BPS 或 UNKNOWN|||`NONE`, `NOTIONAL_BPS`, or `UNKNOWN`
+maker 费用类型原始 wire 值|||Raw maker-fee type wire value
+maker 费用配置值|||Maker-fee configuration value
+taker 费用类型原始 wire 值|||Raw taker-fee type wire value
+taker 费用配置值|||Taker-fee configuration value
+仅 NOTIONAL_BPS 的兼容费率|||Compatibility fee rate for `NOTIONAL_BPS` only
+兼容字段：maker 费用类型原始 wire 值|||Compatibility field: raw maker-fee type wire value
+兼容字段：maker 费用配置值|||Compatibility field: maker-fee configuration value
+当前基础资产 ID 0 显示为 USDC|||Base-asset ID; the current value `0` represents `USDC`
+收费资产 ID|||Fee asset ID
+是否为同账户自成交；自成交手续费为零|||Whether this is a self-trade within the same account; self-trades incur no fee
+是否为最终胜出 Token；未裁决市场均为 false|||Whether this is the final winning token; false for unresolved markets
+本次实际收取的基础资产费用|||Actual base-asset fee charged for this trade
+生效配置版本|||Effective configuration version
+上游汇率状态：READY、STALE 或 UNAVAILABLE|||Upstream rate status: `READY`, `STALE`, or `UNAVAILABLE`
+全部汇率|||All exchange rates
+基础货币，例如 USDC|||Base currency, for example `USDC`
+当前缓存的全部基础货币与计价货币汇率|||All cached base-currency and quote-currency exchange rates
+查询全部法币汇率|||List all fiat exchange rates
+汇率数据源|||Exchange-rate data source
+费用类型原始 wire 值；未知类型原样透传|||Raw fee-type wire value; unknown values pass through unchanged
+费用配置原始整数值|||Raw integer fee-configuration value
+计价货币，例如 USD、CNY 或 MYR|||Quote currency, for example `USD`, `CNY`, or `MYR`
+返回 go-edge 最近一次从 go-quote 成功同步的全部汇率，并包含上游快照时间和 Edge 本地同步时间；首次同步完成前接口不可用。|||Return all exchange rates from the most recent successful go-quote synchronization, including the upstream snapshot time and the local Edge synchronization time. The operation is unavailable until the first synchronization completes.
+go-edge 最近一次成功同步的时间|||Time of the most recent successful go-edge synchronization
+go-quote 生成响应快照的时间|||Time when go-quote generated the response snapshot
+go-quote 接收汇率的时间|||Time when go-quote received the exchange rate
+go-quote 汇率快照版本|||go-quote exchange-rate snapshot version
+数据源生成汇率的时间|||Time when the data source generated the exchange rate
+用户接口-汇率|||Exchange rates
 事件 Slug|||Event slug
 事件图标 URL|||Event icon URL
 仅做 maker；若会立即成交则整单取消|||Maker-only order. The order is canceled if it would execute immediately.

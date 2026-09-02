@@ -1048,6 +1048,38 @@
         }
       }
     },
+    "/v1/public/rates": {
+      "get": {
+        "description": "Return all exchange rates from the most recent successful go-quote synchronization, including the upstream snapshot time and the local Edge synchronization time. The operation is unavailable until the first synchronization completes.",
+        "tags": [
+          "Exchange rates"
+        ],
+        "summary": "List all fiat exchange rates",
+        "responses": {
+          "200": {
+            "description": "All exchange rates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_rates.AckRates"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
     "/v1/public/search": {
       "get": {
         "description": "Run a case-insensitive fuzzy search across event titles, descriptions, slugs, and codes.",
@@ -1542,8 +1574,32 @@
             "description": "Event slug",
             "type": "string"
           },
+          "feeAmount": {
+            "description": "Actual base-asset fee charged for this trade",
+            "type": "string"
+          },
+          "feeCurrency": {
+            "description": "Base-asset ID; the current value `0` represents `USDC`",
+            "type": "string"
+          },
+          "feeCurrencyAssetId": {
+            "description": "Fee asset ID",
+            "type": "string"
+          },
           "feeRateBps": {
-            "description": "Fee rate in basis points",
+            "description": "Compatibility fee rate for `NOTIONAL_BPS` only",
+            "type": "string"
+          },
+          "feeType": {
+            "description": "Raw fee-type wire value; unknown values pass through unchanged",
+            "type": "integer"
+          },
+          "feeTypeName": {
+            "description": "`NONE`, `NOTIONAL_BPS`, or `UNKNOWN`",
+            "type": "string"
+          },
+          "feeValue": {
+            "description": "Raw integer fee-configuration value",
             "type": "string"
           },
           "icon": {
@@ -1552,6 +1608,10 @@
           },
           "isImplied": {
             "description": "Whether this is a combined or implied trade",
+            "type": "boolean"
+          },
+          "isSelfTrade": {
+            "description": "Whether this is a self-trade within the same account; self-trades incur no fee",
             "type": "boolean"
           },
           "market": {
@@ -1699,7 +1759,8 @@
           7003,
           7004,
           7005,
-          7006
+          7006,
+          8001
         ],
         "x-enum-varnames": [
           "ErrorCodeInternalError",
@@ -1772,7 +1833,8 @@
           "ErrorCodeAssetDepositFailed",
           "ErrorCodeAssetWithdrawFailed",
           "ErrorCodeAssetTransferFailed",
-          "ErrorCodeAssetServiceNotConfigured"
+          "ErrorCodeAssetServiceNotConfigured",
+          "ErrorCodeRatesUnavailable"
         ]
       },
       "http_market.AckMidpoint": {
@@ -2173,6 +2235,22 @@
             "description": "End time",
             "type": "string"
           },
+          "feeConfigVersion": {
+            "description": "Effective configuration version",
+            "type": "string"
+          },
+          "feeCurrencyAssetId": {
+            "description": "Fee asset ID",
+            "type": "string"
+          },
+          "feeType": {
+            "description": "Compatibility field: raw maker-fee type wire value",
+            "type": "integer"
+          },
+          "feeValue": {
+            "description": "Compatibility field: maker-fee configuration value",
+            "type": "string"
+          },
           "groupItemTitle": {
             "description": "Group display title",
             "type": "string"
@@ -2183,6 +2261,14 @@
           },
           "liquidity": {
             "description": "Market liquidity",
+            "type": "string"
+          },
+          "makerFeeType": {
+            "description": "Raw maker-fee type wire value",
+            "type": "integer"
+          },
+          "makerFeeValue": {
+            "description": "Maker-fee configuration value",
             "type": "string"
           },
           "marketId": {
@@ -2215,6 +2301,14 @@
           },
           "status": {
             "description": "Market status",
+            "type": "string"
+          },
+          "takerFeeType": {
+            "description": "Raw taker-fee type wire value",
+            "type": "integer"
+          },
+          "takerFeeValue": {
+            "description": "Taker-fee configuration value",
             "type": "string"
           },
           "tokenIdNo": {
@@ -2256,6 +2350,10 @@
           "name": {
             "description": "Outcome token display name",
             "type": "string"
+          },
+          "winner": {
+            "description": "Whether this is the final winning token; false for unresolved markets",
+            "type": "boolean"
           }
         }
       },
@@ -2719,6 +2817,67 @@
             }
           }
         }
+      },
+      "http_rates.AckRates": {
+        "type": "object",
+        "properties": {
+          "capturedAt": {
+            "description": "Time when go-quote generated the response snapshot",
+            "type": "string",
+            "format": "date-time"
+          },
+          "rates": {
+            "description": "All cached base-currency and quote-currency exchange rates",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_rates.Rate"
+            }
+          },
+          "synchronizedAt": {
+            "description": "Time of the most recent successful go-edge synchronization",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "http_rates.Rate": {
+        "type": "object",
+        "properties": {
+          "baseCurrency": {
+            "description": "Base currency, for example `USDC`",
+            "type": "string"
+          },
+          "quoteCurrency": {
+            "description": "Quote currency, for example `USD`, `CNY`, or `MYR`",
+            "type": "string"
+          },
+          "rate": {
+            "description": "Amount of quote currency equivalent to one unit of the base currency",
+            "type": "string"
+          },
+          "receivedAt": {
+            "description": "Time when go-quote received the exchange rate",
+            "type": "string",
+            "format": "date-time"
+          },
+          "source": {
+            "description": "Exchange-rate data source",
+            "type": "string"
+          },
+          "sourceTimestamp": {
+            "description": "Time when the data source generated the exchange rate",
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "description": "Upstream rate status: `READY`, `STALE`, or `UNAVAILABLE`",
+            "type": "string"
+          },
+          "version": {
+            "description": "go-quote exchange-rate snapshot version",
+            "type": "integer"
+          }
+        }
       }
     },
     "securitySchemes": {
@@ -2765,6 +2924,9 @@
     },
     {
       "name": "Market data"
+    },
+    {
+      "name": "Exchange rates"
     }
   ],
   "x-api-side": "C"
