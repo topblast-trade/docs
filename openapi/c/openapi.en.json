@@ -2815,6 +2815,14 @@
             "items": {
               "$ref": "#/components/schemas/dto.Position"
             }
+          },
+          "sequence": {
+            "description": "Maximum commit position in the source position snapshot",
+            "type": "integer"
+          },
+          "updatedAt": {
+            "description": "Time when Edge applied the source position snapshot",
+            "type": "string"
           }
         }
       },
@@ -2822,9 +2830,9 @@
         "type": "object",
         "properties": {
           "capturedAt": {
-            "description": "Time when go-quote generated the response snapshot",
-            "type": "string",
-            "format": "date-time"
+            "description": "Time when go-quote generated the response snapshot, in Unix milliseconds",
+            "type": "integer",
+            "format": "int64"
           },
           "rates": {
             "description": "All cached base-currency and quote-currency exchange rates",
@@ -2834,9 +2842,9 @@
             }
           },
           "synchronizedAt": {
-            "description": "Time of the most recent successful go-edge synchronization",
-            "type": "string",
-            "format": "date-time"
+            "description": "Time of the most recent successful go-edge synchronization in Unix milliseconds",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2856,18 +2864,18 @@
             "type": "string"
           },
           "receivedAt": {
-            "description": "Time when go-quote received the exchange rate",
-            "type": "string",
-            "format": "date-time"
+            "description": "Time when go-quote received the exchange rate, in Unix milliseconds",
+            "type": "integer",
+            "format": "int64"
           },
           "source": {
             "description": "Exchange-rate data source",
             "type": "string"
           },
           "sourceTimestamp": {
-            "description": "Time when the data source generated the exchange rate",
-            "type": "string",
-            "format": "date-time"
+            "description": "Time when the data source generated the exchange rate, in Unix milliseconds",
+            "type": "integer",
+            "format": "int64"
           },
           "status": {
             "description": "Upstream rate status: `READY`, `STALE`, or `UNAVAILABLE`",

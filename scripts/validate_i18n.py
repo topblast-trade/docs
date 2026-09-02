@@ -17,7 +17,12 @@ OPENAPI_RE = re.compile(
 )
 HTTP_METHODS = {"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
 USER_ID_FIELDS = {"uid", "userId", "brokerUserId"}
-MILLISECOND_FIELD_RE = re.compile(r"timestamp$", re.IGNORECASE)
+RATE_MILLISECOND_FIELDS = {
+    "capturedAt",
+    "synchronizedAt",
+    "sourceTimestamp",
+    "receivedAt",
+}
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -121,14 +126,14 @@ def validate_scalar_contracts(spec: dict, spec_path: str, errors: list[str]) -> 
                         f"{spec_path}: {field_location} must use type string",
                     )
                 timestamp_contract = (schema.get("type"), schema.get("format"))
-                if MILLISECOND_FIELD_RE.search(name) and timestamp_contract not in {
-                    ("integer", "int64"),
-                    ("string", "date-time"),
-                }:
+                if (
+                    name in RATE_MILLISECOND_FIELDS
+                    and timestamp_contract != ("integer", "int64")
+                ):
                     fail(
                         errors,
                         f"{spec_path}: {field_location} must use integer/int64 "
-                        "Unix milliseconds or string/date-time RFC3339",
+                        "Unix milliseconds",
                     )
 
         parameter_name = value.get("name")

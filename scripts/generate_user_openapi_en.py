@@ -41,10 +41,16 @@ taker 费用配置值|||Taker-fee configuration value
 计价货币，例如 USD、CNY 或 MYR|||Quote currency, for example `USD`, `CNY`, or `MYR`
 返回 go-edge 最近一次从 go-quote 成功同步的全部汇率，并包含上游快照时间和 Edge 本地同步时间；首次同步完成前接口不可用。|||Return all exchange rates from the most recent successful go-quote synchronization, including the upstream snapshot time and the local Edge synchronization time. The operation is unavailable until the first synchronization completes.
 go-edge 最近一次成功同步的时间|||Time of the most recent successful go-edge synchronization
+go-edge 最近一次成功同步的时间（Unix 毫秒）|||Time of the most recent successful go-edge synchronization in Unix milliseconds
 go-quote 生成响应快照的时间|||Time when go-quote generated the response snapshot
+go-quote 生成响应快照的时间（Unix 毫秒）|||Time when go-quote generated the response snapshot, in Unix milliseconds
 go-quote 接收汇率的时间|||Time when go-quote received the exchange rate
+go-quote 接收汇率的时间（Unix 毫秒）|||Time when go-quote received the exchange rate, in Unix milliseconds
 go-quote 汇率快照版本|||go-quote exchange-rate snapshot version
 数据源生成汇率的时间|||Time when the data source generated the exchange rate
+数据源生成汇率的时间（Unix 毫秒）|||Time when the data source generated the exchange rate, in Unix milliseconds
+Edge 应用源仓位快照的时间|||Time when Edge applied the source position snapshot
+源仓位快照最大 Commit Position|||Maximum commit position in the source position snapshot
 用户接口-汇率|||Exchange rates
 事件 Slug|||Event slug
 事件图标 URL|||Event icon URL

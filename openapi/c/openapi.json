@@ -2815,6 +2815,14 @@
             "items": {
               "$ref": "#/components/schemas/dto.Position"
             }
+          },
+          "sequence": {
+            "description": "源仓位快照最大 Commit Position",
+            "type": "integer"
+          },
+          "updatedAt": {
+            "description": "Edge 应用源仓位快照的时间",
+            "type": "string"
           }
         }
       },
@@ -2822,9 +2830,9 @@
         "type": "object",
         "properties": {
           "capturedAt": {
-            "description": "go-quote 生成响应快照的时间",
-            "type": "string",
-            "format": "date-time"
+            "description": "go-quote 生成响应快照的时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "rates": {
             "description": "当前缓存的全部基础货币与计价货币汇率",
@@ -2834,9 +2842,9 @@
             }
           },
           "synchronizedAt": {
-            "description": "go-edge 最近一次成功同步的时间",
-            "type": "string",
-            "format": "date-time"
+            "description": "go-edge 最近一次成功同步的时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -2856,18 +2864,18 @@
             "type": "string"
           },
           "receivedAt": {
-            "description": "go-quote 接收汇率的时间",
-            "type": "string",
-            "format": "date-time"
+            "description": "go-quote 接收汇率的时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "source": {
             "description": "汇率数据源",
             "type": "string"
           },
           "sourceTimestamp": {
-            "description": "数据源生成汇率的时间",
-            "type": "string",
-            "format": "date-time"
+            "description": "数据源生成汇率的时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "status": {
             "description": "上游汇率状态：READY、STALE 或 UNAVAILABLE",
