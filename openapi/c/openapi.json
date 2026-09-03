@@ -625,6 +625,37 @@
         ]
       }
     },
+    "/v1/public/broker": {
+      "get": {
+        "description": "根据 x-app-id 请求头或当前请求域名返回券商公开信息。",
+        "tags": [
+          "用户接口-券商"
+        ],
+        "summary": "查询当前券商信息",
+        "parameters": [
+          {
+            "description": "券商 App ID",
+            "name": "x-app-id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "券商信息",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/brokeraccess.BrokerInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/public/events": {
       "get": {
         "description": "按标签、关闭状态和排序条件分页查询事件，返回当前页事件和筛选后的总数。若按 slug 查询，请使用 GET /v1/public/events/slug/{slug}。",
@@ -1444,6 +1475,36 @@
   ],
   "components": {
     "schemas": {
+      "brokeraccess.BrokerInfo": {
+        "type": "object",
+        "properties": {
+          "brokerId": {
+            "description": "券商 ID",
+            "type": "integer"
+          },
+          "logo": {
+            "description": "券商 Logo URL",
+            "type": "string"
+          },
+          "name": {
+            "description": "券商名称",
+            "type": "string"
+          },
+          "quoteCurrency": {
+            "description": "券商使用的法币计价单位",
+            "type": "string"
+          },
+          "status": {
+            "description": "券商状态；1 表示启用",
+            "type": "integer"
+          },
+          "updatedAt": {
+            "description": "券商信息更新时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "dto.AccountBalance": {
         "type": "object",
         "properties": {
@@ -2923,6 +2984,9 @@
     },
     {
       "name": "用户接口-委托"
+    },
+    {
+      "name": "用户接口-券商"
     },
     {
       "name": "用户接口-事件"

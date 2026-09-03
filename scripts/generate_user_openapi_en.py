@@ -14,6 +14,17 @@ OUTPUT = ROOT / "openapi" / "c" / "openapi.en.json"
 CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 _PAIRS = r"""
+券商 ID|||Broker ID
+券商名称|||Broker name
+券商 Logo URL|||Broker logo URL
+券商使用的法币计价单位|||Fiat quote currency configured for the broker
+券商状态；1 表示启用|||Broker status; `1` means enabled
+券商信息更新时间（Unix 毫秒）|||Broker information update time in Unix milliseconds
+券商 App ID|||Broker App ID
+券商信息|||Broker information
+查询当前券商信息|||Get current broker information
+根据 x-app-id 请求头或当前请求域名返回券商公开信息。|||Return public broker information selected by the `x-app-id` header or current request domain.
+用户接口-券商|||Broker information
 `/v1/public` 提供公开事件与行情数据；`/v1/private` 提供交易和账户接口，支持用户 Token 或 API Key 鉴权。|||`/v1/public` exposes public event and market data. `/v1/private` provides trading and account operations authenticated with a user token or API key.
 一个单位基础货币可兑换的计价货币数量|||Amount of quote currency equivalent to one unit of the base currency
 NONE、NOTIONAL_BPS 或 UNKNOWN|||`NONE`, `NOTIONAL_BPS`, or `UNKNOWN`

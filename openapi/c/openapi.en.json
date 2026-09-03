@@ -625,6 +625,37 @@
         ]
       }
     },
+    "/v1/public/broker": {
+      "get": {
+        "description": "Return public broker information selected by the `x-app-id` header or current request domain.",
+        "tags": [
+          "Broker information"
+        ],
+        "summary": "Get current broker information",
+        "parameters": [
+          {
+            "description": "Broker App ID",
+            "name": "x-app-id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Broker information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/brokeraccess.BrokerInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/public/events": {
       "get": {
         "description": "List events by tag, closed state, and sort order. The response includes the current page and the filtered total. To look up an event by slug, use `GET /v1/public/events/slug/{slug}`.",
@@ -1444,6 +1475,36 @@
   ],
   "components": {
     "schemas": {
+      "brokeraccess.BrokerInfo": {
+        "type": "object",
+        "properties": {
+          "brokerId": {
+            "description": "Broker ID",
+            "type": "integer"
+          },
+          "logo": {
+            "description": "Broker logo URL",
+            "type": "string"
+          },
+          "name": {
+            "description": "Broker name",
+            "type": "string"
+          },
+          "quoteCurrency": {
+            "description": "Fiat quote currency configured for the broker",
+            "type": "string"
+          },
+          "status": {
+            "description": "Broker status; `1` means enabled",
+            "type": "integer"
+          },
+          "updatedAt": {
+            "description": "Broker information update time in Unix milliseconds",
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "dto.AccountBalance": {
         "type": "object",
         "properties": {
@@ -2923,6 +2984,9 @@
     },
     {
       "name": "Orders"
+    },
+    {
+      "name": "Broker information"
     },
     {
       "name": "Events"
