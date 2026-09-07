@@ -1,0 +1,12 @@
+---
+title: "添加事件收藏"
+openapi: "/openapi/c/openapi.json POST /v1/private/events/{eventId}/favorite"
+---
+
+将当前券商可见的指定事件加入你的收藏。传入具体事件的 UUID 作为 `eventId`，不能使用事件 slug 或 Series ID；同一 Series 的不同事件分别收藏。UUID 使用 `8-4-4-4-12` 格式，服务端去除首尾空白并转为小写。
+
+你必须携带 `x-app-id` 和有效的 Bearer Token 或 API Key。使用 API Key 时需要 `TRADE` 权限。
+
+接口返回 `eventId` 和 `isFavorited: true`。重复收藏同一事件也会成功，并保留原收藏时间。不存在的事件返回 `404`；当前券商不可见的事件返回 `403`。
+
+响应包含 `Cache-Control: private, no-store`。更新成功后，用返回的状态更新当前页面中的收藏按钮。

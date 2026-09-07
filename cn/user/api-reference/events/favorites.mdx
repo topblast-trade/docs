@@ -1,0 +1,17 @@
+---
+title: "事件收藏列表"
+openapi: "/openapi/c/openapi.json GET /v1/private/events/favorites"
+---
+
+分页查询你的收藏中当前券商可见的事件。你必须携带 `x-app-id` 和有效的 Bearer Token 或 API Key；具有 `READ` 权限的 API Key 可以调用此接口。
+
+`page` 默认 `1`，`size` 默认 `20`，最大 `100`。响应为 `{items, total}`，按收藏时间倒序排列，时间相同时按收藏记录 ID 倒序排列。`total` 是当前券商可见的收藏事件总数，分页前已完成可见性过滤。已结束的事件不会自动取消收藏，也不会仅因结束而从列表排除。
+
+`items` 复用公开事件接口的字段，每项额外返回：
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `isFavorited` | `boolean` | 固定为 `true` |
+| `favoritedAt` | `string` | RFC 3339 格式的收藏时间，例如 `2026-09-07T08:00:00Z` |
+
+事件目录尚未就绪时返回 `503`，不会返回不完整列表。响应包含 `Cache-Control: private, no-store`。

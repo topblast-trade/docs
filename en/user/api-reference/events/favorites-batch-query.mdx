@@ -1,0 +1,27 @@
+---
+title: "Batch query event favorite status"
+openapi: "/openapi/c/openapi.en.json GET /v1/private/events/favorites/batch-query"
+---
+
+Check whether you have favorited multiple events in one request. Include `x-app-id` and a valid Bearer token or API key. API keys with `READ` permission can call this endpoint.
+
+```http
+GET /v1/private/events/favorites/batch-query?eventIds=550e8400-e29b-41d4-a716-446655440000,550e8400-e29b-41d4-a716-446655440001
+```
+
+The required `eventIds` query parameter contains comma-separated event UUIDs. Send at most `100` entries, including duplicates. Supply the parameter exactly once; repeated `eventIds` parameters are invalid. Use UUIDs in `8-4-4-4-12` format. The server trims surrounding whitespace, converts each UUID to lowercase, and removes duplicates in first-occurrence order.
+
+The response includes every deduplicated ID, including events you have not favorited:
+
+```json
+{
+  "items": [
+    {"eventId": "550e8400-e29b-41d4-a716-446655440000", "isFavorited": true},
+    {"eventId": "550e8400-e29b-41d4-a716-446655440001", "isFavorited": false}
+  ]
+}
+```
+
+This endpoint checks favorite relationships only. It does not check whether events exist or are currently visible. Explicitly supplying `eventIds=` returns `{"items": []}` immediately. A missing or repeated parameter, too many entries, an empty entry, or an invalid UUID returns `400`. Do not send a JSON request body. Responses include `Cache-Control: private, no-store`.
+
+Public event endpoints continue to return public data. After loading an event list, search results, or event details, signed-in users can call this endpoint to retrieve favorite states. Split requests containing more than `100` IDs into batches. Keep a loading state until the query completes and allow retries on failure instead of treating a failure as an unfavorited state. The favorites list already includes favorite states and does not need a second batch query.

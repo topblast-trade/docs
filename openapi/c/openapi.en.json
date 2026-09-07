@@ -145,6 +145,218 @@
         ]
       }
     },
+    "/v1/private/events/favorites": {
+      "get": {
+        "description": "List the current user's visible favorited events by favorite time descending. Visibility filtering precedes pagination, and ended events remain favorited.",
+        "tags": [
+          "Events"
+        ],
+        "summary": "List event favorites",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Page number. Defaults to 1.",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "description": "Items per page. Defaults to 20; maximum 100.",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Favorite event list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.AckFavoriteEvents"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/private/events/favorites/batch-query": {
+      "get": {
+        "description": "Query the current user's favorite status for up to 100 comma-separated event UUIDs. Results follow the deduplicated request order. An empty parameter skips the favorite query.",
+        "tags": [
+          "Events"
+        ],
+        "summary": "Batch query event favorite status",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Up to 100 comma-separated event UUIDs. An empty string returns an empty list.",
+            "name": "eventIds",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Favorite status list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.AckFavoriteStatuses"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/private/events/{eventId}/favorite": {
+      "post": {
+        "description": "Favorite an event visible to the current broker. Repeated requests succeed and preserve the original favorite time.",
+        "tags": [
+          "Events"
+        ],
+        "summary": "Add event favorite",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Event ID",
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event favorited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.FavoriteStatus"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "description": "Remove the current user's favorite. Succeeds even if the event is not favorited or has been taken down.",
+        "tags": [
+          "Events"
+        ],
+        "summary": "Remove event favorite",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Event ID",
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event favorite removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.FavoriteStatus"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      }
+    },
     "/v1/private/orders": {
       "get": {
         "description": "List open orders for the authenticated account.",
@@ -737,6 +949,17 @@
               ],
               "default": "desc"
             }
+          },
+          {
+            "description": "Grouping mode. `series` returns only the current time-window event for each series.",
+            "name": "groupBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "series"
+              ]
+            }
           }
         ],
         "responses": {
@@ -1145,6 +1368,75 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_meta.AckSearch"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/public/series/{seriesId}/event-windows": {
+      "get": {
+        "description": "Return recently ended, current, and future event windows. Include the selected event even when it falls outside the current neighborhood.",
+        "tags": [
+          "Events"
+        ],
+        "summary": "Get series event navigation windows",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Stable series ID",
+            "name": "seriesId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Event ID on the current detail page",
+            "name": "selectedEventId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Number of recently ended windows. Defaults to 12.",
+            "name": "pastSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          },
+          {
+            "description": "Number of current and future windows. Defaults to 20.",
+            "name": "forwardSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Series event navigation windows",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.AckSeriesEventWindows"
                 }
               }
             }
@@ -1807,6 +2099,7 @@
           4013,
           4014,
           4015,
+          4016,
           5001,
           5002,
           6001,
@@ -1881,6 +2174,7 @@
           "ErrorCodeEventsOffsetQueryGone",
           "ErrorCodeInvalidCursor",
           "ErrorCodeEventsKeysetQueryGone",
+          "ErrorCodeFavoritesUnavailable",
           "ErrorCodeTradesNotFound",
           "ErrorCodeAccountTradesNotFound",
           "ErrorCodeAccountNotFound",
@@ -2141,6 +2435,34 @@
           }
         }
       },
+      "http_meta.AckFavoriteEvents": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "Favorited events on the current page",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.FavoriteEvent"
+            }
+          },
+          "total": {
+            "description": "Total number of favorited events visible to the current user",
+            "type": "integer"
+          }
+        }
+      },
+      "http_meta.AckFavoriteStatuses": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "Favorite states in deduplicated request order",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.FavoriteStatus"
+            }
+          }
+        }
+      },
       "http_meta.AckMarkets": {
         "type": "object",
         "properties": {
@@ -2170,6 +2492,34 @@
             "items": {
               "$ref": "#/components/schemas/http_meta.Event"
             }
+          }
+        }
+      },
+      "http_meta.AckSeriesEventWindows": {
+        "type": "object",
+        "properties": {
+          "asOf": {
+            "description": "Server time snapshot used to partition event windows",
+            "type": "string"
+          },
+          "currentEventId": {
+            "description": "Event ID of the current live window",
+            "type": "string"
+          },
+          "items": {
+            "description": "Window events ordered by endDate ascending",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.Event"
+            }
+          },
+          "selectedEventId": {
+            "description": "Detail-page event ID supplied in the request",
+            "type": "string"
+          },
+          "selectedPinned": {
+            "description": "Whether the selected event was added because it lies outside the current neighborhood",
+            "type": "boolean"
           }
         }
       },
@@ -2243,6 +2593,14 @@
             "description": "Resolution source",
             "type": "string"
           },
+          "series": {
+            "description": "Display series that contains the event",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/http_meta.EventSeries"
+              }
+            ]
+          },
           "slug": {
             "description": "Event slug",
             "type": "string"
@@ -2254,6 +2612,13 @@
           "status": {
             "description": "Event status",
             "type": "string"
+          },
+          "tags": {
+            "description": "Stable identifiers for event tags",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.EventTag"
+            }
           },
           "title": {
             "description": "Event title",
@@ -2414,6 +2779,160 @@
           },
           "winner": {
             "description": "Whether this is the final winning token; false for unresolved markets",
+            "type": "boolean"
+          }
+        }
+      },
+      "http_meta.EventSeries": {
+        "type": "object",
+        "properties": {
+          "groupingEnabled": {
+            "description": "Whether events can be grouped by this series and use its title",
+            "type": "boolean"
+          },
+          "id": {
+            "description": "Stable series ID",
+            "type": "string"
+          },
+          "recurrence": {
+            "description": "Series recurrence description",
+            "type": "string"
+          },
+          "slug": {
+            "description": "Stable series slug",
+            "type": "string"
+          },
+          "title": {
+            "description": "Series display title",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.EventTag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Stable tag ID",
+            "type": "string"
+          },
+          "slug": {
+            "description": "Stable tag slug",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.FavoriteEvent": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "description": "Real-time data channel",
+            "type": "string"
+          },
+          "closed": {
+            "description": "Whether the event is closed",
+            "type": "boolean"
+          },
+          "createdAt": {
+            "description": "Created at",
+            "type": "string"
+          },
+          "description": {
+            "description": "Event description",
+            "type": "string"
+          },
+          "endDate": {
+            "description": "End time",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "Event ID",
+            "type": "string"
+          },
+          "favoritedAt": {
+            "description": "Favorite time in RFC 3339 format",
+            "type": "string"
+          },
+          "iconUrl": {
+            "description": "Icon URL",
+            "type": "string"
+          },
+          "imageUrl": {
+            "description": "Image URL",
+            "type": "string"
+          },
+          "isFavorited": {
+            "description": "Whether the current user has favorited the event. Always true in the favorites list.",
+            "type": "boolean"
+          },
+          "liquidity": {
+            "description": "Event liquidity (sum of market liquidity)",
+            "type": "string"
+          },
+          "markets": {
+            "description": "Markets in the event",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.EventMarket"
+            }
+          },
+          "negRisk": {
+            "description": "Whether this is a NegRisk event",
+            "type": "boolean"
+          },
+          "resolutionSource": {
+            "description": "Resolution source",
+            "type": "string"
+          },
+          "series": {
+            "description": "Display series that contains the event",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/http_meta.EventSeries"
+              }
+            ]
+          },
+          "slug": {
+            "description": "Event slug",
+            "type": "string"
+          },
+          "startDate": {
+            "description": "Start time",
+            "type": "string"
+          },
+          "status": {
+            "description": "Event status",
+            "type": "string"
+          },
+          "tags": {
+            "description": "Stable identifiers for event tags",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.EventTag"
+            }
+          },
+          "title": {
+            "description": "Event title",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "Updated at",
+            "type": "string"
+          },
+          "volume": {
+            "description": "Sum of cumulative trading volume across all markets in the event",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.FavoriteStatus": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "description": "Event ID",
+            "type": "string"
+          },
+          "isFavorited": {
+            "description": "Whether the current user has favorited the event",
             "type": "boolean"
           }
         }
@@ -2983,13 +3502,13 @@
       "name": "Trades"
     },
     {
+      "name": "Events"
+    },
+    {
       "name": "Orders"
     },
     {
       "name": "Broker information"
-    },
-    {
-      "name": "Events"
     },
     {
       "name": "Metadata"

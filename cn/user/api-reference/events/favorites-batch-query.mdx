@@ -1,0 +1,27 @@
+---
+title: "批量查询事件收藏状态"
+openapi: "/openapi/c/openapi.json GET /v1/private/events/favorites/batch-query"
+---
+
+一次查询多个事件是否被你收藏。你必须携带 `x-app-id` 和有效的 Bearer Token 或 API Key。具有 `READ` 权限的 API Key 可以调用。
+
+```http
+GET /v1/private/events/favorites/batch-query?eventIds=550e8400-e29b-41d4-a716-446655440000,550e8400-e29b-41d4-a716-446655440001
+```
+
+`eventIds` 是必填查询参数，使用逗号分隔多个事件 UUID。每次最多传入 `100` 项，重复项也计入数量限制；参数只能出现一次，不能重复传入多个 `eventIds`。UUID 使用 `8-4-4-4-12` 格式。服务端去除每项首尾空白并转为小写，然后按首次出现的顺序去重。
+
+响应包含每个去重后的 ID，包括未收藏的事件：
+
+```json
+{
+  "items": [
+    {"eventId": "550e8400-e29b-41d4-a716-446655440000", "isFavorited": true},
+    {"eventId": "550e8400-e29b-41d4-a716-446655440001", "isFavorited": false}
+  ]
+}
+```
+
+该接口只查询收藏关系，不检查事件是否存在或当前是否可见。显式传入 `eventIds=` 直接返回 `{"items": []}`；缺少参数、重复参数、超过限制、包含空项或无效 UUID 时返回 `400`。请求不使用 JSON 请求体。响应包含 `Cache-Control: private, no-store`。
+
+公开事件接口继续返回公共数据。获取事件列表、搜索结果或详情后，已登录用户可调用此接口查询收藏状态；超过 `100` 个 ID 时分批请求。查询完成前保留加载状态，失败时允许重试，不要将失败当作未收藏。收藏列表本身已包含收藏状态，无需再次批量查询。

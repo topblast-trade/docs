@@ -1,0 +1,10 @@
+---
+title: "Remove event favorite"
+openapi: "/openapi/c/openapi.en.json DELETE /v1/private/events/{eventId}/favorite"
+---
+
+Remove the favorite for the specified `eventId`. Use an event UUID in `8-4-4-4-12` format; the server trims surrounding whitespace and converts it to lowercase. Include `x-app-id` and a valid Bearer token or API key. API keys require `TRADE` permission.
+
+The response contains `eventId` and `isFavorited: false`. Removing an event that is not favorited also succeeds. You can remove a favorite even after the event is taken down or becomes unavailable to your current broker.
+
+Responses include `Cache-Control: private, no-store`. When removing an event from your favorites list, remove the corresponding item after success and refresh the pagination data.

@@ -1,0 +1,12 @@
+---
+title: "Add event favorite"
+openapi: "/openapi/c/openapi.en.json POST /v1/private/events/{eventId}/favorite"
+---
+
+Add an event visible to your current broker to your favorites. Supply the event UUID as `eventId`, not an event slug or Series ID. Events within the same series are favorited individually. Use the `8-4-4-4-12` UUID format; the server trims surrounding whitespace and converts it to lowercase.
+
+Include `x-app-id` and a valid Bearer token or API key. API keys require `TRADE` permission.
+
+The response contains `eventId` and `isFavorited: true`. Adding the same favorite again succeeds and preserves its original favorite time. Events that do not exist return `404`; events that are not visible to your current broker return `403`.
+
+Responses include `Cache-Control: private, no-store`. After a successful update, use the returned state to update the favorite button on your page.

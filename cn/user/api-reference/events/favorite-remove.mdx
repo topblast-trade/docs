@@ -1,0 +1,10 @@
+---
+title: "取消事件收藏"
+openapi: "/openapi/c/openapi.json DELETE /v1/private/events/{eventId}/favorite"
+---
+
+取消你对指定 `eventId` 的收藏。`eventId` 使用 `8-4-4-4-12` 格式的事件 UUID，服务端去除首尾空白并转为小写。你必须携带 `x-app-id` 和有效的 Bearer Token 或 API Key；使用 API Key 时需要 `TRADE` 权限。
+
+接口返回 `eventId` 和 `isFavorited: false`。事件未收藏时也会成功；事件下架或不再对当前券商可见后，仍可取消收藏。
+
+响应包含 `Cache-Control: private, no-store`。从收藏列表取消成功后，移除对应事件并刷新分页数据。

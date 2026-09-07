@@ -196,6 +196,15 @@
                     ]
                   },
                   {
+                    "group": "事件收藏",
+                    "pages": [
+                      "cn/user/api-reference/events/favorite-add",
+                      "cn/user/api-reference/events/favorite-remove",
+                      "cn/user/api-reference/events/favorites",
+                      "cn/user/api-reference/events/favorites-batch-query"
+                    ]
+                  },
+                  {
                     "group": "市场行情",
                     "pages": [
                       "cn/user/api-reference/market/orderbook",
@@ -424,6 +433,15 @@
                       "en/user/api-reference/events/tag-detail",
                       "en/user/api-reference/events/tag-detail-by-slug",
                       "en/user/api-reference/market/markets"
+                    ]
+                  },
+                  {
+                    "group": "Event favorites",
+                    "pages": [
+                      "en/user/api-reference/events/favorite-add",
+                      "en/user/api-reference/events/favorite-remove",
+                      "en/user/api-reference/events/favorites",
+                      "en/user/api-reference/events/favorites-batch-query"
                     ]
                   },
                   {

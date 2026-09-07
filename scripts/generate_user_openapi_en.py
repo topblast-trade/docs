@@ -14,6 +14,46 @@ OUTPUT = ROOT / "openapi" / "c" / "openapi.en.json"
 CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 _PAIRS = r"""
+事件标签稳定标识|||Stable identifiers for event tags
+分组方式；series 表示每个系列仅返回当前时间窗口事件|||Grouping mode. `series` returns only the current time-window event for each series.
+标签稳定 ID|||Stable tag ID
+标签稳定 slug|||Stable tag slug
+添加 Event 收藏|||Add event favorite
+收藏当前券商可见的 Event；重复添加成功且保留原收藏时间。|||Favorite an event visible to the current broker. Repeated requests succeed and preserve the original favorite time.
+收藏成功|||Event favorited
+取消 Event 收藏|||Remove event favorite
+取消当前用户的收藏；未收藏或事件已下架时仍可成功取消。|||Remove the current user's favorite. Succeeds even if the event is not favorited or has been taken down.
+取消收藏成功|||Event favorite removed
+查询 Event 收藏列表|||List event favorites
+按收藏时间倒序返回当前用户可见的 Event；先过滤可见性再分页，已结束的 Event 保留收藏。|||List the current user's visible favorited events by favorite time descending. Visibility filtering precedes pagination, and ended events remain favorited.
+收藏事件列表|||Favorite event list
+批量查询 Event 收藏状态|||Batch query event favorite status
+查询当前用户对指定 Event 的收藏状态；最多 100 个 UUID，以逗号分隔，去重后按请求顺序返回。参数为空时不查询收藏。|||Query the current user's favorite status for up to 100 comma-separated event UUIDs. Results follow the deduplicated request order. An empty parameter skips the favorite query.
+以逗号分隔的 Event UUID，最多 100 个；空字符串返回空列表|||Up to 100 comma-separated event UUIDs. An empty string returns an empty list.
+收藏状态列表|||Favorite status list
+当前用户是否已收藏|||Whether the current user has favorited the event
+去重后按请求顺序返回的收藏状态|||Favorite states in deduplicated request order
+当前用户是否已收藏，收藏列表中固定为 true|||Whether the current user has favorited the event. Always true in the favorites list.
+收藏时间，RFC3339 格式|||Favorite time in RFC 3339 format
+当前页收藏事件|||Favorited events on the current page
+当前用户可见的收藏事件总数|||Total number of favorited events visible to the current user
+查询 Series Event 窗口导航|||Get series event navigation windows
+返回最近已结束窗口、当前及未来窗口；选中的详情 Event 不在实时邻域时也会补入。|||Return recently ended, current, and future event windows. Include the selected event even when it falls outside the current neighborhood.
+Series Event 窗口导航|||Series event navigation windows
+Series 稳定 ID|||Stable series ID
+Series 稳定 slug|||Stable series slug
+Series 展示标题|||Series display title
+Series 周期描述|||Series recurrence description
+是否允许按此 Series 折叠并使用 Series 标题|||Whether events can be grouped by this series and use its title
+事件所属展示系列|||Display series that contains the event
+当前详情页 Event ID|||Event ID on the current detail page
+最近已结束窗口数量，默认 12|||Number of recently ended windows. Defaults to 12.
+当前及未来窗口数量，默认 20|||Number of current and future windows. Defaults to 20.
+服务端用于切分窗口的统一时间快照|||Server time snapshot used to partition event windows
+当前实时窗口 Event ID|||Event ID of the current live window
+请求携带的详情页 Event ID|||Detail-page event ID supplied in the request
+选中 Event 是否因不在实时邻域而额外补入|||Whether the selected event was added because it lies outside the current neighborhood
+按 endDate 正序排列的窗口 Event|||Window events ordered by endDate ascending
 券商 ID|||Broker ID
 券商名称|||Broker name
 券商 Logo URL|||Broker logo URL

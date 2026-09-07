@@ -145,6 +145,218 @@
         ]
       }
     },
+    "/v1/private/events/favorites": {
+      "get": {
+        "description": "按收藏时间倒序返回当前用户可见的 Event；先过滤可见性再分页，已结束的 Event 保留收藏。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "查询 Event 收藏列表",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "页码，默认 1",
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "description": "每页数量，默认 20，最大 100",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "收藏事件列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.AckFavoriteEvents"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/private/events/favorites/batch-query": {
+      "get": {
+        "description": "查询当前用户对指定 Event 的收藏状态；最多 100 个 UUID，以逗号分隔，去重后按请求顺序返回。参数为空时不查询收藏。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "批量查询 Event 收藏状态",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "以逗号分隔的 Event UUID，最多 100 个；空字符串返回空列表",
+            "name": "eventIds",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "收藏状态列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.AckFavoriteStatuses"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/private/events/{eventId}/favorite": {
+      "post": {
+        "description": "收藏当前券商可见的 Event；重复添加成功且保留原收藏时间。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "添加 Event 收藏",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件 ID",
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "收藏成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.FavoriteStatus"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "description": "取消当前用户的收藏；未收藏或事件已下架时仍可成功取消。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "取消 Event 收藏",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "事件 ID",
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取消收藏成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.FavoriteStatus"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyAuth": [],
+            "TimestampAuth": [],
+            "SignatureAuth": []
+          }
+        ]
+      }
+    },
     "/v1/private/orders": {
       "get": {
         "description": "查询当前登录账户的未完成委托。",
@@ -737,6 +949,17 @@
               ],
               "default": "desc"
             }
+          },
+          {
+            "description": "分组方式；series 表示每个系列仅返回当前时间窗口事件",
+            "name": "groupBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "series"
+              ]
+            }
           }
         ],
         "responses": {
@@ -1145,6 +1368,75 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/http_meta.AckSearch"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/public/series/{seriesId}/event-windows": {
+      "get": {
+        "description": "返回最近已结束窗口、当前及未来窗口；选中的详情 Event 不在实时邻域时也会补入。",
+        "tags": [
+          "用户接口-事件"
+        ],
+        "summary": "查询 Series Event 窗口导航",
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Series 稳定 ID",
+            "name": "seriesId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "当前详情页 Event ID",
+            "name": "selectedEventId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "最近已结束窗口数量，默认 12",
+            "name": "pastSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          },
+          {
+            "description": "当前及未来窗口数量，默认 20",
+            "name": "forwardSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Series Event 窗口导航",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_meta.AckSeriesEventWindows"
                 }
               }
             }
@@ -1807,6 +2099,7 @@
           4013,
           4014,
           4015,
+          4016,
           5001,
           5002,
           6001,
@@ -1881,6 +2174,7 @@
           "ErrorCodeEventsOffsetQueryGone",
           "ErrorCodeInvalidCursor",
           "ErrorCodeEventsKeysetQueryGone",
+          "ErrorCodeFavoritesUnavailable",
           "ErrorCodeTradesNotFound",
           "ErrorCodeAccountTradesNotFound",
           "ErrorCodeAccountNotFound",
@@ -2141,6 +2435,34 @@
           }
         }
       },
+      "http_meta.AckFavoriteEvents": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "当前页收藏事件",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.FavoriteEvent"
+            }
+          },
+          "total": {
+            "description": "当前用户可见的收藏事件总数",
+            "type": "integer"
+          }
+        }
+      },
+      "http_meta.AckFavoriteStatuses": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "去重后按请求顺序返回的收藏状态",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.FavoriteStatus"
+            }
+          }
+        }
+      },
       "http_meta.AckMarkets": {
         "type": "object",
         "properties": {
@@ -2170,6 +2492,34 @@
             "items": {
               "$ref": "#/components/schemas/http_meta.Event"
             }
+          }
+        }
+      },
+      "http_meta.AckSeriesEventWindows": {
+        "type": "object",
+        "properties": {
+          "asOf": {
+            "description": "服务端用于切分窗口的统一时间快照",
+            "type": "string"
+          },
+          "currentEventId": {
+            "description": "当前实时窗口 Event ID",
+            "type": "string"
+          },
+          "items": {
+            "description": "按 endDate 正序排列的窗口 Event",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.Event"
+            }
+          },
+          "selectedEventId": {
+            "description": "请求携带的详情页 Event ID",
+            "type": "string"
+          },
+          "selectedPinned": {
+            "description": "选中 Event 是否因不在实时邻域而额外补入",
+            "type": "boolean"
           }
         }
       },
@@ -2243,6 +2593,14 @@
             "description": "结算来源",
             "type": "string"
           },
+          "series": {
+            "description": "事件所属展示系列",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/http_meta.EventSeries"
+              }
+            ]
+          },
           "slug": {
             "description": "事件 slug",
             "type": "string"
@@ -2254,6 +2612,13 @@
           "status": {
             "description": "事件状态",
             "type": "string"
+          },
+          "tags": {
+            "description": "事件标签稳定标识",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.EventTag"
+            }
           },
           "title": {
             "description": "事件标题",
@@ -2414,6 +2779,160 @@
           },
           "winner": {
             "description": "是否为最终胜出 Token；未裁决市场均为 false",
+            "type": "boolean"
+          }
+        }
+      },
+      "http_meta.EventSeries": {
+        "type": "object",
+        "properties": {
+          "groupingEnabled": {
+            "description": "是否允许按此 Series 折叠并使用 Series 标题",
+            "type": "boolean"
+          },
+          "id": {
+            "description": "Series 稳定 ID",
+            "type": "string"
+          },
+          "recurrence": {
+            "description": "Series 周期描述",
+            "type": "string"
+          },
+          "slug": {
+            "description": "Series 稳定 slug",
+            "type": "string"
+          },
+          "title": {
+            "description": "Series 展示标题",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.EventTag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "标签稳定 ID",
+            "type": "string"
+          },
+          "slug": {
+            "description": "标签稳定 slug",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.FavoriteEvent": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "description": "实时数据频道",
+            "type": "string"
+          },
+          "closed": {
+            "description": "是否已关闭",
+            "type": "boolean"
+          },
+          "createdAt": {
+            "description": "创建时间",
+            "type": "string"
+          },
+          "description": {
+            "description": "事件描述",
+            "type": "string"
+          },
+          "endDate": {
+            "description": "结束时间",
+            "type": "string"
+          },
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "favoritedAt": {
+            "description": "收藏时间，RFC3339 格式",
+            "type": "string"
+          },
+          "iconUrl": {
+            "description": "图标 URL",
+            "type": "string"
+          },
+          "imageUrl": {
+            "description": "图片 URL",
+            "type": "string"
+          },
+          "isFavorited": {
+            "description": "当前用户是否已收藏，收藏列表中固定为 true",
+            "type": "boolean"
+          },
+          "liquidity": {
+            "description": "事件流动性（所有市场流动性之和）",
+            "type": "string"
+          },
+          "markets": {
+            "description": "事件下的市场",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.EventMarket"
+            }
+          },
+          "negRisk": {
+            "description": "是否为 NegRisk 事件",
+            "type": "boolean"
+          },
+          "resolutionSource": {
+            "description": "结算来源",
+            "type": "string"
+          },
+          "series": {
+            "description": "事件所属展示系列",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/http_meta.EventSeries"
+              }
+            ]
+          },
+          "slug": {
+            "description": "事件 slug",
+            "type": "string"
+          },
+          "startDate": {
+            "description": "开始时间",
+            "type": "string"
+          },
+          "status": {
+            "description": "事件状态",
+            "type": "string"
+          },
+          "tags": {
+            "description": "事件标签稳定标识",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/http_meta.EventTag"
+            }
+          },
+          "title": {
+            "description": "事件标题",
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "更新时间",
+            "type": "string"
+          },
+          "volume": {
+            "description": "事件下所有市场的累计成交量之和",
+            "type": "string"
+          }
+        }
+      },
+      "http_meta.FavoriteStatus": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "description": "事件 ID",
+            "type": "string"
+          },
+          "isFavorited": {
+            "description": "当前用户是否已收藏",
             "type": "boolean"
           }
         }
@@ -2983,13 +3502,13 @@
       "name": "用户接口-成交"
     },
     {
+      "name": "用户接口-事件"
+    },
+    {
       "name": "用户接口-委托"
     },
     {
       "name": "用户接口-券商"
-    },
-    {
-      "name": "用户接口-事件"
     },
     {
       "name": "用户接口-元数据"

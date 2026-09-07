@@ -1,0 +1,17 @@
+---
+title: "List event favorites"
+openapi: "/openapi/c/openapi.en.json GET /v1/private/events/favorites"
+---
+
+List your favorited events that are visible to your current broker. Include `x-app-id` and a valid Bearer token or API key. API keys with `READ` permission can call this endpoint.
+
+`page` defaults to `1`. `size` defaults to `20` and cannot exceed `100`. The response is `{items, total}`, ordered by favorite time descending, then favorite record ID descending for ties. `total` counts favorites visible to your current broker, with visibility filtering applied before pagination. Ended events stay favorited and are not excluded solely because they have ended.
+
+Each item uses the public event fields and adds:
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `isFavorited` | `boolean` | Always `true` |
+| `favoritedAt` | `string` | Favorite time in RFC 3339 format, such as `2026-09-07T08:00:00Z` |
+
+When the event catalog is not ready, the endpoint returns `503` instead of an incomplete list. Responses include `Cache-Control: private, no-store`.
