@@ -834,6 +834,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Search keyword. Leading and trailing whitespace is trimmed, then the event ID is matched exactly or title and slug are matched by case-insensitive substring. Omit it or provide a blank value to disable keyword filtering.",
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

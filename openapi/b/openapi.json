@@ -834,6 +834,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "搜索关键词，去除首尾空白后精确匹配事件 ID，或对 title、slug 进行不区分大小写的包含匹配；不传或去除首尾空白后为空时不筛选",
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
