@@ -125,12 +125,8 @@ sequenceDiagram
         BrokerServer-->>BrokerClient: Return a page URL containing only the ticket
         BrokerClient->>TopBlastWeb: Redirect to or embed the page with the ticket
         activate TopBlastWeb
-        TopBlastWeb->>Gateway: Exchange the ticket
+        TopBlastWeb->>Gateway: Validate and consume the ticket, then get user information and token
         activate Gateway
-        Gateway->>BrokerAPI: Validate and consume the ticket
-        activate BrokerAPI
-        BrokerAPI-->>Gateway: Return basic user information and the token
-        deactivate BrokerAPI
         Gateway-->>TopBlastWeb: Return basic user information and the token
         deactivate Gateway
         TopBlastWeb->>Gateway: Query assets or place an order with token

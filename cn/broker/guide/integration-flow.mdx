@@ -125,12 +125,8 @@ sequenceDiagram
         BrokerServer-->>BrokerClient: 返回仅携带 ticket 的页面地址
         BrokerClient->>TopBlastWeb: 跳转或内嵌页面，传递 ticket
         activate TopBlastWeb
-        TopBlastWeb->>Gateway: 兑换 ticket
+        TopBlastWeb->>Gateway: 验证并核销 ticket，获取用户基本信息和 token
         activate Gateway
-        Gateway->>BrokerAPI: 验证并核销 ticket
-        activate BrokerAPI
-        BrokerAPI-->>Gateway: 返回用户基本信息和 token
-        deactivate BrokerAPI
         Gateway-->>TopBlastWeb: 返回用户基本信息和 token
         deactivate Gateway
         TopBlastWeb->>Gateway: 使用 token 查询资产或下单
