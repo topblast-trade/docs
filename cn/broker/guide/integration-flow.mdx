@@ -1,0 +1,152 @@
+---
+title: "接入流程"
+description: "了解券商用户通过 API 或白标交易页面接入平台的流程。"
+---
+
+TopBlast 提供 API 接入和白标接入两种方式。无论采用哪种方式，第一阶段均由券商完成用户登录，并将用户信息和 Token 同步到 topblast。第二阶段根据接入方式有所不同。
+
+券商用户登录成功后，券商服务端调用 `POST /v1/broker/tokens`，将 `brokerUserId`（券商系统中的用户 ID）和 Token 同步到 topblast。如果用户映射不存在，topblast 会在同步过程中自动创建。后续响应中的 `userId` 表示平台用户 ID。
+
+## 接入方式
+
+两种接入方式的主要区别在于交易页面的提供方和阶段二的调用方式：
+
+| 接入方式 | 交易页面 | 阶段二调用方式 | 适用场景 |
+| :--- | :--- | :--- | :--- |
+| API 接入 | 由券商自行开发和维护 | 券商客户端携带用户 Token，直接调用 topblast API 查询资产、下单及处理其他交易业务 | 券商需要完全自定义交易界面和交互体验，包括自行实现交易页面 |
+| 白标接入 | 由 TopBlast 提供 | 券商服务端申请一次性 `ticket`，再跳转或内嵌仅携带 `ticket` 的 TopBlast 交易页面；TopBlast 前端兑换 `ticket` 后查询用户资产和发起下单请求 | 券商希望快速使用 TopBlast 提供的交易页面 |
+
+## API 接入流程
+
+API 接入模式下，券商客户端在阶段二携带用户 Token，直接调用 topblast API 查询资产、下单或发起其他业务请求。
+
+```mermaid
+sequenceDiagram
+    autonumber
+
+    participant BrokerClient as Broker 客户端
+    participant BrokerServer as Broker 服务端
+    participant Gateway as TopBlast 网关
+    participant Core as TopBlast 核心交易
+
+    rect rgb(239, 246, 255)
+        Note over BrokerClient,Core: 阶段一：登录与用户映射
+
+        BrokerClient->>BrokerServer: 用户登录
+        BrokerServer->>BrokerServer: 签发用户 Token
+        BrokerServer->>Gateway: 同步用户信息和 Token
+        activate Gateway
+        Gateway->>Gateway: 验证 App ID 和请求签名
+        Gateway->>Core: 建立用户映射关系
+        activate Core
+        Core-->>Gateway: 返回用户信息
+        deactivate Core
+        Gateway-->>BrokerServer: 返回同步结果
+        deactivate Gateway
+        BrokerServer-->>BrokerClient: 返回登录结果
+    end
+
+    rect rgb(240, 253, 244)
+        Note over BrokerClient,Core: 阶段二：后续 API 请求
+
+        BrokerClient->>Gateway: 携带用户 Token 发起业务请求
+        activate Gateway
+        Gateway->>Gateway: Token 鉴权
+        Gateway->>Core: 转发 API 请求
+        activate Core
+        Core-->>Gateway: 返回 API 响应
+        deactivate Core
+        Gateway-->>BrokerClient: 返回 API 响应
+        deactivate Gateway
+    end
+```
+
+## 白标接入流程
+
+白标接入由 TopBlast 提供完整的交易页面，券商无需自行开发交易前端。如果券商自行开发交易页面，则按照上述 API 接入流程调用相应业务接口。
+
+第一阶段与 API 接入相同。阶段二由券商服务端向 TopBlast 申请短时、一次性有效的 `ticket`。券商通过页面跳转或内嵌方式打开 TopBlast 交易页面，并在 URI 中仅传递 `ticket`：
+
+```text
+https://www-dev.topblast.trade?ticket={ticket}
+```
+
+TopBlast 前端使用 `ticket` 换取用户基本信息和 `token`。兑换成功后，`ticket` 立即失效。TopBlast 前端使用返回的 `token` 查询用户资产和发起下单请求。
+
+票据兑换结果包含以下信息：
+
+```json
+{
+  "appid": "...",
+  "userId": "...",
+  "token": "...",
+  "email": "...",
+  "brokerUserId": "..."
+}
+```
+
+```mermaid
+sequenceDiagram
+    autonumber
+
+    participant BrokerClient as Broker 客户端
+    participant BrokerServer as Broker 服务端
+    participant BrokerAPI as TopBlast Broker API
+    participant TopBlastWeb as TopBlast 前端
+    participant Gateway as TopBlast Trading 网关
+    participant Core as TopBlast 核心交易
+
+    rect rgb(239, 246, 255)
+        Note over BrokerClient,Core: 阶段一：登录与用户映射
+
+        BrokerClient->>BrokerServer: 用户登录
+        BrokerServer->>BrokerServer: 签发用户 Token
+        BrokerServer->>BrokerAPI: 同步用户信息和 Token
+        activate BrokerAPI
+        BrokerAPI->>BrokerAPI: 验证 App ID 和请求签名
+        BrokerAPI->>Core: 建立用户映射关系
+        activate Core
+        Core-->>BrokerAPI: 返回用户信息
+        deactivate Core
+        BrokerAPI-->>BrokerServer: 返回同步结果
+        deactivate BrokerAPI
+        BrokerServer-->>BrokerClient: 返回登录结果
+    end
+
+    rect rgb(240, 253, 244)
+        Note over BrokerClient,Core: 阶段二：打开并使用 TopBlast 交易页面
+
+        BrokerClient->>BrokerServer: 请求打开 TopBlast 交易页面
+        BrokerServer->>BrokerAPI: 申请一次性 ticket
+        activate BrokerAPI
+        BrokerAPI->>BrokerAPI: 绑定用户信息和 Token，设置有效期
+        BrokerAPI-->>BrokerServer: 返回 ticket
+        deactivate BrokerAPI
+        BrokerServer-->>BrokerClient: 返回仅携带 ticket 的页面地址
+        BrokerClient->>TopBlastWeb: 跳转或内嵌页面，传递 ticket
+        activate TopBlastWeb
+        TopBlastWeb->>Gateway: 兑换 ticket
+        activate Gateway
+        Gateway->>BrokerAPI: 验证并核销 ticket
+        activate BrokerAPI
+        BrokerAPI-->>Gateway: 返回用户基本信息和 token
+        deactivate BrokerAPI
+        Gateway-->>TopBlastWeb: 返回用户基本信息和 token
+        deactivate Gateway
+        TopBlastWeb->>Gateway: 使用 token 查询资产或下单
+        activate Gateway
+        Gateway->>Gateway: Token 鉴权
+        Gateway->>Core: 查询资产或提交订单
+        activate Core
+        Core-->>Gateway: 返回业务结果
+        deactivate Core
+        Gateway-->>TopBlastWeb: 返回资产或订单结果
+        deactivate Gateway
+        TopBlastWeb-->>BrokerClient: 展示交易页面和业务结果
+        deactivate TopBlastWeb
+    end
+```
+
+<Warning>
+请始终使用 HTTPS。`ticket` 必须短时有效且只能成功兑换一次。不要在 URI 中传递用户 Token 或 App Secret。
+</Warning>

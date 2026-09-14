@@ -51,6 +51,7 @@
                     "group": "Broker REST API",
                     "pages": [
                       "cn/broker/guide/introduction",
+                      "cn/broker/guide/integration-flow",
                       "cn/broker/guide/authentication",
                       "cn/broker/guide/response",
                       "cn/broker/guide/pagination",
@@ -291,6 +292,7 @@
                     "group": "Broker REST API",
                     "pages": [
                       "en/broker/guide/introduction",
+                      "en/broker/guide/integration-flow",
                       "en/broker/guide/authentication",
                       "en/broker/guide/response",
                       "en/broker/guide/pagination",
