@@ -1770,6 +1770,10 @@
       "brokeraccess.BrokerInfo": {
         "type": "object",
         "properties": {
+          "assetId": {
+            "description": "Quote asset ID",
+            "type": "integer"
+          },
           "brokerId": {
             "description": "Broker ID",
             "type": "integer"
