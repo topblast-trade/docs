@@ -1,16 +1,9 @@
 ---
 title: "Integration flow"
-description: "Learn how broker users integrate through APIs or a white-label trading page."
+description: "Learn how broker users integrate through APIs."
 ---
 
-Topblast provides API integration and white-label integration. Both approaches share the same sign-in and user-mapping flow. They differ in who provides the trading page and initiates subsequent business requests.
-
-## Integration approaches
-
-| Integration | Trading page | Phase 2 requests | Best suited for |
-| :--- | :--- | :--- | :--- |
-| API integration | Developed and maintained by the broker | The broker client sends the user token directly to topblast APIs | Custom trading interfaces and user experiences |
-| White-label integration | Provided by topblast | The broker requests a one-time `ticket`, which the topblast frontend exchanges before making business requests | Quick adoption of the trading page provided by topblast |
+The broker integrates with topblast through APIs. The flow has two phases: sign-in and user mapping, followed by subsequent API requests.
 
 ## API integration flow
 
@@ -58,89 +51,3 @@ sequenceDiagram
         deactivate Gateway
     end
 ```
-
-## White-label integration flow
-
-With white-label integration, topblast provides the complete trading page, so the broker does not need to develop its own trading frontend.
-
-Phase 1 is the same as the API integration flow. In phase 2, the broker server requests a short-lived, one-time `ticket` from topblast. The broker redirects users to or embeds the topblast trading page and passes only the `ticket` in the URI:
-
-```text
-https://www-dev.topblast.trade?ticket={ticket}
-```
-
-The topblast frontend exchanges the `ticket` for basic user information and a `token`. The `ticket` becomes invalid immediately after a successful exchange. The frontend uses the returned `token` to query user assets and place orders.
-
-The ticket exchange result contains:
-
-```json
-{
-  "appid": "...",
-  "userId": "...",
-  "token": "...",
-  "email": "...",
-  "brokerUserId": "..."
-}
-```
-
-```mermaid
-sequenceDiagram
-    autonumber
-
-    participant BrokerClient as Broker client
-    participant BrokerServer as Broker server
-    participant BrokerAPI as topblast Broker API
-    participant TopBlastWeb as topblast frontend
-    participant Gateway as topblast Trading gateway
-    participant Core as topblast core trading
-
-    rect rgb(239, 246, 255)
-        Note over BrokerClient,Core: Phase 1: Sign-in and user mapping
-
-        BrokerClient->>BrokerServer: Sign in
-        BrokerServer->>BrokerServer: Issue a user token
-        BrokerServer->>BrokerAPI: Synchronize user information and token
-        activate BrokerAPI
-        BrokerAPI->>BrokerAPI: Verify the App ID and request signature
-        BrokerAPI->>Core: Establish the user mapping
-        activate Core
-        Core-->>BrokerAPI: Return user information
-        deactivate Core
-        BrokerAPI-->>BrokerServer: Return the synchronization result
-        deactivate BrokerAPI
-        BrokerServer-->>BrokerClient: Return the sign-in result
-    end
-
-    rect rgb(240, 253, 244)
-        Note over BrokerClient,Core: Phase 2: White-label page integration and business requests
-
-        BrokerClient->>BrokerServer: Request the topblast trading page
-        BrokerServer->>BrokerAPI: Request a one-time ticket
-        activate BrokerAPI
-        BrokerAPI->>BrokerAPI: Bind user information and token, then set an expiration
-        BrokerAPI-->>BrokerServer: Return the ticket
-        deactivate BrokerAPI
-        BrokerServer-->>BrokerClient: Return a page URL containing only the ticket
-        BrokerClient->>TopBlastWeb: Redirect to or embed the page with the ticket
-        activate TopBlastWeb
-        TopBlastWeb->>Gateway: Validate and consume the ticket, then get user information and token
-        activate Gateway
-        Gateway-->>TopBlastWeb: Return basic user information and the token
-        deactivate Gateway
-        TopBlastWeb->>Gateway: Query assets or place an order with token
-        activate Gateway
-        Gateway->>Gateway: Authenticate the token
-        Gateway->>Core: Query assets or submit the order
-        activate Core
-        Core-->>Gateway: Return the business result
-        deactivate Core
-        Gateway-->>TopBlastWeb: Return the asset or order result
-        deactivate Gateway
-        TopBlastWeb-->>BrokerClient: Display the trading page and business result
-        deactivate TopBlastWeb
-    end
-```
-
-<Warning>
-Always use HTTPS. The `ticket` must be short-lived and successfully exchanged only once. Never pass the user token or App Secret in the URI.
-</Warning>
