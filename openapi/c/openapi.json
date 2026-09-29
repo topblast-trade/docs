@@ -2741,22 +2741,6 @@
             "description": "taker 费用配置值",
             "type": "string"
           },
-          "tokenIdNo": {
-            "description": "兼容字段：第二结果 Token ID",
-            "type": "string"
-          },
-          "tokenIdYes": {
-            "description": "兼容字段：第一结果 Token ID",
-            "type": "string"
-          },
-          "tokenNameNo": {
-            "description": "兼容字段：第二结果展示名",
-            "type": "string"
-          },
-          "tokenNameYes": {
-            "description": "兼容字段：第一结果展示名",
-            "type": "string"
-          },
           "tokens": {
             "description": "按结果顺序排列的 Token",
             "type": "array",

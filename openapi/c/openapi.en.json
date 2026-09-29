@@ -2741,22 +2741,6 @@
             "description": "Taker-fee configuration value",
             "type": "string"
           },
-          "tokenIdNo": {
-            "description": "Compatibility field: second outcome token ID",
-            "type": "string"
-          },
-          "tokenIdYes": {
-            "description": "Compatibility field: first outcome token ID",
-            "type": "string"
-          },
-          "tokenNameNo": {
-            "description": "Compatibility field: second outcome display name",
-            "type": "string"
-          },
-          "tokenNameYes": {
-            "description": "Compatibility field: first outcome display name",
-            "type": "string"
-          },
           "tokens": {
             "description": "Outcome tokens in outcome order",
             "type": "array",
