@@ -37,6 +37,16 @@ def mdx_pages(language: str) -> dict[str, Path]:
     }
 
 
+def normalized_pages(entries: list) -> list:
+    normalized = []
+    for entry in entries:
+        if isinstance(entry, str):
+            normalized.append(re.sub(r"^(cn|en)/", "", entry))
+        elif isinstance(entry, dict) and "pages" in entry:
+            normalized.append({"group": normalized_pages(entry["pages"])})
+    return normalized
+
+
 def normalized_navigation(language: dict) -> list:
     tabs = []
     for tab in language.get("tabs", []):
@@ -48,10 +58,7 @@ def normalized_navigation(language: dict) -> list:
                     {
                         "kind": "menu",
                         "groups": [
-                            [
-                                re.sub(r"^(cn|en)/", "", page)
-                                for page in group.get("pages", [])
-                            ]
+                            normalized_pages(group.get("pages", []))
                             for group in section["groups"]
                         ],
                     }
@@ -60,14 +67,21 @@ def normalized_navigation(language: dict) -> list:
                 normalized_sections.append(
                     {
                         "kind": "group",
-                        "pages": [
-                            re.sub(r"^(cn|en)/", "", page)
-                            for page in section.get("pages", [])
-                        ],
+                        "pages": normalized_pages(section.get("pages", [])),
                     }
                 )
         tabs.append(normalized_sections)
     return tabs
+
+
+def collect_navigation_pages(entries: list) -> list[str]:
+    pages = []
+    for entry in entries:
+        if isinstance(entry, str):
+            pages.append(entry)
+        elif isinstance(entry, dict):
+            pages.extend(collect_navigation_pages(entry.get("pages", [])))
+    return pages
 
 
 def navigation_pages(language: dict) -> list[str]:
@@ -76,9 +90,9 @@ def navigation_pages(language: dict) -> list[str]:
         for section in tab.get("groups") or tab.get("menu") or []:
             if "groups" in section:
                 for group in section["groups"]:
-                    pages.extend(group.get("pages", []))
+                    pages.extend(collect_navigation_pages(group.get("pages", [])))
             else:
-                pages.extend(section.get("pages", []))
+                pages.extend(collect_navigation_pages(section.get("pages", [])))
     return pages
 
 

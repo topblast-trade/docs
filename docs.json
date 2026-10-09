@@ -33,10 +33,7 @@
               {
                 "group": "SDKs",
                 "pages": [
-                  "cn/basics/sdks/react-native",
-                  "cn/basics/sdks/flutter",
-                  "cn/basics/sdks/android",
-                  "cn/basics/sdks/swift"
+                  "cn/basics/sdks/react-native"
                 ]
               }
             ]
@@ -62,8 +59,7 @@
                   {
                     "group": "开发工具",
                     "pages": [
-                      "cn/broker/guide/signature-calculator",
-                      "cn/broker/guide/api-debugger"
+                      "cn/broker/guide/signature-calculator"
                     ]
                   },
                   {
@@ -128,31 +124,6 @@
                       "cn/broker/api-reference/events/enable",
                       "cn/broker/api-reference/events/markets",
                       "cn/broker/api-reference/events/market-enable"
-                    ]
-                  },
-                  {
-                    "group": "铺单管理",
-                    "pages": [
-                      "cn/broker/api-reference/maker/get-config",
-                      "cn/broker/api-reference/maker/update-config",
-                      "cn/broker/api-reference/maker/get-event-config",
-                      "cn/broker/api-reference/maker/update-event-config",
-                      "cn/broker/api-reference/maker/get-market-config",
-                      "cn/broker/api-reference/maker/update-market-config",
-                      "cn/broker/api-reference/maker/events",
-                      "cn/broker/api-reference/maker/event-markets",
-                      "cn/broker/api-reference/maker/resume-market",
-                      "cn/broker/api-reference/maker/markets",
-                      "cn/broker/api-reference/maker/accounts",
-                      "cn/broker/api-reference/maker/create-account",
-                      "cn/broker/api-reference/maker/update-account",
-                      "cn/broker/api-reference/maker/switch-account",
-                      "cn/broker/api-reference/maker/delete-account",
-                      "cn/broker/api-reference/maker/strategies",
-                      "cn/broker/api-reference/maker/create-strategy",
-                      "cn/broker/api-reference/maker/update-strategy",
-                      "cn/broker/api-reference/maker/switch-strategy",
-                      "cn/broker/api-reference/maker/delete-strategy"
                     ]
                   },
                   {
@@ -274,10 +245,7 @@
               {
                 "group": "SDKs",
                 "pages": [
-                  "en/basics/sdks/react-native",
-                  "en/basics/sdks/flutter",
-                  "en/basics/sdks/android",
-                  "en/basics/sdks/swift"
+                  "en/basics/sdks/react-native"
                 ]
               }
             ]
@@ -303,8 +271,7 @@
                   {
                     "group": "Developer tools",
                     "pages": [
-                      "en/broker/guide/signature-calculator",
-                      "en/broker/guide/api-debugger"
+                      "en/broker/guide/signature-calculator"
                     ]
                   },
                   {
@@ -369,31 +336,6 @@
                       "en/broker/api-reference/events/enable",
                       "en/broker/api-reference/events/markets",
                       "en/broker/api-reference/events/market-enable"
-                    ]
-                  },
-                  {
-                    "group": "Market making",
-                    "pages": [
-                      "en/broker/api-reference/maker/get-config",
-                      "en/broker/api-reference/maker/update-config",
-                      "en/broker/api-reference/maker/get-event-config",
-                      "en/broker/api-reference/maker/update-event-config",
-                      "en/broker/api-reference/maker/get-market-config",
-                      "en/broker/api-reference/maker/update-market-config",
-                      "en/broker/api-reference/maker/events",
-                      "en/broker/api-reference/maker/event-markets",
-                      "en/broker/api-reference/maker/resume-market",
-                      "en/broker/api-reference/maker/markets",
-                      "en/broker/api-reference/maker/accounts",
-                      "en/broker/api-reference/maker/create-account",
-                      "en/broker/api-reference/maker/update-account",
-                      "en/broker/api-reference/maker/switch-account",
-                      "en/broker/api-reference/maker/delete-account",
-                      "en/broker/api-reference/maker/strategies",
-                      "en/broker/api-reference/maker/create-strategy",
-                      "en/broker/api-reference/maker/update-strategy",
-                      "en/broker/api-reference/maker/switch-strategy",
-                      "en/broker/api-reference/maker/delete-strategy"
                     ]
                   },
                   {
