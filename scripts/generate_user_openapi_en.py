@@ -81,23 +81,20 @@ taker 费用配置值|||Taker-fee configuration value
 是否为最终胜出 Token；未裁决市场均为 false|||Whether this is the final winning token; false for unresolved markets
 本次实际收取的基础资产费用|||Actual base-asset fee charged for this trade
 生效配置版本|||Effective configuration version
-上游汇率状态：READY、STALE 或 UNAVAILABLE|||Upstream rate status: `READY`, `STALE`, or `UNAVAILABLE`
+汇率状态：READY、STALE 或 UNAVAILABLE|||Exchange-rate status: `READY`, `STALE`, or `UNAVAILABLE`
 全部汇率|||All exchange rates
 基础货币，例如 USDC|||Base currency, for example `USDC`
-当前缓存的全部基础货币与计价货币汇率|||All cached base-currency and quote-currency exchange rates
+全部基础货币与计价货币汇率|||All base-currency and quote-currency exchange rates
 查询全部法币汇率|||List all fiat exchange rates
 汇率数据源|||Exchange-rate data source
 费用类型原始 wire 值；未知类型原样透传|||Raw fee-type wire value; unknown values pass through unchanged
 费用配置原始整数值|||Raw integer fee-configuration value
 计价货币，例如 USD、CNY 或 MYR|||Quote currency, for example `USD`, `CNY`, or `MYR`
-返回 go-edge 最近一次从 go-quote 成功同步的全部汇率，并包含上游快照时间和 Edge 本地同步时间；首次同步完成前接口不可用。|||Return all exchange rates from the most recent successful go-quote synchronization, including the upstream snapshot time and the local Edge synchronization time. The operation is unavailable until the first synchronization completes.
-go-edge 最近一次成功同步的时间|||Time of the most recent successful go-edge synchronization
-go-edge 最近一次成功同步的时间（Unix 毫秒）|||Time of the most recent successful go-edge synchronization in Unix milliseconds
-go-quote 生成响应快照的时间|||Time when go-quote generated the response snapshot
-go-quote 生成响应快照的时间（Unix 毫秒）|||Time when go-quote generated the response snapshot, in Unix milliseconds
-go-quote 接收汇率的时间|||Time when go-quote received the exchange rate
-go-quote 接收汇率的时间（Unix 毫秒）|||Time when go-quote received the exchange rate, in Unix milliseconds
-go-quote 汇率快照版本|||go-quote exchange-rate snapshot version
+返回当前可用的全部法币汇率及相关时间信息。|||Return all currently available fiat exchange rates and related timestamps.
+汇率快照生成时间（Unix 毫秒）|||Exchange-rate snapshot generation time in Unix milliseconds
+汇率数据接收时间（Unix 毫秒）|||Exchange-rate data receipt time in Unix milliseconds
+汇率数据更新时间（Unix 毫秒）|||Exchange-rate data update time in Unix milliseconds
+汇率数据版本|||Exchange-rate data version
 数据源生成汇率的时间|||Time when the data source generated the exchange rate
 数据源生成汇率的时间（Unix 毫秒）|||Time when the data source generated the exchange rate, in Unix milliseconds
 Edge 应用源仓位快照的时间|||Time when Edge applied the source position snapshot

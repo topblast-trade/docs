@@ -1304,7 +1304,7 @@
     },
     "/v1/public/rates": {
       "get": {
-        "description": "返回 go-edge 最近一次从 go-quote 成功同步的全部汇率，并包含上游快照时间和 Edge 本地同步时间；首次同步完成前接口不可用。",
+        "description": "返回当前可用的全部法币汇率及相关时间信息。",
         "tags": [
           "用户接口-汇率"
         ],
@@ -3398,19 +3398,19 @@
         "type": "object",
         "properties": {
           "capturedAt": {
-            "description": "go-quote 生成响应快照的时间（Unix 毫秒）",
+            "description": "汇率快照生成时间（Unix 毫秒）",
             "type": "integer",
             "format": "int64"
           },
           "rates": {
-            "description": "当前缓存的全部基础货币与计价货币汇率",
+            "description": "全部基础货币与计价货币汇率",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/http_rates.Rate"
             }
           },
           "synchronizedAt": {
-            "description": "go-edge 最近一次成功同步的时间（Unix 毫秒）",
+            "description": "汇率数据更新时间（Unix 毫秒）",
             "type": "integer",
             "format": "int64"
           }
@@ -3432,7 +3432,7 @@
             "type": "string"
           },
           "receivedAt": {
-            "description": "go-quote 接收汇率的时间（Unix 毫秒）",
+            "description": "汇率数据接收时间（Unix 毫秒）",
             "type": "integer",
             "format": "int64"
           },
@@ -3446,11 +3446,11 @@
             "format": "int64"
           },
           "status": {
-            "description": "上游汇率状态：READY、STALE 或 UNAVAILABLE",
+            "description": "汇率状态：READY、STALE 或 UNAVAILABLE",
             "type": "string"
           },
           "version": {
-            "description": "go-quote 汇率快照版本",
+            "description": "汇率数据版本",
             "type": "integer"
           }
         }
