@@ -15,6 +15,9 @@ CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 _PAIRS = r"""
 保存风控配置|||Update risk configuration
+申请一次性交易页面票据|||Issue a one-time trading-page ticket
+先调用 /v1/broker/tokens 同步用户 Token，再申请 5 分钟内有效、只能兑换一次的 ticket。不要在页面 URI 中传递 Token。|||Synchronize the user token with `/v1/broker/tokens`, then request a single-use ticket that expires after five minutes. Never pass the token in the page URI.
+已同步的券商用户与 Token|||A synchronized broker user and token.
 备注|||Optional note
 币种|||Currency
 操作是否成功|||Whether the operation succeeded

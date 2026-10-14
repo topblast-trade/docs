@@ -837,6 +837,43 @@
         ]
       }
     },
+    "/v1/private/users/me": {
+      "get": {
+        "description": "Return the user for the current Bearer token authentication context. Login credentials are not returned.",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get current user",
+        "responses": {
+          "200": {
+            "description": "Current user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_user.Profile"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "Broker application ID used to route the request.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/v1/public/broker": {
       "get": {
         "description": "Return public broker information selected by the `x-app-id` header or current request domain.",
@@ -3454,6 +3491,27 @@
             "type": "integer"
           }
         }
+      },
+      "http_user.Profile": {
+        "type": "object",
+        "properties": {
+          "brokerUserId": {
+            "description": "User ID in the broker system",
+            "type": "string"
+          },
+          "email": {
+            "description": "User email address",
+            "type": "string"
+          },
+          "userId": {
+            "description": "TopBlast user ID",
+            "type": "string"
+          },
+          "username": {
+            "description": "User name",
+            "type": "string"
+          }
+        }
       }
     },
     "securitySchemes": {
@@ -3506,6 +3564,9 @@
     },
     {
       "name": "Exchange rates"
+    },
+    {
+      "name": "Users"
     }
   ],
   "x-api-side": "C"

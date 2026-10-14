@@ -15,6 +15,15 @@ CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 _PAIRS = r"""
 事件标签稳定标识|||Stable identifiers for event tags
+根据当前 Bearer Token 的认证上下文返回用户信息；不返回登录凭证。|||Return the user for the current Bearer token authentication context. Login credentials are not returned.
+查询当前用户信息|||Get current user
+当前用户信息|||Current user information
+券商系统用户 ID|||User ID in the broker system
+TopBlast 用户 ID|||TopBlast user ID
+用户接口-用户|||Users
+用户名称|||User name
+用户邮箱|||User email address
+计价资产 ID|||Quote asset ID
 分组方式；series 表示每个系列仅返回当前时间窗口事件|||Grouping mode. `series` returns only the current time-window event for each series.
 标签稳定 ID|||Stable tag ID
 标签稳定 slug|||Stable tag slug

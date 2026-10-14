@@ -837,6 +837,43 @@
         ]
       }
     },
+    "/v1/private/users/me": {
+      "get": {
+        "description": "根据当前 Bearer Token 的认证上下文返回用户信息；不返回登录凭证。",
+        "tags": [
+          "用户接口-用户"
+        ],
+        "summary": "查询当前用户信息",
+        "responses": {
+          "200": {
+            "description": "当前用户信息",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http_user.Profile"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-app-id",
+            "in": "header",
+            "required": true,
+            "description": "券商应用 ID，用于识别请求所属券商。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/v1/public/broker": {
       "get": {
         "description": "根据 x-app-id 请求头或当前请求域名返回券商公开信息。",
@@ -3454,6 +3491,27 @@
             "type": "integer"
           }
         }
+      },
+      "http_user.Profile": {
+        "type": "object",
+        "properties": {
+          "brokerUserId": {
+            "description": "券商系统用户 ID",
+            "type": "string"
+          },
+          "email": {
+            "description": "用户邮箱",
+            "type": "string"
+          },
+          "userId": {
+            "description": "TopBlast 用户 ID",
+            "type": "string"
+          },
+          "username": {
+            "description": "用户名称",
+            "type": "string"
+          }
+        }
       }
     },
     "securitySchemes": {
@@ -3506,6 +3564,9 @@
     },
     {
       "name": "用户接口-汇率"
+    },
+    {
+      "name": "用户接口-用户"
     }
   ],
   "x-api-side": "C"

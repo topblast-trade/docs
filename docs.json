@@ -69,6 +69,7 @@
                       "cn/broker/api-reference/user/update",
                       "cn/broker/api-reference/user/create-special",
                       "cn/broker/api-reference/user/login",
+                      "cn/broker/api-reference/user/ticket",
                       "cn/broker/api-reference/user/logout"
                     ]
                   },
@@ -205,6 +206,7 @@
                   {
                     "group": "账户",
                     "pages": [
+                      "cn/user/api-reference/account/current-user",
                       "cn/user/api-reference/account/summary",
                       "cn/user/api-reference/account/positions",
                       "cn/user/api-reference/trades/account"
@@ -281,6 +283,7 @@
                       "en/broker/api-reference/user/update",
                       "en/broker/api-reference/user/create-special",
                       "en/broker/api-reference/user/login",
+                      "en/broker/api-reference/user/ticket",
                       "en/broker/api-reference/user/logout"
                     ]
                   },
@@ -417,6 +420,7 @@
                   {
                     "group": "Account",
                     "pages": [
+                      "en/user/api-reference/account/current-user",
                       "en/user/api-reference/account/summary",
                       "en/user/api-reference/account/positions",
                       "en/user/api-reference/trades/account"

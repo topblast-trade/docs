@@ -1993,6 +1993,45 @@
         }
       }
     },
+    "/v1/broker/tickets": {
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "description": "先调用 /v1/broker/tokens 同步用户 Token，再申请 5 分钟内有效、只能兑换一次的 ticket。不要在页面 URI 中传递 Token。",
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "申请一次性交易页面票据",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v2.brokerLaunchTicketRequest"
+              }
+            }
+          },
+          "description": "已同步的券商用户与 Token",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerLaunchTicketResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/broker/tokens": {
       "post": {
         "security": [
@@ -3712,6 +3751,29 @@
             "description": "最近更新时间（Unix 毫秒）",
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "v2.brokerLaunchTicketRequest": {
+        "type": "object",
+        "required": [
+          "brokerUserId",
+          "token"
+        ],
+        "properties": {
+          "brokerUserId": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerLaunchTicketResponse": {
+        "type": "object",
+        "properties": {
+          "ticket": {
+            "type": "string"
           }
         }
       },

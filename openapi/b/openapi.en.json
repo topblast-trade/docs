@@ -1993,6 +1993,45 @@
         }
       }
     },
+    "/v1/broker/tickets": {
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "description": "Synchronize the user token with `/v1/broker/tokens`, then request a single-use ticket that expires after five minutes. Never pass the token in the page URI.",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Issue a one-time trading-page ticket",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v2.brokerLaunchTicketRequest"
+              }
+            }
+          },
+          "description": "A synchronized broker user and token.",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerLaunchTicketResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/broker/tokens": {
       "post": {
         "security": [
@@ -3712,6 +3751,29 @@
             "description": "Updated At.",
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "v2.brokerLaunchTicketRequest": {
+        "type": "object",
+        "required": [
+          "brokerUserId",
+          "token"
+        ],
+        "properties": {
+          "brokerUserId": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "v2.brokerLaunchTicketResponse": {
+        "type": "object",
+        "properties": {
+          "ticket": {
+            "type": "string"
           }
         }
       },
