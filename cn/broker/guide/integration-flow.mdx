@@ -20,7 +20,7 @@ sequenceDiagram
 
     Note over BrokerClient,BrokerAPI: 第一阶段：用户登录与同步
     BrokerClient->>BrokerServer: 用户登录（券商自有接口）
-    BrokerServer->>BrokerAPI: 同步用户 Token（POST /v1/broker/tokens）
+    BrokerServer->>BrokerAPI: 同步用户 Token（POST /v1/broker/users/{brokerUserId}/tokens）
     BrokerAPI-->>BrokerServer: 返回用户映射结果
     BrokerServer-->>BrokerClient: 返回登录结果和用户 Token
     Note over BrokerClient,TradingAPI: 第二阶段：调用交易接口
@@ -33,7 +33,7 @@ sequenceDiagram
 ### 流程说明
 
 1. **用户登录**：用户在 Broker 客户端登录。该步骤使用券商自己的登录接口，不调用 TopBlast API。
-2. **同步用户 Token**：Broker 服务端调用 `POST /v1/broker/tokens`，提交 `brokerUserId` 和用户 Token。请求需要携带 Broker App ID、时间戳和签名。
+2. **同步用户 Token**：Broker 服务端调用 `POST /v1/broker/users/{brokerUserId}/tokens`，在路径中传递 `brokerUserId`，在请求体中提交用户 Token。请求需要携带 Broker App ID、时间戳和签名。
 3. **返回用户映射结果**：TopBlast 建立或更新用户映射，并将平台用户信息返回给 Broker 服务端。后续响应中的 `userId` 表示 TopBlast 平台用户 ID。
 4. **返回登录结果和用户 Token**：Broker 服务端将登录结果和用户 Token 返回给客户端。不要把 Broker App Secret 返回给客户端。
 
@@ -64,12 +64,12 @@ sequenceDiagram
 
     Note over BrokerClient,BrokerAPI: 第一阶段：用户登录与同步
     BrokerClient->>BrokerServer: 用户登录（券商自有接口）
-    BrokerServer->>BrokerAPI: 同步用户 Token（POST /v1/broker/tokens）
+    BrokerServer->>BrokerAPI: 同步用户 Token（POST /v1/broker/users/{brokerUserId}/tokens）
     BrokerAPI-->>BrokerServer: 返回用户映射结果
     BrokerServer-->>BrokerClient: 返回登录结果和用户 Token
     Note over BrokerClient,TradingAPI: 第二阶段：接入交易页面
     BrokerClient->>BrokerServer: 请求打开交易页面
-    BrokerServer->>BrokerAPI: 申请 ticket（POST /v1/broker/tickets）
+    BrokerServer->>BrokerAPI: 申请 ticket（POST /v1/broker/users/{brokerUserId}/tickets）
     BrokerAPI-->>BrokerServer: 返回一次性 ticket
     BrokerServer-->>BrokerClient: 返回交易页面地址（?ticket={ticket}）
     BrokerClient->>TopBlastWeb: 跳转或嵌入交易页面
@@ -85,12 +85,12 @@ sequenceDiagram
 ### 流程说明
 
 1. **用户登录**：用户在 Broker 客户端登录。该步骤使用券商自己的登录接口，不调用 TopBlast API。
-2. **同步用户 Token**：Broker 服务端调用 `POST /v1/broker/tokens`，提交 `brokerUserId` 和用户 Token。请求需要携带 Broker App ID、时间戳和签名。
+2. **同步用户 Token**：Broker 服务端调用 `POST /v1/broker/users/{brokerUserId}/tokens`，在路径中传递 `brokerUserId`，在请求体中提交用户 Token。请求需要携带 Broker App ID、时间戳和签名。
 3. **返回用户映射结果**：TopBlast 建立或更新用户映射，并将平台用户信息返回给 Broker 服务端。
 4. **返回登录结果和用户 Token**：Broker 服务端将登录结果和用户 Token 返回给客户端。不要把 Broker App Secret 返回给客户端。
 
 5. **请求打开交易页面**：用户在 Broker 客户端进入交易入口，客户端向 Broker 服务端请求打开交易页面。
-6. **申请一次性 ticket**：Broker 服务端调用 `POST /v1/broker/tickets`，提交已同步的 `brokerUserId` 和 Token。请求同样需要 Broker 签名。返回的 `ticket` 有效期为 5 分钟，且只能成功兑换一次。
+6. **申请一次性 ticket**：Broker 服务端调用 `POST /v1/broker/users/{brokerUserId}/tickets`，在路径中传递已同步的 `brokerUserId`，无需请求体。TopBlast 使用此前同步且仍有效的用户 Token 签发 ticket。请求同样需要 Broker 签名。返回的 `ticket` 有效期为 5 分钟，且只能成功兑换一次。
 7. **返回 ticket**：TopBlast Broker API 将一次性 `ticket` 返回给 Broker 服务端。
 8. **生成交易页面地址**：Broker 服务端将 `ticket` 拼接到交易页面地址中，再把地址返回给客户端：
 

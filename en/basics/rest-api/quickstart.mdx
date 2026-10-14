@@ -23,20 +23,20 @@ After the user signs in to the broker, call the login endpoint from the broker s
 <CodeGroup>
   ```bash cURL
   curl --request POST \
-    --url https://api-test.topblast.trade/v1/broker/tokens \
+    --url https://api-test.topblast.trade/v1/broker/broker-user-10001/tokens \
     --header 'Content-Type: application/json' \
     --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>' \
-    --data '{"userId":"broker-user-10001","userName":"alice","email":"alice@example.com","token":"<user_access_token>"}'
+    --data '{"userName":"alice","email":"alice@example.com","token":"<user_access_token>"}'
   ```
 </CodeGroup>
 
-topblast creates the mapping when necessary and returns the platform user UID:
+topblast creates the mapping when necessary and returns the platform user ID:
 
 ```json
 {
-  "uid": "1000000000001"
+  "userId": "1000000000001"
 }
 ```
 
@@ -46,12 +46,12 @@ Use the [API debugger](/en/broker/guide/api-debugger) to generate the signature 
 
 ## 2. Query the user
 
-Use the returned `uid` or broker-side `userId` to verify the mapping:
+Use the returned `userId` or broker-side `brokerUserId` to verify the mapping:
 
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api-test.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
+    --url 'https://api-test.topblast.trade/v1/broker/users?user=1000000000001&page=1&size=20' \
     --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
@@ -64,12 +64,12 @@ Query parameter order and encoding are part of the signature and must exactly ma
 
 ## 3. Query user assets
 
-Retrieve assets and balances with the platform user UID:
+Retrieve assets and balances with the platform user ID:
 
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api-test.topblast.trade/v1/broker/assets?uid=1000000000001&page=1&size=20' \
+    --url 'https://api-test.topblast.trade/v1/broker/assets?user=1000000000001&page=1&size=20' \
     --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'

@@ -16,8 +16,7 @@ CJK_RE = re.compile(r"[\u3400-\u9fff]")
 _PAIRS = r"""
 保存风控配置|||Update risk configuration
 申请一次性交易页面票据|||Issue a one-time trading-page ticket
-先调用 /v1/broker/tokens 同步用户 Token，再申请 5 分钟内有效、只能兑换一次的 ticket。不要在页面 URI 中传递 Token。|||Synchronize the user token with `/v1/broker/tokens`, then request a single-use ticket that expires after five minutes. Never pass the token in the page URI.
-已同步的券商用户与 Token|||A synchronized broker user and token.
+先调用 `/v1/broker/users/{brokerUserId}/tokens` 同步用户 Token，再申请 5 分钟内有效、只能兑换一次的 ticket。|||First call `/v1/broker/users/{brokerUserId}/tokens` to synchronize the user token, then request a single-use ticket that expires after five minutes.
 备注|||Optional note
 币种|||Currency
 操作是否成功|||Whether the operation succeeded
@@ -57,7 +56,7 @@ _PAIRS = r"""
 创建时间（Unix 毫秒）|||Creation time as a Unix-millisecond timestamp
 创建时间范围起点（Unix 毫秒，包含）|||Start of the creation-time range in Unix milliseconds, inclusive
 创建时间范围终点（Unix 毫秒，不包含）|||End of the creation-time range in Unix milliseconds, exclusive
-创建特殊账户|||Create special account
+创建用户|||Create user
 创建用户 API Key|||Create user API key
 错误原因|||Error message
 待平仓的结果 Token ID|||Outcome token ID to close

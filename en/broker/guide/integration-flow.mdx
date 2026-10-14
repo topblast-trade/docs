@@ -20,7 +20,7 @@ sequenceDiagram
 
     Note over BrokerClient,BrokerAPI: Phase 1: User sign-in and synchronization
     BrokerClient->>BrokerServer: Sign in (broker-owned endpoint)
-    BrokerServer->>BrokerAPI: Sync user token (POST /v1/broker/tokens)
+    BrokerServer->>BrokerAPI: Sync user token (POST /v1/broker/users/{brokerUserId}/tokens)
     BrokerAPI-->>BrokerServer: Return the user mapping
     BrokerServer-->>BrokerClient: Return the sign-in result and user token
     Note over BrokerClient,TradingAPI: Phase 2: Call trading APIs
@@ -33,7 +33,7 @@ sequenceDiagram
 ### Flow details
 
 1. **Sign in**: The user signs in through the broker client. This step uses the broker's own endpoint and does not call a topblast API.
-2. **Synchronize the user token**: The broker server calls `POST /v1/broker/tokens` with the `brokerUserId` and user token. The request must include the Broker App ID, timestamp, and signature.
+2. **Synchronize the user token**: The broker server calls `POST /v1/broker/users/{brokerUserId}/tokens`, passing `brokerUserId` in the path and the user token in the request body. The request must include the Broker App ID, timestamp, and signature.
 3. **Return the user mapping**: Topblast creates or updates the user mapping and returns the platform user information to the broker server. In subsequent responses, `userId` identifies the topblast platform user.
 4. **Return the sign-in result and user token**: The broker server returns the sign-in result and user token to the client. Never return the Broker App Secret to the client.
 
@@ -64,12 +64,12 @@ sequenceDiagram
 
     Note over BrokerClient,BrokerAPI: Phase 1: User sign-in and synchronization
     BrokerClient->>BrokerServer: Sign in (broker-owned endpoint)
-    BrokerServer->>BrokerAPI: Sync user token (POST /v1/broker/tokens)
+    BrokerServer->>BrokerAPI: Sync user token (POST /v1/broker/users/{brokerUserId}/tokens)
     BrokerAPI-->>BrokerServer: Return the user mapping
     BrokerServer-->>BrokerClient: Return the sign-in result and user token
     Note over BrokerClient,TradingAPI: Phase 2: Access the trading page
     BrokerClient->>BrokerServer: Request to open the trading page
-    BrokerServer->>BrokerAPI: Request a ticket (POST /v1/broker/tickets)
+    BrokerServer->>BrokerAPI: Request a ticket (POST /v1/broker/users/{brokerUserId}/tickets)
     BrokerAPI-->>BrokerServer: Return the one-time ticket
     BrokerServer-->>BrokerClient: Return the page URL (?ticket={ticket})
     BrokerClient->>TopBlastWeb: Redirect to or embed the trading page
@@ -85,12 +85,12 @@ sequenceDiagram
 ### Flow details
 
 1. **Sign in**: The user signs in through the broker client. This step uses the broker's own endpoint and does not call a topblast API.
-2. **Synchronize the user token**: The broker server calls `POST /v1/broker/tokens` with the `brokerUserId` and user token. The request must include the Broker App ID, timestamp, and signature.
+2. **Synchronize the user token**: The broker server calls `POST /v1/broker/users/{brokerUserId}/tokens`, passing `brokerUserId` in the path and the user token in the request body. The request must include the Broker App ID, timestamp, and signature.
 3. **Return the user mapping**: Topblast creates or updates the user mapping and returns the platform user information to the broker server.
 4. **Return the sign-in result and user token**: The broker server returns the sign-in result and user token to the client. Never return the Broker App Secret to the client.
 
 5. **Request to open the trading page**: The user enters the trading area in the broker client, which asks the broker server to open the trading page.
-6. **Request a one-time ticket**: The broker server calls `POST /v1/broker/tickets` with the synchronized `brokerUserId` and token. This request also requires the Broker signature. The returned `ticket` is valid for five minutes and can be successfully redeemed only once.
+6. **Request a one-time ticket**: The broker server calls `POST /v1/broker/users/{brokerUserId}/tickets`, passing the synchronized `brokerUserId` in the path and no request body. Topblast issues the ticket with a previously synchronized token that is still active. This request also requires the Broker signature. The returned `ticket` is valid for five minutes and can be successfully redeemed only once.
 7. **Return the ticket**: The topblast Broker API returns the one-time `ticket` to the broker server.
 8. **Build the trading page URL**: The broker server adds the `ticket` to the trading page URL and returns the URL to the client:
 

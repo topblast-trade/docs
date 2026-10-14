@@ -1955,121 +1955,6 @@
         }
       }
     },
-    "/v1/broker/special-users": {
-      "post": {
-        "security": [
-          {
-            "BrokerAppID": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-用户"
-        ],
-        "summary": "创建特殊账户",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/req.BrokerCreateSpecialUserRequest"
-              }
-            }
-          },
-          "description": "特殊账户信息",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/v2.brokerSpecialUserData"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/tickets": {
-      "post": {
-        "security": [
-          {
-            "BrokerAppID": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "description": "先调用 /v1/broker/tokens 同步用户 Token，再申请 5 分钟内有效、只能兑换一次的 ticket。不要在页面 URI 中传递 Token。",
-        "tags": [
-          "券商接口-用户"
-        ],
-        "summary": "申请一次性交易页面票据",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/v2.brokerLaunchTicketRequest"
-              }
-            }
-          },
-          "description": "已同步的券商用户与 Token",
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/v2.brokerLaunchTicketResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/tokens": {
-      "post": {
-        "security": [
-          {
-            "BrokerAppID": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "券商接口-用户"
-        ],
-        "summary": "用户登录",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/req.BrokerTokenSyncRequest"
-              }
-            }
-          },
-          "description": "用户 Token 同步信息",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/v2.brokerUserIDData"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/broker/trades": {
       "get": {
         "security": [
@@ -2222,8 +2107,7 @@
             "name": "begin",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "integer"
             }
           },
           {
@@ -2231,8 +2115,7 @@
             "name": "end",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "integer"
             }
           },
           {
@@ -2433,6 +2316,42 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerUserListData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "创建用户",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerCreateUserRequest"
+              }
+            }
+          },
+          "description": "用户信息",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerCreatedUserData"
                 }
               }
             }
@@ -2680,7 +2599,93 @@
         }
       }
     },
-    "/v1/broker/{brokerUserId}/tokens": {
+    "/v1/broker/users/{brokerUserId}/tickets": {
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "description": "先调用 `/v1/broker/users/{brokerUserId}/tokens` 同步用户 Token，再申请 5 分钟内有效、只能兑换一次的 ticket。",
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "申请一次性交易页面票据",
+        "parameters": [
+          {
+            "description": "券商系统中的用户 ID",
+            "name": "brokerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerLaunchTicketResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/users/{brokerUserId}/tokens": {
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-用户"
+        ],
+        "summary": "用户登录",
+        "parameters": [
+          {
+            "description": "券商系统中的用户 ID",
+            "name": "brokerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerTokenSyncRequest"
+              }
+            }
+          },
+          "description": "用户 Token 同步信息",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerUserIDData"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "security": [
           {
@@ -2801,7 +2806,7 @@
           }
         }
       },
-      "req.BrokerCreateSpecialUserRequest": {
+      "req.BrokerCreateUserRequest": {
         "type": "object",
         "required": [
           "type"
@@ -2903,14 +2908,9 @@
       "req.BrokerTokenSyncRequest": {
         "type": "object",
         "required": [
-          "brokerUserId",
           "token"
         ],
         "properties": {
-          "brokerUserId": {
-            "description": "券商系统中的用户 ID",
-            "type": "string"
-          },
           "desc": {
             "description": "用户备注；不传时新用户保存为空",
             "type": "string"
@@ -2937,27 +2937,15 @@
             "type": "string",
             "maxLength": 512
           },
-          "executionMode": {
-            "description": "成交模式：撮合或对冲；不传时保持不变",
-            "type": "string",
-            "enum": [
-              "MATCHING",
-              "HEDGING"
-            ]
-          },
           "name": {
             "description": "券商名称；不传时保持不变",
             "type": "string",
             "maxLength": 64
           },
           "quoteCurrency": {
-            "description": "计价货币：CNY、MYR 或 USDC；不传时保持不变",
+            "description": "计价货币必须来自 MIS 的有效资产列表；不传时保持不变",
             "type": "string",
-            "enum": [
-              "CNY",
-              "MYR",
-              "USDC"
-            ]
+            "maxLength": 16
           },
           "webhookUrl": {
             "description": "Webhook URL；不传时保持不变，传空字符串时清空",
@@ -2976,6 +2964,15 @@
           "userName": {
             "description": "新的用户名称；不传或传空字符串时保持不变",
             "type": "string"
+          }
+        }
+      },
+      "resp.BrokerError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "invalid request"
           }
         }
       },
@@ -3019,6 +3016,11 @@
           "category": {
             "description": "事件分类",
             "type": "string"
+          },
+          "createdAt": {
+            "description": "事件创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
           },
           "enabled": {
             "description": "是否已为券商启用",
@@ -3245,12 +3247,26 @@
           }
         }
       },
+      "service.Money": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string"
+          },
+          "assetId": {
+            "type": "integer"
+          }
+        }
+      },
       "service.TransferRecord": {
         "type": "object",
         "properties": {
           "amount": {
-            "description": "划转金额",
-            "type": "number"
+            "description": "划转金额（E6 十进制字符串）",
+            "type": "string"
+          },
+          "assetId": {
+            "type": "integer"
           },
           "createdAt": {
             "description": "创建时间（Unix 毫秒）",
@@ -3264,6 +3280,9 @@
           "direction": {
             "description": "划转方向：1 入金，2 出金",
             "type": "integer"
+          },
+          "money": {
+            "$ref": "#/components/schemas/service.Money"
           },
           "orderId": {
             "description": "平台划转订单 ID",
@@ -3309,9 +3328,13 @@
         ],
         "properties": {
           "amount": {
-            "description": "划转金额，必须大于 0，最多 4 位小数；超过 4 位小数将拒绝请求",
+            "description": "划转金额，必须大于 0，最多 6 位小数；超过 6 位小数将拒绝请求",
             "type": "string",
-            "example": "12.3456"
+            "example": "12.345678"
+          },
+          "assetId": {
+            "description": "资产 ID；不传时根据币种查询资产定义",
+            "type": "integer"
           },
           "brokerUserId": {
             "description": "券商系统中的用户 ID",
@@ -3487,6 +3510,19 @@
             "description": "备注；不传时为空字符串",
             "type": "string",
             "maxLength": 255
+          }
+        }
+      },
+      "v2.brokerCreatedUserData": {
+        "type": "object",
+        "properties": {
+          "brokerUserId": {
+            "description": "券商系统中的用户 ID",
+            "type": "string"
+          },
+          "userId": {
+            "description": "平台用户 ID",
+            "type": "string"
           }
         }
       },
@@ -3713,6 +3749,11 @@
             "description": "事件分类",
             "type": "string"
           },
+          "createdAt": {
+            "description": "事件创建时间（Unix 毫秒）",
+            "type": "integer",
+            "format": "int64"
+          },
           "enabled": {
             "description": "是否已为券商启用",
             "type": "boolean"
@@ -3751,21 +3792,6 @@
             "description": "最近更新时间（Unix 毫秒）",
             "type": "integer",
             "format": "int64"
-          }
-        }
-      },
-      "v2.brokerLaunchTicketRequest": {
-        "type": "object",
-        "required": [
-          "brokerUserId",
-          "token"
-        ],
-        "properties": {
-          "brokerUserId": {
-            "type": "string"
-          },
-          "token": {
-            "type": "string"
           }
         }
       },
@@ -4163,16 +4189,23 @@
             "description": "券商域名",
             "type": "string"
           },
-          "executionMode": {
-            "description": "成交模式：MATCHING 或 HEDGING",
+          "minOrderAmount": {
+            "description": "最小下单金额，单位为计价货币的十进制字符串",
             "type": "string"
           },
           "name": {
             "description": "券商名称",
             "type": "string"
           },
+          "quickOrderAmounts": {
+            "description": "一键下单金额档位，单位为计价货币的十进制字符串",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "quoteCurrency": {
-            "description": "计价货币：CNY、MYR 或 USDC",
+            "description": "计价货币，来自 MIS 中已启用的资产列表",
             "type": "string"
           },
           "status": {
@@ -4186,19 +4219,6 @@
           },
           "webhookUrl": {
             "description": "Webhook 地址",
-            "type": "string"
-          }
-        }
-      },
-      "v2.brokerSpecialUserData": {
-        "type": "object",
-        "properties": {
-          "brokerUserId": {
-            "description": "券商系统中的用户 ID",
-            "type": "string"
-          },
-          "userId": {
-            "description": "平台用户 ID",
             "type": "string"
           }
         }
@@ -4564,10 +4584,10 @@
       "name": "券商接口-风控"
     },
     {
-      "name": "券商接口-用户"
+      "name": "券商接口-划转"
     },
     {
-      "name": "券商接口-划转"
+      "name": "券商接口-用户"
     }
   ],
   "x-api-side": "BROKER"

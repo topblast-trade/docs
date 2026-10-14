@@ -70,14 +70,15 @@ export const BrokerApiDebugger = ({ locale = "zh" }) => {
     "bs11_f154c04553ddd705662184d3728bfb398aa78182d014e8b09a7c2ee7e9c28b57";
   const credentialStorageKey = "topblast-broker-api-debugger-credentials";
   const endpoints = [
-    ["POST", "/v1/broker/tokens", "同步用户 Token", "Synchronize user token"],
-    ["DELETE", "/v1/broker/{userId}/tokens", "删除用户 Token", "Delete user token"],
+    ["POST", "/v1/broker/users/{brokerUserId}/tokens", "同步用户 Token", "Synchronize user token"],
+    ["DELETE", "/v1/broker/users/{brokerUserId}/tokens", "删除用户 Token", "Delete user token"],
+    ["POST", "/v1/broker/users/{brokerUserId}/tickets", "申请 ticket", "Issue ticket"],
     ["GET", "/v1/broker/users", "查询用户列表", "List users"],
-    ["PATCH", "/v1/broker/users/{userId}", "更新用户", "Update user"],
-    ["POST", "/v1/broker/special-users", "创建特殊账户", "Create special account"],
-    ["GET", "/v1/broker/users/{userId}/api-keys", "查询用户 API Key", "List user API keys"],
-    ["POST", "/v1/broker/users/{userId}/api-keys", "创建用户 API Key", "Create user API key"],
-    ["DELETE", "/v1/broker/users/{userId}/api-keys/{apiKey}", "删除用户 API Key", "Delete user API key"],
+    ["POST", "/v1/broker/users", "创建用户", "Create user"],
+    ["PATCH", "/v1/broker/users/{brokerUserId}", "更新用户", "Update user"],
+    ["GET", "/v1/broker/users/{brokerUserId}/api-keys", "查询用户 API Key", "List user API keys"],
+    ["POST", "/v1/broker/users/{brokerUserId}/api-keys", "创建用户 API Key", "Create user API key"],
+    ["DELETE", "/v1/broker/users/{brokerUserId}/api-keys/{apiKey}", "删除用户 API Key", "Delete user API key"],
     ["GET", "/v1/broker/settings", "查询券商设置", "Get broker settings"],
     ["PATCH", "/v1/broker/settings", "更新券商设置", "Update broker settings"],
     ["POST", "/v1/broker/transfers", "创建划转", "Create transfer"],
@@ -170,7 +171,11 @@ export const BrokerApiDebugger = ({ locale = "zh" }) => {
     setSelectedID(id);
     setRequestPath(endpoint.path);
     setRawQuery("");
-    setRequestBody(endpoint.method === "GET" ? "" : "{}");
+    setRequestBody(
+      endpoint.method === "GET" || endpoint.method === "DELETE" || endpoint.path.endsWith("/tickets")
+        ? ""
+        : "{}",
+    );
     setResult(null);
     setError("");
   };
@@ -386,7 +391,7 @@ export const BrokerApiDebugger = ({ locale = "zh" }) => {
             className={inputClassName}
             value={requestPath}
             onChange={(event) => setRequestPath(event.target.value)}
-            placeholder="/v1/broker/tokens"
+            placeholder="/v1/broker/users/{brokerUserId}/tokens"
           />
         </div>
         <div className="mt-4">
@@ -404,7 +409,7 @@ export const BrokerApiDebugger = ({ locale = "zh" }) => {
             className={`${inputClassName} min-h-56 font-mono`}
             value={requestBody}
             onChange={(event) => setRequestBody(event.target.value)}
-            placeholder={'{"userId":"broker-user-10001","token":"token-value"}'}
+            placeholder={'{"token":"token-value"}'}
             spellCheck={false}
           />
         </div>

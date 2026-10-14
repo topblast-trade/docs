@@ -54,7 +54,7 @@ export const SignatureCalculator = ({ locale = "zh" }) => {
   const [appSecret, setAppSecret] = useState("");
   const [timestamp, setTimestamp] = useState(() => String(Date.now()));
   const [method, setMethod] = useState("POST");
-  const [path, setPath] = useState("/v1/broker/tokens");
+  const [path, setPath] = useState("/v1/broker/broker-user-10001/tokens");
   const [query, setQuery] = useState("");
   const [body, setBody] = useState("");
   const [stringToSign, setStringToSign] = useState("");
@@ -177,7 +177,7 @@ export const SignatureCalculator = ({ locale = "zh" }) => {
           className={inputClassName}
           value={path}
           onChange={(event) => setPath(event.target.value)}
-          placeholder="/v1/broker/tokens"
+          placeholder="/v1/broker/broker-user-10001/tokens"
         />
       </div>
 

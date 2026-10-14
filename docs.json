@@ -67,10 +67,10 @@
                     "pages": [
                       "cn/broker/api-reference/user/users",
                       "cn/broker/api-reference/user/update",
-                      "cn/broker/api-reference/user/create-special",
+                      "cn/broker/api-reference/user/create",
                       "cn/broker/api-reference/user/login",
-                      "cn/broker/api-reference/user/ticket",
-                      "cn/broker/api-reference/user/logout"
+                      "cn/broker/api-reference/user/logout",
+                      "cn/broker/api-reference/user/ticket"
                     ]
                   },
                   {
@@ -281,10 +281,10 @@
                     "pages": [
                       "en/broker/api-reference/user/users",
                       "en/broker/api-reference/user/update",
-                      "en/broker/api-reference/user/create-special",
+                      "en/broker/api-reference/user/create",
                       "en/broker/api-reference/user/login",
-                      "en/broker/api-reference/user/ticket",
-                      "en/broker/api-reference/user/logout"
+                      "en/broker/api-reference/user/logout",
+                      "en/broker/api-reference/user/ticket"
                     ]
                   },
                   {

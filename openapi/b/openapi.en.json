@@ -1955,121 +1955,6 @@
         }
       }
     },
-    "/v1/broker/special-users": {
-      "post": {
-        "security": [
-          {
-            "BrokerAppID": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "Users"
-        ],
-        "summary": "Create special account",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/req.BrokerCreateSpecialUserRequest"
-              }
-            }
-          },
-          "description": "Request Body.",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/v2.brokerSpecialUserData"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/tickets": {
-      "post": {
-        "security": [
-          {
-            "BrokerAppID": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "description": "Synchronize the user token with `/v1/broker/tokens`, then request a single-use ticket that expires after five minutes. Never pass the token in the page URI.",
-        "tags": [
-          "Users"
-        ],
-        "summary": "Issue a one-time trading-page ticket",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/v2.brokerLaunchTicketRequest"
-              }
-            }
-          },
-          "description": "A synchronized broker user and token.",
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/v2.brokerLaunchTicketResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/broker/tokens": {
-      "post": {
-        "security": [
-          {
-            "BrokerAppID": [],
-            "BrokerTimestamp": [],
-            "BrokerSignature": []
-          }
-        ],
-        "tags": [
-          "Users"
-        ],
-        "summary": "Synchronize a user token",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/req.BrokerTokenSyncRequest"
-              }
-            }
-          },
-          "description": "Request Body.",
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/v2.brokerUserIDData"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/broker/trades": {
       "get": {
         "security": [
@@ -2222,8 +2107,7 @@
             "name": "begin",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "integer"
             }
           },
           {
@@ -2231,8 +2115,7 @@
             "name": "end",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "integer"
             }
           },
           {
@@ -2433,6 +2316,42 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/v2.brokerUserListData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerCreateUserRequest"
+              }
+            }
+          },
+          "description": "Request Body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerCreatedUserData"
                 }
               }
             }
@@ -2680,7 +2599,93 @@
         }
       }
     },
-    "/v1/broker/{brokerUserId}/tokens": {
+    "/v1/broker/users/{brokerUserId}/tickets": {
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "description": "First call `/v1/broker/users/{brokerUserId}/tokens` to synchronize the user token, then request a single-use ticket that expires after five minutes.",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Issue a one-time trading-page ticket",
+        "parameters": [
+          {
+            "description": "User ID in the broker system.",
+            "name": "brokerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerLaunchTicketResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/broker/users/{brokerUserId}/tokens": {
+      "post": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Synchronize a user token",
+        "parameters": [
+          {
+            "description": "User ID in the broker system.",
+            "name": "brokerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/req.BrokerTokenSyncRequest"
+              }
+            }
+          },
+          "description": "Request Body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v2.brokerUserIDData"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "security": [
           {
@@ -2801,7 +2806,7 @@
           }
         }
       },
-      "req.BrokerCreateSpecialUserRequest": {
+      "req.BrokerCreateUserRequest": {
         "type": "object",
         "required": [
           "type"
@@ -2903,14 +2908,9 @@
       "req.BrokerTokenSyncRequest": {
         "type": "object",
         "required": [
-          "brokerUserId",
           "token"
         ],
         "properties": {
-          "brokerUserId": {
-            "description": "User ID in the broker system.",
-            "type": "string"
-          },
           "desc": {
             "description": "User description. When omitted, it is empty for a new user.",
             "type": "string"
@@ -2937,27 +2937,15 @@
             "type": "string",
             "maxLength": 512
           },
-          "executionMode": {
-            "description": "Execution mode: matching or hedging. Omit it to leave the current value unchanged.",
-            "type": "string",
-            "enum": [
-              "MATCHING",
-              "HEDGING"
-            ]
-          },
           "name": {
             "description": "Broker name. Omit it to leave the current value unchanged.",
             "type": "string",
             "maxLength": 64
           },
           "quoteCurrency": {
-            "description": "Quote currency: CNY, MYR, or USDC. Omit it to leave the current value unchanged.",
+            "description": "Quote currency must exist in the active MIS asset list. Omit it to leave the current value unchanged.",
             "type": "string",
-            "enum": [
-              "CNY",
-              "MYR",
-              "USDC"
-            ]
+            "maxLength": 16
           },
           "webhookUrl": {
             "description": "Webhook URL. Omit it to leave the current value unchanged, or send an empty string to clear it.",
@@ -2976,6 +2964,15 @@
           "userName": {
             "description": "New user name. Omit it or send an empty string to leave the current value unchanged.",
             "type": "string"
+          }
+        }
+      },
+      "resp.BrokerError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "invalid request"
           }
         }
       },
@@ -3019,6 +3016,11 @@
           "category": {
             "description": "Category.",
             "type": "string"
+          },
+          "createdAt": {
+            "description": "Created At.",
+            "type": "integer",
+            "format": "int64"
           },
           "enabled": {
             "description": "Enabled.",
@@ -3245,12 +3247,26 @@
           }
         }
       },
+      "service.Money": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string"
+          },
+          "assetId": {
+            "type": "integer"
+          }
+        }
+      },
       "service.TransferRecord": {
         "type": "object",
         "properties": {
           "amount": {
             "description": "Amount.",
-            "type": "number"
+            "type": "string"
+          },
+          "assetId": {
+            "type": "integer"
           },
           "createdAt": {
             "description": "Created At.",
@@ -3264,6 +3280,9 @@
           "direction": {
             "description": "Transfer direction: 1 for deposit, 2 for withdrawal.",
             "type": "integer"
+          },
+          "money": {
+            "$ref": "#/components/schemas/service.Money"
           },
           "orderId": {
             "description": "Platform transfer order ID.",
@@ -3309,9 +3328,13 @@
         ],
         "properties": {
           "amount": {
-            "description": "Transfer amount; must be greater than zero and have at most four decimal places. Amounts with more than four decimal places are rejected.",
+            "description": "Transfer amount; must be greater than zero and have at most six decimal places. Amounts with more than six decimal places are rejected.",
             "type": "string",
-            "example": "12.3456"
+            "example": "12.345678"
+          },
+          "assetId": {
+            "description": "Asset ID. Omit it to resolve the asset definition from the currency.",
+            "type": "integer"
           },
           "brokerUserId": {
             "description": "User ID in the broker system.",
@@ -3487,6 +3510,19 @@
             "description": "Remark. Defaults to an empty string when omitted.",
             "type": "string",
             "maxLength": 255
+          }
+        }
+      },
+      "v2.brokerCreatedUserData": {
+        "type": "object",
+        "properties": {
+          "brokerUserId": {
+            "description": "User ID in the broker system.",
+            "type": "string"
+          },
+          "userId": {
+            "description": "Platform user ID.",
+            "type": "string"
           }
         }
       },
@@ -3713,6 +3749,11 @@
             "description": "Category.",
             "type": "string"
           },
+          "createdAt": {
+            "description": "Created At.",
+            "type": "integer",
+            "format": "int64"
+          },
           "enabled": {
             "description": "Enabled.",
             "type": "boolean"
@@ -3751,21 +3792,6 @@
             "description": "Updated At.",
             "type": "integer",
             "format": "int64"
-          }
-        }
-      },
-      "v2.brokerLaunchTicketRequest": {
-        "type": "object",
-        "required": [
-          "brokerUserId",
-          "token"
-        ],
-        "properties": {
-          "brokerUserId": {
-            "type": "string"
-          },
-          "token": {
-            "type": "string"
           }
         }
       },
@@ -4163,13 +4189,20 @@
             "description": "Domain.",
             "type": "string"
           },
-          "executionMode": {
-            "description": "Execution Mode.",
+          "minOrderAmount": {
+            "description": "Min Order Amount.",
             "type": "string"
           },
           "name": {
             "description": "Name.",
             "type": "string"
+          },
+          "quickOrderAmounts": {
+            "description": "Quick Order Amounts.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "quoteCurrency": {
             "description": "Quote Currency.",
@@ -4186,19 +4219,6 @@
           },
           "webhookUrl": {
             "description": "Webhook Url.",
-            "type": "string"
-          }
-        }
-      },
-      "v2.brokerSpecialUserData": {
-        "type": "object",
-        "properties": {
-          "brokerUserId": {
-            "description": "User ID in the broker system.",
-            "type": "string"
-          },
-          "userId": {
-            "description": "Platform user ID.",
             "type": "string"
           }
         }
@@ -4564,10 +4584,10 @@
       "name": "Risk management"
     },
     {
-      "name": "Users"
+      "name": "Transfers"
     },
     {
-      "name": "Transfers"
+      "name": "Users"
     }
   ],
   "x-api-side": "BROKER"

@@ -23,20 +23,20 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
 <CodeGroup>
   ```bash cURL
   curl --request POST \
-    --url https://api-test.topblast.trade/v1/broker/tokens \
+    --url https://api-test.topblast.trade/v1/broker/broker-user-10001/tokens \
     --header 'Content-Type: application/json' \
     --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>' \
-    --data '{"userId":"broker-user-10001","userName":"alice","email":"alice@example.com","token":"<user_access_token>"}'
+    --data '{"userName":"alice","email":"alice@example.com","token":"<user_access_token>"}'
   ```
 </CodeGroup>
 
-如果用户映射不存在，topblast 会自动创建并返回平台用户 UID：
+如果用户映射不存在，topblast 会自动创建并返回平台用户 ID：
 
 ```json
 {
-  "uid": "1000000000001"
+  "userId": "1000000000001"
 }
 ```
 
@@ -46,12 +46,12 @@ description: "不使用 SDK，通过 topblast REST API 同步用户并发起首�
 
 ## 2. 查询用户
 
-使用返回的 `uid` 或券商侧 `userId` 查询用户，确认映射已经生效：
+使用返回的 `userId` 或券商侧 `brokerUserId` 查询用户，确认映射已经生效：
 
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api-test.topblast.trade/v1/broker/users?uid=1000000000001&page=1&size=20' \
+    --url 'https://api-test.topblast.trade/v1/broker/users?user=1000000000001&page=1&size=20' \
     --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
@@ -64,12 +64,12 @@ Query 参数的顺序和编码是签名的一部分，必须与请求 URL 完全
 
 ## 3. 查询用户资产
 
-使用平台用户 UID 查询资产和余额：
+使用平台用户 ID 查询资产和余额：
 
 <CodeGroup>
   ```bash cURL
   curl --request GET \
-    --url 'https://api-test.topblast.trade/v1/broker/assets?uid=1000000000001&page=1&size=20' \
+    --url 'https://api-test.topblast.trade/v1/broker/assets?user=1000000000001&page=1&size=20' \
     --header 'x-app-id: <broker_app_id>' \
     --header 'x-timestamp: <timestamp>' \
     --header 'x-signature: <signature>'
