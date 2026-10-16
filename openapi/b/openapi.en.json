@@ -2421,6 +2421,12 @@
           "Users"
         ],
         "summary": "List user API keys",
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl --request GET \\\n  --url 'https://api-test.topblast.trade/v1/broker/users/{brokerUserId}/api-keys' \\\n  --header 'x-app-id: <broker_app_id>' \\\n  --header 'x-timestamp: <unix_timestamp>' \\\n  --header 'x-signature: <base64_signature>'"
+          }
+        ],
         "parameters": [
           {
             "description": "User ID in the broker system.",
