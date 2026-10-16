@@ -2421,12 +2421,6 @@
           "Users"
         ],
         "summary": "List user API keys",
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "source": "curl --request GET \\\n  --url 'https://api-test.topblast.trade/v1/broker/users/{brokerUserId}/api-keys' \\\n  --header 'x-app-id: <broker_app_id>' \\\n  --header 'x-timestamp: <unix_timestamp>' \\\n  --header 'x-signature: <base64_signature>'"
-          }
-        ],
         "parameters": [
           {
             "description": "User ID in the broker system.",
@@ -2774,19 +2768,22 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-app-id",
-        "description": "Broker App ID."
+        "description": "Broker App ID.",
+        "x-default": "<broker_app_id>"
       },
       "BrokerTimestamp": {
         "type": "apiKey",
         "in": "header",
         "name": "x-timestamp",
-        "description": "Request timestamp in seconds or milliseconds."
+        "description": "Request timestamp in seconds or milliseconds.",
+        "x-default": "<unix_timestamp>"
       },
       "BrokerSignature": {
         "type": "apiKey",
         "in": "header",
         "name": "x-signature",
-        "description": "Base64-encoded HMAC-SHA256 request signature."
+        "description": "Base64-encoded HMAC-SHA256 request signature.",
+        "x-default": "<base64_signature>"
       }
     },
     "schemas": {

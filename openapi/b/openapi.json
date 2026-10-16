@@ -2421,12 +2421,6 @@
           "券商接口-用户"
         ],
         "summary": "查询用户 API Key",
-        "x-codeSamples": [
-          {
-            "lang": "cURL",
-            "source": "curl --request GET \\\n  --url 'https://api-test.topblast.trade/v1/broker/users/{brokerUserId}/api-keys' \\\n  --header 'x-app-id: <broker_app_id>' \\\n  --header 'x-timestamp: <unix_timestamp>' \\\n  --header 'x-signature: <base64_signature>'"
-          }
-        ],
         "parameters": [
           {
             "description": "券商系统中的用户 ID",
@@ -2774,19 +2768,22 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-app-id",
-        "description": "券商 App ID，用于标识调用方身份。"
+        "description": "券商 App ID，用于标识调用方身份。",
+        "x-default": "<broker_app_id>"
       },
       "BrokerTimestamp": {
         "type": "apiKey",
         "in": "header",
         "name": "x-timestamp",
-        "description": "请求时间戳，支持秒或毫秒。"
+        "description": "请求时间戳，支持秒或毫秒。",
+        "x-default": "<unix_timestamp>"
       },
       "BrokerSignature": {
         "type": "apiKey",
         "in": "header",
         "name": "x-signature",
-        "description": "使用 HMAC-SHA256 生成并经过 Base64 编码的请求签名。"
+        "description": "使用 HMAC-SHA256 生成并经过 Base64 编码的请求签名。",
+        "x-default": "<base64_signature>"
       }
     },
     "schemas": {

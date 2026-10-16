@@ -21,21 +21,20 @@ View your local preview at `http://localhost:3000`.
 
 ## OpenAPI architecture
 
-Broker APIs are generated from Swaggo annotations in `go-uc`. From the
-`go-uc` repository, generate Swagger 2, convert it to OpenAPI 3, and publish it
+Broker APIs are generated from Swaggo annotations in `go-broker`. From the
+`go-broker` repository, generate Swagger 2, convert it to OpenAPI 3, and publish it
 to this project with:
 
 ```bash
 python3 scripts/generate_broker_openapi.py
-cd ../../zpm-docs
-python3 scripts/generate_broker_openapi_en.py
+cd ../zpm-docs
+python3 scripts/apply_broker_auth_defaults.py
 python3 scripts/keep_success_responses.py
 python3 scripts/validate_i18n.py
 mint validate
 ```
 
-The generator expects this repository at `~/code/srv/zpm-docs` when `go-uc`
-is located at `~/code/srv/zpm/go-uc`. For another layout, pass the destination
+The generator expects this repository next to `go-broker`. For another layout, pass the destination
 explicitly with `--docs-project /path/to/docs`.
 
 `openapi/c/openapi.json` is the Chinese source of truth for Trading REST API
