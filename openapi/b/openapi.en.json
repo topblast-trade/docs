@@ -2304,6 +2304,7 @@
               "type": "string",
               "enum": [
                 "NORMAL",
+                "SYSTEM",
                 "MARKET_MAKER"
               ]
             }
@@ -4449,7 +4450,7 @@
             "type": "string"
           },
           "userType": {
-            "description": "NORMAL or MARKET_MAKER",
+            "description": "NORMAL, SYSTEM or MARKET_MAKER",
             "type": "string"
           }
         }
@@ -4490,7 +4491,7 @@
             "type": "string"
           },
           "userType": {
-            "description": "NORMAL or MARKET_MAKER",
+            "description": "NORMAL, SYSTEM or MARKET_MAKER",
             "type": "string"
           },
           "username": {
