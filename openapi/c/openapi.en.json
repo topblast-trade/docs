@@ -180,6 +180,14 @@
               "minimum": 1,
               "maximum": 100
             }
+          },
+          {
+            "description": "Tag slug. Omit to disable tag filtering.",
+            "name": "tagSlug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

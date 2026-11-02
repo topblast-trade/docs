@@ -180,6 +180,14 @@
               "minimum": 1,
               "maximum": 100
             }
+          },
+          {
+            "description": "标签 slug；为空时不按标签筛选",
+            "name": "tagSlug",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
