@@ -69,7 +69,7 @@
             }
           },
           {
-            "description": "按流水类型筛选。",
+            "description": "按流水类型筛选。`deposit` 为入金。`withdraw` 为出金。`transfer` 为账户间划转。`trade_fee` 为实际收付的交易手续费。`freeze` 为冻结可用资金，总余额不变。`release` 为解冻已锁定资金，总余额不变。`balance_change` 为业务原因未能明确归类的余额变动。`trade_principal` 为成交产生的净资金变动，扣除已识别的资金划拨和手续费影响。`settlement` 为结算产生的净资金变动，扣除已识别的资金划拨和手续费影响。",
             "name": "kind",
             "in": "query",
             "schema": {
@@ -3566,7 +3566,7 @@
             "example": "72895202682998786"
           },
           "kind": {
-            "description": "流水类型。冻结和解冻只改变可用与锁定余额。",
+            "description": "流水类型。`deposit` 为入金。`withdraw` 为出金。`transfer` 为账户间划转。`trade_fee` 为实际收付的交易手续费。`freeze` 为冻结可用资金，总余额不变。`release` 为解冻已锁定资金，总余额不变。`balance_change` 为业务原因未能明确归类的余额变动。`trade_principal` 为成交产生的净资金变动，扣除已识别的资金划拨和手续费影响。`settlement` 为结算产生的净资金变动，扣除已识别的资金划拨和手续费影响。",
             "type": "string",
             "enum": [
               "deposit",

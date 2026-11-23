@@ -69,7 +69,7 @@
             }
           },
           {
-            "description": "Filter by asset movement type.",
+            "description": "Filter by asset movement type. `deposit` means deposit. `withdraw` means withdrawal. `transfer` means transfer between accounts. `trade_fee` means trading fee actually paid or received. `freeze` means reserve available funds without changing the total balance. `release` means release reserved funds without changing the total balance. `balance_change` means balance change whose business cause could not be classified. `trade_principal` means net cash movement from trade execution after accounting for known funding movements and fees. `settlement` means net cash movement from settlement after accounting for known funding movements and fees.",
             "name": "kind",
             "in": "query",
             "schema": {
@@ -3566,7 +3566,7 @@
             "example": "72895202682998786"
           },
           "kind": {
-            "description": "Asset movement type. Freezes and releases affect available and locked balances only.",
+            "description": "Asset movement type. `deposit` means deposit. `withdraw` means withdrawal. `transfer` means transfer between accounts. `trade_fee` means trading fee actually paid or received. `freeze` means reserve available funds without changing the total balance. `release` means release reserved funds without changing the total balance. `balance_change` means balance change whose business cause could not be classified. `trade_principal` means net cash movement from trade execution after accounting for known funding movements and fees. `settlement` means net cash movement from settlement after accounting for known funding movements and fees.",
             "type": "string",
             "enum": [
               "deposit",
