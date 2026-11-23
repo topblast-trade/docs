@@ -1,9 +1,9 @@
 ---
 title: "Pagination"
-description: "Understand page-based and stream pagination in the Broker REST API."
+description: "Understand page-based and cursor pagination in the Broker REST API."
 ---
 
-Broker REST API list operations use page-based or stream pagination depending on the data. Follow the parameters and response schema declared on each API Reference page.
+Broker REST API list operations use page-based or cursor pagination depending on the data. Follow the parameters and response schema declared on each API Reference page.
 
 ## Page-based pagination
 
@@ -53,9 +53,9 @@ safe-integer precision loss. Timestamp fields such as `createdAt` and
 `updatedAt` are always Unix milliseconds and are declared as `int64` in
 OpenAPI.
 
-## Stream pagination
+## Cursor pagination
 
-Stream pagination uses record IDs to define result boundaries and can further restrict results by time range.
+Cursor pagination uses record IDs to define result boundaries and can further restrict results by time range.
 
 ### Request parameters
 
@@ -101,4 +101,4 @@ curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1
   -H 'x-signature: <signature>'
 ```
 
-Stream pagination returns an array directly, without `total` or a pagination object.
+Cursor pagination returns an array directly, without `total` or a pagination object.

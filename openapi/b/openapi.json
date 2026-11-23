@@ -7,6 +7,132 @@
     "description": "Broker integration APIs authenticated with an App ID, timestamp, and HMAC-SHA256 signature."
   },
   "paths": {
+    "/v1/broker/asset-histories": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "券商接口-后管"
+        ],
+        "summary": "查询交易账户资金流水",
+        "parameters": [
+          {
+            "description": "流水资产 ID",
+            "name": "assetId",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "流水时间起点（Unix 毫秒，包含）",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "金额方向",
+            "name": "direction",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "in",
+                "out"
+              ]
+            }
+          },
+          {
+            "description": "流水时间终点（Unix 毫秒，不包含）",
+            "name": "end",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "流水 ID 下界（不包含）",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "流水类型",
+            "name": "kind",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "deposit",
+                "withdraw",
+                "transfer",
+                "trade_fee",
+                "freeze",
+                "release",
+                "balance_change",
+                "trade_principal",
+                "settlement"
+              ]
+            }
+          },
+          {
+            "description": "返回数量，最大 100；不传时默认为 20",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "description": "流水 ID 上界（不包含）",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "用户精确搜索；支持平台用户 ID、券商用户 ID 或邮箱；不传时不按用户筛选",
+            "name": "user",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/v2.brokerAssetHistoryItem"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/broker/assets": {
       "get": {
         "security": [
@@ -3394,6 +3520,67 @@
           }
         }
       },
+      "v2.brokerAssetHistoryItem": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "integer"
+          },
+          "availableAfter": {
+            "type": "string",
+            "nullable": true
+          },
+          "balanceAfter": {
+            "type": "string",
+            "nullable": true
+          },
+          "balanceScope": {
+            "type": "string",
+            "enum": [
+              "sequence_end",
+              "unavailable"
+            ]
+          },
+          "brokerUserId": {
+            "type": "string"
+          },
+          "deltaAmount": {
+            "type": "string",
+            "example": "-10.25"
+          },
+          "eventTime": {
+            "type": "integer",
+            "nullable": true,
+            "format": "int64"
+          },
+          "id": {
+            "type": "string",
+            "example": "72895202682998786"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "deposit",
+              "withdraw",
+              "transfer",
+              "trade_fee",
+              "freeze",
+              "release",
+              "balance_change",
+              "trade_principal",
+              "settlement"
+            ]
+          },
+          "lockedAfter": {
+            "type": "string",
+            "nullable": true
+          },
+          "recordedAt": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "v2.brokerAssetItem": {
         "type": "object",
         "properties": {
@@ -4284,6 +4471,14 @@
             "description": "成交时间（Unix 毫秒）",
             "type": "integer",
             "format": "int64"
+          },
+          "feeAmount": {
+            "description": "实收手续费，按 feeCurrencyAssetId 标识的币种返回十进制金额字符串",
+            "type": "string"
+          },
+          "feeCurrencyAssetId": {
+            "description": "手续费币种资产 ID；1 为 USDC，0 表示不可用",
+            "type": "integer"
           },
           "id": {
             "description": "唯一成交记录 ID，用于 from/to 流式分页",

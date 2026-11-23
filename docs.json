@@ -95,7 +95,8 @@
                       "cn/broker/api-reference/transfer/create",
                       "cn/broker/api-reference/transfer/list",
                       "cn/broker/api-reference/transfer/detail",
-                      "cn/broker/api-reference/assets/list"
+                      "cn/broker/api-reference/assets/list",
+                      "cn/broker/api-reference/assets/histories"
                     ]
                   },
                   {
@@ -309,7 +310,8 @@
                       "en/broker/api-reference/transfer/create",
                       "en/broker/api-reference/transfer/list",
                       "en/broker/api-reference/transfer/detail",
-                      "en/broker/api-reference/assets/list"
+                      "en/broker/api-reference/assets/list",
+                      "en/broker/api-reference/assets/histories"
                     ]
                   },
                   {

@@ -1,9 +1,9 @@
 ---
 title: "分页规则"
-description: "了解 Broker REST API 的页码分页和流式分页规则。"
+description: "了解 Broker REST API 的页码分页和游标分页规则。"
 ---
 
-Broker REST API 的列表接口根据数据特点使用页码分页或流式分页。具体接口支持的分页参数和响应 Schema 以对应 API Reference 页面为准。
+Broker REST API 的列表接口根据数据特点使用页码分页或游标分页。具体接口支持的分页参数和响应 Schema 以对应 API Reference 页面为准。
 
 ## 页码分页
 
@@ -52,9 +52,9 @@ curl 'https://api-test.topblast.trade/v1/broker/users?page=2&size=20' \
 安全整数精度丢失。`createdAt`、`updatedAt` 等时间字段始终使用 Unix
 毫秒时间戳，并在 OpenAPI 中声明为 `int64`。
 
-## 流式分页
+## 游标分页
 
-流式分页使用记录 ID 定位结果边界，并可通过时间范围进一步筛选数据。
+游标分页使用记录 ID 定位结果边界，并可通过时间范围进一步筛选数据。
 
 ### 请求参数
 
@@ -100,4 +100,4 @@ curl 'https://api-test.topblast.trade/v1/broker/trades?begin=1784534400000&end=1
   -H 'x-signature: <signature>'
 ```
 
-流式分页响应直接返回数组，不返回 `total` 或分页对象。
+游标分页响应直接返回数组，不返回 `total` 或分页对象。

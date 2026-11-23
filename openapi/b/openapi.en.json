@@ -7,6 +7,132 @@
     "description": "Broker integration APIs authenticated with an App ID, timestamp, and HMAC-SHA256 signature."
   },
   "paths": {
+    "/v1/broker/asset-histories": {
+      "get": {
+        "security": [
+          {
+            "BrokerAppID": [],
+            "BrokerTimestamp": [],
+            "BrokerSignature": []
+          }
+        ],
+        "tags": [
+          "Broker management"
+        ],
+        "summary": "List trading account asset histories",
+        "parameters": [
+          {
+            "description": "Asset ID.",
+            "name": "assetId",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Start time in Unix milliseconds, inclusive.",
+            "name": "begin",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "Direction of the signed amount. Use in for positive amounts and out for negative amounts.",
+            "name": "direction",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "in",
+                "out"
+              ]
+            }
+          },
+          {
+            "description": "End time in Unix milliseconds, exclusive.",
+            "name": "end",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "Lower asset history ID boundary, exclusive.",
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "Asset movement type.",
+            "name": "kind",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "deposit",
+                "withdraw",
+                "transfer",
+                "trade_fee",
+                "freeze",
+                "release",
+                "balance_change",
+                "trade_principal",
+                "settlement"
+              ]
+            }
+          },
+          {
+            "description": "Number of records to return, up to 100. Defaults to 20 when omitted.",
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "description": "Upper asset history ID boundary, exclusive.",
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "description": "Parameters.",
+            "name": "user",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/v2.brokerAssetHistoryItem"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/broker/assets": {
       "get": {
         "security": [
@@ -3394,6 +3520,67 @@
           }
         }
       },
+      "v2.brokerAssetHistoryItem": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "integer"
+          },
+          "availableAfter": {
+            "type": "string",
+            "nullable": true
+          },
+          "balanceAfter": {
+            "type": "string",
+            "nullable": true
+          },
+          "balanceScope": {
+            "type": "string",
+            "enum": [
+              "sequence_end",
+              "unavailable"
+            ]
+          },
+          "brokerUserId": {
+            "type": "string"
+          },
+          "deltaAmount": {
+            "type": "string",
+            "example": "-10.25"
+          },
+          "eventTime": {
+            "type": "integer",
+            "nullable": true,
+            "format": "int64"
+          },
+          "id": {
+            "type": "string",
+            "example": "72895202682998786"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "deposit",
+              "withdraw",
+              "transfer",
+              "trade_fee",
+              "freeze",
+              "release",
+              "balance_change",
+              "trade_principal",
+              "settlement"
+            ]
+          },
+          "lockedAfter": {
+            "type": "string",
+            "nullable": true
+          },
+          "recordedAt": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "v2.brokerAssetItem": {
         "type": "object",
         "properties": {
@@ -4284,6 +4471,14 @@
             "description": "Event Time.",
             "type": "integer",
             "format": "int64"
+          },
+          "feeAmount": {
+            "description": "Collected fee as a decimal amount string in the currency identified by feeCurrencyAssetId.",
+            "type": "string"
+          },
+          "feeCurrencyAssetId": {
+            "description": "Fee currency asset ID; 1 means USDC and 0 means unavailable.",
+            "type": "integer"
           },
           "id": {
             "description": "Id.",
