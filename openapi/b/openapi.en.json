@@ -22,7 +22,7 @@
         "summary": "List asset histories",
         "parameters": [
           {
-            "description": "Filter by asset ID.",
+            "description": "Filter by asset ID. Omit to query all cash assets.",
             "name": "assetId",
             "in": "query",
             "schema": {
@@ -30,16 +30,17 @@
             }
           },
           {
-            "description": "Start time in Unix milliseconds, inclusive. Uses the event time when available and falls back to the recorded time.",
+            "description": "Start time in Unix milliseconds, inclusive. Only records with an event time match. Omit to leave the start time unrestricted.",
             "name": "begin",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 0
+              "minimum": 0,
+              "maximum": 253402300799999
             }
           },
           {
-            "description": "Filter by the sign of the amount. Use in for positive amounts and out for negative amounts.",
+            "description": "Filter by the sign of the amount. Use in for positive amounts and out for negative amounts. Omit to include all directions.",
             "name": "direction",
             "in": "query",
             "schema": {
@@ -51,25 +52,26 @@
             }
           },
           {
-            "description": "End time in Unix milliseconds, exclusive. Uses the event time when available and falls back to the recorded time.",
+            "description": "End time in Unix milliseconds, exclusive. Only records with an event time match. Omit to leave the end time unrestricted.",
             "name": "end",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 0
+              "minimum": 0,
+              "maximum": 253402300799999
             }
           },
           {
-            "description": "Return only records with IDs greater than this value. If to is also provided, from must be less than to.",
+            "description": "Return only records with IDs greater than this value. If to is also provided, from must be less than to. Omit to leave the lower ID boundary unrestricted.",
             "name": "from",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 0
+              "minimum": 1
             }
           },
           {
-            "description": "Filter by asset movement type. `deposit` means deposit. `withdraw` means withdrawal. `transfer` means transfer between accounts. `trade_fee` means trading fee actually paid or received. `freeze` means reserve available funds without changing the total balance. `release` means release reserved funds without changing the total balance. `balance_change` means balance change whose business cause could not be classified. `trade_principal` means net cash movement from trade execution after accounting for known funding movements and fees. `settlement` means net cash movement from settlement after accounting for known funding movements and fees.",
+            "description": "Filter by asset movement type. Omit to query all types. `deposit` means deposit. `withdraw` means withdrawal. `transfer` means transfer between accounts. `trade_fee` means trading fee actually paid or received. `freeze` means reserve available funds without changing the total balance. `release` means release reserved funds without changing the total balance. `balance_change` means balance change whose business cause could not be classified. `trade_principal` means net cash movement from trade execution after accounting for known funding movements and fees. `settlement` means net cash movement from settlement after accounting for known funding movements and fees.",
             "name": "kind",
             "in": "query",
             "schema": {
@@ -99,12 +101,12 @@
             }
           },
           {
-            "description": "Return only records with IDs less than this value. To read older records, use the last ID in the current batch and keep the other filters unchanged.",
+            "description": "Return only records with IDs less than this value. To read older records, use the last ID in the current batch and keep the other filters unchanged. Omit to leave the upper ID boundary unrestricted.",
             "name": "to",
             "in": "query",
             "schema": {
               "type": "integer",
-              "minimum": 0
+              "minimum": 1
             }
           },
           {
@@ -3527,6 +3529,12 @@
             "description": "ID of the asset that changed.",
             "type": "integer"
           },
+          "assetSymbol": {
+            "description": "Currency symbol, or null if it cannot be confirmed from the asset definition.",
+            "type": "string",
+            "example": "USDC",
+            "nullable": true
+          },
           "availableAfter": {
             "description": "Available balance at the end of the sequence as a decimal string, or null if unavailable.",
             "type": "string",
@@ -3546,8 +3554,9 @@
             ]
           },
           "brokerUserId": {
-            "description": "The broker-assigned user ID for the trading account.",
-            "type": "string"
+            "description": "The broker-assigned user ID, or null if the historical mapping is unavailable.",
+            "type": "string",
+            "nullable": true
           },
           "deltaAmount": {
             "description": "Signed movement amount as a decimal string.",
@@ -3585,10 +3594,20 @@
             "type": "string",
             "nullable": true
           },
-          "recordedAt": {
-            "description": "Recorded time in Unix milliseconds. Time filters use this field when the event time is unavailable.",
-            "type": "integer",
-            "format": "int64"
+          "marketId": {
+            "description": "Related market ID, or null if it cannot be uniquely identified.",
+            "type": "string",
+            "nullable": true
+          },
+          "orderId": {
+            "description": "Related order ID, or null if it cannot be uniquely identified.",
+            "type": "string",
+            "nullable": true
+          },
+          "tradeId": {
+            "description": "Related trade ID, or null if it cannot be uniquely identified.",
+            "type": "string",
+            "nullable": true
           }
         }
       },
