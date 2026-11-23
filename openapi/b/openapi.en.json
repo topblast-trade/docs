@@ -19,10 +19,10 @@
         "tags": [
           "Broker management"
         ],
-        "summary": "List trading account asset histories",
+        "summary": "List asset histories",
         "parameters": [
           {
-            "description": "Asset ID.",
+            "description": "Filter by asset ID.",
             "name": "assetId",
             "in": "query",
             "schema": {
@@ -30,7 +30,7 @@
             }
           },
           {
-            "description": "Start time in Unix milliseconds, inclusive.",
+            "description": "Start time in Unix milliseconds, inclusive. Uses the event time when available and falls back to the recorded time.",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -39,7 +39,7 @@
             }
           },
           {
-            "description": "Direction of the signed amount. Use in for positive amounts and out for negative amounts.",
+            "description": "Filter by the sign of the amount. Use in for positive amounts and out for negative amounts.",
             "name": "direction",
             "in": "query",
             "schema": {
@@ -51,7 +51,7 @@
             }
           },
           {
-            "description": "End time in Unix milliseconds, exclusive.",
+            "description": "End time in Unix milliseconds, exclusive. Uses the event time when available and falls back to the recorded time.",
             "name": "end",
             "in": "query",
             "schema": {
@@ -60,7 +60,7 @@
             }
           },
           {
-            "description": "Lower asset history ID boundary, exclusive.",
+            "description": "Return only records with IDs greater than this value. If to is also provided, from must be less than to.",
             "name": "from",
             "in": "query",
             "schema": {
@@ -69,7 +69,7 @@
             }
           },
           {
-            "description": "Asset movement type.",
+            "description": "Filter by asset movement type.",
             "name": "kind",
             "in": "query",
             "schema": {
@@ -99,7 +99,7 @@
             }
           },
           {
-            "description": "Upper asset history ID boundary, exclusive.",
+            "description": "Return only records with IDs less than this value. To read older records, use the last ID in the current batch and keep the other filters unchanged.",
             "name": "to",
             "in": "query",
             "schema": {
@@ -108,7 +108,7 @@
             }
           },
           {
-            "description": "Parameters.",
+            "description": "Exact match by platform user ID, broker user ID, or email. Omit to query all trading accounts of the authenticated broker.",
             "name": "user",
             "in": "query",
             "schema": {
@@ -3524,17 +3524,21 @@
         "type": "object",
         "properties": {
           "assetId": {
+            "description": "ID of the asset that changed.",
             "type": "integer"
           },
           "availableAfter": {
+            "description": "Available balance at the end of the sequence as a decimal string, or null if unavailable.",
             "type": "string",
             "nullable": true
           },
           "balanceAfter": {
+            "description": "Total balance at the end of the sequence as a decimal string, or null if unavailable.",
             "type": "string",
             "nullable": true
           },
           "balanceScope": {
+            "description": "Balance scope. With sequence_end, records in the same sequence may share the ending balance. unavailable indicates that no historical balance is available.",
             "type": "string",
             "enum": [
               "sequence_end",
@@ -3542,22 +3546,27 @@
             ]
           },
           "brokerUserId": {
+            "description": "The broker-assigned user ID for the trading account.",
             "type": "string"
           },
           "deltaAmount": {
+            "description": "Signed movement amount as a decimal string.",
             "type": "string",
             "example": "-10.25"
           },
           "eventTime": {
+            "description": "Event time in Unix milliseconds, or null if unavailable.",
             "type": "integer",
             "nullable": true,
             "format": "int64"
           },
           "id": {
+            "description": "Unique record ID as a decimal string. Results are sorted by this ID in descending order.",
             "type": "string",
             "example": "72895202682998786"
           },
           "kind": {
+            "description": "Asset movement type. Freezes and releases affect available and locked balances only.",
             "type": "string",
             "enum": [
               "deposit",
@@ -3572,10 +3581,12 @@
             ]
           },
           "lockedAfter": {
+            "description": "Locked balance at the end of the sequence as a decimal string, or null if unavailable.",
             "type": "string",
             "nullable": true
           },
           "recordedAt": {
+            "description": "Recorded time in Unix milliseconds. Time filters use this field when the event time is unavailable.",
             "type": "integer",
             "format": "int64"
           }

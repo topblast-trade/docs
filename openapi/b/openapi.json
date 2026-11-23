@@ -19,10 +19,10 @@
         "tags": [
           "券商接口-后管"
         ],
-        "summary": "查询交易账户资金流水",
+        "summary": "查询资金流水",
         "parameters": [
           {
-            "description": "流水资产 ID",
+            "description": "按流水资产 ID 筛选。",
             "name": "assetId",
             "in": "query",
             "schema": {
@@ -30,7 +30,7 @@
             }
           },
           {
-            "description": "流水时间起点（Unix 毫秒，包含）",
+            "description": "开始时间，Unix 毫秒，包含边界。优先使用业务时间，缺失时使用入库时间。",
             "name": "begin",
             "in": "query",
             "schema": {
@@ -39,7 +39,7 @@
             }
           },
           {
-            "description": "金额方向",
+            "description": "按变动金额方向筛选；in 表示正数，out 表示负数。",
             "name": "direction",
             "in": "query",
             "schema": {
@@ -51,7 +51,7 @@
             }
           },
           {
-            "description": "流水时间终点（Unix 毫秒，不包含）",
+            "description": "结束时间，Unix 毫秒，不包含边界。优先使用业务时间，缺失时使用入库时间。",
             "name": "end",
             "in": "query",
             "schema": {
@@ -60,7 +60,7 @@
             }
           },
           {
-            "description": "流水 ID 下界（不包含）",
+            "description": "仅返回 ID 大于此值的流水；与 to 同传时，from 必须小于 to。",
             "name": "from",
             "in": "query",
             "schema": {
@@ -69,7 +69,7 @@
             }
           },
           {
-            "description": "流水类型",
+            "description": "按流水类型筛选。",
             "name": "kind",
             "in": "query",
             "schema": {
@@ -99,7 +99,7 @@
             }
           },
           {
-            "description": "流水 ID 上界（不包含）",
+            "description": "仅返回 ID 小于此值的流水。向前翻页时，传入本批最后一条流水的 id，并保持其余筛选条件一致。",
             "name": "to",
             "in": "query",
             "schema": {
@@ -108,7 +108,7 @@
             }
           },
           {
-            "description": "用户精确搜索；支持平台用户 ID、券商用户 ID 或邮箱；不传时不按用户筛选",
+            "description": "按平台用户 ID、券商用户 ID 或邮箱精确匹配单个交易账户；省略时查询当前券商的全部交易账户。",
             "name": "user",
             "in": "query",
             "schema": {
@@ -3524,17 +3524,21 @@
         "type": "object",
         "properties": {
           "assetId": {
+            "description": "发生变动的资产 ID。",
             "type": "integer"
           },
           "availableAfter": {
+            "description": "序列结束时的可用余额，以十进制字符串返回；缺失时为 null。",
             "type": "string",
             "nullable": true
           },
           "balanceAfter": {
+            "description": "序列结束时的总余额，以十进制字符串返回；缺失时为 null。",
             "type": "string",
             "nullable": true
           },
           "balanceScope": {
+            "description": "余额口径。sequence_end 表示序列末余额，同一序列的多条流水可能共享该余额；unavailable 表示无可用历史余额。",
             "type": "string",
             "enum": [
               "sequence_end",
@@ -3542,22 +3546,27 @@
             ]
           },
           "brokerUserId": {
+            "description": "该交易账户在券商侧的用户 ID。",
             "type": "string"
           },
           "deltaAmount": {
+            "description": "带符号的资金变动金额，以十进制字符串返回。",
             "type": "string",
             "example": "-10.25"
           },
           "eventTime": {
+            "description": "业务发生时间，Unix 毫秒；缺失时为 null。",
             "type": "integer",
             "nullable": true,
             "format": "int64"
           },
           "id": {
+            "description": "唯一流水 ID，以十进制字符串返回。结果按此 ID 降序排列。",
             "type": "string",
             "example": "72895202682998786"
           },
           "kind": {
+            "description": "流水类型。冻结和解冻只改变可用与锁定余额。",
             "type": "string",
             "enum": [
               "deposit",
@@ -3572,10 +3581,12 @@
             ]
           },
           "lockedAfter": {
+            "description": "序列结束时的锁定余额，以十进制字符串返回；缺失时为 null。",
             "type": "string",
             "nullable": true
           },
           "recordedAt": {
+            "description": "入库时间，Unix 毫秒。业务时间缺失时，时间筛选使用此字段。",
             "type": "integer",
             "format": "int64"
           }

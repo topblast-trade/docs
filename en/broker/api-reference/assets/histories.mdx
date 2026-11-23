@@ -1,14 +1,4 @@
 ---
-title: "List trading account asset histories"
+title: "List asset histories"
 openapi: "/openapi/b/openapi.en.json GET /v1/broker/asset-histories"
 ---
-
-Queries are currently unavailable. Valid requests return HTTP 501 until the read service is connected.
-
-Omit `user` to query all trading accounts for the authenticated broker. Set `user` to match a single account by platform user ID, broker user ID, or email.
-
-Records are sorted by ID in descending order. `from` selects IDs greater than the boundary, and `to` selects IDs less than the boundary. To read older records, pass the final record's `id` as `to` and keep the other filters the same. A successful response is a JSON array.
-
-`begin` is inclusive and `end` is exclusive. Time filters use `eventTime` when available and fall back to `recordedAt`. All time fields are Unix milliseconds.
-
-Amounts are decimal strings. Freezes and releases affect available and locked balances. Multiple records in the same sequence may share the balance at the end of that sequence. Unavailable historical balances are `null`.
